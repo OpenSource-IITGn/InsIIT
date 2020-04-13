@@ -88,6 +88,17 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushNamed(context, '/complaints');
               },
             ),
+            ListTile(
+              title: Text('Quicklinks'),
+              leading: Icon(
+                Icons.link,
+                color: Colors.indigo,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/Quicklinks');
+              },
+            ),
           ],
         ),
       ),

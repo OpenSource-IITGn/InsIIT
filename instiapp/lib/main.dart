@@ -5,6 +5,8 @@ import 'package:instiapp/screens/announcements.dart';
 import 'package:instiapp/screens/articles.dart';
 import 'package:instiapp/screens/complains.dart';
 import 'package:instiapp/screens/contacts.dart';
+import 'package:instiapp/screens/email.dart';
+
 
 
 void main() => runApp(MyApp());
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/contacts': (context) => Contacts(),
         '/complaints': (context) => Complains(),
         '/addtext': (context) => AddText(),
+        '/Quicklinks' : (context) => Email(),
       },
       title: 'Instiapp',
       theme: ThemeData(
