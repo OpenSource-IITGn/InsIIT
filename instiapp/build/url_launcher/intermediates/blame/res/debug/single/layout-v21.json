@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "D:\\Gaurav\\Github\\IITGN-Institute-App\\instiapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\king\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "D:\\Gaurav\\Github\\IITGN-Institute-App\\instiapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\king\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "D:\\Gaurav\\Github\\IITGN-Institute-App\\instiapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\king\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "D:\\Gaurav\\Github\\IITGN-Institute-App\\instiapp\\build\\url_launcher\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\king\\.gradle\\caches\\transforms-2\\files-2.1\\0a271e99b6771ad4a84318244d532fb7\\core-1.0.0\\res\\layout-v21\\notification_action_tombstone.xml"
+    }
+]

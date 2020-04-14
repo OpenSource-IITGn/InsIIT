@@ -38,7 +38,7 @@ class _AddTextState extends State<AddText> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: Text('Send Article'),
+        title: Text('Send Details'),
       ),
       body: SingleChildScrollView(
         child: Column(

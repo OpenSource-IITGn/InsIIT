@@ -1,0 +1,105 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.instiapp"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+9        android:targetSdkVersion="28" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\debug\AndroidManifest.xml:6:5-66
+14-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\debug\AndroidManifest.xml:6:22-64
+15    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+15-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
+15-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
+16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+16-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
+16-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
+17    <!--
+18 io.flutter.app.FlutterApplication is an android.app.Application that
+19         calls FlutterMain.startInitialization(this); in its onCreate method.
+20         In most cases you can leave this as-is, but you if you want to provide
+21         additional functionality it is fine to subclass or reimplement
+22         FlutterApplication and put your custom class here.
+23    -->
+24    <application
+24-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:8:5-29:19
+25        android:name="io.flutter.app.FlutterApplication"
+25-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:9:9-57
+26        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+26-->[androidx.core:core:1.0.2] C:\Users\king\.gradle\caches\transforms-2\files-2.1\fecc98e05c7ccd4a0eedf7cff343a233\core-1.0.2\AndroidManifest.xml:22:18-86
+27        android:debuggable="true"
+28        android:icon="@mipmap/ic_launcher"
+28-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:11:9-43
+29        android:label="instiapp" >
+29-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:10:9-33
+30        <activity
+30-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:12:9-23:20
+31            android:name="com.example.instiapp.MainActivity"
+31-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:13:13-41
+32            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+32-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:16:13-163
+33            android:hardwareAccelerated="true"
+33-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:17:13-47
+34            android:launchMode="singleTop"
+34-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:14:13-43
+35            android:theme="@style/LaunchTheme"
+35-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:15:13-47
+36            android:windowSoftInputMode="adjustResize" >
+36-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:18:13-55
+37            <intent-filter>
+37-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:19:13-22:29
+38                <action android:name="android.intent.action.MAIN" />
+38-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:20:17-68
+38-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:20:25-66
+39
+40                <category android:name="android.intent.category.LAUNCHER" />
+40-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:21:17-76
+40-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:21:27-74
+41            </intent-filter>
+42        </activity>
+43        <!--
+44             Don't delete the meta-data below.
+45             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+46        -->
+47        <meta-data
+47-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:26:9-28:33
+48            android:name="flutterEmbedding"
+48-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:27:13-44
+49            android:value="2" />
+49-->D:\Gaurav\Github\IITGN-Institute-App\instiapp\android\app\src\main\AndroidManifest.xml:28:13-30
+50
+51        <provider
+51-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+52            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+52-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
+53            android:authorities="com.example.instiapp.flutter.image_provider"
+53-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
+54            android:exported="false"
+54-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+55            android:grantUriPermissions="true" >
+55-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
+56            <meta-data
+56-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+57                android:name="android.support.FILE_PROVIDER_PATHS"
+57-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+58                android:resource="@xml/flutter_image_picker_file_paths" />
+58-->[:image_picker] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+59        </provider>
+60
+61        <activity
+61-->[:url_launcher] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+62            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+62-->[:url_launcher] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+63            android:exported="false"
+63-->[:url_launcher] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+64            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+64-->[:url_launcher] D:\Gaurav\Github\IITGN-Institute-App\instiapp\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+65    </application>
+66
+67</manifest>
