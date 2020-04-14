@@ -1,14 +1,3 @@
-
-
-
-import 'package:googleapis/sheets/v4.dart';
-import 'package:googleapis_auth/auth_io.dart' as auth;
-import 'package:googleapis/sheets/v4.dart' as sheets;
-// import 'package:shared_preferences/shared_preferences.dart';
-
-String spreadSheetID = '<ENTER SPREADSHEET ID HERE>'; // GIVE edit ACCESS TO  iitgn-institute-app@iitgn-instituteapp.iam.gserviceaccount.com for the sheet.
-
-final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
 {
   "type": "service_account",
   "project_id": "iitgn-instituteapp",
@@ -21,47 +10,3 @@ final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/iitgn-institute-app%40iitgn-instituteapp.iam.gserviceaccount.com"
 }
-
-
-''');
-
-final scopes = [sheets.SheetsApi.SpreadsheetsScope];
-
-
-Future writeData(var data, String range) async { //range is like sheetname!A:J
-
-  await auth.clientViaServiceAccount(_credentials, scopes).then((client) {
-    auth
-        .obtainAccessCredentialsViaServiceAccount(_credentials, scopes, client)
-        .then((auth.AccessCredentials cred) {
-      SheetsApi api = new SheetsApi(client);
-      ValueRange vr = new sheets.ValueRange.fromJson({
-        "values": data //data is [[row1],[row2], ...]
-      });
-      api.spreadsheets.values
-          .append(vr, spreadSheetID, range,
-              valueInputOption: 'USER_ENTERED')
-          .then((AppendValuesResponse r) {
-            print("SENT DATA TO SHEETS");
-        client.close();
-      });
-    });
-  });
-}
-
-Future<List> getData(String range) async { //range in the form "sheetname!A:C" A:C is range of columns
-  var returnval;
-  await auth.clientViaServiceAccount(_credentials, scopes).then((client) async {
-    await auth
-        .obtainAccessCredentialsViaServiceAccount(_credentials, scopes, client)
-        .then((auth.AccessCredentials cred) async {
-      SheetsApi api = new SheetsApi(client);
-      await api.spreadsheets.values.get(spreadSheetID, range).then((qs) {
-        returnval = qs.values;
-      });
-    });
-  });
-   //data returned in the form of [[row], [row], [row], [row]]
-  return returnval;
-}
-
