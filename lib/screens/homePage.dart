@@ -99,6 +99,17 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
+              title: Text('Shuttle'),
+              leading: Icon(
+                Icons.airport_shuttle,
+                color: Colors.indigo,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/shuttle');
+              },
+            ),
+            ListTile(
               title: Text('Mess Menu'),
               leading: Icon(
                 Icons.local_dining,

@@ -1,70 +1,52 @@
-
-
 import 'package:flutter/material.dart';
-import './Constants.dart';
+import 'package:instiapp/screens/classes/Constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import './Contacts.dart';
-import './buses.dart';
+import 'package:instiapp/screens/Contacts.dart';
+import 'package:instiapp/screens/classes/buses.dart';
 
-
-
-
-
-
-void main() => runApp(MaterialApp(
-  home: Home(),
-),
-);
-class Home extends StatefulWidget {
-
+class Shuttle extends StatefulWidget {
 
   @override
-
-
-
-  _HomeState createState() => _HomeState();
+  _ShuttleState createState() => _ShuttleState();
 }
 
-class _HomeState extends State<Home> {
-
+class _ShuttleState extends State<Shuttle> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-
-
   List<Buses> buses = [
-    Buses (Destination:'Destination:Visat Circle',Time: '@ 8:30 AM', image: Image(image: AssetImage('assets/VisatCircle.jpg')),hour: 8,minute: 30 ),
-    Buses (Destination:'Destination:Kudasan Circle',Time: '@ 10:30 AM', image: Image(image: AssetImage('assets/Kudasan.jpg')),hour:10,minute: 30),
-    Buses (Destination:'Destination:Pathikashram',Time: '@ 12:30 PM', image: Image(image: AssetImage('assets/Pathikashram.jpg')),hour:12,minute: 30),
-    Buses (Destination:'Destination:Infocity',Time: '@ 1 PM', image: Image(image: AssetImage('assets/infocity.jpg')),hour:15,minute: 25 ),
+    Buses (destination:'Destination:Visat Circle',time: '@ 8:30 AM', image: Image(image: AssetImage('assets/VisatCircle.jpg')),hour: 8,minute: 30 ),
+    Buses (destination:'Destination:Kudasan Circle',time: '@ 10:30 AM', image: Image(image: AssetImage('assets/Kudasan.jpg')),hour:10,minute: 30),
+    Buses (destination:'Destination:Pathikashram',time: '@ 12:30 PM', image: Image(image: AssetImage('assets/Pathikashram.jpg')),hour:12,minute: 30),
+    Buses (destination:'Destination:Infocity',time: '@ 1 PM', image: Image(image: AssetImage('assets/infocity.jpg')),hour:15,minute: 25 ),
 
   ];
 
-  Widget busestemplate(Buses) {
+  Widget busesTemplate(buses) {
     return Center(
       child: Card(
         margin: EdgeInsets.all(10.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(Buses.Destination,
+              Text(buses.destination,
                 style: TextStyle(
                   fontSize: 18.0,
                 ),
               ),
               SizedBox(height: 6.0,),
-              Text(Buses.Time,
+              Text(buses.time,
                 style: TextStyle(
                   fontSize: 18.0,
                 ),
               ),
               RaisedButton.icon(onPressed: () {
                 showDialog(context: context,
-                           builder: (_) => new AlertDialog(
-                             title: Text('Route'),
-                             content:  Buses.image,),
+                  builder: (_) => new AlertDialog(
+                    title: Text('Route'),
+                    content:  buses.image,),
 
-                         );
+                );
               },
                   icon: Icon(Icons.airport_shuttle),
                   label: Text('Route')),
@@ -103,8 +85,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future _showNotificationWithDefaultSound(Buses) async {
-    var busTime = new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, Buses.hour, Buses.minute, 0);
+  Future _showNotificationWithDefaultSound(buses) async {
+    var busTime = new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, buses.hour, buses.minute, 0);
     var currentTime = new DateTime.now();
     var scheduledNotificationDateTime = DateTime.now().add(busTime.difference(currentTime));
     print(busTime);
@@ -151,7 +133,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         body: Column(
-          children: buses.map((Buses) => busestemplate(Buses)).toList(),
+          children: buses.map((buses) => busesTemplate(buses)).toList(),
         )
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './contact.dart';
+import 'package:instiapp/screens/classes/contact.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Contact extends StatefulWidget {
@@ -10,34 +10,34 @@ class Contact extends StatefulWidget {
 class _ContactState extends State<Contact> {
 
   List<Contacts> contact = [
-    Contacts (Name:'ABC',No: 9929676589,Textno:'9929676589' ),
-    Contacts (Name:'ABC',No: 9929676589,Textno:'9929676589'),
-    Contacts (Name:'ABC',No: 9929676589,Textno:'9929676589'),
-    Contacts (Name:'XYZ',No: 9929676589,Textno:'9929676589'),
+    Contacts (name:'ABC',no: 9929676589,textNo:'9929676589' ),
+    Contacts (name:'ABC',no: 9929676589,textNo:'9929676589'),
+    Contacts (name:'ABC',no: 9929676589,textNo:'9929676589'),
+    Contacts (name:'XYZ',no: 9929676589,textNo:'9929676589'),
 
 
   ];
 
-  Widget contacttemplate(Contacts) {
+  Widget contactTemplate(contacts) {
     return Center(
       child: Card(
         margin: EdgeInsets.all(10.0),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(Contacts.Name,
+              Text(contacts.name,
                 style: TextStyle(
                   fontSize: 18.0,
                 ),
               ),
               SizedBox(height: 6.0,),
-              Text(Contacts.Textno,
+              Text(contacts.textNo,
                 style: TextStyle(
                   fontSize: 18.0,
                 ),
               ),
               RaisedButton.icon(onPressed: () {
-                launch("tel:${Contacts.No}");
+                launch("tel:${contacts.no}");
               },
                   icon: Icon(Icons.call),
                   label: Text('Call')),
@@ -54,7 +54,7 @@ class _ContactState extends State<Contact> {
           centerTitle: true,
         ),//AppBar,
         body:  Column(
-           children: contact.map((Contacts) => contacttemplate(Contacts)).toList()),
+           children: contact.map((contacts) => contactTemplate(contacts)).toList()),
     );//Scaffold;
   }
 }
