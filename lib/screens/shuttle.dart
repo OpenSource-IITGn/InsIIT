@@ -18,7 +18,7 @@ class _ShuttleState extends State<Shuttle> {
     Buses (destination:'Destination:Visat Circle',time: '@ 8:30 AM', image: Image(image: AssetImage('assets/VisatCircle.jpg')),hour: 8,minute: 30 ),
     Buses (destination:'Destination:Kudasan Circle',time: '@ 10:30 AM', image: Image(image: AssetImage('assets/Kudasan.jpg')),hour:10,minute: 30),
     Buses (destination:'Destination:Pathikashram',time: '@ 12:30 PM', image: Image(image: AssetImage('assets/Pathikashram.jpg')),hour:12,minute: 30),
-    Buses (destination:'Destination:Infocity',time: '@ 1 PM', image: Image(image: AssetImage('assets/infocity.jpg')),hour:15,minute: 25 ),
+    Buses (destination:'Destination:Infocity',time: '@ 1 PM', image: Image(image: AssetImage('assets/infocity.jpg')),hour:13,minute: 0 ),
 
   ];
 
@@ -51,7 +51,7 @@ class _ShuttleState extends State<Shuttle> {
                   icon: Icon(Icons.airport_shuttle),
                   label: Text('Route')),
               RaisedButton.icon(onPressed: (){
-                _showNotificationWithDefaultSound(Buses);
+                _showNotificationWithDefaultSound(buses);
               }, icon: Icon(Icons.access_alarm), label: Text('Reminder'))
 
             ]
