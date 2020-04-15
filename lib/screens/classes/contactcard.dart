@@ -22,7 +22,7 @@ class ContactCard {
       textStyle: TextStyle(color: Colors.black),
       linkStyle: TextStyle(color: Colors.blue),
       onPhoneTap: (link) => customLaunch('tel:$link'),
-      onWebLinkTap: (link) => customLaunch('$link'),
+      onWebLinkTap: (link) => customLaunch('http:$link'),
       humanize: true,
     );
   }
