@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/homePage.dart';
 
 
-class Contacts extends StatefulWidget {
+class ImportantContacts extends StatefulWidget {
 
   @override
-  _ContactsState createState() => _ContactsState();
+  _ImportantContactsState createState() => _ImportantContactsState();
 }
 
-class _ContactsState extends State<Contacts> {
+class _ImportantContactsState extends State<ImportantContacts> {
 
   @override
   Widget build(BuildContext context) {
