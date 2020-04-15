@@ -261,9 +261,9 @@ class _HomePageState extends State<HomePage> {
 
     if (hour >= 4 && hour <= 10) {
       return {'meal': 'Breakfast', 'list': foodList[day].breakfast};
-    } else if (hour > 10 && hour <= 3) {
+    } else if (hour > 10 && hour <= 15) {
       return {'meal': 'Lunch', 'list': foodList[day].lunch};
-    } else if (hour > 3 && hour <= 7) {
+    } else if (hour > 15 && hour <= 19) {
       return {'meal': 'Snacks', 'list': foodList[day].snacks};
     } else {
       return {'meal': 'Dinner', 'list': foodList[day].dinner};
