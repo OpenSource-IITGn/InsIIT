@@ -4,8 +4,8 @@ import 'package:instiapp/screens/addtext.dart';
 import 'package:instiapp/screens/announcements.dart';
 import 'package:instiapp/screens/articles.dart';
 import 'package:instiapp/screens/complains.dart';
-import 'package:instiapp/screens/contacts.dart';
 import 'package:instiapp/screens/email.dart';
+import 'package:instiapp/screens/importantContacts.dart';
 import 'package:instiapp/screens/messfeedback.dart';
 import 'package:instiapp/screens/messmenu.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomePage(),
         '/announcements': (context) => Announcements(),
         '/articles': (context) => Articles(),
-        '/contacts': (context) => Contacts(),
+        '/importantcontacts': (context) => ImportantContacts(),
         '/complaints': (context) => Complains(),
         '/addtext': (context) => AddText(),
         '/Quicklinks': (context) => Email(),

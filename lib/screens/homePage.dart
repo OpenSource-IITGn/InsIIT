@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              title: Text('Contacts'),
+              title: Text('Important Contacts'),
               leading: Icon(
                 Icons.contacts,
                 color: Colors.indigo,
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/contacts');
+                Navigator.pushNamed(context, '/importantcontacts');
               },
             ),
             ListTile(
