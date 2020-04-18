@@ -5,19 +5,23 @@ import 'package:instiapp/screens/classes/weekdaycard.dart';
 import 'package:instiapp/screens/classes/contactcard.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-
 class HomePage extends StatefulWidget {
-   @override
+  @override
   _HomePageState createState() => _HomePageState();
 }
 
 List<FoodCard> foodCards;
 List<ContactCard> contactCards;
 
-
 class _HomePageState extends State<HomePage> {
+  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
+  @override
+  void initState() {
+    super.initState();
+    data = loadData();
+  }
 
-  Widget homeScreen () {
+  Widget homeScreen() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
@@ -144,7 +148,9 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 20.0,
               ),
             ),
-            SizedBox(height: 10.0,),
+            SizedBox(
+              height: 10.0,
+            ),
             CarouselSlider(
               height: 120.0,
               viewportFraction: 0.6,
@@ -185,7 +191,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget loadScreen () {
+  Widget loadScreen() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
@@ -204,17 +210,52 @@ class _HomePageState extends State<HomePage> {
   dynamic dataList;
   dynamic data;
 
-  loadData () async {
-    dataList = await getData('A:F');
+  loadData() async {
+    dataList = await sheet.getData('Sheet1!A:F');
 
-    foodCards =[
-      FoodCard(day: 'Monday', breakfast: dataList[0][0].split(','), lunch: dataList[0][1].split(','), snacks: dataList[0][2].split(','), dinner: dataList[0][3].split(',')),
-      FoodCard(day: 'Tuesday', breakfast: dataList[1][0].split(','), lunch: dataList[1][1].split(','), snacks: dataList[1][2].split(','), dinner: dataList[1][3].split(',')),
-      FoodCard(day: 'Wednesday', breakfast: dataList[2][0].split(','), lunch: dataList[2][1].split(','), snacks: dataList[2][2].split(','), dinner: dataList[2][3].split(',')),
-      FoodCard(day: 'Thursday', breakfast: dataList[3][0].split(','), lunch: dataList[3][1].split(','), snacks: dataList[3][2].split(','), dinner: dataList[3][3].split(',')),
-      FoodCard(day: 'Friday', breakfast: dataList[4][0].split(','), lunch: dataList[4][1].split(','), snacks: dataList[4][2].split(','), dinner: dataList[4][3].split(',')),
-      FoodCard(day: 'Saturday', breakfast: dataList[5][0].split(','), lunch: dataList[5][1].split(','), snacks: dataList[5][2].split(','), dinner: dataList[5][3].split(',')),
-      FoodCard(day: 'Sunday', breakfast: dataList[6][0].split(','), lunch: dataList[6][1].split(','), snacks: dataList[6][2].split(','), dinner: dataList[6][3].split(',')),
+    foodCards = [
+      FoodCard(
+          day: 'Monday',
+          breakfast: dataList[0][0].split(','),
+          lunch: dataList[0][1].split(','),
+          snacks: dataList[0][2].split(','),
+          dinner: dataList[0][3].split(',')),
+      FoodCard(
+          day: 'Tuesday',
+          breakfast: dataList[1][0].split(','),
+          lunch: dataList[1][1].split(','),
+          snacks: dataList[1][2].split(','),
+          dinner: dataList[1][3].split(',')),
+      FoodCard(
+          day: 'Wednesday',
+          breakfast: dataList[2][0].split(','),
+          lunch: dataList[2][1].split(','),
+          snacks: dataList[2][2].split(','),
+          dinner: dataList[2][3].split(',')),
+      FoodCard(
+          day: 'Thursday',
+          breakfast: dataList[3][0].split(','),
+          lunch: dataList[3][1].split(','),
+          snacks: dataList[3][2].split(','),
+          dinner: dataList[3][3].split(',')),
+      FoodCard(
+          day: 'Friday',
+          breakfast: dataList[4][0].split(','),
+          lunch: dataList[4][1].split(','),
+          snacks: dataList[4][2].split(','),
+          dinner: dataList[4][3].split(',')),
+      FoodCard(
+          day: 'Saturday',
+          breakfast: dataList[5][0].split(','),
+          lunch: dataList[5][1].split(','),
+          snacks: dataList[5][2].split(','),
+          dinner: dataList[5][3].split(',')),
+      FoodCard(
+          day: 'Sunday',
+          breakfast: dataList[6][0].split(','),
+          lunch: dataList[6][1].split(','),
+          snacks: dataList[6][2].split(','),
+          dinner: dataList[6][3].split(',')),
     ];
     contactCards = [
       ContactCard(name: dataList[0][4], contacts: dataList[0][5].split(',')),
@@ -228,12 +269,6 @@ class _HomePageState extends State<HomePage> {
       ContactCard(name: dataList[8][4], contacts: dataList[8][5].split(',')),
     ];
     return dataList;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    data = loadData();
   }
 
   @override
@@ -255,7 +290,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Map selectMeal (List foodList) {
+  Map selectMeal(List foodList) {
     int day = DateTime.now().weekday - 1;
     int hour = DateTime.now().hour;
 
@@ -269,5 +304,4 @@ class _HomePageState extends State<HomePage> {
       return {'meal': 'Dinner', 'list': foodList[day].dinner};
     }
   }
-
 }
