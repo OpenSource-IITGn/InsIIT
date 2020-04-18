@@ -223,7 +223,7 @@ class _HomePageState extends State<HomePage> {
   List sunday = [];
 
 
-  makeList(List newDataList, {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
+  makeList(List newDataList, {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {        // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
 
     newDataList.removeAt(0);
     newDataList.removeAt(0);
