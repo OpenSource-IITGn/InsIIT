@@ -21,10 +21,10 @@ class WeekDayCard {
 
 class FoodCard {
   String day;
-  List<String> breakfast;
-  List<String> lunch;
-  List<String> snacks;
-  List<String> dinner;
+  List breakfast;
+  List lunch;
+  List snacks;
+  List dinner;
 
   FoodCard({this.day, this.breakfast, this.lunch, this.snacks, this.dinner});
 
@@ -33,7 +33,7 @@ class FoodCard {
 class ItemModel {
   bool isExpanded;
   String header;
-  List<String> bodyModel;
+  List bodyModel;
 
   ItemModel({this.isExpanded: false, this.header, this.bodyModel});
 

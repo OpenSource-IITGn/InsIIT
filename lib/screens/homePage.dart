@@ -18,7 +18,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    data = loadData();
+    messData = loadMessData();
+    importantContactData = loadImportantContactData();
   }
 
   Widget homeScreen() {
@@ -207,74 +208,127 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  dynamic dataList;
-  dynamic data;
+  dynamic messDataList;
+  Future<dynamic> messData;
+  dynamic importantContactDataList;
+  Future<dynamic> importantContactData;
 
-  loadData() async {
-    dataList = await sheet.getData('Sheet1!A:F');
+
+  List monday = [];
+  List tuesday = [];
+  List wednesday = [];
+  List thursday = [];
+  List friday = [];
+  List saturday = [];
+  List sunday = [];
+
+
+  makeList(List newDataList, {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
+
+    newDataList.removeAt(0);
+    newDataList.removeAt(0);
+    newDataList.removeAt(num1);
+    newDataList.removeAt(num1);
+    newDataList.removeAt(num1 + num2);
+    newDataList.removeAt(num1 + num2);
+    newDataList.removeAt(num1 + num2 + num3);
+    newDataList.removeAt(num1 + num2 + num3);
+
+    for (List l in newDataList) {
+      monday+=[l[0]];
+      tuesday+=[l[1]];
+      wednesday+=[l[2]];
+      thursday+=[l[3]];
+      friday+=[l[4]];
+      saturday+=[l[5]];
+      sunday+=[l[6]];
+    }
+
+    monday = [monday.sublist(0, num1)] + [monday.sublist(num1, num1 + num2)] + [monday.sublist(num1 + num2, num1 + num2 + num3)] + [monday.sublist(num1 + num2 + num3)];
+    tuesday = [tuesday.sublist(0, num1)] + [tuesday.sublist(num1, num1 + num2)] + [tuesday.sublist(num1 + num2, num1 + num2 + num3)] + [tuesday.sublist(num1 + num2 + num3)];
+    wednesday = [wednesday.sublist(0, num1)] + [wednesday.sublist(num1, num1 + num2)] + [wednesday.sublist(num1 + num2, num1 + num2 + num3)] + [wednesday.sublist(num1 + num2 + num3)];
+    thursday = [thursday.sublist(0, num1)] + [thursday.sublist(num1, num1 + num2)] + [thursday.sublist(num1 + num2, num1 + num2 + num3)] + [thursday.sublist(num1 + num2 + num3)];
+    friday = [friday.sublist(0, num1)] + [friday.sublist(num1, num1 + num2)] + [friday.sublist(num1 + num2, num1 + num2 + num3)] + [friday.sublist(num1 + num2 + num3)];
+    saturday = [saturday.sublist(0, num1)] + [saturday.sublist(num1, num1 + num2)] + [saturday.sublist(num1 + num2, num1 + num2 + num3)] + [saturday.sublist(num1 + num2 + num3)];
+    sunday = [sunday.sublist(0, num1)] + [sunday.sublist(num1, num1 + num2)] + [sunday.sublist(num1 + num2, num1 + num2 + num3)] + [sunday.sublist(num1 + num2 + num3)];
+
+  }
+
+  loadMessData() async {
+
+    messDataList = await sheet.getData('MessMenu!A:G');
+    makeList(messDataList);
 
     foodCards = [
       FoodCard(
           day: 'Monday',
-          breakfast: dataList[0][0].split(','),
-          lunch: dataList[0][1].split(','),
-          snacks: dataList[0][2].split(','),
-          dinner: dataList[0][3].split(',')),
+          breakfast: monday[0],
+          lunch: monday[1],
+          snacks: monday[2],
+          dinner: monday[3]),
       FoodCard(
           day: 'Tuesday',
-          breakfast: dataList[1][0].split(','),
-          lunch: dataList[1][1].split(','),
-          snacks: dataList[1][2].split(','),
-          dinner: dataList[1][3].split(',')),
+          breakfast: tuesday[0],
+          lunch: tuesday[1],
+          snacks: tuesday[2],
+          dinner: tuesday[3]),
       FoodCard(
           day: 'Wednesday',
-          breakfast: dataList[2][0].split(','),
-          lunch: dataList[2][1].split(','),
-          snacks: dataList[2][2].split(','),
-          dinner: dataList[2][3].split(',')),
+          breakfast: wednesday[0],
+          lunch: wednesday[1],
+          snacks: wednesday[2],
+          dinner: wednesday[3]),
       FoodCard(
           day: 'Thursday',
-          breakfast: dataList[3][0].split(','),
-          lunch: dataList[3][1].split(','),
-          snacks: dataList[3][2].split(','),
-          dinner: dataList[3][3].split(',')),
+          breakfast: thursday[0],
+          lunch: thursday[1],
+          snacks: thursday[2],
+          dinner: thursday[3]),
       FoodCard(
           day: 'Friday',
-          breakfast: dataList[4][0].split(','),
-          lunch: dataList[4][1].split(','),
-          snacks: dataList[4][2].split(','),
-          dinner: dataList[4][3].split(',')),
+          breakfast: friday[0],
+          lunch: friday[1],
+          snacks: friday[2],
+          dinner: friday[3]),
       FoodCard(
           day: 'Saturday',
-          breakfast: dataList[5][0].split(','),
-          lunch: dataList[5][1].split(','),
-          snacks: dataList[5][2].split(','),
-          dinner: dataList[5][3].split(',')),
+          breakfast: saturday[0],
+          lunch: saturday[1],
+          snacks: saturday[2],
+          dinner: saturday[3]),
       FoodCard(
           day: 'Sunday',
-          breakfast: dataList[6][0].split(','),
-          lunch: dataList[6][1].split(','),
-          snacks: dataList[6][2].split(','),
-          dinner: dataList[6][3].split(',')),
+          breakfast: sunday[0],
+          lunch: sunday[1],
+          snacks: sunday[2],
+          dinner: sunday[3]),
     ];
+
+    return messDataList;
+  }
+
+  loadImportantContactData() async {
+    importantContactDataList = await sheet.getData('Sheet1!A:B');
+
     contactCards = [
-      ContactCard(name: dataList[0][4], contacts: dataList[0][5].split(',')),
-      ContactCard(name: dataList[1][4], contacts: dataList[1][5].split(',')),
-      ContactCard(name: dataList[2][4], contacts: dataList[2][5].split(',')),
-      ContactCard(name: dataList[3][4], contacts: dataList[3][5].split(',')),
-      ContactCard(name: dataList[4][4], contacts: dataList[4][5].split(',')),
-      ContactCard(name: dataList[5][4], contacts: dataList[5][5].split(',')),
-      ContactCard(name: dataList[6][4], contacts: dataList[6][5].split(',')),
-      ContactCard(name: dataList[7][4], contacts: dataList[7][5].split(',')),
-      ContactCard(name: dataList[8][4], contacts: dataList[8][5].split(',')),
+      ContactCard(name: importantContactDataList[0][0], contacts: importantContactDataList[0][1].split(',')),
+      ContactCard(name: importantContactDataList[1][0], contacts: importantContactDataList[1][1].split(',')),
+      ContactCard(name: importantContactDataList[2][0], contacts: importantContactDataList[2][1].split(',')),
+      ContactCard(name: importantContactDataList[3][0], contacts: importantContactDataList[3][1].split(',')),
+      ContactCard(name: importantContactDataList[4][0], contacts: importantContactDataList[4][1].split(',')),
+      ContactCard(name: importantContactDataList[5][0], contacts: importantContactDataList[5][1].split(',')),
+      ContactCard(name: importantContactDataList[6][0], contacts: importantContactDataList[6][1].split(',')),
+      ContactCard(name: importantContactDataList[7][0], contacts: importantContactDataList[7][1].split(',')),
+      ContactCard(name: importantContactDataList[8][0], contacts: importantContactDataList[8][1].split(',')),
     ];
-    return dataList;
+
+    return importantContactDataList;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: data,
+      future: Future.wait([messData, importantContactData]),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:

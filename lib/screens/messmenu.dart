@@ -8,49 +8,49 @@ class MessMenu extends StatefulWidget {
   _MessMenuState createState() => _MessMenuState();
 }
 
-List<ItemModel> sunday = [
+List<ItemModel> monday = [
   ItemModel(header: 'Breakfast  -  8:00 am to 10:00 am', bodyModel: foodCards[0].breakfast),
   ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[0].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[0].snacks),
   ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[0].dinner),
 ];
 
-List<ItemModel> monday = [
+List<ItemModel> tuesday = [
   ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[1].breakfast),
   ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[1].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[1].snacks),
   ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[1].dinner),
 ];
 
-List<ItemModel> tuesday = [
+List<ItemModel> wednesday = [
   ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[2].breakfast),
   ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[2].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[2].snacks),
   ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[2].dinner),
 ];
 
-List<ItemModel> wednesday = [
+List<ItemModel> thursday = [
   ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[3].breakfast),
   ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[3].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[3].snacks),
   ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[3].dinner),
 ];
 
-List<ItemModel> thursday = [
+List<ItemModel> friday = [
   ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[4].breakfast),
   ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[4].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[4].snacks),
   ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[4].dinner),
 ];
 
-List<ItemModel> friday = [
+List<ItemModel> saturday = [
   ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[5].breakfast),
-  ItemModel(header: 'Lunch', bodyModel: foodCards[5].lunch),
+  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[5].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[5].snacks),
   ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[5].dinner),
 ];
 
-List<ItemModel> saturday = [
+List<ItemModel> sunday = [
   ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[6].breakfast),
   ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[6].lunch),
   ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[6].snacks),
@@ -136,34 +136,6 @@ class _MessMenuState extends State<MessMenu> {
         ),
         body: TabBarView(
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        sunday[index].isExpanded = !sunday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(sunday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(sunday[index].header);
-                        },
-                        isExpanded: sunday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
             Container(
               padding: EdgeInsets.all(10.0),
               child: ListView.builder(
@@ -326,6 +298,34 @@ class _MessMenuState extends State<MessMenu> {
                           return foodHead(saturday[index].header);
                         },
                         isExpanded: saturday[index].isExpanded,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: ListView.builder(
+                itemCount: 4,
+                itemBuilder: (BuildContext context, int index) {
+                  return ExpansionPanelList(
+                    expansionCallback: (int item, bool status) {
+                      setState(() {
+                        sunday[index].isExpanded = !sunday[index].isExpanded;
+                      });
+                    },
+                    animationDuration: Duration(seconds: 1),
+                    children: [
+                      ExpansionPanel(
+                        body: Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: cardNew(sunday[index].bodyModel),
+                        ),
+                        headerBuilder: (BuildContext context, bool isExpanded) {
+                          return foodHead(sunday[index].header);
+                        },
+                        isExpanded: sunday[index].isExpanded,
                       ),
                     ],
                   );
