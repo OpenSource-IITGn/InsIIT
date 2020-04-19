@@ -223,25 +223,25 @@ class _HomePageState extends State<HomePage> {
   List sunday = [];
 
 
-  makeList(List newDataList, {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {        // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
+  makeMessList(List messDataList, {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {        // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
 
-    newDataList.removeAt(0);
-    newDataList.removeAt(0);
-    newDataList.removeAt(num1);
-    newDataList.removeAt(num1);
-    newDataList.removeAt(num1 + num2);
-    newDataList.removeAt(num1 + num2);
-    newDataList.removeAt(num1 + num2 + num3);
-    newDataList.removeAt(num1 + num2 + num3);
+    messDataList.removeAt(0);
+    messDataList.removeAt(0);
+    messDataList.removeAt(num1);
+    messDataList.removeAt(num1);
+    messDataList.removeAt(num1 + num2);
+    messDataList.removeAt(num1 + num2);
+    messDataList.removeAt(num1 + num2 + num3);
+    messDataList.removeAt(num1 + num2 + num3);
 
-    for (List l in newDataList) {
-      monday+=[l[0]];
-      tuesday+=[l[1]];
-      wednesday+=[l[2]];
-      thursday+=[l[3]];
-      friday+=[l[4]];
-      saturday+=[l[5]];
-      sunday+=[l[6]];
+    for (List lm in messDataList) {
+      monday+=[lm[0]];
+      tuesday+=[lm[1]];
+      wednesday+=[lm[2]];
+      thursday+=[lm[3]];
+      friday+=[lm[4]];
+      saturday+=[lm[5]];
+      sunday+=[lm[6]];
     }
 
     monday = [monday.sublist(0, num1)] + [monday.sublist(num1, num1 + num2)] + [monday.sublist(num1 + num2, num1 + num2 + num3)] + [monday.sublist(num1 + num2 + num3)];
@@ -254,10 +254,20 @@ class _HomePageState extends State<HomePage> {
 
   }
 
+  makeContactList(List importantContactDataList) {
+
+    importantContactDataList.removeAt(0);
+    contactCards = [];
+    for (List lc in importantContactDataList) {
+      contactCards.add(ContactCard(name: lc[0], description: lc[1], contacts: lc[2].split(','), emails: lc[3].split(','), websites: lc[4].split(',')));
+    }
+
+  }
+
   loadMessData() async {
 
     messDataList = await sheet.getData('MessMenu!A:G');
-    makeList(messDataList);
+    makeMessList(messDataList);
 
     foodCards = [
       FoodCard(
@@ -308,19 +318,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadImportantContactData() async {
-    importantContactDataList = await sheet.getData('Sheet1!A:B');
-
-    contactCards = [
-      ContactCard(name: importantContactDataList[0][0], contacts: importantContactDataList[0][1].split(',')),
-      ContactCard(name: importantContactDataList[1][0], contacts: importantContactDataList[1][1].split(',')),
-      ContactCard(name: importantContactDataList[2][0], contacts: importantContactDataList[2][1].split(',')),
-      ContactCard(name: importantContactDataList[3][0], contacts: importantContactDataList[3][1].split(',')),
-      ContactCard(name: importantContactDataList[4][0], contacts: importantContactDataList[4][1].split(',')),
-      ContactCard(name: importantContactDataList[5][0], contacts: importantContactDataList[5][1].split(',')),
-      ContactCard(name: importantContactDataList[6][0], contacts: importantContactDataList[6][1].split(',')),
-      ContactCard(name: importantContactDataList[7][0], contacts: importantContactDataList[7][1].split(',')),
-      ContactCard(name: importantContactDataList[8][0], contacts: importantContactDataList[8][1].split(',')),
-    ];
+    importantContactDataList = await sheet.getData('Contacts!A:E');
+    makeContactList(importantContactDataList);
 
     return importantContactDataList;
   }
