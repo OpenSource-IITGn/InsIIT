@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/classes/contact.dart';
+import 'package:instiapp/classes/contact.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Contact extends StatefulWidget {
@@ -10,12 +10,10 @@ class Contact extends StatefulWidget {
 class _ContactState extends State<Contact> {
 
   List<Contacts> contact = [
-    Contacts (name:'ABC',no: 9929676589,textNo:'9929676589' ),
-    Contacts (name:'ABC',no: 9929676589,textNo:'9929676589'),
-    Contacts (name:'ABC',no: 9929676589,textNo:'9929676589'),
-    Contacts (name:'XYZ',no: 9929676589,textNo:'9929676589'),
-
-
+    Contacts (name:'ABC',textNo:'9929676589' ),
+    Contacts (name:'ABC',textNo:'9929676589'),
+    Contacts (name:'ABC',textNo:'9929676589'),
+    Contacts (name:'XYZ',textNo:'9929676589'),
   ];
 
   Widget contactTemplate(contacts) {
@@ -37,7 +35,7 @@ class _ContactState extends State<Contact> {
                 ),
               ),
               RaisedButton.icon(onPressed: () {
-                launch("tel:${contacts.no}");
+                launch("tel:${contacts.textNo}");
               },
                   icon: Icon(Icons.call),
                   label: Text('Call')),

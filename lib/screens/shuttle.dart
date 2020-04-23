@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/classes/Constants.dart';
+import 'package:instiapp/classes/Constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:instiapp/screens/Contacts.dart';
-import 'package:instiapp/screens/classes/buses.dart';
+import 'package:instiapp/classes/buses.dart';
 
 class Shuttle extends StatefulWidget {
 

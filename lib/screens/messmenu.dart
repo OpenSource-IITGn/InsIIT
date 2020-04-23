@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/classes/weekdaycard.dart';
+import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
 
 class MessMenu extends StatefulWidget {

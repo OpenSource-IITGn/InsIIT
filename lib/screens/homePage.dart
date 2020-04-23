@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
-import 'package:instiapp/screens/classes/weekdaycard.dart';
-import 'package:instiapp/screens/classes/contactcard.dart';
+import 'package:instiapp/classes/weekdaycard.dart';
+import 'package:instiapp/classes/contactcard.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
@@ -136,6 +136,17 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushNamed(context, '/Quicklinks');
               },
             ),
+            Divider(),
+            ListTile(title: Text("Logout"),
+            leading: Icon(
+                Icons.people,
+                color: Colors.indigo,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/signin');
+              },
+            )
           ],
         ),
       ),

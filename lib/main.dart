@@ -11,6 +11,7 @@ import 'package:instiapp/screens/importantContacts.dart';
 import 'package:instiapp/screens/messfeedback.dart';
 import 'package:instiapp/screens/messmenu.dart';
 import 'package:instiapp/screens/shuttle.dart';
+import 'package:instiapp/screens/signIn.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/signin',
       routes: {
         '/home': (context) => HomePage(),
         '/announcements': (context) => Announcements(),
@@ -33,13 +34,14 @@ class MyApp extends StatelessWidget {
         '/messfeedback': (context) => MessFeedBack(),
         '/contacts': (context) => Contact(),
         '/locations': (context) => Location(),
+        '/signin':(context) =>SignInPage()
       },
       title: 'Instiapp',
       theme: ThemeData(
       
         primarySwatch: Colors.purple,
+        fontFamily: 'OpenSans'
       ),
-      home: HomePage(),
     );
   }
 }

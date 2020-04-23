@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/classes/textcard.dart';
+import 'package:instiapp/classes/textcard.dart';
 
 class MessFeedBack extends StatefulWidget {
   @override
