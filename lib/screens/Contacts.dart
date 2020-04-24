@@ -51,8 +51,10 @@ class _ContactState extends State<Contact> {
           title: Text('Contacts'),
           centerTitle: true,
         ),//AppBar,
-        body:  Column(
-           children: contact.map((contacts) => contactTemplate(contacts)).toList()),
+        body:  SingleChildScrollView(
+          child: Column(
+             children: contact.map((contacts) => contactTemplate(contacts)).toList()),
+        ),
     );//Scaffold;
   }
 }

@@ -131,8 +131,10 @@ class _ShuttleState extends State<Shuttle> {
             ),
           ],
         ),
-        body: Column(
-          children: buses.map((buses) => busesTemplate(buses)).toList(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: buses.map((buses) => busesTemplate(buses)).toList(),
+          ),
         )
     );
   }
