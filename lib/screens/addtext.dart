@@ -24,7 +24,7 @@ class _AddTextState extends State<AddText> {
 
   Future getImage() async {
 
-    FocusScope.of(context).unfocus(focusPrevious: true);
+    FocusScope.of(context).unfocus();
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {

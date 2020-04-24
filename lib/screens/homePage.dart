@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage(this.notifyParent);
+  final Function() notifyParent;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -25,132 +28,20 @@ class _HomePageState extends State<HomePage> {
   Widget homeScreen() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: secondaryColor,
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            widget.notifyParent();
+          },
+        ),
         title: Text(
           'InstiApp',
+          style: TextStyle(fontFamily: 'OpenSans'),
         ),
         centerTitle: true,
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            Container(
-              child: UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.indigo,
-                ),
-                accountName: Text(
-                  'User Name',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                accountEmail: Text(
-                  'User Email',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                  ),
-                ),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/logo.png'),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Important Contacts'),
-              leading: Icon(
-                Icons.contacts,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/importantcontacts');
-              },
-            ),
-            ListTile(
-              title: Text('Announcements'),
-              leading: Icon(
-                Icons.announcement,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/announcements');
-              },
-            ),
-            ListTile(
-              title: Text('Articles'),
-              leading: Icon(
-                Icons.art_track,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/articles');
-              },
-            ),
-            ListTile(
-              title: Text('Complaints'),
-              leading: Icon(
-                Icons.assignment_late,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/complaints');
-              },
-            ),
-            ListTile(
-              title: Text('Shuttle'),
-              leading: Icon(
-                Icons.airport_shuttle,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/shuttle');
-              },
-            ),
-            ListTile(
-              title: Text('Mess Menu'),
-              leading: Icon(
-                Icons.local_dining,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/messmenu');
-              },
-            ),
-            ListTile(
-              title: Text('Quicklinks'),
-              leading: Icon(
-                Icons.link,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/Quicklinks');
-              },
-            ),
-            Divider(),
-            ListTile(
-              title: Text("Logout"),
-              leading: Icon(
-                Icons.people,
-                color: Colors.indigo,
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/signin');
-              },
-            )
-          ],
-        ),
-      ),
+      //TODO: ADD PANNING GESTURES      
       bottomNavigationBar: Container(
         height: 200,
         child: Column(
@@ -179,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                         width: 200.0,
                         height: 120.0,
                         child: Card(
-                          color: Colors.indigo[100],
+                          // color: primaryColor,
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Center(
@@ -207,13 +98,13 @@ class _HomePageState extends State<HomePage> {
   Widget loadScreen() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
+        backgroundColor: primaryColor,
         title: Text('InstiApp'),
         centerTitle: true,
       ),
       body: Center(
         child: SpinKitChasingDots(
-          color: Colors.indigo,
+          color: primaryColor,
           size: 50.0,
         ),
       ),
@@ -225,7 +116,6 @@ class _HomePageState extends State<HomePage> {
   dynamic importantContactDataList;
   Future<dynamic> importantContactData;
 
-
   List monday = [];
   List tuesday = [];
   List wednesday = [];
@@ -234,8 +124,9 @@ class _HomePageState extends State<HomePage> {
   List saturday = [];
   List sunday = [];
 
-
-  makeMessList(List messDataList, {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {        // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
+  makeMessList(List messDataList,
+      {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
+    // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
 
     messDataList.removeAt(0);
     messDataList.removeAt(0);
@@ -247,37 +138,59 @@ class _HomePageState extends State<HomePage> {
     messDataList.removeAt(num1 + num2 + num3);
 
     for (List lm in messDataList) {
-      monday+=[lm[0]];
-      tuesday+=[lm[1]];
-      wednesday+=[lm[2]];
-      thursday+=[lm[3]];
-      friday+=[lm[4]];
-      saturday+=[lm[5]];
-      sunday+=[lm[6]];
+      monday += [lm[0]];
+      tuesday += [lm[1]];
+      wednesday += [lm[2]];
+      thursday += [lm[3]];
+      friday += [lm[4]];
+      saturday += [lm[5]];
+      sunday += [lm[6]];
     }
 
-    monday = [monday.sublist(0, num1)] + [monday.sublist(num1, num1 + num2)] + [monday.sublist(num1 + num2, num1 + num2 + num3)] + [monday.sublist(num1 + num2 + num3)];
-    tuesday = [tuesday.sublist(0, num1)] + [tuesday.sublist(num1, num1 + num2)] + [tuesday.sublist(num1 + num2, num1 + num2 + num3)] + [tuesday.sublist(num1 + num2 + num3)];
-    wednesday = [wednesday.sublist(0, num1)] + [wednesday.sublist(num1, num1 + num2)] + [wednesday.sublist(num1 + num2, num1 + num2 + num3)] + [wednesday.sublist(num1 + num2 + num3)];
-    thursday = [thursday.sublist(0, num1)] + [thursday.sublist(num1, num1 + num2)] + [thursday.sublist(num1 + num2, num1 + num2 + num3)] + [thursday.sublist(num1 + num2 + num3)];
-    friday = [friday.sublist(0, num1)] + [friday.sublist(num1, num1 + num2)] + [friday.sublist(num1 + num2, num1 + num2 + num3)] + [friday.sublist(num1 + num2 + num3)];
-    saturday = [saturday.sublist(0, num1)] + [saturday.sublist(num1, num1 + num2)] + [saturday.sublist(num1 + num2, num1 + num2 + num3)] + [saturday.sublist(num1 + num2 + num3)];
-    sunday = [sunday.sublist(0, num1)] + [sunday.sublist(num1, num1 + num2)] + [sunday.sublist(num1 + num2, num1 + num2 + num3)] + [sunday.sublist(num1 + num2 + num3)];
-
+    monday = [monday.sublist(0, num1)] +
+        [monday.sublist(num1, num1 + num2)] +
+        [monday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [monday.sublist(num1 + num2 + num3)];
+    tuesday = [tuesday.sublist(0, num1)] +
+        [tuesday.sublist(num1, num1 + num2)] +
+        [tuesday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [tuesday.sublist(num1 + num2 + num3)];
+    wednesday = [wednesday.sublist(0, num1)] +
+        [wednesday.sublist(num1, num1 + num2)] +
+        [wednesday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [wednesday.sublist(num1 + num2 + num3)];
+    thursday = [thursday.sublist(0, num1)] +
+        [thursday.sublist(num1, num1 + num2)] +
+        [thursday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [thursday.sublist(num1 + num2 + num3)];
+    friday = [friday.sublist(0, num1)] +
+        [friday.sublist(num1, num1 + num2)] +
+        [friday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [friday.sublist(num1 + num2 + num3)];
+    saturday = [saturday.sublist(0, num1)] +
+        [saturday.sublist(num1, num1 + num2)] +
+        [saturday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [saturday.sublist(num1 + num2 + num3)];
+    sunday = [sunday.sublist(0, num1)] +
+        [sunday.sublist(num1, num1 + num2)] +
+        [sunday.sublist(num1 + num2, num1 + num2 + num3)] +
+        [sunday.sublist(num1 + num2 + num3)];
   }
 
   makeContactList(List importantContactDataList) {
-
     importantContactDataList.removeAt(0);
     contactCards = [];
     for (List lc in importantContactDataList) {
-      contactCards.add(ContactCard(name: lc[0], description: lc[1], contacts: lc[2].split(','), emails: lc[3].split(','), websites: lc[4].split(',')));
+      contactCards.add(ContactCard(
+          name: lc[0],
+          description: lc[1],
+          contacts: lc[2].split(','),
+          emails: lc[3].split(','),
+          websites: lc[4].split(',')));
     }
-
   }
 
   loadMessData() async {
-
     messDataList = await sheet.getData('MessMenu!A:G');
     makeMessList(messDataList);
 
