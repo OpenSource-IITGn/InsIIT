@@ -87,7 +87,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/importantcontacts');
                         },
                       ),
@@ -101,7 +100,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/announcements');
                         },
                       ),
@@ -115,7 +113,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/articles');
                         },
                       ),
@@ -129,7 +126,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/complaints');
                         },
                       ),
@@ -143,7 +139,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/shuttle');
                         },
                       ),
@@ -157,7 +152,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/messmenu');
                         },
                       ),
@@ -171,7 +165,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/Quicklinks');
                         },
                       ),
@@ -185,7 +178,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
-                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/signin');
                         },
                       ),
