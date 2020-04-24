@@ -73,11 +73,8 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ),
-                AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  width: (loading == true)
-                      ? MediaQuery.of(context).size.width * 0.7
-                      : MediaQuery.of(context).size.width * 2,
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.7,
                   child: FlatButton(
                     onPressed: () => authorize(true),
                     shape: RoundedRectangleBorder(
