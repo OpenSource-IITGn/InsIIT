@@ -137,8 +137,9 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             Divider(),
-            ListTile(title: Text("Logout"),
-            leading: Icon(
+            ListTile(
+              title: Text("Logout"),
+              leading: Icon(
                 Icons.people,
                 color: Colors.indigo,
               ),
