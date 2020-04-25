@@ -18,6 +18,7 @@ List<ContactCard> contactCards;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
+  var startpos, endpos;
   @override
   void initState() {
     super.initState();
@@ -41,54 +42,64 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      //TODO: ADD PANNING GESTURES      
-      bottomNavigationBar: Container(
-        height: 200,
-        child: Column(
+      //TODO: ADD PANNING GESTURES
+
+      body: Container(
+        height: ScreenSize.size.height,
+        child: Stack(
           children: <Widget>[
-            Text(
-              "What's in the ${selectMeal(foodCards)['meal']}?",
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            CarouselSlider(
-              height: 120.0,
-              viewportFraction: 0.6,
-              enlargeCenterPage: true,
-              items: selectMeal(foodCards)['list'].map<Widget>((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return GestureDetector(
-                      onTap: () {
-                        return Navigator.pushNamed(context, '/messmenu');
-                      },
-                      child: Container(
-                        width: 200.0,
-                        height: 120.0,
-                        child: Card(
-                          // color: primaryColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Center(
-                              child: Text(
-                                i,
-                                style: TextStyle(
-                                  fontSize: 20.0,
+            Container(
+              height: 200,
+              child: Column(
+                children: <Widget>[
+                  //INSERT OTHER WIDGETS HERE
+                  Text(
+                    "What's for ${selectMeal(foodCards)['meal']}?",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  CarouselSlider(
+                    height: 120.0,
+                    viewportFraction: 0.6,
+                    enlargeCenterPage: true,
+                    items: selectMeal(foodCards)['list'].map<Widget>((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return GestureDetector(
+                            onTap: () {
+                              return Navigator.pushNamed(context, '/messmenu');
+                            },
+                            child: Container(
+                              width: 200.0,
+                              height: 120.0,
+                              child: Card(
+                                // color: primaryColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Center(
+                                    child: Text(
+                                      i,
+                                      style: TextStyle(
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
             ),
+            
           ],
         ),
       ),
@@ -98,7 +109,7 @@ class _HomePageState extends State<HomePage> {
   Widget loadScreen() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: secondaryColor,
         title: Text('InstiApp'),
         centerTitle: true,
       ),
@@ -258,11 +269,11 @@ class _HomePageState extends State<HomePage> {
           case ConnectionState.none:
             return loadScreen();
           case ConnectionState.waiting:
-            return loadScreen();
+            return homeScreen();
           case ConnectionState.done:
             return homeScreen();
           default:
-            return loadScreen();
+            return homeScreen();
         }
       },
     );
