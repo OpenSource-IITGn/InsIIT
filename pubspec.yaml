@@ -31,6 +31,13 @@ dependencies:
   progressive_image: ^1.0.1
   carousel_slider: ^1.4.1
   flutter_spinkit: ^4.1.2+1
+  
+  firebase_core: ^0.2.5
+  firebase_analytics: ^1.0.4
+  cloud_firestone: 0.8.2+3
+  firebase_auth: 0.6.6
+  google_sign_in: ^3.2.4
+  rxdart: 0.20.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
