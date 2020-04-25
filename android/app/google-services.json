@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1036842973746",
+    "firebase_url": "https://iitgn-instituteapp.firebaseio.com",
+    "project_id": "iitgn-instituteapp",
+    "storage_bucket": "iitgn-instituteapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036842973746:android:11f3bd90e0f0d847d01a2b",
+        "android_client_info": {
+          "package_name": "com.instiapp.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8MrJ5hB7SuOzpkCQf22L-fTOEOVXi0Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
