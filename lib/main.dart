@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/Contacts.dart';
 import 'package:instiapp/screens/Location.dart';
-import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/addtext.dart';
 import 'package:instiapp/screens/announcements.dart';
 import 'package:instiapp/screens/articles.dart';
