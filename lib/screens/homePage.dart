@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      //TODO: ADD PANNING GESTURES
 
       body: Container(
         height: ScreenSize.size.height,

@@ -10,15 +10,15 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
-  AuthService _auth = AuthService();
+  // AuthService _auth = AuthService();
 
   void authorize(asGuest) async {
     if (asGuest) {
     } else {
-      var x = await _auth.googleSignIn();
-      print(x.email);
+      // var x = await _auth.googleSignIn();
+      // print(x.email);
     }
-    // Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override
