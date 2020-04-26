@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:instiapp/auth.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 class SignInPage extends StatefulWidget {
