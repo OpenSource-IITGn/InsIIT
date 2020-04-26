@@ -1,79 +1,65 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:google_sign_in/google_sign_in/dart';
+import 'package:flutter/material.dart';
 
-class AuthService {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Firestore _db = Firestore.instance;
 
-  Observable<FirebaseUser> user; // firebase user
-  Observable<Map<String, dynamic>> profile; // custom user data in Firestore
-  PublishSubject loading = PublishSubject();
+final GoogleSignIn gSignIn = GoogleSignIn() ;
 
-  // constructor
-  AuthService() {
-    user = Observable(_auth.onAuthStateChanged);
 
-    profile = user.switchMap((FirebaseUser u) {
-      if (u != null) {
-        return _db
-            .collection('users')
-            .document(u.uid)
-            .snapshots()
-            .map((snap) => snap.data);
-      } else {
-        return Observable.just({});
-      }
-    });
-  }
-
-  Future<FirebaseUser> googleSignIn() async {
-    try {
-      loading.add(true);
-      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      GoogleSignInAuthentication googleAuth =
-          await googleSignInAccount.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      FirebaseUser user = await _auth.signInWithCredential(credential);
-      updateUserData(user);
-      print("user name: ${user.displayName}");
-
-      loading.add(false);
-      return user;
-    } catch (error) {
-      return error;
-    }
-  }
-
-  void updateUserData(FirebaseUser user) async {
-    DocumentReference ref = _db.collection('users').document(user.uid);
-
-    return ref.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName,
-      'lastSeen': DateTime.now()
-    }, merge: true);
-  }
-
-  Future<String> signOut() async {
-    try {
-      await _auth.signOut();
-      return 'SignOut';
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
+class Auth extends StatefulWidget {
+  @override
+  _AuthState createState() => _AuthState();
 }
 
-// TODO refactor global to InheritedWidget
-final AuthService authService = AuthService();
+class _AuthState extends State<Auth> {
+
+  bool isSignedIn = false ;
+
+
+  void initState(){
+    super.initState();
+
+    gSignIn.onCurrentUserchanged.listen((gSigninAccount){
+      controlSignIn(gSigninAccount);
+    },onError: (gError) {
+      print("Error message :" + gError) ;
+    
+    });
+
+  gSignIn.signInSilently(supressErrors : false).then((gSignInAccount){
+    controlSignIn(gSignInAccount);
+  }).catchError((gError){
+    print("Error message :" + gError) ;
+  }
+
+  controlSignIn(GoogleSignInAccount signInAccount)async{
+    if(signInAccount != null) {
+      setState(() {
+        isSignedIn = true ;
+      });
+    }
+    else{
+      setState(() {
+        isSignedIn = false ;
+      });
+    }
+
+  }
+
+  loginUser(){
+    gSignIn.signIn(); 
+  }
+
+  logoutUser(){
+    gSignIn.signOut();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
+    );
+  }
+}
+
+

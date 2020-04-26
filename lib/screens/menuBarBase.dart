@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/auth.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 import 'homePage.dart';
@@ -178,7 +179,9 @@ class _MenuBarBaseState extends State<MenuBarBase>
                           color: Colors.white,
                         ),
                         onTap: () {
+                          logoutUser() ;
                           Navigator.pushNamed(context, '/signin');
+
                         },
                       ),
                     ],

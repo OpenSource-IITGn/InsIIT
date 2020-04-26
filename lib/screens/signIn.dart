@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/auth.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -52,7 +53,8 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Container(
+                      child: MaterialButton(
+                        onPressed: ()=>loginUser(),
                         child: Text(
                           "Login with IITGN ID(Google)",
                           style: TextStyle(
