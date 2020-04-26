@@ -5,6 +5,7 @@ import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:instiapp/classes/buses.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 List<FoodCard> foodCards;
 List<ContactCard> contactCards;
+List<Buses> buses ;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
@@ -24,6 +26,59 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     messData = loadMessData();
     importantContactData = loadImportantContactData();
+    shuttledata= loadShuttleData();
+  }
+
+  loadShuttleData() async {
+    Shuttledatalist = await sheet.getData('BusRoutes!A:H');
+
+    buses = [
+      Buses(Origin: Shuttledatalist[1][0],
+        Destination: Shuttledatalist[1][1],
+        Time: Shuttledatalist[1][2],
+        url: Shuttledatalist[1][4],
+        hour: int.parse(Shuttledatalist[1][2].split(':')[0]),
+        minute: int.parse(Shuttledatalist[1][2].split(':')[1]),
+      ),
+      Buses(Origin: Shuttledatalist[2][0],
+        Destination: Shuttledatalist[2][1],
+        Time: Shuttledatalist[2][2],
+        url: Shuttledatalist[2][4],
+        hour: int.parse(Shuttledatalist[2][2].split(':')[0]),
+        minute: int.parse(Shuttledatalist[2][2].split(':')[1]),
+      ),
+      Buses(Origin: Shuttledatalist[3][0],
+        Destination: Shuttledatalist[3][1],
+        Time: Shuttledatalist[3][2],
+        url: Shuttledatalist[3][4],
+        hour: int.parse(Shuttledatalist[3][2].split(':')[0]),
+        minute: int.parse(Shuttledatalist[3][2].split(':')[1]),
+      ),
+      Buses(Origin: Shuttledatalist[4][0],
+        Destination: Shuttledatalist[4][1],
+        Time: Shuttledatalist[4][2],
+        url: Shuttledatalist[4][4],
+        hour: int.parse(Shuttledatalist[4][2].split(':')[0]),
+        minute: int.parse(Shuttledatalist[4][2].split(':')[1]),
+      ),
+      Buses(Origin: Shuttledatalist[5][0],
+        Destination: Shuttledatalist[5][1],
+        Time: Shuttledatalist[5][2],
+        url: Shuttledatalist[5][4],
+        hour: int.parse(Shuttledatalist[5][2].split(':')[0]),
+        minute: int.parse(Shuttledatalist[5][2].split(':')[1]),
+      ),
+      Buses(Origin: Shuttledatalist[6][0],
+        Destination: Shuttledatalist[6][1],
+        Time: Shuttledatalist[6][2],
+        url: Shuttledatalist[6][4],
+        hour: int.parse(Shuttledatalist[6][2].split(':')[0]),
+        minute: int.parse(Shuttledatalist[6][2].split(':')[1]),
+      )
+
+
+    ];
+    return Shuttledatalist;
   }
 
   Widget homeScreen() {
@@ -125,6 +180,8 @@ class _HomePageState extends State<HomePage> {
   Future<dynamic> messData;
   dynamic importantContactDataList;
   Future<dynamic> importantContactData;
+  dynamic Shuttledatalist;
+  Future <dynamic> shuttledata;
 
   List monday = [];
   List tuesday = [];
@@ -262,7 +319,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([messData, importantContactData]),
+      future: Future.wait([messData, importantContactData, shuttledata]),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:

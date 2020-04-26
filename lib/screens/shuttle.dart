@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
+import 'package:instiapp/screens/homePage.dart';
 
-//TODO: SCHEDULE FOR 10 MIN B4 BUS!
-//TODO: LINK WITH GSHEETS
+
 //TODO: ADD LINK TO GOOGLE MAP ROUTEs
 
 class Shuttle extends StatefulWidget {
@@ -14,37 +15,20 @@ class Shuttle extends StatefulWidget {
 
 class _ShuttleState extends State<Shuttle> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  int Hour;
+  int Minute;
 
-  List<Buses> buses = [
-    Buses(
-        destination: 'Visat Circle',
-        origin: 'IITGN',
-        time: '8:30 AM',
-        image: Image(image: AssetImage('assets/VisatCircle.jpg')),
-        hour: 8,
-        minute: 30),
-    Buses(
-        destination: 'Kudasan Circle',
-        origin: 'IITGN',
-        time: '10:30 AM',
-        image: Image(image: AssetImage('assets/Kudasan.jpg')),
-        hour: 10,
-        minute: 30),
-    Buses(
-        destination: 'Pathikashram',
-        time: '12:30 PM',
-        origin: 'IITGN',
-        image: Image(image: AssetImage('assets/Pathikashram.jpg')),
-        hour: 12,
-        minute: 30),
-    Buses(
-        destination: 'Infocity',
-        time: '1 PM',
-        origin: 'IITGN',
-        image: Image(image: AssetImage('assets/infocity.jpg')),
-        hour: 13,
-        minute: 0),
-  ];
+
+  void Reminder(buses){
+    if (buses.minute>10){
+      Minute = buses.minute-10;
+      Hour= buses.hour;
+    }
+    else{
+      Minute = 50+buses.minute;
+      Hour = buses.hour-1;
+    }
+  }
 
   Widget busesTemplate(buses) {
     return Center(
@@ -64,7 +48,7 @@ class _ShuttleState extends State<Shuttle> {
                       ),
                     ),
                     Text(
-                      buses.origin,
+                      buses.Origin,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontStyle: FontStyle.italic,
@@ -82,7 +66,7 @@ class _ShuttleState extends State<Shuttle> {
                       ),
                     ),
                     Text(
-                      buses.destination,
+                      buses.Destination,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontStyle: FontStyle.italic,
@@ -97,7 +81,7 @@ class _ShuttleState extends State<Shuttle> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    buses.time,
+                    buses.Time,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
@@ -114,7 +98,7 @@ class _ShuttleState extends State<Shuttle> {
                             showDialog(
                               context: context,
                               builder: (_) => new AlertDialog(
-                                content: buses.image,
+                                content: Image.network(buses.url),
                               ),
                             );
                           },
@@ -165,8 +149,10 @@ class _ShuttleState extends State<Shuttle> {
   }
 
   Future _showNotificationWithDefaultSound(buses) async {
+    Reminder(buses);
+
     var busTime = new DateTime(DateTime.now().year, DateTime.now().month,
-        DateTime.now().day, buses.hour, buses.minute, 0);
+        DateTime.now().day, Hour, Minute, 0);
     var currentTime = new DateTime.now();
     var scheduledNotificationDateTime =
         DateTime.now().add(busTime.difference(currentTime));
@@ -193,9 +179,10 @@ class _ShuttleState extends State<Shuttle> {
         payload: 'item x');
   }
 
+
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: Colors.grey[100],
+      // backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text('Bus Schedule'),
           centerTitle: true,
@@ -219,4 +206,5 @@ class _ShuttleState extends State<Shuttle> {
           ),
         ));
   }
+
 }

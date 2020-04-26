@@ -1,18 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class Buses {
-  String destination;
-  String time;
-  String origin;
-  Image image;
+  String Origin;
+  String Destination;
+  String Time;
+  String url;
   int hour;
   int minute;
 
-  Buses(
-      {this.destination,
-      this.origin,
-      this.time,
-      this.image,
-      this.hour,
-      this.minute});
+  Buses({this.Origin,this.Destination, this.Time, this.url, this.hour, this.minute});
 }
