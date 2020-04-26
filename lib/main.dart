@@ -31,11 +31,10 @@ class MyApp extends StatelessWidget {
         '/messmenu': (context) => MessMenu(),
         '/messfeedback': (context) => MessFeedBack(),
         '/signin': (context) => SignInPage(),
-        // '/menuBarBase': (context) => MenuBarBase(),
+        '/menuBarBase': (context) => HomeWrapper(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
-      home: HomeWrapper(),
     );
   }
 }
