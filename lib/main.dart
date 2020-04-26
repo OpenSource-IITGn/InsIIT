@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/Contacts.dart';
-import 'package:instiapp/screens/Location.dart';
-import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/addtext.dart';
 import 'package:instiapp/screens/announcements.dart';
 import 'package:instiapp/screens/articles.dart';
@@ -33,8 +30,6 @@ class MyApp extends StatelessWidget {
         '/Quicklinks': (context) => Email(),
         '/messmenu': (context) => MessMenu(),
         '/messfeedback': (context) => MessFeedBack(),
-        '/contacts': (context) => Contact(),
-        '/locations': (context) => Location(),
         '/signin': (context) => SignInPage(),
         // '/menuBarBase': (context) => MenuBarBase(),
       },

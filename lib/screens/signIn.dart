@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/auth.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -9,10 +10,14 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
+  // AuthService _auth = AuthService();
 
-  void authorize(asGuest) {
+  void authorize(asGuest) async {
     if (asGuest) {
-    } else {}
+    } else {
+      // var x = await _auth.googleSignIn();
+      // print(x.email);
+    }
     Navigator.pop(context);
   }
 

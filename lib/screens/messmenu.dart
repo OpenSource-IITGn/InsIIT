@@ -1,101 +1,160 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
+//TODO: AUTOMATICALLY EXPAND MENU FOR NEXT MEAL IN THIS PAGE
+//TODO: THE CODE CAN BE COMPRESSED A LOT!!!! USE LIST<LIST>
 
+/*
+
++25
+First, it isn't recommended to not use elevation for ExpansionPanelList according to Material design spec.
+
+However, if you really want to do that, there are 2 solutions for you, either you create your own custom ExpansionPanelList, or get ready to add couple of lines to the source file. I'm providing you the latter solution.
+
+Open expansion_panel.dart file, go to the build() method of _ExpansionPanelListState and make following changes
+
+return MergeableMaterial(
+  hasDividers: true,
+  children: items,
+  elevation: 0, // 1st add this line
+);
+Now open mergeable_material.dart file, navigate to _paintShadows method of _RenderMergeableMaterialListBody class and make following changes:
+
+void _paintShadows(Canvas canvas, Rect rect) {
+
+  // 2nd add this line
+  if (boxShadows == null) return;
+
+  for (final BoxShadow boxShadow in boxShadows) {
+    final Paint paint = boxShadow.toPaint();
+    canvas.drawRRect(kMaterialEdges[MaterialType.card].toRRect(rect), paint);
+  }
+}
+
+
+*/
 class MessMenu extends StatefulWidget {
-
   @override
   _MessMenuState createState() => _MessMenuState();
 }
 
 List<ItemModel> monday = [
-  ItemModel(header: 'Breakfast  -  8:00 am to 10:00 am', bodyModel: foodCards[0].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[0].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[0].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[0].dinner),
+  ItemModel(
+      header: 'Breakfast  -  8:00 am to 10:00 am',
+      bodyModel: foodCards[0].breakfast),
+  ItemModel(
+      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[0].lunch),
+  ItemModel(
+      header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[0].snacks),
+  ItemModel(
+      header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[0].dinner),
 ];
 
 List<ItemModel> tuesday = [
-  ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[1].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[1].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[1].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[1].dinner),
+  ItemModel(
+      header: 'Breakfast  -  7:30 am to 9:30 am',
+      bodyModel: foodCards[1].breakfast),
+  ItemModel(
+      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[1].lunch),
+  ItemModel(
+      header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[1].snacks),
+  ItemModel(
+      header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[1].dinner),
 ];
 
 List<ItemModel> wednesday = [
-  ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[2].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[2].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[2].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[2].dinner),
+  ItemModel(
+      header: 'Breakfast  -  7:30 am to 9:30 am',
+      bodyModel: foodCards[2].breakfast),
+  ItemModel(
+      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[2].lunch),
+  ItemModel(
+      header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[2].snacks),
+  ItemModel(
+      header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[2].dinner),
 ];
 
 List<ItemModel> thursday = [
-  ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[3].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[3].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[3].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[3].dinner),
+  ItemModel(
+      header: 'Breakfast  -  7:30 am to 9:30 am',
+      bodyModel: foodCards[3].breakfast),
+  ItemModel(
+      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[3].lunch),
+  ItemModel(
+      header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[3].snacks),
+  ItemModel(
+      header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[3].dinner),
 ];
 
 List<ItemModel> friday = [
-  ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[4].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[4].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[4].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[4].dinner),
+  ItemModel(
+      header: 'Breakfast  -  7:30 am to 9:30 am',
+      bodyModel: foodCards[4].breakfast),
+  ItemModel(
+      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[4].lunch),
+  ItemModel(
+      header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[4].snacks),
+  ItemModel(
+      header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[4].dinner),
 ];
 
 List<ItemModel> saturday = [
-  ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[5].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[5].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[5].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[5].dinner),
+  ItemModel(
+      header: 'Breakfast  -  7:30 am to 9:30 am',
+      bodyModel: foodCards[5].breakfast),
+  ItemModel(
+      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[5].lunch),
+  ItemModel(
+      header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[5].snacks),
+  ItemModel(
+      header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[5].dinner),
 ];
 
 List<ItemModel> sunday = [
-  ItemModel(header: 'Breakfast  -  7:30 am to 9:30 am', bodyModel: foodCards[6].breakfast),
-  ItemModel(header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[6].lunch),
-  ItemModel(header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[6].snacks),
-  ItemModel(header: 'Dinner  -  7:30 pm to 9:30 pm', bodyModel: foodCards[6].dinner),
+  ItemModel(
+      header: 'Breakfast - 7:30 am to 9:30 am',
+      bodyModel: foodCards[6].breakfast),
+  ItemModel(
+      header: 'Lunch - 12:15 pm to 2:15 pm', bodyModel: foodCards[6].lunch),
+  ItemModel(
+      header: 'Snacks - 4:30 pm to 6:00 pm', bodyModel: foodCards[6].snacks),
+  ItemModel(
+      header: 'Dinner - 7:30 pm to 9:30 pm', bodyModel: foodCards[6].dinner),
 ];
-
-
 
 Widget cardNew(foodList) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Card(
-      color: Colors.indigo[100],
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: foodList.map<Widget>((food) {
-            return Column(
-              children: <Widget>[
-                Text(
-                  food,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: foodList.map<Widget>((food) {
+        if (food != '-') {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                food,
+                style: TextStyle(
+                  fontSize: 16.0,
                 ),
-                Divider(
-                  color: Colors.black45,
-                ),
-              ],
-            );
-          }).toList(),
-        ),
-      ),
+              ),
+              SizedBox(height: 10),
+            ],
+          );
+        }
+        return Container();
+      }).toList(),
     ),
   );
 }
 
-Widget foodHead (name) {
+Widget foodHead(name) {
   return Container(
     padding: EdgeInsets.all(10.0),
     child: Text(
       name,
       style: TextStyle(
-        color: Colors.black54,
+        color: Colors.black,
         fontSize: 18.0,
         fontWeight: FontWeight.bold,
       ),
@@ -104,7 +163,6 @@ Widget foodHead (name) {
 }
 
 class _MessMenuState extends State<MessMenu> {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -200,7 +258,8 @@ class _MessMenuState extends State<MessMenu> {
                   return ExpansionPanelList(
                     expansionCallback: (int item, bool status) {
                       setState(() {
-                        wednesday[index].isExpanded = !wednesday[index].isExpanded;
+                        wednesday[index].isExpanded =
+                            !wednesday[index].isExpanded;
                       });
                     },
                     animationDuration: Duration(seconds: 1),
@@ -228,7 +287,8 @@ class _MessMenuState extends State<MessMenu> {
                   return ExpansionPanelList(
                     expansionCallback: (int item, bool status) {
                       setState(() {
-                        thursday[index].isExpanded = !thursday[index].isExpanded;
+                        thursday[index].isExpanded =
+                            !thursday[index].isExpanded;
                       });
                     },
                     animationDuration: Duration(seconds: 1),
@@ -284,7 +344,8 @@ class _MessMenuState extends State<MessMenu> {
                   return ExpansionPanelList(
                     expansionCallback: (int item, bool status) {
                       setState(() {
-                        saturday[index].isExpanded = !saturday[index].isExpanded;
+                        saturday[index].isExpanded =
+                            !saturday[index].isExpanded;
                       });
                     },
                     animationDuration: Duration(seconds: 1),
@@ -355,9 +416,3 @@ class _MessMenuState extends State<MessMenu> {
     );
   }
 }
-
-
-
-
-
-
