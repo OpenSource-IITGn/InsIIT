@@ -1,32 +1,85 @@
 {
-    "project_info": {
-        "project_number": "1036842973746",
-        "firebase_url": "https://iitgn-instituteapp.firebaseio.com",
-        "project_id": "iitgn-instituteapp",
-        "storage_bucket": "iitgn-instituteapp.appspot.com"
-    },
-    "client": [{
-        "client_info": {
-            "mobilesdk_app_id": "1:1036842973746:android:11f3bd90e0f0d847d01a2b",
-            "android_client_info": {
-                "package_name": "com.example.instiapp"
-            }
-        },
-        "oauth_client": [{
-            "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
-            "client_type": 3
-        }],
-        "api_key": [{
-            "current_key": "AIzaSyC8MrJ5hB7SuOzpkCQf22L-fTOEOVXi0Yg"
-        }],
-        "services": {
-            "appinvite_service": {
-                "other_platform_oauth_client": [{
-                    "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
-                    "client_type": 3
-                }]
-            }
+  "project_info": {
+    "project_number": "1036842973746",
+    "firebase_url": "https://iitgn-instituteapp.firebaseio.com",
+    "project_id": "iitgn-instituteapp",
+    "storage_bucket": "iitgn-instituteapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036842973746:android:d553f47f74e20043d01a2b",
+        "android_client_info": {
+          "package_name": "com.example.instiapp"
         }
-    }],
-    "configuration_version": "1"
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036842973746-mi9bjrfvs5ordbb9qn9tibodp8scaj38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instiapp",
+            "certificate_hash": "b4033c1b78ed6107af830e8e052d22672030efc0"
+          }
+        },
+        {
+          "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8MrJ5hB7SuOzpkCQf22L-fTOEOVXi0Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036842973746:android:11f3bd90e0f0d847d01a2b",
+        "android_client_info": {
+          "package_name": "com.instiapp.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036842973746-bei690ej4a41g4a4pbml3j7heutgk4kk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instiapp.login",
+            "certificate_hash": "b4033c1b78ed6107af830e8e052d22672030efc0"
+          }
+        },
+        {
+          "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8MrJ5hB7SuOzpkCQf22L-fTOEOVXi0Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
