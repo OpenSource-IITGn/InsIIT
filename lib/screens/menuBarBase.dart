@@ -236,7 +236,8 @@ class _MenuBarBaseState extends State<MenuBarBase>
                                   Icons.people,
                                   color: Colors.white,
                                 ),
-                                onTap: () {
+                                onTap: () async {
+                                  await gSignIn.signOut();
                                   Navigator.pushNamed(context, '/signin');
                                 },
                               ),

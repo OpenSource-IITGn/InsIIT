@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
-      // home: HomeWrapper(),
     );
   }
 }
