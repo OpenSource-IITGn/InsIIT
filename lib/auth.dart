@@ -1,80 +1,56 @@
-// // import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:rxdart/rxdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
+import 'package:instiapp/screens/signIn.dart';
+import 'package:instiapp/utilities/constants.dart';
 
-// class AuthService {
-//   final GoogleSignIn _googleSignIn = GoogleSignIn();
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   // final Firestore _db = Firestore.instance;
 
-//   Observable<FirebaseUser> user; // firebase user
-//   Observable<Map<String, dynamic>> profile; // custom user data in Firestore
-//   PublishSubject loading = PublishSubject();
 
-//   // constructor
-//   AuthService() {
-//     user = Observable(_auth.onAuthStateChanged);
+class Auth extends StatefulWidget {
+  @override
+  _AuthState createState() => _AuthState();
+}
 
-//     profile = user.switchMap((FirebaseUser u) {
-//       if (u != null) {
-//         return Observable.just({});
-//         // return _db
-//         //     .collection('users')
-//         //     .document(u.uid)
-//         //     .snapshots()
-//         //     .map((snap) => snap.data);
-//       } else {
-//         return Observable.just({});
-//       }
-//     });
-//   }
+class _AuthState extends State<Auth> {
+  bool isSignedIn = false;
 
-//   Future<FirebaseUser> googleSignIn() async {
-//     try {
-//       loading.add(true);
-//       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-//       GoogleSignInAuthentication googleAuth =
-//           await googleSignInAccount.authentication;
+  @override
+  void initState() {
+    super.initState();
+    gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
+      controlSignIn(gSigninAccount);
+    }, onError: (gError) {
+      print("Error message :" + gError);
+    });
+    gSignIn.signInSilently().then((gSignInAccount) {
+      controlSignIn(gSignInAccount);
+    }).catchError((gError) {
+      print("Error message :" + gError);
+    });
+  }
 
-//       // final AuthCredential credential = GoogleAuthProvider.getCredential(
-//       //   accessToken: googleAuth.accessToken,
-//       //   idToken: googleAuth.idToken,
-//       // );
-//       FirebaseUser user = await _auth.signInWithGoogle(
-//           idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-//       // FirebaseUser user = await _auth.signInWithCredential(credential);
-//       // updateUserData(user);
-//       print("user name: ${user.displayName}");
+  controlSignIn(GoogleSignInAccount signInAccount) async {
+    if (signInAccount != null) {
+      setState(() {
+        isSignedIn = true;
+      });
+    } else {
+      setState(() {
+        isSignedIn = false;
+      });
+    }
+    print("SIGNED IN: $isSignedIn");
+  }
 
-//       loading.add(false);
-//       return user;
-//     } catch (error) {
-//       return error;
-//     }
-//   }
+  loginUser() {
+    gSignIn.signIn();
+  }
 
-//   // void updateUserData(FirebaseUser user) async {
-//   //   DocumentReference ref = _db.collection('users').document(user.uid);
+  logoutUser() {
+    gSignIn.signOut();
+  }
 
-//   //   return ref.setData({
-//   //     'uid': user.uid,
-//   //     'email': user.email,
-//   //     'photoURL': user.photoUrl,
-//   //     'displayName': user.displayName,
-//   //     'lastSeen': DateTime.now()
-//   //   }, merge: true);
-//   // }
-
-//   Future<String> signOut() async {
-//     try {
-//       await _auth.signOut();
-//       return 'SignOut';
-//     } catch (e) {
-//       return e.toString();
-//     }
-//   }
-// }
-
-// // TODO refactor global to InheritedWidget
-// final AuthService authService = AuthService();
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

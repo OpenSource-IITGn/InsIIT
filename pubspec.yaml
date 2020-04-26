@@ -27,6 +27,7 @@ dependencies:
   animator: ^1.0.0+5
   photo_view: ^0.9.2
   googleapis: ^0.54.0
+  flare_splash_screen: ^3.0.1
   googleapis_auth: ^0.2.11+1
   progressive_image: ^1.0.1
   carousel_slider: ^1.4.1

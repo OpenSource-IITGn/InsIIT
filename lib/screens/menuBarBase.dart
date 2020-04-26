@@ -88,7 +88,7 @@ class _MenuBarBaseState extends State<MenuBarBase>
                 }
               } else if (closingBar == true) {
                 print("ANIMATE TO END");
-                if (endpos.dx > ScreenSize.size.width / 4) {
+                if (endpos.dx < 3*ScreenSize.size.width / 4) {
                   controller.reset();
                   setupAnimation(endpos.dx, 0);
                   controller.forward();
@@ -117,20 +117,19 @@ class _MenuBarBaseState extends State<MenuBarBase>
                                 currentAccountPicture: CircleAvatar(
                                   backgroundColor: Colors.orange,
                                   minRadius: 30,
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                    child: Text("J",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
+                                  child: ClipOval(
+                                      child: Image.network(
+                                    gSignIn.currentUser.photoUrl,
+                                    fit: BoxFit.cover,
+                                    width: 90.0,
+                                    height: 90.0,
+                                  )),
                                 ),
                                 accountEmail: Text(
-                                  "john.doe@iitgn.ac.in",
+                                  gSignIn.currentUser.email,
                                 ),
-                                accountName: Text("John Doe",
+                                accountName: Text(
+                                    gSignIn.currentUser.displayName,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17)),
