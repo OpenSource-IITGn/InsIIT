@@ -17,7 +17,7 @@ class _ShuttleState extends State<Shuttle> {
   int hour;
   int minute;
 
-  void Reminder(buses) {
+  void reminder(buses) {
     if (buses.minute > 10) {
       minute = buses.minute - 10;
       hour = buses.hour;
@@ -165,7 +165,7 @@ class _ShuttleState extends State<Shuttle> {
   }
 
   Future _showNotificationWithDefaultSound(buses) async {
-    Reminder(buses);
+    reminder(buses);
 
     var busTime = new DateTime(DateTime.now().year, DateTime.now().month,
         DateTime.now().day, hour, minute, 0);
