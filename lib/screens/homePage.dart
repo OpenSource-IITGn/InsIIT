@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
   loadShuttleData() async {
     shuttleDataList = await sheet.getData('BusRoutes!A:H');
     buses = [];
-    shuttleDataList.remove(0);
+    shuttleDataList.removeAt(0);
+    
     shuttleDataList.forEach((bus) {
       buses.add(Buses(
         origin: bus[0],
@@ -151,11 +152,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  dynamic messDataList;
+  List<dynamic> messDataList;
   Future<dynamic> messData;
-  dynamic importantContactDataList;
+  List<dynamic> importantContactDataList;
   Future<dynamic> importantContactData;
-  dynamic shuttleDataList;
+  List<dynamic> shuttleDataList;
   Future<dynamic> shuttledata;
 
   List monday = [];

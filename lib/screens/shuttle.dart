@@ -6,7 +6,7 @@ import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/screens/homePage.dart';
 
 //TODO: ADD LINK TO GOOGLE MAP ROUTEs
-
+//TODO: BUS REMINDER COMES IMMEDIATELY AND NOT B4 BUS!!! @KRITIKA
 class Shuttle extends StatefulWidget {
   @override
   _ShuttleState createState() => _ShuttleState();

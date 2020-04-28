@@ -1,7 +1,7 @@
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:googleapis/sheets/v4.dart' as sheets;
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 
 final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
 {
@@ -23,9 +23,27 @@ final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
 class GSheet {
   final scopes = [sheets.SheetsApi.SpreadsheetsScope];
   String spreadSheetID;
-  GSheet(String id) {
+  Database database;
+  GSheet(String id, {bool storeOffline, List<String> initSqlCommands}) {
     this.spreadSheetID = id;
+    if (storeOffline) {
+      initDb(initSqlCommands);
+    }
   }
+  void initDb(List<String> initSqlCommands) async {
+    var databasesPath = await getDatabasesPath();
+    String path = databasesPath + 'iitgn-instituteapp.db';
+    print(path);
+    database = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+          initSqlCommands.forEach((command) { });
+      await db.execute(
+          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+      await db.execute(
+          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+    });
+  }
+
   Future writeData(var data, String range) async {
     //range is like sheetname!A:J
 
@@ -41,7 +59,8 @@ class GSheet {
           "values": data //data is [[row1],[row2], ...]
         });
         api.spreadsheets.values
-            .append(vr, this.spreadSheetID, range, valueInputOption: 'USER_ENTERED')
+            .append(vr, this.spreadSheetID, range,
+                valueInputOption: 'USER_ENTERED')
             .then((AppendValuesResponse r) {
           print("SENT DATA TO SHEETS");
           client.close();
@@ -69,4 +88,6 @@ class GSheet {
     //data returned in the form of [[row], [row], [row], [row]]
     return returnval;
   }
+
+  void storeLocal(key) async {}
 }
