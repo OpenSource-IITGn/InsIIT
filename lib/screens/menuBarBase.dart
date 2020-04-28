@@ -66,7 +66,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
               } else if (distanceFromLeft > ScreenSize.size.width / 2) {
                 startpos = Offset(-1, -1);
               }
-              print(startpos.dx);
             },
             onHorizontalDragUpdate: (details) {
               if (startpos.dx != -1 || closingBar) {
@@ -87,7 +86,6 @@ class _MenuBarBaseState extends State<MenuBarBase>
                   controller.forward();
                 }
               } else if (closingBar == true) {
-                print("ANIMATE TO END");
                 if (endpos.dx < 3*ScreenSize.size.width / 4) {
                   controller.reset();
                   setupAnimation(endpos.dx, 0);

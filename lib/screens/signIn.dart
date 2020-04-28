@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
+
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
 
@@ -67,7 +69,16 @@ class _SignInPageState extends State<SignInPage> {
       ], 'logins!A:C');
     } else {
       await gSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await gSignIn.currentUser.authentication;
 
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final FirebaseUser user =
+          (await firebaseauth.signInWithCredential(credential)).user;
       await sheet.writeData([
         [
           DateTime.now().toString(),

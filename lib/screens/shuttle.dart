@@ -5,7 +5,6 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/screens/homePage.dart';
 
-
 //TODO: ADD LINK TO GOOGLE MAP ROUTEs
 
 class Shuttle extends StatefulWidget {
@@ -15,18 +14,16 @@ class Shuttle extends StatefulWidget {
 
 class _ShuttleState extends State<Shuttle> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  int Hour;
-  int Minute;
+  int hour;
+  int minute;
 
-
-  void Reminder(buses){
-    if (buses.minute>10){
-      Minute = buses.minute-10;
-      Hour= buses.hour;
-    }
-    else{
-      Minute = 50+buses.minute;
-      Hour = buses.hour-1;
+  void Reminder(buses) {
+    if (buses.minute > 10) {
+      minute = buses.minute - 10;
+      hour = buses.hour;
+    } else {
+      minute = 50 + buses.minute;
+      hour = buses.hour - 1;
     }
   }
 
@@ -48,7 +45,7 @@ class _ShuttleState extends State<Shuttle> {
                       ),
                     ),
                     Text(
-                      buses.Origin,
+                      buses.origin,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontStyle: FontStyle.italic,
@@ -66,7 +63,7 @@ class _ShuttleState extends State<Shuttle> {
                       ),
                     ),
                     Text(
-                      buses.Destination,
+                      buses.destination,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontStyle: FontStyle.italic,
@@ -81,7 +78,7 @@ class _ShuttleState extends State<Shuttle> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    buses.Time,
+                    buses.time,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
@@ -98,7 +95,26 @@ class _ShuttleState extends State<Shuttle> {
                             showDialog(
                               context: context,
                               builder: (_) => new AlertDialog(
-                                content: Image.network(buses.url),
+                                content: Image.network(
+                                  buses.url,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes
+                                            : null,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           },
@@ -112,7 +128,7 @@ class _ShuttleState extends State<Shuttle> {
                           onPressed: () {
                             _showNotificationWithDefaultSound(buses);
                           },
-                          icon: Icon(Icons.access_alarm),
+                          icon: Icon(Icons.add_alarm),
                         ),
                       ),
                     ]),
@@ -152,7 +168,7 @@ class _ShuttleState extends State<Shuttle> {
     Reminder(buses);
 
     var busTime = new DateTime(DateTime.now().year, DateTime.now().month,
-        DateTime.now().day, Hour, Minute, 0);
+        DateTime.now().day, hour, minute, 0);
     var currentTime = new DateTime.now();
     var scheduledNotificationDateTime =
         DateTime.now().add(busTime.difference(currentTime));
@@ -179,10 +195,9 @@ class _ShuttleState extends State<Shuttle> {
         payload: 'item x');
   }
 
-
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey[100],
+        // backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text('Bus Schedule'),
           centerTitle: true,
@@ -206,5 +221,4 @@ class _ShuttleState extends State<Shuttle> {
           ),
         ));
   }
-
 }

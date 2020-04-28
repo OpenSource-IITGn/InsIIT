@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 
 class Buses {
-  String Origin;
-  String Destination;
-  String Time;
+  String origin;
+  String destination;
+  String time;
   String url;
   int hour;
   int minute;
 
-  Buses({this.Origin,this.Destination, this.Time, this.url, this.hour, this.minute});
+  Buses({this.origin,this.destination, this.time, this.url, this.hour, this.minute});
 }

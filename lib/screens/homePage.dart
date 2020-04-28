@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 List<FoodCard> foodCards;
 List<ContactCard> contactCards;
-List<Buses> buses ;
+List<Buses> buses;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
@@ -24,61 +24,30 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    reloadData();
+  }
+
+  void reloadData() {
     messData = loadMessData();
     importantContactData = loadImportantContactData();
-    shuttledata= loadShuttleData();
+    shuttledata = loadShuttleData();
   }
 
   loadShuttleData() async {
-    Shuttledatalist = await sheet.getData('BusRoutes!A:H');
-
-    buses = [
-      Buses(Origin: Shuttledatalist[1][0],
-        Destination: Shuttledatalist[1][1],
-        Time: Shuttledatalist[1][2],
-        url: Shuttledatalist[1][4],
-        hour: int.parse(Shuttledatalist[1][2].split(':')[0]),
-        minute: int.parse(Shuttledatalist[1][2].split(':')[1]),
-      ),
-      Buses(Origin: Shuttledatalist[2][0],
-        Destination: Shuttledatalist[2][1],
-        Time: Shuttledatalist[2][2],
-        url: Shuttledatalist[2][4],
-        hour: int.parse(Shuttledatalist[2][2].split(':')[0]),
-        minute: int.parse(Shuttledatalist[2][2].split(':')[1]),
-      ),
-      Buses(Origin: Shuttledatalist[3][0],
-        Destination: Shuttledatalist[3][1],
-        Time: Shuttledatalist[3][2],
-        url: Shuttledatalist[3][4],
-        hour: int.parse(Shuttledatalist[3][2].split(':')[0]),
-        minute: int.parse(Shuttledatalist[3][2].split(':')[1]),
-      ),
-      Buses(Origin: Shuttledatalist[4][0],
-        Destination: Shuttledatalist[4][1],
-        Time: Shuttledatalist[4][2],
-        url: Shuttledatalist[4][4],
-        hour: int.parse(Shuttledatalist[4][2].split(':')[0]),
-        minute: int.parse(Shuttledatalist[4][2].split(':')[1]),
-      ),
-      Buses(Origin: Shuttledatalist[5][0],
-        Destination: Shuttledatalist[5][1],
-        Time: Shuttledatalist[5][2],
-        url: Shuttledatalist[5][4],
-        hour: int.parse(Shuttledatalist[5][2].split(':')[0]),
-        minute: int.parse(Shuttledatalist[5][2].split(':')[1]),
-      ),
-      Buses(Origin: Shuttledatalist[6][0],
-        Destination: Shuttledatalist[6][1],
-        Time: Shuttledatalist[6][2],
-        url: Shuttledatalist[6][4],
-        hour: int.parse(Shuttledatalist[6][2].split(':')[0]),
-        minute: int.parse(Shuttledatalist[6][2].split(':')[1]),
-      )
-
-
-    ];
-    return Shuttledatalist;
+    shuttleDataList = await sheet.getData('BusRoutes!A:H');
+    buses = [];
+    shuttleDataList.remove(0);
+    shuttleDataList.forEach((bus) {
+      buses.add(Buses(
+        origin: bus[0],
+        destination: bus[1],
+        time: bus[2],
+        url: bus[4],
+        hour: int.parse(bus[2].split(':')[0]),
+        minute: int.parse(bus[2].split(':')[1]),
+      ));
+    });
+    return shuttleDataList;
   }
 
   Widget homeScreen() {
@@ -91,13 +60,20 @@ class _HomePageState extends State<HomePage> {
             widget.notifyParent();
           },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              reloadData();
+            },
+          )
+        ],
         title: Text(
           'InstiApp',
           style: TextStyle(fontFamily: 'OpenSans'),
         ),
         centerTitle: true,
       ),
-
       body: Container(
         height: ScreenSize.size.height,
         child: Stack(
@@ -153,7 +129,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            
           ],
         ),
       ),
@@ -180,8 +155,8 @@ class _HomePageState extends State<HomePage> {
   Future<dynamic> messData;
   dynamic importantContactDataList;
   Future<dynamic> importantContactData;
-  dynamic Shuttledatalist;
-  Future <dynamic> shuttledata;
+  dynamic shuttleDataList;
+  Future<dynamic> shuttledata;
 
   List monday = [];
   List tuesday = [];
