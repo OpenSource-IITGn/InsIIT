@@ -15,6 +15,7 @@ class _ShuttleState extends State<Shuttle> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   int hour;
   int minute;
+  DateTime _busTime;
 
   void reminder(buses) {
     if (buses.minute > 10) {
@@ -28,10 +29,11 @@ class _ShuttleState extends State<Shuttle> {
 
   _scheduledNotificationDateTime(DateTime busTime, DateTime currentTime) {
     if ((busTime.hour - currentTime.hour)*60 + (busTime.minute - currentTime.minute) >= 0) {
-      return DateTime.now().add(busTime.difference(currentTime));
+      _busTime = busTime;
+      return DateTime.now().add(_busTime.difference(currentTime));
     } else {
-      busTime = busTime.add(new Duration(days: 1));
-      return DateTime.now().add(busTime.difference(currentTime));
+      _busTime = busTime.add(new Duration(days: 1));
+      return DateTime.now().add(_busTime.difference(currentTime));
     }
   }
 
@@ -189,6 +191,13 @@ class _ShuttleState extends State<Shuttle> {
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+    showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+        content: Text("Reminder is set at: $_busTime"),
+      ),
+    );
 
     await flutterLocalNotificationsPlugin.schedule(
         1,
