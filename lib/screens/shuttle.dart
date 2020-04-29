@@ -6,7 +6,6 @@ import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/screens/homePage.dart';
 
 //TODO: ADD LINK TO GOOGLE MAP ROUTEs
-//TODO: BUS REMINDER COMES IMMEDIATELY AND NOT B4 BUS!!! @KRITIKA
 class Shuttle extends StatefulWidget {
   @override
   _ShuttleState createState() => _ShuttleState();
@@ -17,13 +16,22 @@ class _ShuttleState extends State<Shuttle> {
   int hour;
   int minute;
 
-  void Reminder(buses) {
+  void reminder(buses) {
     if (buses.minute > 10) {
       minute = buses.minute - 10;
       hour = buses.hour;
     } else {
       minute = 50 + buses.minute;
       hour = buses.hour - 1;
+    }
+  }
+
+  _scheduledNotificationDateTime(DateTime busTime, DateTime currentTime) {
+    if ((busTime.hour - currentTime.hour)*60 + (busTime.minute - currentTime.minute) >= 0) {
+      return DateTime.now().add(busTime.difference(currentTime));
+    } else {
+      busTime = busTime.add(new Duration(days: 1));
+      return DateTime.now().add(busTime.difference(currentTime));
     }
   }
 
@@ -165,16 +173,12 @@ class _ShuttleState extends State<Shuttle> {
   }
 
   Future _showNotificationWithDefaultSound(buses) async {
-    Reminder(buses);
+    reminder(buses);
 
     var busTime = new DateTime(DateTime.now().year, DateTime.now().month,
         DateTime.now().day, hour, minute, 0);
     var currentTime = new DateTime.now();
-    var scheduledNotificationDateTime =
-        DateTime.now().add(busTime.difference(currentTime));
-    print(busTime);
-    print(currentTime);
-    print(DateTime.now().add(busTime.difference(currentTime)));
+    var scheduledNotificationDateTime = _scheduledNotificationDateTime(busTime, currentTime);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your new channel id',
         'your new channel name',
