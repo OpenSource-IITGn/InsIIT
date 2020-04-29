@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'homePage.dart';
 
 class Email extends StatefulWidget {
   @override
@@ -7,19 +8,17 @@ class Email extends StatefulWidget {
 
 class _EmailState extends State<Email> {
   
-  List <Data> emails = [
-    Data(email: 'flutter@gmail.com', name: 'Dart'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
-    Data(email: 'python@iitgn.ac.in', name: 'Random'),
+  // List <Data> emails = [
+  
+
+  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
+  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
+  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
+  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
 
 
-  ];
+  // ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +50,12 @@ class Data {
 
   String email;
   String name;
-  // String contact;
-  // String extra;
+  String descp;
 
-  Data({ String email, String name}){
+  Data({ String email, String name, String descp}){
     this.email = email;
     this.name = name;
+    this.descp = descp ; 
 
   // Data({this.email, this.name}); // a way of writing the same as above
 

@@ -7,6 +7,7 @@ import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'email.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 List<FoodCard> foodCards;
 List<ContactCard> contactCards;
 List<Buses> buses;
+List<Data> emails ;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
@@ -58,6 +60,24 @@ class _HomePageState extends State<HomePage> {
       makeContactList(data);
     });
   }
+
+  loadlinks() async {
+    sheet.getData('QuickLinks!A:C').listen((data) {
+      var d =  (data);
+      emails = [] ;
+      d.forEach((i){
+        int c = 0 ;
+        var t = i[c].split(",") ;
+        emails.add(Data(descp:t[1] , name:t[0] , email:t[2])) ;
+
+        c ++ ;
+
+      });
+
+
+    });
+  }
+  
 
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
