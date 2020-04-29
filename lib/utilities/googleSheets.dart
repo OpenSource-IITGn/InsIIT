@@ -68,6 +68,7 @@ class GSheet {
 
   Stream<List<List<dynamic>>> getData(String range) async* {
     //range in the form "sheetname!A:C" A:C is range of columns
+    //data returned in the form of [[row], [row], [row], [row]]
     var returnval;
     var file = await _localFile(range);
     bool exists = await file.exists();
@@ -94,13 +95,12 @@ class GSheet {
         });
       });
     });
-    //data returned in the form of [[row], [row], [row], [row]]
+    
     await file.delete();
     await file.create();
     await file.open();
     await file.writeAsString(ListToCsvConverter().convert(returnval));
 
-    // print("FROM SHEETS: ${returnval[0]}");
     yield returnval;
   }
 }

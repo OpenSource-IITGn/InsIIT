@@ -5,8 +5,8 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:instiapp/classes/buses.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
       makeMessList(data);
+      print(wednesday[1]);
       foodCards = [
         FoodCard(
             day: 'Monday',
@@ -111,6 +112,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  bool prevConnected = false;
   Widget homeScreen() {
     return Scaffold(
       appBar: AppBar(
@@ -135,63 +137,87 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        height: ScreenSize.size.height,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: 200,
-              child: Column(
-                children: <Widget>[
-                  //INSERT OTHER WIDGETS HERE
-                  Text(
-                    "What's for ${selectMeal(foodCards)['meal']}?",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
+      body: OfflineBuilder(
+        connectivityBuilder: (context, connectivity, child) {
+          bool connected = connectivity != ConnectivityResult.none;
+          if (connected != prevConnected) {
+            reloadData();
+            print("reloading");
+            prevConnected = connected;
+          }
+          return new SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                AnimatedContainer(
+                  height: (connected) ? 0 : 24,
+                  color: Color(0xFFEE4400),
+                  duration: Duration(milliseconds: 500),
+                  child: Center(
+                    child: Text("Offline"),
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  CarouselSlider(
-                    height: 120.0,
-                    viewportFraction: 0.6,
-                    enlargeCenterPage: true,
-                    items: selectMeal(foodCards)['list'].map<Widget>((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return GestureDetector(
-                            onTap: () {
-                              return Navigator.pushNamed(context, '/messmenu');
-                            },
-                            child: Container(
-                              width: 200.0,
-                              height: 120.0,
-                              child: Card(
-                                // color: primaryColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Center(
-                                    child: Text(
-                                      i,
-                                      style: TextStyle(
-                                        fontSize: 20.0,
+                ),
+                (connected)
+                    ? Container()
+                    : SizedBox(
+                        height: 10,
+                      ),
+                Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      //INSERT OTHER WIDGETS HERE
+                      Text(
+                        "What's for ${selectMeal(foodCards)['meal']}?",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      CarouselSlider(
+                        height: 120.0,
+                        viewportFraction: 0.6,
+                        enlargeCenterPage: true,
+                        items: selectMeal(foodCards)['list'].map<Widget>((i) {
+                          return Builder(
+                            builder: (BuildContext context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  return Navigator.pushNamed(
+                                      context, '/messmenu');
+                                },
+                                child: Container(
+                                  width: 200.0,
+                                  height: 120.0,
+                                  child: Card(
+                                    // color: primaryColor,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Center(
+                                        child: Text(
+                                          i,
+                                          style: TextStyle(
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           );
-                        },
-                      );
-                    }).toList(),
+                        }).toList(),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
+        child: Container(),
       ),
     );
   }
