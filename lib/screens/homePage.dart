@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
@@ -49,8 +50,6 @@ class _HomePageState extends State<HomePage> {
           minute: int.parse(bus[2].split(':')[1]),
         ));
       });
-      loading = false;
-      setState(() {});
     });
   }
 
@@ -107,6 +106,8 @@ class _HomePageState extends State<HomePage> {
             snacks: sunday[2],
             dinner: sunday[3]),
       ];
+      loading = false;
+      setState(() {});
     });
   }
 
@@ -190,22 +191,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget loadScreen() {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: secondaryColor,
-        title: Text('InstiApp'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: SpinKitChasingDots(
-          color: primaryColor,
-          size: 50.0,
         ),
       ),
     );

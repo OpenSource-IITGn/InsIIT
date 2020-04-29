@@ -76,7 +76,7 @@ class GSheet {
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
           CsvToListConverter().convert(values);
-      print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
     }
@@ -100,7 +100,7 @@ class GSheet {
     await file.open();
     await file.writeAsString(ListToCsvConverter().convert(returnval));
 
-    print("FROM SHEETS: ${returnval[0]}");
+    // print("FROM SHEETS: ${returnval[0]}");
     yield returnval;
   }
 }
