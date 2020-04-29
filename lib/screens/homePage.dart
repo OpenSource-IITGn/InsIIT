@@ -67,9 +67,8 @@ class _HomePageState extends State<HomePage> {
       emails = [] ;
       d.forEach((i){
         int c = 0 ;
-        var t = i[c].split(",") ;
+        var t = i[c].split(',') ;
         emails.add(Data(descp:t[1] , name:t[0] , email:t[2])) ;
-
         c ++ ;
 
       });
