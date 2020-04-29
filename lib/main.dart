@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/signin',
+      initialRoute: '/menuBarBase',
       routes: {
         
         '/announcements': (context) => Announcements(),

@@ -1,7 +1,10 @@
+import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:googleapis/sheets/v4.dart' as sheets;
-import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
 final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
 {
@@ -23,25 +26,10 @@ final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
 class GSheet {
   final scopes = [sheets.SheetsApi.SpreadsheetsScope];
   String spreadSheetID;
-  Database database;
-  GSheet(String id, {bool storeOffline, List<String> initSqlCommands}) {
+  GSheet(
+    String id,
+  ) {
     this.spreadSheetID = id;
-    if (storeOffline) {
-      initDb(initSqlCommands);
-    }
-  }
-  void initDb(List<String> initSqlCommands) async {
-    var databasesPath = await getDatabasesPath();
-    String path = databasesPath + 'iitgn-instituteapp.db';
-    print(path);
-    database = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-          initSqlCommands.forEach((command) { });
-      await db.execute(
-          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
-      await db.execute(
-          'CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
-    });
   }
 
   Future writeData(var data, String range) async {
@@ -69,9 +57,30 @@ class GSheet {
     });
   }
 
-  Future<List> getData(String range) async {
+  Future<File> _localFile(String range) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    var x = range.split('!');
+    var y = x[1].split(':');
+    String filename = tempPath + x[0] + y[0] + y[1] + '.csv';
+    return File(filename);
+  }
+
+  Stream<List<List<dynamic>>> getData(String range) async* {
     //range in the form "sheetname!A:C" A:C is range of columns
     var returnval;
+    var file = await _localFile(range);
+    bool exists = await file.exists();
+    if (exists) {
+      await file.open();
+      String values = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues =
+          CsvToListConverter().convert(values);
+      print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+
+      yield rowsAsListOfValues;
+    }
+    await file.create();
     await auth
         .clientViaServiceAccount(_credentials, this.scopes)
         .then((client) async {
@@ -86,8 +95,12 @@ class GSheet {
       });
     });
     //data returned in the form of [[row], [row], [row], [row]]
-    return returnval;
-  }
+    await file.delete();
+    await file.create();
+    await file.open();
+    await file.writeAsString(ListToCsvConverter().convert(returnval));
 
-  void storeLocal(key) async {}
+    print("FROM SHEETS: ${returnval[0]}");
+    yield returnval;
+  }
 }

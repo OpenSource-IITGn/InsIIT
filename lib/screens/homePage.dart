@@ -21,6 +21,7 @@ List<Buses> buses;
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
   var startpos, endpos;
+  bool loading = true;
   @override
   void initState() {
     super.initState();
@@ -28,27 +29,85 @@ class _HomePageState extends State<HomePage> {
   }
 
   void reloadData() {
-    messData = loadMessData();
-    importantContactData = loadImportantContactData();
-    shuttledata = loadShuttleData();
+    loadMessData();
+    loadImportantContactData();
+    loadShuttleData();
   }
 
   loadShuttleData() async {
-    shuttleDataList = await sheet.getData('BusRoutes!A:H');
-    buses = [];
-    shuttleDataList.removeAt(0);
-    
-    shuttleDataList.forEach((bus) {
-      buses.add(Buses(
-        origin: bus[0],
-        destination: bus[1],
-        time: bus[2],
-        url: bus[4],
-        hour: int.parse(bus[2].split(':')[0]),
-        minute: int.parse(bus[2].split(':')[1]),
-      ));
+    sheet.getData('BusRoutes!A:H').listen((data) {
+      var shuttleDataList = data;
+      buses = [];
+      shuttleDataList.removeAt(0);
+      shuttleDataList.forEach((bus) {
+        buses.add(Buses(
+          origin: bus[0],
+          destination: bus[1],
+          time: bus[2],
+          url: bus[4],
+          hour: int.parse(bus[2].split(':')[0]),
+          minute: int.parse(bus[2].split(':')[1]),
+        ));
+      });
+      loading = false;
+      setState(() {});
     });
-    return shuttleDataList;
+  }
+
+  loadImportantContactData() async {
+    sheet.getData('Contacts!A:E').listen((data) {
+      makeContactList(data);
+    });
+  }
+
+  loadMessData() async {
+    sheet.getData('MessMenu!A:G').listen((data) {
+      makeMessList(data);
+      foodCards = [
+        FoodCard(
+            day: 'Monday',
+            breakfast: monday[0],
+            lunch: monday[1],
+            snacks: monday[2],
+            dinner: monday[3]),
+        FoodCard(
+            day: 'Tuesday',
+            breakfast: tuesday[0],
+            lunch: tuesday[1],
+            snacks: tuesday[2],
+            dinner: tuesday[3]),
+        FoodCard(
+            day: 'Wednesday',
+            breakfast: wednesday[0],
+            lunch: wednesday[1],
+            snacks: wednesday[2],
+            dinner: wednesday[3]),
+        FoodCard(
+            day: 'Thursday',
+            breakfast: thursday[0],
+            lunch: thursday[1],
+            snacks: thursday[2],
+            dinner: thursday[3]),
+        FoodCard(
+            day: 'Friday',
+            breakfast: friday[0],
+            lunch: friday[1],
+            snacks: friday[2],
+            dinner: friday[3]),
+        FoodCard(
+            day: 'Saturday',
+            breakfast: saturday[0],
+            lunch: saturday[1],
+            snacks: saturday[2],
+            dinner: saturday[3]),
+        FoodCard(
+            day: 'Sunday',
+            breakfast: sunday[0],
+            lunch: sunday[1],
+            snacks: sunday[2],
+            dinner: sunday[3]),
+      ];
+    });
   }
 
   Widget homeScreen() {
@@ -152,25 +211,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<dynamic> messDataList;
-  Future<dynamic> messData;
-  List<dynamic> importantContactDataList;
-  Future<dynamic> importantContactData;
-  List<dynamic> shuttleDataList;
-  Future<dynamic> shuttledata;
+  var monday = [];
+  var tuesday = [];
+  var wednesday = [];
+  var thursday = [];
+  var friday = [];
+  var saturday = [];
+  var sunday = [];
 
-  List monday = [];
-  List tuesday = [];
-  List wednesday = [];
-  List thursday = [];
-  List friday = [];
-  List saturday = [];
-  List sunday = [];
-
-  makeMessList(List messDataList,
+  makeMessList(var messDataList,
       {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
-
+    monday = [];
+    tuesday = [];
+    wednesday = [];
+    thursday = [];
+    friday = [];
+    saturday = [];
+    sunday = [];
     messDataList.removeAt(0);
     messDataList.removeAt(0);
     messDataList.removeAt(num1);
@@ -180,7 +238,7 @@ class _HomePageState extends State<HomePage> {
     messDataList.removeAt(num1 + num2 + num3);
     messDataList.removeAt(num1 + num2 + num3);
 
-    for (List lm in messDataList) {
+    for (var lm in messDataList) {
       monday += [lm[0]];
       tuesday += [lm[1]];
       wednesday += [lm[2]];
@@ -233,82 +291,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  loadMessData() async {
-    messDataList = await sheet.getData('MessMenu!A:G');
-    makeMessList(messDataList);
-
-    foodCards = [
-      FoodCard(
-          day: 'Monday',
-          breakfast: monday[0],
-          lunch: monday[1],
-          snacks: monday[2],
-          dinner: monday[3]),
-      FoodCard(
-          day: 'Tuesday',
-          breakfast: tuesday[0],
-          lunch: tuesday[1],
-          snacks: tuesday[2],
-          dinner: tuesday[3]),
-      FoodCard(
-          day: 'Wednesday',
-          breakfast: wednesday[0],
-          lunch: wednesday[1],
-          snacks: wednesday[2],
-          dinner: wednesday[3]),
-      FoodCard(
-          day: 'Thursday',
-          breakfast: thursday[0],
-          lunch: thursday[1],
-          snacks: thursday[2],
-          dinner: thursday[3]),
-      FoodCard(
-          day: 'Friday',
-          breakfast: friday[0],
-          lunch: friday[1],
-          snacks: friday[2],
-          dinner: friday[3]),
-      FoodCard(
-          day: 'Saturday',
-          breakfast: saturday[0],
-          lunch: saturday[1],
-          snacks: saturday[2],
-          dinner: saturday[3]),
-      FoodCard(
-          day: 'Sunday',
-          breakfast: sunday[0],
-          lunch: sunday[1],
-          snacks: sunday[2],
-          dinner: sunday[3]),
-    ];
-
-    return messDataList;
-  }
-
-  loadImportantContactData() async {
-    importantContactDataList = await sheet.getData('Contacts!A:E');
-    makeContactList(importantContactDataList);
-
-    return importantContactDataList;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Future.wait([messData, importantContactData, shuttledata]),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return loadScreen();
-          case ConnectionState.waiting:
-            return homeScreen();
-          case ConnectionState.done:
-            return homeScreen();
-          default:
-            return homeScreen();
-        }
-      },
-    );
+    if (loading == true) {
+      return loadScreen();
+    } else {
+      return homeScreen();
+    }
   }
 
   Map selectMeal(List foodList) {

@@ -117,17 +117,17 @@ class _MenuBarBaseState extends State<MenuBarBase>
                                   minRadius: 30,
                                   child: ClipOval(
                                       child: Image.network(
-                                    gSignIn.currentUser.photoUrl,
+                                    (gSignIn.currentUser == null)?"":gSignIn.currentUser.photoUrl,
                                     fit: BoxFit.cover,
                                     width: 90.0,
                                     height: 90.0,
                                   )),
                                 ),
                                 accountEmail: Text(
-                                  gSignIn.currentUser.email,
+                                  (gSignIn.currentUser == null)?"john.doe@iitgn.ac.in":gSignIn.currentUser.email,
                                 ),
                                 accountName: Text(
-                                    gSignIn.currentUser.displayName,
+                                    (gSignIn.currentUser == null)?"John Doe":gSignIn.currentUser.displayName,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17)),
