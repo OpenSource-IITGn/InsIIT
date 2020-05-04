@@ -175,6 +175,32 @@ class _MenuBarBaseState extends State<MenuBarBase>
                               ),
                               ListTile(
                                 title: Text(
+                                  'Events Calendar',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                leading: Icon(
+                                  Icons.event,
+                                  color: Colors.white,
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/eventscalendar');
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
+                                  'Academic Calendar',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                leading: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.white,
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/academiccalendar');
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
                                   'Complaints',
                                   style: TextStyle(color: Colors.white),
                                 ),
