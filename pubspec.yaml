@@ -33,8 +33,6 @@ dependencies:
   carousel_slider: ^1.4.1
   flutter_spinkit: ^4.1.2+1
   table_calendar: ^2.2.3
-  time_machine: ^0.9.12
-  timetable: ^0.1.1
 
   firebase_core: ^0.4.0+9
   firebase_analytics: ^5.0.2
@@ -54,9 +52,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-dependency_overrides:
-  pedantic: 1.9.0
-
 
 
 # For information on the generic Dart part of this file, see the
@@ -74,8 +69,6 @@ flutter:
   assets:
     - assets/images/
     - assets/
-    - packages/time_machine/data/cultures/cultures.bin
-    - packages/time_machine/data/tzdb/tzdb.bin
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
