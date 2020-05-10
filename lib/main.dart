@@ -11,6 +11,7 @@ import 'package:instiapp/screens/importantContacts.dart';
 import 'package:instiapp/screens/menuBarBase.dart';
 import 'package:instiapp/screens/messfeedback.dart';
 import 'package:instiapp/screens/messmenu.dart';
+import 'package:instiapp/screens/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/articles': (context) => Articles(),
         '/eventscalendar': (context) => EventsCalendar(),
         '/eventpage': (context) => EventPage(),
+        '/schedule':(context) => SchedulePage(),
         // '/academiccalendar': (context) => AcademicCalendar(),
         '/importantcontacts': (context) => ImportantContacts(),
         '/complaints': (context) => Complains(),
