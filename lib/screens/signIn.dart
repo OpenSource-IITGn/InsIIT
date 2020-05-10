@@ -3,6 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
+import 'package:http/io_client.dart';
+import 'package:http/http.dart';
+import 'package:googleapis/classroom/v1.dart';
+
+List<Course> courses = [];
+
+class GoogleHttpClient extends IOClient {
+  Map<String, String> _headers;
+
+  GoogleHttpClient(this._headers) : super();
+
+  @override
+  Future<StreamedResponse> send(BaseRequest request) =>
+      super.send(request..headers.addAll(_headers));
+
+  @override
+  Future<Response> head(Object url, {Map<String, String> headers}) =>
+      super.head(url, headers: headers..addAll(_headers));
+
+}
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -69,6 +89,13 @@ class _SignInPageState extends State<SignInPage> {
       ], 'logins!A:C');
     } else {
       await gSignIn.signIn();
+
+      final authHeaders = await gSignIn.currentUser.authHeaders;
+      final httpClient = GoogleHttpClient(authHeaders);
+
+      var data = await ClassroomApi(httpClient).courses.list();
+      courses.addAll(data.courses);
+
       final GoogleSignInAuthentication googleAuth =
           await gSignIn.currentUser.authentication;
 
