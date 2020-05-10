@@ -33,6 +33,7 @@ class FoodCard {
 class ItemModel {
   bool isExpanded;
   String header;
+  String subtitle;
   List bodyModel;
 
   ItemModel({this.isExpanded: false, this.header, this.bodyModel});

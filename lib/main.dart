@@ -23,12 +23,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/signin',
       routes: {
-        
         '/announcements': (context) => Announcements(),
         '/articles': (context) => Articles(),
         '/eventscalendar': (context) => EventsCalendar(),
         '/eventpage': (context) => EventPage(),
-        '/academiccalendar': (context) => AcademicCalendar(),
+        // '/academiccalendar': (context) => AcademicCalendar(),
         '/importantcontacts': (context) => ImportantContacts(),
         '/complaints': (context) => Complains(),
         '/shuttle': (context) => Shuttle(),
