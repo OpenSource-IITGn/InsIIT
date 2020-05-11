@@ -15,6 +15,10 @@ import 'package:instiapp/screens/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/Pages/Selecttime.dart';
+import 'package:instiapp/Pages/AvailableRooms.dart';
+import 'package:instiapp/Pages/form3.dart';
+import 'package:instiapp/Pages/roomservice.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,6 +43,10 @@ class MyApp extends StatelessWidget {
         '/messfeedback': (context) => MessFeedBack(),
         '/signin': (context) => SignInPage(),
         '/menuBarBase': (context) => HomeWrapper(),
+        '/bookingform': (context) => BookingForm(),
+        '/selecttime' : (context) => SelectTime(),
+        '/RoomBooking' : (context) => RoomService(),
+        '/availablerooms' : (context) => AvailableRooms(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
