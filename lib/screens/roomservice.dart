@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:instiapp/Pages/googleSheets.dart';
-import 'package:instiapp/Pages/functions.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
+import 'package:instiapp/screens/functions.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 class RoomService extends StatefulWidget {
@@ -50,7 +50,6 @@ class _RoomServiceState extends State<RoomService> {
     r1101 = dataList[2];
     r6202 = dataList[3];
     r6203 = dataList[4];
-    print(r7101);
     rooms = [
       Room(block: '7', room: '101',capacity: '40', roomType: 'Classroom', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r7101))),
       Room(block: '7', room: '102',capacity: '50', roomType: 'Classroom', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r7102))),
@@ -58,7 +57,6 @@ class _RoomServiceState extends State<RoomService> {
       Room(block: '6', room: '202', capacity: '50', roomType: 'Classroom', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r6202))),
       Room(block: '6', room: '203', capacity: '25', roomType: 'Meeting room', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r6203))),
     ];
-    //rooms = [];
     userRooms = makeListOfYourRooms(rooms);
     makeOccupiedRoomsList(rooms);
     blocks = [

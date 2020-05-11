@@ -15,10 +15,10 @@ import 'package:instiapp/screens/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/Pages/Selecttime.dart';
-import 'package:instiapp/Pages/AvailableRooms.dart';
-import 'package:instiapp/Pages/form3.dart';
-import 'package:instiapp/Pages/roomservice.dart';
+import 'package:instiapp/screens/Selecttime.dart';
+import 'package:instiapp/screens/AvailableRooms.dart';
+import 'package:instiapp/screens/form3.dart';
+import 'package:instiapp/screens/roomservice.dart';
 
 void main() => runApp(MyApp());
 

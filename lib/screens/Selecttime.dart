@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/Pages/functions.dart';
-import 'package:instiapp/Pages/roomservice.dart';
+import 'package:instiapp/screens/functions.dart';
+import 'package:instiapp/screens/roomservice.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/Pages/googleSheets.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
 
 class SelectTime extends StatefulWidget {
   @override
