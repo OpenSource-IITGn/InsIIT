@@ -229,9 +229,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 RaisedButton(
-                  child: Text("DAILYSCHEDULE"),
+                  child: Text("Daily Schedule"),
                   onPressed: () {
                     Navigator.pushNamed(context, '/schedule');
+                  },
+                ),
+                RaisedButton(
+                  child: Text("Feed"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/feed');
                   },
                 ),
               ],

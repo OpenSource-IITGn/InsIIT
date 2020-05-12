@@ -40,7 +40,6 @@ dependencies:
   firebase_auth: ^0.14.0+5
   path_provider: ^1.6.7
   flutter_offline: ^0.3.0
-
   google_sign_in: ^4.4.4
   csv: ^4.0.3
   rxdart: ^0.23.1
