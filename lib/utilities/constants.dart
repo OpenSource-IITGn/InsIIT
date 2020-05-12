@@ -10,6 +10,7 @@ final GoogleSignIn gSignIn = GoogleSignIn(
   scopes: <String>[
     'email',
     'https://www.googleapis.com/auth/classroom.courses.readonly',
+    'https://www.googleapis.com/auth/calendar.events.readonly',
   ],
 );
 final FirebaseAuth firebaseauth = FirebaseAuth.instance ;
