@@ -6,8 +6,10 @@ import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'package:googleapis/classroom/v1.dart';
+import 'package:googleapis/calendar/v3.dart' as calendar;
 
 List<Course> courses = [];
+List<calendar.Event> events = [];
 
 class GoogleHttpClient extends IOClient {
   Map<String, String> _headers;
@@ -93,11 +95,13 @@ class _SignInPageState extends State<SignInPage> {
       final authHeaders = await gSignIn.currentUser.authHeaders;
       final httpClient = GoogleHttpClient(authHeaders);
 
-      var data = await ClassroomApi(httpClient).courses.list();
-      courses.addAll(data.courses);
+      var courseData = await ClassroomApi(httpClient).courses.list();
+      courses.addAll(courseData.courses);
+      var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
+      events.addAll(eventData.items);
 
       final GoogleSignInAuthentication googleAuth =
-          await gSignIn.currentUser.authentication;
+      await gSignIn.currentUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
@@ -142,7 +146,7 @@ class _SignInPageState extends State<SignInPage> {
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                   child: Text("All things IITGN",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
                 ),
                 SizedBox(height: 100),
                 AnimatedContainer(
