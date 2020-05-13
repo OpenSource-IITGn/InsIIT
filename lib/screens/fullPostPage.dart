@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/classes/commentModel.dart';
 import 'package:instiapp/classes/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/slider.dart';
 
 class FullPostPage extends StatefulWidget {
   PostModel post;
@@ -12,6 +14,11 @@ class FullPostPage extends StatefulWidget {
 }
 
 class _FullPostPageState extends State<FullPostPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,12 +83,13 @@ class _FullPostPageState extends State<FullPostPage> {
                   },
                   child: Container(child: Text(widget.post.mainText))),
               SizedBox(height: 10),
-              Container(
-                color: Colors.grey.withAlpha(50),
-                alignment: Alignment.center,
-                height: ScreenSize.size.height * 0.4,
-                child: Image.network(widget.post.imageUrl),
-              ),
+              (widget.post.imageUrls[0] == '' ||
+                      widget.post.imageUrls.length == 0)
+                  ? Container()
+                  : ImageSliderWidget(
+                      imageUrls: widget.post.imageUrls,
+                      imageBorderRadius: BorderRadius.circular(8.0),
+                    ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 IconButton(
                   icon: Icon(
@@ -102,9 +110,9 @@ class _FullPostPageState extends State<FullPostPage> {
               Divider(),
               ColumnBuilder(
                   itemBuilder: (context, index) {
-                    return buildComment();
+                    return buildComment(widget.post.comments[index]);
                   },
-                  itemCount: 10)
+                  itemCount: widget.post.comments.length)
             ],
           ),
         ),
@@ -113,7 +121,7 @@ class _FullPostPageState extends State<FullPostPage> {
   }
 }
 
-Widget buildComment() {
+Widget buildComment(CommentModel comment) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
     child: Container(
@@ -133,7 +141,7 @@ Widget buildComment() {
                   maxRadius: 20,
                   child: ClipOval(
                       child: Image.network(
-                    gSignIn.currentUser.photoUrl,
+                    comment.poster.imageUrl,
                     fit: BoxFit.cover,
                     width: 90.0,
                     height: 90.0,
@@ -145,11 +153,11 @@ Widget buildComment() {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Praveen Venkatesh",
+                      comment.poster.name,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "1d",
+                      comment.timestamp,
                       style: TextStyle(
                           color: secondaryTextColor,
                           fontSize: 12,
@@ -161,7 +169,7 @@ Widget buildComment() {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
-              child: Text("Awesome work dude! Keep it up. At this rate you are gonna be stupid"),
+              child: Text(comment.text),
             )
           ],
         ),
