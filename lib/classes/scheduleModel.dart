@@ -26,8 +26,8 @@ class EventModel {
         this.location,
         this.creator});
 
-  Widget endTime () {
-    if (this.end == null) {
+  Widget time (DateTime time) {
+    if (time == null) {
       return Flexible(
         child: Text("Whole Day",
             style: TextStyle(
@@ -35,19 +35,17 @@ class EventModel {
       );
     }
     else {
-      return Text("${end.hour}:${end.minute}",
+      return Text("${time.hour}:${time.minute}",
           style: TextStyle(
               color: Colors.black.withAlpha(200), fontSize: 17));
     }
   }
 
-  String stringReturn (String text) {
+  String stringReturn(String text) {
     if (text == null) {
-      return 'No Description';
-    } else if (text.length < 100) {
-      return text;
+      return 'None';
     } else {
-      return text.substring(0,99);
+      return text;
     }
   }
 
@@ -105,7 +103,7 @@ class EventModel {
               SizedBox(
                 height: 8,
               ),
-              Text(this.eventType ?? 'Null' + ' (${this.remarks})',
+              Text(stringReturn(this.eventType) + ' (' + stringReturn(this.remarks) + ')',
                   style: TextStyle(
                       color: Colors.black.withAlpha(200),
                       fontStyle: FontStyle.italic,
@@ -126,9 +124,7 @@ class EventModel {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  Text("${start.hour}:${start.minute}",
-                      style: TextStyle(
-                          color: Colors.black.withAlpha(200), fontSize: 17)),
+                  time(this.start),
                   SizedBox(
                     height: 8,
                   ),
@@ -138,7 +134,7 @@ class EventModel {
                   SizedBox(
                     height: 8,
                   ),
-                  endTime(),
+                  time(this.end),
                 ]),
                 verticalDivider(),
                 descriptionWidget(),
