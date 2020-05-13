@@ -44,8 +44,10 @@ class EventModel {
   String stringReturn(String text) {
     if (text == null) {
       return 'None';
-    } else {
+    } else if (text.length < 100) {
       return text;
+    } else {
+      return text.substring(0, 99);
     }
   }
 
