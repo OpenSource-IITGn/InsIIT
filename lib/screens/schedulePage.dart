@@ -31,7 +31,7 @@ class _SchedulePageState extends State<SchedulePage> {
     todayEvents = todayEventsList(_events);
     quickSort(todayEvents, 0, todayEvents.length - 1);
     todayEvents.forEach((calendar.Event event) {
-      eventsList.add(EventModel(start: event.start.dateTime, end: event.end.dateTime , isCourse: false, description: event.description, summary: event.summary, location: event.location, creator: event.creator.displayName));
+      eventsList.add(EventModel(start: event.start.dateTime, end: event.end.dateTime , isCourse: false, description: event.description, summary: event.summary, location: event.location, creator: event.creator.displayName, remarks: event.status));
     });
   }
 
