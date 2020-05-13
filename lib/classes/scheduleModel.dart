@@ -115,33 +115,40 @@ class EventModel {
     }
   }
 
-  Widget buildCard() {
-    return Card(
-      child: Container(
-        width: ScreenSize.size.width,
-        child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  time(this.start),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text("to",
-                      style: TextStyle(
-                          color: Colors.black.withAlpha(120), fontSize: 14)),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  time(this.end),
-                ]),
-                verticalDivider(),
-                descriptionWidget(),
-              ],
-            )),
+  Widget buildCard(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/eventdetail', arguments: {
+          'eventModel': this,
+        });
+      },
+      child: Card(
+        child: Container(
+          width: ScreenSize.size.width,
+          child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    time(this.start),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text("to",
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(120), fontSize: 14)),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    time(this.end),
+                  ]),
+                  verticalDivider(),
+                  descriptionWidget(),
+                ],
+              )),
+        ),
       ),
     );
   }

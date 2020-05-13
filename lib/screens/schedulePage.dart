@@ -17,12 +17,14 @@ class _SchedulePageState extends State<SchedulePage> {
 
   List<calendar.Event> todayEvents;
   List<calendar.Event> _events;
+  DateTime end;
   EventModel x = EventModel(
       courseId: "EE333",
       courseName: "Embedded Systems and Microprocessors",
       isCourse: true,
       remarks: 'Bring laptop',
-      eventType: 'Lab');
+      eventType: 'Lab',
+      location: 'Electrical and Electronics Lab');
   List<EventModel> eventsList = [];
   @override
   void initState() {
@@ -31,7 +33,7 @@ class _SchedulePageState extends State<SchedulePage> {
     todayEvents = todayEventsList(_events);
     quickSort(todayEvents, 0, todayEvents.length - 1);
     todayEvents.forEach((calendar.Event event) {
-      eventsList.add(EventModel(start: event.start.dateTime, end: event.end.dateTime , isCourse: false, description: event.description, summary: event.summary, location: event.location, creator: event.creator.displayName, remarks: event.status));
+      eventsList.add(EventModel(start: event.start.dateTime, end: end ?? null , isCourse: false, description: event.description, summary: event.summary, location: event.location, creator: event.creator.displayName, remarks: event.status));
     });
   }
 
@@ -54,13 +56,18 @@ class _SchedulePageState extends State<SchedulePage> {
   List todayEventsList (List<calendar.Event> _events) {
     List<calendar.Event> todayEvents = [];
     _events.forEach((calendar.Event _event ) {
-      if (_event.start.dateTime != null) {
-        DateTime today = DateTime.now();
-        DateTime eventStartTime = _event.start.dateTime;
-        if (eventStartTime.year == today.year &&
-            eventStartTime.month == today.month &&
-            eventStartTime.day == today.day) {
-          todayEvents.add(_event);
+      if (_event.start != null ) {
+        if (_event.start.dateTime != null) {
+          DateTime today = DateTime.now();
+          DateTime eventStartTime = _event.start.dateTime;
+          if (eventStartTime.year == today.year &&
+              eventStartTime.month == today.month &&
+              eventStartTime.day == today.day) {
+            if (_event.end != null) {
+              end = _event.end.dateTime;
+            }
+            todayEvents.add(_event);
+          }
         }
       }
     });
@@ -96,7 +103,7 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  Widget body () {
+  Widget body (BuildContext _context) {
     if (eventsList.length == 0) {
       return Center(
         child: Column(
@@ -115,7 +122,7 @@ class _SchedulePageState extends State<SchedulePage> {
           child: ColumnBuilder(
             mainAxisSize: MainAxisSize.min,
             itemBuilder: (context, index) {
-              return eventsList[index].buildCard();
+              return eventsList[index].buildCard(_context);
             },
             itemCount: eventsList.length,
           ),
@@ -130,8 +137,18 @@ class _SchedulePageState extends State<SchedulePage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text("Your Schedule"),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/addevent');
+            },
+            icon: Icon(
+              Icons.edit,
+            ),
+          )
+        ],
       ),
-      body: body(),
+      body: body(context),
     );
   }
 }
