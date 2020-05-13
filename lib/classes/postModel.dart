@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 //TODO: Implement Comments posting
 //TODO: Implement reactions (server implementation remaining)
 //TODO: Implement Reactions on comments
+//TODO: Implement full screen photo view
+
 class PostModel {
   String mainText;
   String postPerson;
@@ -25,6 +27,12 @@ class PostModel {
   bool isShowingMore;
   bool isLike;
   String timestamp;
+  Map<String, dynamic> reactions = {
+    'like': 1,
+    'celebrate': 2,
+    'insightful': 3,
+    'haha': 4
+  };
   List<dynamic> comments;
   PostModel({
     this.mainText,
@@ -37,6 +45,7 @@ class PostModel {
     this.postId,
     this.isShowingMore,
     this.isLike,
+    this.reactions,
   });
   factory PostModel.fromJson(Map<String, dynamic> json, int index) {
     var imageurls;
@@ -67,15 +76,15 @@ class PostModel {
     }
     print(timediff);
     return PostModel(
-      postId: json['results'][index]["_id"],
-      postPerson: json['results'][index]['posted_by']["full_name"],
-      postPersonUrl: json['results'][index]['posted_by']['image_link'],
-      mainText: json['results'][index]['content'],
-      postPersonBio: "B.Tech, EE, 2nd year",
-      timeElapsed: timediff,
-      comments: commentsList,
-      imageUrls: imageurls,
-    );
+        postId: json['results'][index]["_id"],
+        postPerson: json['results'][index]['posted_by']["full_name"],
+        postPersonUrl: json['results'][index]['posted_by']['image_link'],
+        mainText: json['results'][index]['content'],
+        postPersonBio: "B.Tech, EE, 2nd year",
+        timeElapsed: timediff,
+        comments: commentsList,
+        imageUrls: imageurls,
+        reactions: json['results'][index]['reactions'] as Map<String, dynamic>);
   }
 }
 
@@ -92,6 +101,8 @@ class PostWidget extends StatefulWidget {
 
 class _PostWidgetState extends State<PostWidget> {
   void updateLikes() async {
+    widget.post.reactions['like'] += (widget.post.isLike == true) ? 1 : -1;
+    setState(() {});
     var queryParameters = {
       'api_key': 'NIKS',
       'feed_id': widget.post.postId,
@@ -102,13 +113,17 @@ class _PostWidgetState extends State<PostWidget> {
       queryParameters,
     );
     print('Sending like/unlike: ' + uri.toString());
-    
-    var jsonbody = jsonEncode(
-        {"where": "like", "change": (widget.post.isLike == true) ? 1 : -1});
+    int change = (widget.post.isLike == true) ? 1 : -1;
+    var jsonbody = jsonEncode({"where": "like", "change": change});
+    print(jsonbody);
     var response = await http.post(
       uri,
       body: jsonbody,
     );
+    print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
+    print(jsonDecode(response.body)['results'][0]['reactions']);
+    
+    print(widget.post.postId);
   }
 
   @override
@@ -218,6 +233,7 @@ class _PostWidgetState extends State<PostWidget> {
                   //         height: ScreenSize.size.height * 0.4,
                   //         child: Image.network(widget.post.imageUrl),
                   //       ),
+
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -231,7 +247,7 @@ class _PostWidgetState extends State<PostWidget> {
                                     : secondaryTextColor,
                               ),
                               SizedBox(width: 10),
-                              Text("Like")
+                              Text("${widget.post.reactions['like']}"),
                             ],
                           ),
                           onPressed: () {
@@ -245,7 +261,7 @@ class _PostWidgetState extends State<PostWidget> {
                               children: <Widget>[
                                 Icon(Icons.comment, color: secondaryTextColor),
                                 SizedBox(width: 10),
-                                Text("Comment"),
+                                Text("${widget.post.comments.length}"),
                               ],
                             ),
                             onPressed: () {
@@ -256,7 +272,7 @@ class _PostWidgetState extends State<PostWidget> {
                                         FullPostPage(post: widget.post)),
                               );
                             }),
-                      ])
+                      ]),
                 ],
               ),
             )),
