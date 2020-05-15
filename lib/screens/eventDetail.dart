@@ -47,6 +47,16 @@ class _EventDetailState extends State<EventDetail> {
           Text('${event.eventType}'),
           SizedBox(height: 10,),
           Text('${event.remarks}'),
+          SizedBox(
+            height: 8,
+          ),
+          Column(
+            children: event.instructors.map<Widget>((String instructor) {
+              return Text(instructor);
+            }).toList(),
+          ),
+          SizedBox(height: 10,),
+          Text('Credits: ${event.credits}'),
         ],
       );
     } else {

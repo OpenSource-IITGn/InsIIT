@@ -13,6 +13,8 @@ class EventModel {
   String remarks;
   String location;
   String creator;
+  List<String> instructors;
+  String credits;
   EventModel(
       {this.start,
         this.end,
@@ -24,7 +26,9 @@ class EventModel {
         this.eventType,
         this.remarks,
         this.location,
-        this.creator});
+        this.creator,
+        this.instructors,
+        this.credits});
 
   Widget time (DateTime time) {
     if (time == null) {
@@ -154,7 +158,49 @@ class EventModel {
   }
 }
 
+class TodayCourse {
+  DateTime start;
+  DateTime end;
+  String course;
 
+  TodayCourse({this.start, this.end , this.course});
+}
+
+class MyCourse {
+  String courseCode;
+  String courseName;
+  String noOfLectures;
+  String noOfTutorials;
+  String credits;
+  List<String> instructors;
+  String preRequisite;
+  List<String> lectureCourse;
+  String lectureLocation;
+  List<String> tutorialCourse;
+  String tutorialLocation;
+  List<String> labCourse;
+  String labLocation;
+  String remarks;
+  String courseBooks;
+
+  MyCourse({
+    this.courseCode,
+    this.courseName,
+    this.noOfLectures,
+    this.noOfTutorials,
+    this.credits,
+    this.instructors,
+    this.preRequisite,
+    this.lectureCourse,
+    this.lectureLocation,
+    this.tutorialCourse,
+    this.tutorialLocation,
+    this.labCourse,
+    this.labLocation,
+    this.remarks,
+    this.courseBooks,
+  });
+}
 
 verticalDivider() {
   return Row(
