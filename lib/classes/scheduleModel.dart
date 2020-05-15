@@ -15,6 +15,7 @@ class EventModel {
   String creator;
   List<String> instructors;
   String credits;
+  String preRequisite;
   EventModel(
       {this.start,
         this.end,
@@ -28,7 +29,8 @@ class EventModel {
         this.location,
         this.creator,
         this.instructors,
-        this.credits});
+        this.credits,
+        this.preRequisite});
 
   Widget time (DateTime time) {
     if (time == null) {
@@ -79,11 +81,23 @@ class EventModel {
               SizedBox(
                 height: 8,
               ),
-              Text(this.eventType + ' (${this.remarks})',
-                  style: TextStyle(
-                      color: Colors.black.withAlpha(200),
-                      fontStyle: FontStyle.italic,
-                      fontSize: 14)),
+              Row(
+                children: <Widget>[
+                  Text(this.eventType + ' (${this.remarks})',
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(200),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14)),
+                  SizedBox(width: 5,),
+                  Flexible(
+                    child: Text('Room: ${this.location}',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
             ]),
       );
     } else {

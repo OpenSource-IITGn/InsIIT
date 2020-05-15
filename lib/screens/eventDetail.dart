@@ -29,35 +29,101 @@ class _EventDetailState extends State<EventDetail> {
 
   Widget body (EventModel event) {
     if (event.isCourse) {
-      return Column(
-        children: <Widget>[
-          SizedBox(height: 10,),
-          Text(
-            'ID: ${event.courseId}',
-          ),
-          SizedBox(height: 10,),
-          Text(
-            'Course: ${event.courseName}',
-          ),
-          SizedBox(height: 10,),
-          Text('ClassRoom: ${event.location}'),
-          SizedBox(height: 10,),
-          Text('Time: ${event.start} to ${event.end}'),
-          SizedBox(height: 10,),
-          Text('${event.eventType}'),
-          SizedBox(height: 10,),
-          Text('${event.remarks}'),
-          SizedBox(
-            height: 8,
-          ),
-          Column(
-            children: event.instructors.map<Widget>((String instructor) {
-              return Text(instructor);
-            }).toList(),
-          ),
-          SizedBox(height: 10,),
-          Text('Credits: ${event.credits}'),
-        ],
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 10,),
+            Text(
+                'ID: ${event.courseId}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Course: ${event.courseName}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'ClassRoom: ${event.location}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Time: ${event.start.hour}:${event.start.minute} to ${event.end.hour}:${event.end.minute}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Type: ${event.eventType}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Remarks: ${event.remarks}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Text(
+                'Instructors: ',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Column(
+              children: event.instructors.map<Widget>((String instructor) {
+                return Text(
+                    instructor,
+                    style: TextStyle(
+                        color: Colors.black.withAlpha(255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Credits: ${event.credits}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Pre-requisite: ${event.preRequisite}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+          ],
+        ),
       );
     } else {
       return Column(
@@ -90,7 +156,7 @@ class _EventDetailState extends State<EventDetail> {
       ),
       body: SingleChildScrollView(
         child: body(event),
-        ),
+      ),
     );
   }
 }

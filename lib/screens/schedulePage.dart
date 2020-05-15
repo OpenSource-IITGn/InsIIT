@@ -99,7 +99,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   eventType: 'Lecture ${text.substring(2, text.length)}',
                   location: myCourse.lectureLocation,
                   instructors: myCourse.instructors,
-                  credits: myCourse.credits));
+                  credits: myCourse.credits,
+                  preRequisite: myCourse.preRequisite));
             } else {
               coursesEventModelList.add(EventModel(start: todayCourse.start,
                   end: todayCourse.end,
@@ -109,7 +110,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   eventType: 'Lecture',
                   location: myCourse.lectureLocation,
                   instructors: myCourse.instructors,
-                  credits: myCourse.credits));
+                  credits: myCourse.credits,
+                  preRequisite: myCourse.preRequisite));
             }
           }
         });
@@ -124,7 +126,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   eventType: 'Tutorial ${text.substring(2, text.length)}',
                   location: myCourse.tutorialLocation,
                   instructors: myCourse.instructors,
-                  credits: myCourse.credits));
+                  credits: myCourse.credits,
+                  preRequisite: myCourse.preRequisite));
             } else {
               coursesEventModelList.add(EventModel(start: todayCourse.start,
                   end: todayCourse.end,
@@ -134,7 +137,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   eventType: 'Tutorial',
                   location: myCourse.tutorialLocation,
                   instructors: myCourse.instructors,
-                  credits: myCourse.credits));
+                  credits: myCourse.credits,
+                  preRequisite: myCourse.preRequisite));
             }
           }
         });
@@ -149,7 +153,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   eventType: 'Lab ${text.substring(2, text.length)}',
                   location: myCourse.labLocation,
                   instructors: myCourse.instructors,
-                  credits: myCourse.credits));
+                  credits: myCourse.credits,
+                  preRequisite: myCourse.preRequisite));
             } else {
               coursesEventModelList.add(EventModel(start: todayCourse.start,
                   end: todayCourse.end,
@@ -159,7 +164,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   eventType: 'Lab',
                   location: myCourse.labLocation,
                   instructors: myCourse.instructors,
-                  credits: myCourse.credits));
+                  credits: myCourse.credits,
+                  preRequisite: myCourse.preRequisite));
             }
           }
         });
