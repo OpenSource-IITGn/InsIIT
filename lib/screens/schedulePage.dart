@@ -43,7 +43,7 @@ class _SchedulePageState extends State<SchedulePage> {
     _events = listWithoutRepetitionEvent(events);
     todayEvents = todayEventsList(_events);
     todayEvents.forEach((calendar.Event event) {
-      eventsList.add(EventModel(start: event.start.dateTime, end: event.end.dateTime , isCourse: false, description: event.description, summary: event.summary, location: event.location, creator: event.creator.displayName, remarks: event.status));
+      eventsList.add(EventModel(start: event.start.dateTime.toLocal(), end: event.end.dateTime.toLocal() , isCourse: false, description: event.description, summary: event.summary, location: event.location, creator: event.creator.displayName, remarks: event.status));
     });
     quickSort(eventsList, 0, eventsList.length - 1);
   }
