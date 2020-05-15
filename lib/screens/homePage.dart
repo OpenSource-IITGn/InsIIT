@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:instiapp/screens/loading.dart';
@@ -11,6 +13,7 @@ import 'email.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:instiapp/screens/signIn.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -26,6 +29,7 @@ List<Data> emails;
 List<TodayCourse> todayCourses;
 List<Course> _courses;
 List<MyCourse> myCourses;
+List<EventModel> removedEvents;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
@@ -42,6 +46,7 @@ class _HomePageState extends State<HomePage> {
     loadImportantContactData();
     loadShuttleData();
     loadCourseData();
+    loadRemovedCoursesData();
   }
 
   loadShuttleData() async {
@@ -61,6 +66,65 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
+
+  loadRemovedCoursesData () async {
+    getRemovedEventsData().listen((data) {
+      print(data);
+      removedEvents = makeRemovedEventsList(data);
+    });
+  }
+
+  List<EventModel> makeRemovedEventsList (var removedEventsDataList) {
+    List<EventModel> _removedEvents = [];
+
+    if (removedEventsDataList != null && removedEventsDataList.length != 0) {
+      removedEventsDataList.forEach((var lc) {
+        if (lc[0] == 'course') {
+          _removedEvents.add(EventModel(
+            isCourse: true,
+            courseId: lc[1],
+            courseName: lc[2],
+            eventType: lc[3],
+          ));
+        } else {
+          _removedEvents.add(EventModel(
+            isCourse: false,
+            description: lc[1],
+            summary: lc[2],
+            location: lc[3],
+            creator: lc[4],
+            remarks: lc[5],
+          ));
+        }
+      });
+    }
+
+    return _removedEvents;
+  }
+
+  Future<File> _localFileForRemovedEvents() async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + 'removedCourses' + '.csv';
+    return File(filename);
+  }
+
+  Stream<List<List<dynamic>>> getRemovedEventsData() async* {
+    var file = await _localFileForRemovedEvents();
+    bool exists = await file.exists();
+    if (exists) {
+      await file.open();
+      String values = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues =
+      CsvToListConverter().convert(values);
+      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+
+      yield rowsAsListOfValues;
+    } else {
+      yield [];
+    }
+  }
+
 
   loadCourseData () async {
     sheet.getData('slots!A:F').listen((data) {
@@ -130,7 +194,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<TodayCourse> makeTodayTimeSlotList (var courseSlotDataList) {
-    int day = DateTime.now().weekday;
+    //int day = DateTime.now().weekday;
+    int day = 1;
     List<TodayCourse> courses = [];
     if (day != 6 && day != 7) {
       courseSlotDataList.removeAt(0);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/academiccalendar.dart';
-import 'package:instiapp/screens/addEvent.dart';
+import 'package:instiapp/screens/editEvent.dart';
 import 'package:instiapp/screens/addtext.dart';
 import 'package:instiapp/screens/announcements.dart';
 import 'package:instiapp/screens/articles.dart';
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         '/RoomBooking' : (context) => RoomService(),
         '/availablerooms' : (context) => AvailableRooms(),
         '/eventdetail' : (context) => EventDetail(),
-        '/addevent' : (context) => AddEvent(),
+        '/editevent' : (context) => EditEvent(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),

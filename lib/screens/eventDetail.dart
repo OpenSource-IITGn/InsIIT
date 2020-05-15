@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 
@@ -134,20 +135,54 @@ class _EventDetailState extends State<EventDetail> {
         ),
       );
     } else {
-      return Column(
-        children: <Widget>[
-          SizedBox(height: 10,),
-          Text('Event: ' + stringReturn(event.summary)),
-          SizedBox(height: 10,),
-          Text('Invited by: ' + stringReturn(event.creator)),
-          SizedBox(height: 10,),
-          Text('Description: ' + stringReturn(event.description)),
-          SizedBox(height: 10,),
-          Text('Time: ' + time(event.start) + ' To ' + time(event.end)),
-          SizedBox(height: 10,),
-          Text('Location: ' + stringReturn(event.location)),
-          SizedBox(height: 10,),
-        ],
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 10,),
+            Text(
+                'Event: ' + stringReturn(event.summary),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Invited by: ' + stringReturn(event.creator),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Description: ' + stringReturn(event.description),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Time: ' + time(event.start) + ' To ' + time(event.end),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Location: ' + stringReturn(event.location),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+          ],
+        ),
       );
     }
   }
