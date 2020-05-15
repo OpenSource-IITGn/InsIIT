@@ -41,9 +41,18 @@ class EventModel {
       );
     }
     else {
-      return Text("${time.hour}:${time.minute}",
+      return Text(twoDigitTime(time.hour.toString()) + ':' + twoDigitTime(time.minute.toString()),
           style: TextStyle(
               color: Colors.black.withAlpha(200), fontSize: 17));
+    }
+  }
+
+  String twoDigitTime(String text) {
+    if (text.length == 1) {
+      String _text = '0' + text;
+      return _text;
+    } else {
+      return text;
     }
   }
 
@@ -83,7 +92,7 @@ class EventModel {
               ),
               Row(
                 children: <Widget>[
-                  Text(this.eventType + ' (${this.remarks})',
+                  Text(this.eventType,
                       style: TextStyle(
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,

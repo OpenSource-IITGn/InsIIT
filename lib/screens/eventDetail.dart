@@ -17,13 +17,21 @@ class _EventDetailState extends State<EventDetail> {
       return text;
     }
   }
+  String twoDigitTime(String text) {
+    if (text.length == 1) {
+      String _text = '0' + text;
+      return _text;
+    } else {
+      return text;
+    }
+  }
 
   String time (DateTime time) {
     if (time == null) {
       return "Whole Day";
     }
     else {
-      return "${time.hour}:${time.minute}";
+      return twoDigitTime(time.hour.toString()) + ':' + twoDigitTime(time.minute.toString());
     }
   }
 
@@ -60,7 +68,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             SizedBox(height: 10,),
             Text(
-                'Time: ${event.start.hour}:${event.start.minute} to ${event.end.hour}:${event.end.minute}',
+                'Time: ' + time(event.start) + ' to ' + time(event.end),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
