@@ -6,6 +6,8 @@ import 'package:instiapp/screens/schedulePage.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EditEvent extends StatefulWidget {
   @override
@@ -23,7 +25,7 @@ class _EditEventState extends State<EditEvent> {
           children: <Widget>[
             SizedBox(height: 8,),
             Text(
-            stringReturn(model, model.courseName, model.summary),
+              stringReturn(model, model.courseName, model.summary),
               style: TextStyle(
                   color: Colors.black.withAlpha(255),
                   fontWeight: FontWeight.bold,
@@ -148,6 +150,21 @@ class _EditEventState extends State<EditEvent> {
     return File(filename);
   }
 
+  _openGoogleCalendar () async {
+    bool isInstalled = await DeviceApps.isAppInstalled('com.google.android.calendar');
+    print(isInstalled);
+    if (isInstalled) {
+      DeviceApps.openApp('com.google.android.calendar');
+    } else {
+      String url = 'https://calendar.google.com';
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,6 +180,14 @@ class _EditEventState extends State<EditEvent> {
               return eventCard(model);
             }).toList(),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _openGoogleCalendar();
+        },
+        child: Icon(
+          Icons.add,
         ),
       ),
     );
