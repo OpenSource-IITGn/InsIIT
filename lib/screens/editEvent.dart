@@ -23,7 +23,15 @@ class _EditEventState extends State<EditEvent> {
           children: <Widget>[
             SizedBox(height: 8,),
             Text(
-              model.courseName ?? model.summary,
+            stringReturn(model, model.courseName, model.summary),
+              style: TextStyle(
+                  color: Colors.black.withAlpha(255),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ),
+            SizedBox(height: 8,),
+            Text(
+              stringReturn(model, model.eventType, model.description),
               style: TextStyle(
                   color: Colors.black.withAlpha(255),
                   fontWeight: FontWeight.bold,
@@ -91,6 +99,20 @@ class _EditEventState extends State<EditEvent> {
         ),
       ),
     );
+  }
+
+  String stringReturn(EventModel model, String textCourse, String textCalendar) {
+    if (model.isCourse) {
+      return textCourse;
+    } else {
+      if (textCalendar == null) {
+        return 'None';
+      } else if (textCalendar.length < 100) {
+        return textCalendar;
+      } else {
+        return textCalendar.substring(0, 99);
+      }
+    }
   }
 
   List<List<String>> makeRemovedEventsList (List<EventModel> removedEvents) {

@@ -194,8 +194,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<TodayCourse> makeTodayTimeSlotList (var courseSlotDataList) {
-    //int day = DateTime.now().weekday;
-    int day = 1;
+    int day = DateTime.now().weekday;
     List<TodayCourse> courses = [];
     if (day != 6 && day != 7) {
       courseSlotDataList.removeAt(0);
