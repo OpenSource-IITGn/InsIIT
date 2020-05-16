@@ -152,7 +152,6 @@ class _EditEventState extends State<EditEvent> {
 
   _openGoogleCalendar () async {
     bool isInstalled = await DeviceApps.isAppInstalled('com.google.android.calendar');
-    print(isInstalled);
     if (isInstalled) {
       DeviceApps.openApp('com.google.android.calendar');
     } else {
