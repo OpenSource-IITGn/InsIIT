@@ -3,10 +3,13 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 
 Color secondaryColor = Color.fromRGBO(44,50,190,1);
 Color primaryColor = Color.fromRGBO(65,97,255,1);
 Color secondaryTextColor = Colors.black.withAlpha(150);
+final dateFormat = new DateFormat('dd-MM-yyyy hh:mm');
+ String baseUrl = "serene-reaches-30469.herokuapp.com";
 final GoogleSignIn gSignIn = GoogleSignIn(
   scopes: <String>[
     'email',

@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:instiapp/screens/loading.dart';
@@ -8,6 +10,10 @@ import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'email.dart';
+import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:googleapis/classroom/v1.dart';
+import 'package:instiapp/screens/signIn.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -20,6 +26,10 @@ List<FoodCard> foodCards;
 List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails = [];
+List<TodayCourse> todayCourses;
+List<Course> _courses;
+List<MyCourse> myCourses;
+List<EventModel> removedEvents;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
@@ -35,6 +45,8 @@ class _HomePageState extends State<HomePage> {
     loadMessData();
     loadImportantContactData();
     loadShuttleData();
+    loadCourseData();
+    loadRemovedCoursesData();
   }
   // var emails = [];
   loadlinks() async {
@@ -72,6 +84,175 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  loadRemovedCoursesData () async {
+    getRemovedEventsData().listen((data) {
+      print(data);
+      removedEvents = makeRemovedEventsList(data);
+    });
+  }
+
+  List<EventModel> makeRemovedEventsList (var removedEventsDataList) {
+    List<EventModel> _removedEvents = [];
+
+    if (removedEventsDataList != null && removedEventsDataList.length != 0) {
+      removedEventsDataList.forEach((var lc) {
+        if (lc[0] == 'course') {
+          _removedEvents.add(EventModel(
+            isCourse: true,
+            courseId: lc[1],
+            courseName: lc[2],
+            eventType: lc[3],
+          ));
+        } else {
+          _removedEvents.add(EventModel(
+            isCourse: false,
+            description: lc[1],
+            summary: lc[2],
+            location: lc[3],
+            creator: lc[4],
+            remarks: lc[5],
+          ));
+        }
+      });
+    }
+
+    return _removedEvents;
+  }
+
+  Future<File> _localFileForRemovedEvents() async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + 'removedCourses' + '.csv';
+    return File(filename);
+  }
+
+  Stream<List<List<dynamic>>> getRemovedEventsData() async* {
+    var file = await _localFileForRemovedEvents();
+    bool exists = await file.exists();
+    if (exists) {
+      await file.open();
+      String values = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues =
+      CsvToListConverter().convert(values);
+      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+
+      yield rowsAsListOfValues;
+    } else {
+      yield [];
+    }
+  }
+
+
+  loadCourseData () async {
+    sheet.getData('slots!A:F').listen((data) {
+      todayCourses = makeTodayTimeSlotList(data);
+    });
+    _courses = listWithoutRepetitionCourse(courses);
+    sheet.getData('timetable!A:Q').listen((data) {
+      myCourses = makeMyCourseList(data, _courses);
+    });
+  }
+
+  bool compareStrings(String str1, String str2) {
+    if (str1.compareTo(str2) == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  List<MyCourse> makeMyCourseList (List data, List<Course> _courses) {
+    List<MyCourse> _myCourses = [];
+
+    _courses.forEach((Course course) {
+      bool mine = false;
+      data.forEach((var lc) {
+        if (mine == false && lc[0] != '-' && lc[0] != '' && lc[1] != '-' && lc[1] != '') {
+          if (lc[0].replaceAll(' ', '').contains(new RegExp(
+              course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+              course.name.replaceAll(' ', '').contains(new RegExp(
+                  lc[0].replaceAll(' ', ''), caseSensitive: false)) ||
+              compareStrings(course.name, lc[0]) ||
+              lc[1].replaceAll(' ', '').contains(new RegExp(
+                  course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+              course.name.replaceAll(' ', '').contains(new RegExp(
+                  lc[1].replaceAll(' ', ''), caseSensitive: false)) ||
+              compareStrings(course.name, lc[1])) {
+            _myCourses.add(MyCourse(courseCode: lc[0],
+                courseName: lc[1],
+                noOfLectures: lc[2].toString(),
+                noOfTutorials: lc[3].toString(),
+                credits: lc[5].toString(),
+                instructors: lc[6].split(','),
+                preRequisite: lc[10],
+                lectureCourse: lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                lectureLocation: returnLocation(lc[11]),
+                tutorialCourse: lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                tutorialLocation: returnLocation(lc[12]),
+                labCourse: lc[13].split('(')[0].replaceAll(' ', '').split('+'),
+                labLocation: returnLocation(lc[13]),
+                remarks: lc[14],
+                courseBooks: lc[15]));
+            mine = true;
+          }
+        }
+      });
+    });
+
+    return _myCourses;
+  }
+
+  String returnLocation (var text) {
+    if (text.split('(').length == 1) {
+      return 'None';
+    } else {
+      return text.split('(')[1].replaceAll(')', '');
+    }
+  }
+
+  List<TodayCourse> makeTodayTimeSlotList (var courseSlotDataList) {
+    int day = DateTime.now().weekday;
+    List<TodayCourse> courses = [];
+    if (day != 6 && day != 7) {
+      courseSlotDataList.removeAt(0);
+      courseSlotDataList.removeAt(0);
+
+      courseSlotDataList.forEach((var lc) {
+        List<DateTime> time = returnTime(lc[0]);
+        courses.add(TodayCourse(start: time[0], end: time[1], course: lc[day]));
+      });
+    }
+    return courses;
+  }
+
+  List<DateTime> returnTime (String time) {
+    List<DateTime> seTime = [];
+    DateTime today = DateTime.now();
+    var list1 = time.split('-');
+    var startString = list1[0].split(':');
+    var endString = list1[1].split(':');
+    seTime = [DateTime(today.year, today.month, today.day, int.parse(startString[0]), int.parse(startString[1])),
+      DateTime(today.year, today.month, today.day, int.parse(endString[0]), int.parse(endString[1]))];
+
+    return seTime;
+  }
+
+  List listWithoutRepetitionCourse (List<Course> courses) {
+    List<Course> withoutRepeat = [];
+    courses.forEach((Course course) {
+      bool notHave = true;
+      withoutRepeat.forEach((Course _course) {
+        if (_course.id == course.id) {
+          notHave = false;
+        }
+      });
+      if (notHave) {
+        withoutRepeat.add(course);
+      }
+    });
+    return withoutRepeat;
+  }
+
   loadImportantContactData() async {
     sheet.getData('Contacts!A:E').listen((data) {
       makeContactList(data);
@@ -83,7 +264,6 @@ class _HomePageState extends State<HomePage> {
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
       makeMessList(data);
-      print(wednesday[1]);
       foodCards = [
         FoodCard(
             day: 'Monday',
@@ -180,8 +360,8 @@ class _HomePageState extends State<HomePage> {
                 (connected)
                     ? Container()
                     : SizedBox(
-                        height: 10,
-                      ),
+                  height: 10,
+                ),
                 Container(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
