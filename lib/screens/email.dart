@@ -25,15 +25,16 @@ class _EmailState extends State<Email> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('Links'),
+        title: Text('Quick Links'),
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.blue[250],
+        backgroundColor: Colors.indigo,
       ),
 
       body : SingleChildScrollView(
-              child: Column(
+            child: Column(
           // children: {template(emails[0])}.toList(),
+
           children : emails.map( (currentobject) => Template(obj: currentobject)).toList(),
 
           //.toList across the whole emails.map(), since the children of coloumn need to be in list 
@@ -88,7 +89,7 @@ class Template extends StatelessWidget {
               obj.email,
               style: TextStyle(
                 fontSize: 28,
-                color: Colors.blue[600],
+                color: Colors.indigo,
                 ),
             ),
 
