@@ -20,12 +20,10 @@ List<EventModel> eventsList;
 
 class _SchedulePageState extends State<SchedulePage> {
 
-  List<Course> _courses;
-
   List<calendar.Event> todayEvents;
   List<EventModel> currentDayCourses;
+  List<EventModel> currentDayExamCourses;
   List<EventModel> mergedCourses;
-  List<calendar.Event> _events;
   EventModel x = EventModel(
       courseId: "EE333",
       courseName: "Embedded Systems and Microprocessors",
@@ -37,6 +35,21 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     eventsList = [];
+    currentDayExamCourses = todayExamCourses(examCourses);
+    currentDayExamCourses.forEach((EventModel model) {
+      bool shouldContain = true;
+      removedEvents.forEach((EventModel removedEvent) {
+        if (removedEvent.isExam) {
+          if (removedEvent.courseId == model.courseId &&
+              removedEvent.courseName == model.courseName) {
+            shouldContain = false;
+          }
+        }
+      });
+      if (shouldContain) {
+        eventsList.add(model);
+      }
+    });
     currentDayCourses = makeCourseEventModel(todayCourses, myCourses);
     mergedCourses = mergeSameCourses(currentDayCourses);
     mergedCourses.forEach((EventModel model) {
@@ -54,12 +67,11 @@ class _SchedulePageState extends State<SchedulePage> {
         eventsList.add(model);
       }
     });
-    _events = listWithoutRepetitionEvent(events);
-    todayEvents = todayEventsList(_events);
+    todayEvents = todayEventsList(eventsWithoutRepetition);
     todayEvents.forEach((calendar.Event event) {
       bool shouldContain = true;
       removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isCourse == false) {
+        if (removedEvent.isCourse == false && removedEvent.isExam == false) {
           if (removedEvent.description == event.description &&
               removedEvent.summary == event.summary &&
               removedEvent.location == event.location &&
@@ -73,6 +85,7 @@ class _SchedulePageState extends State<SchedulePage> {
         eventsList.add(EventModel(start: event.start.dateTime.toLocal(),
             end: event.end.dateTime.toLocal(),
             isCourse: false,
+            isExam: false,
             courseName: null,
             description: event.description,
             summary: event.summary,
@@ -84,6 +97,19 @@ class _SchedulePageState extends State<SchedulePage> {
     if (eventsList.length != 0 && eventsList != null) {
       quickSort(eventsList, 0, eventsList.length - 1);
     }
+  }
+
+  List<EventModel> todayExamCourses (List<EventModel> examCourses) {
+    List<EventModel> todayExamCourses = [];
+    DateTime today = DateTime.now();
+    examCourses.forEach((EventModel event) {
+      if (event.start.year == today.year &&
+          event.start.month == today.month &&
+          event.start.day == today.day) {
+        todayExamCourses.add(event);
+      }
+    });
+    return todayExamCourses;
   }
 
   List<EventModel> mergeSameCourses (List<EventModel> currentDayCourses) {
@@ -145,6 +171,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 coursesEventModelList.add(EventModel(start: todayCourse.start,
                     end: todayCourse.end,
                     isCourse: true,
+                    isExam: false,
                     courseId: myCourse.courseCode,
                     courseName: myCourse.courseName,
                     eventType: 'Lecture ${text.substring(2, text.length)}',
@@ -156,6 +183,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 coursesEventModelList.add(EventModel(start: todayCourse.start,
                     end: todayCourse.end,
                     isCourse: true,
+                    isExam: false,
                     courseId: myCourse.courseCode,
                     courseName: myCourse.courseName,
                     eventType: 'Lecture',
@@ -175,6 +203,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 coursesEventModelList.add(EventModel(start: todayCourse.start,
                     end: todayCourse.end,
                     isCourse: true,
+                    isExam: false,
                     courseId: myCourse.courseCode,
                     courseName: myCourse.courseName,
                     eventType: 'Tutorial ${text.substring(2, text.length)}',
@@ -186,6 +215,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 coursesEventModelList.add(EventModel(start: todayCourse.start,
                     end: todayCourse.end,
                     isCourse: true,
+                    isExam: false,
                     courseId: myCourse.courseCode,
                     courseName: myCourse.courseName,
                     eventType: 'Tutorial',
@@ -205,6 +235,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 coursesEventModelList.add(EventModel(start: todayCourse.start,
                     end: todayCourse.end,
                     isCourse: true,
+                    isExam: false,
                     courseId: myCourse.courseCode,
                     courseName: myCourse.courseName,
                     eventType: 'Lab ${text.substring(2, text.length)}',
@@ -216,6 +247,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 coursesEventModelList.add(EventModel(start: todayCourse.start,
                     end: todayCourse.end,
                     isCourse: true,
+                    isExam: false,
                     courseId: myCourse.courseCode,
                     courseName: myCourse.courseName,
                     eventType: 'Lab',
@@ -233,25 +265,10 @@ class _SchedulePageState extends State<SchedulePage> {
     return coursesEventModelList;
   }
 
-  List listWithoutRepetitionEvent (List<calendar.Event> events) {
-    List<calendar.Event> withoutRepeat = [];
-    events.forEach((calendar.Event event) {
-      bool notHave = true;
-      withoutRepeat.forEach((calendar.Event _event) {
-        if (_event.id == event.id) {
-          notHave = false;
-        }
-      });
-      if (notHave) {
-        withoutRepeat.add(event);
-      }
-    });
-    return withoutRepeat;
-  }
-
   List todayEventsList (List<calendar.Event> _events) {
     List<calendar.Event> todayEvents = [];
     _events.forEach((calendar.Event _event ) {
+      bool included = false;
       if (_event.start != null ) {
         if (_event.start.dateTime != null) {
           DateTime today = DateTime.now();
@@ -260,6 +277,19 @@ class _SchedulePageState extends State<SchedulePage> {
               eventStartTime.month == today.month &&
               eventStartTime.day == today.day) {
             todayEvents.add(_event);
+            included = true;
+          }
+        }
+      }  if (included == false) {
+        if (_event.end != null) {
+          if (_event.end.dateTime != null) {
+            DateTime today = DateTime.now();
+            DateTime eventEndTime = _event.end.dateTime;
+            if (eventEndTime.year == today.year &&
+                eventEndTime.month == today.month &&
+                eventEndTime.day == today.day) {
+              todayEvents.add(_event);
+            }
           }
         }
       }

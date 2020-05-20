@@ -134,6 +134,63 @@ class _EventDetailState extends State<EventDetail> {
           ],
         ),
       );
+    } else if (event.isExam) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 10,),
+            Text(
+                'ID: ${event.courseId}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Course: ${event.courseName}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'ClassRoom: ${event.location}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Roll Numbers: ${event.rollNumbers}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Time: ' + time(event.start) + ' to ' + time(event.end),
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+            SizedBox(height: 10,),
+            Text(
+                'Type: ${event.eventType}',
+                style: TextStyle(
+                    color: Colors.black.withAlpha(255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)
+            ),
+          ],
+        ),
+      );
     } else {
       return Padding(
         padding: const EdgeInsets.all(8.0),
