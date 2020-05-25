@@ -22,6 +22,7 @@ import 'package:instiapp/screens/AvailableRooms.dart';
 import 'package:instiapp/screens/form3.dart';
 import 'package:instiapp/screens/roomservice.dart';
 import 'package:instiapp/screens/eventDetail.dart';
+import 'package:instiapp/screens/googlemap.dart';
 
 void main() => runApp(MyApp());
 
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/availablerooms' : (context) => AvailableRooms(),
         '/eventdetail' : (context) => EventDetail(),
         '/editevent' : (context) => EditEvent(),
+        '/map' : (context) => MapPage(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
