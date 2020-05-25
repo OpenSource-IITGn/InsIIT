@@ -105,7 +105,7 @@ class _PostWidgetState extends State<PostWidget> {
     setState(() {});
     var queryParameters = {
       'api_key': 'NIKS',
-      'feed_id': widget.post.postId, 
+      'feed_id': widget.post.postId,
     };
     var uri = Uri.https(
       baseUrl,
