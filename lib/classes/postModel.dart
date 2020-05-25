@@ -74,13 +74,13 @@ class PostModel {
     } else {
       timediff = difference.inDays.toString() + 'd';
     }
-    print(timediff);
+    print(json['results'][index]['posted_by']['bio']);
     return PostModel(
         postId: json['results'][index]["_id"],
         postPerson: json['results'][index]['posted_by']["full_name"],
         postPersonUrl: json['results'][index]['posted_by']['image_link'],
         mainText: json['results'][index]['content'],
-        postPersonBio: "B.Tech, EE, 2nd year",
+        postPersonBio: json['results'][index]['posted_by']['bio'],
         timeElapsed: timediff,
         comments: commentsList,
         imageUrls: imageurls,
