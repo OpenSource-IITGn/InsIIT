@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:location/location.dart';
+import 'package:flutter/services.dart';
 
 
 class MapInfoWindow {
@@ -35,6 +36,14 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   Completer<GoogleMapController> _controller = Completer();
+
+  Location _locationTracker = Location();
+
+  StreamSubscription _locationSubscription;
+
+  Marker marker;
+
+  Circle circle;
 
   static const LatLng _center = const LatLng(23.212838, 72.684738);
 
@@ -67,6 +76,60 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  void updateMarkerAndCircle(LocationData newLocalData) {
+    LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
+    this.setState(() {
+      marker = Marker(
+          markerId: MarkerId("User"),
+          position: latlng,
+          rotation: newLocalData.heading,
+          draggable: false,
+          zIndex: 2,
+          flat: true,
+          anchor: Offset(0.5, 0.5),
+          icon: customIcon);
+      _markers.add(marker);
+      circle = Circle(
+          circleId: CircleId("Accuracy"),
+          radius: newLocalData.accuracy,
+          zIndex: 1,
+          strokeColor: Colors.blue,
+          center: latlng,
+          fillColor: Colors.blue.withAlpha(70));
+    });
+  }
+
+  void getCurrentLocation() async {
+    try {
+
+      var location = await _locationTracker.getLocation();
+
+      updateMarkerAndCircle(location);
+
+      if (_locationSubscription != null) {
+        _locationSubscription.cancel();
+      }
+
+
+      _locationSubscription = _locationTracker.onLocationChanged.listen((LocationData newLocalData) {
+          updateMarkerAndCircle(newLocalData);
+      });
+
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        debugPrint("Permission Denied");
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_locationSubscription != null) {
+      _locationSubscription.cancel();
+    }
+    super.dispose();
+  }
+
   void setCustomIcon() async {
    customIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
@@ -76,6 +139,7 @@ class _MapPageState extends State<MapPage> {
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
     _markerSet();
+    getCurrentLocation();
     controller.setMapStyle(_mapStyle);
   }
 
@@ -176,7 +240,7 @@ class _MapPageState extends State<MapPage> {
               compassEnabled: true,
               myLocationEnabled: true,
               tiltGesturesEnabled: false,
-              myLocationButtonEnabled: false,
+              myLocationButtonEnabled: true,
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: _center,
@@ -185,6 +249,7 @@ class _MapPageState extends State<MapPage> {
                 bearing: 180.0,
               ),
               markers: _markers,
+              circles: Set.of((circle != null) ? [circle] : []),
               onTap: (LatLng location) {
                   setState(() {
                   mapInfoWindowPosition = -370;
