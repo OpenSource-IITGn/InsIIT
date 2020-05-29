@@ -57,6 +57,15 @@ class _EditEventState extends State<EditEvent> {
                               if (model.isCourse) {
                                 removedEvents.add(EventModel(
                                   isCourse: true,
+                                  isExam: false,
+                                  courseId: model.courseId,
+                                  courseName: model.courseName,
+                                  eventType: model.eventType,
+                                ));
+                              } else if (model.isExam) {
+                                removedEvents.add(EventModel(
+                                  isCourse: false,
+                                  isExam: true,
                                   courseId: model.courseId,
                                   courseName: model.courseName,
                                   eventType: model.eventType,
@@ -64,6 +73,7 @@ class _EditEventState extends State<EditEvent> {
                               } else {
                                 removedEvents.add(EventModel(
                                   isCourse: false,
+                                  isExam: false,
                                   description: model.description,
                                   summary: model.summary,
                                   location: model.location,
@@ -104,7 +114,7 @@ class _EditEventState extends State<EditEvent> {
   }
 
   String stringReturn(EventModel model, String textCourse, String textCalendar) {
-    if (model.isCourse) {
+    if (model.isCourse || model.isExam) {
       return textCourse;
     } else {
       if (textCalendar == null) {
@@ -124,6 +134,13 @@ class _EditEventState extends State<EditEvent> {
       if (model.isCourse) {
         removedEventsList.add([
           'course',
+          model.courseId,
+          model.courseName,
+          model.eventType
+        ]);
+      } else if (model.isExam) {
+        removedEventsList.add([
+          'exam',
           model.courseId,
           model.courseName,
           model.eventType

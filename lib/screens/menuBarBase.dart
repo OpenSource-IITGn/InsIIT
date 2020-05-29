@@ -240,6 +240,19 @@ class _MenuBarBaseState extends State<MenuBarBase>
                               ),
                               ListTile(
                                 title: Text(
+                                  'Campus Map',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                leading: Icon(
+                                  Icons.map,
+                                  color: Colors.white,
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/map');
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
                                   'Room Booking',
                                   style: TextStyle(color: Colors.white),
                                 ),

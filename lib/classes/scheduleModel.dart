@@ -5,6 +5,8 @@ class EventModel {
   DateTime start;
   DateTime end;
   bool isCourse;
+  bool isExam;
+  String rollNumbers;
   String courseName;
   String courseId;
   String description;
@@ -20,6 +22,8 @@ class EventModel {
       {this.start,
         this.end,
         this.isCourse,
+        this.isExam,
+        this.rollNumbers,
         this.courseName,
         this.courseId,
         this.description,
@@ -97,9 +101,87 @@ class EventModel {
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
-                  SizedBox(width: 5,),
+                  SizedBox(width: 8,),
                   Flexible(
                     child: Text('Room: ${this.location}',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+            ]),
+      );
+    } else if (this.isExam) {
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(this.courseId,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(this.courseName,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(this.eventType,
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(200),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14)),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text('Room: ',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                  SizedBox(width: 8,),
+                  Flexible(
+                    child: Text('Roll Numbers: ',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text(this.location,
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                  SizedBox(width: 8,),
+                  Flexible(
+                    child: Text(this.rollNumbers,
                         style: TextStyle(
                             color: Colors.black.withAlpha(200),
                             fontStyle: FontStyle.italic,

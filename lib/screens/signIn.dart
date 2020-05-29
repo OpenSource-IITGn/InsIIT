@@ -9,7 +9,9 @@ import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
 
 List<Course> courses = [];
+List<Course> coursesWithoutRepetition;
 List<calendar.Event> events = [];
+List<calendar.Event> eventsWithoutRepetition;
 
 class GoogleHttpClient extends IOClient {
   Map<String, String> _headers;
@@ -97,8 +99,10 @@ class _SignInPageState extends State<SignInPage> {
 
       var courseData = await ClassroomApi(httpClient).courses.list();
       courses.addAll(courseData.courses);
+      coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
       var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
       events.addAll(eventData.items);
+      eventsWithoutRepetition = listWithoutRepetitionEvent(events);
 
       final GoogleSignInAuthentication googleAuth =
       await gSignIn.currentUser.authentication;
@@ -120,6 +124,38 @@ class _SignInPageState extends State<SignInPage> {
     }
     Navigator.pop(context);
     Navigator.pushNamed(context, '/menuBarBase');
+  }
+
+  List listWithoutRepetitionCourse (List<Course> courses) {
+    List<Course> withoutRepeat = [];
+    courses.forEach((Course course) {
+      bool notHave = true;
+      withoutRepeat.forEach((Course _course) {
+        if (_course.id == course.id) {
+          notHave = false;
+        }
+      });
+      if (notHave) {
+        withoutRepeat.add(course);
+      }
+    });
+    return withoutRepeat;
+  }
+
+  List listWithoutRepetitionEvent (List<calendar.Event> events) {
+    List<calendar.Event> withoutRepeat = [];
+    events.forEach((calendar.Event event) {
+      bool notHave = true;
+      withoutRepeat.forEach((calendar.Event _event) {
+        if (_event.id == event.id) {
+          notHave = false;
+        }
+      });
+      if (notHave) {
+        withoutRepeat.add(event);
+      }
+    });
+    return withoutRepeat;
   }
 
   var key = new GlobalKey<ScaffoldState>();

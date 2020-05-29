@@ -27,9 +27,9 @@ List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails = [];
 List<TodayCourse> todayCourses;
-List<Course> _courses;
 List<MyCourse> myCourses;
 List<EventModel> removedEvents;
+List<EventModel> examCourses;
 
 class _HomePageState extends State<HomePage> {
   GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
     loadShuttleData();
     loadCourseData();
     loadRemovedCoursesData();
+    loadExamTimeTableData();
   }
   // var emails = [];
   loadlinks() async {
@@ -84,6 +85,94 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  loadExamTimeTableData () async {
+    sheet.getData('ExamTimeTable!A:H').listen((data) {
+      examCourses = makeMyExamCoursesList(data, coursesWithoutRepetition);
+    });
+  }
+
+  List<EventModel> makeMyExamCoursesList (List data, List<Course> _courses) {
+    List<EventModel> myExamCourses = [];
+
+    _courses.forEach((Course course) {
+      bool mine = false;
+      var baseLc = data[3];
+      data.forEach((var lc) {
+        if (mine == false && lc.length > 3) {
+          if (lc[0] != '' && lc[0] != '-' && lc[1] != '' && lc[1] != '-') {
+            baseLc = lc;
+          }
+          if (lc[2] != '' && lc[2] != '-') {
+            if (lc[2].replaceAll(' ', '').contains(new RegExp(
+                course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+                course.name.replaceAll(' ', '').contains(new RegExp(
+                    lc[2].replaceAll(' ', ''), caseSensitive: false)) ||
+                compareStrings(course.name, lc[2]) ||
+                lc[3].replaceAll(' ', '').contains(new RegExp(
+                    course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+                course.name.replaceAll(' ', '').contains(new RegExp(
+                    lc[3].replaceAll(' ', ''), caseSensitive: false)) ||
+                compareStrings(course.name, lc[3])) {
+              List<DateTime> time = getTime(baseLc);
+              myExamCourses.add(EventModel(
+                isCourse: false,
+                isExam: true,
+                start: time[0],
+                end: time[1],
+                courseId: lc[2],
+                courseName: lc[3],
+                location: lc[5].toString(),
+                rollNumbers: lc[7].toString(),
+                eventType: 'Exam',
+              ));
+              mine= true;
+            }
+          }
+        }
+      });
+    });
+
+    return myExamCourses;
+  }
+
+  Map<String, int> monthData = {
+    'January' : 1,
+    'February' : 2,
+    'March' : 3,
+    'April' : 4,
+    'May' : 5,
+    'June' : 6,
+    'July' : 7,
+    'August' : 8,
+    'September' : 9,
+    'October' : 10,
+    'November' : 11,
+    'December' : 12,
+  };
+
+  List<DateTime> getTime (var baseLc) {
+
+    int index = 1;
+
+    var date = baseLc[0].split(',');
+    var dayWithMonth = date[1].split(' ');
+    if (dayWithMonth.length == 2) {
+      index = 0;
+    }
+    int year = int.parse(date[2].replaceAll(' ', ''));
+    int day = int.parse(dayWithMonth[index + 1].replaceAll(' ', ''));
+    int month = monthData[dayWithMonth[index].replaceAll(' ', '')];
+    var dayTime = baseLc[1].split('-');
+    var startTime = dayTime[0].replaceAll(' ', '').split(':');
+    var endTime = dayTime[1].replaceAll(' ', '').split(':');
+    int startHour = int.parse(startTime[0]);
+    int startMinute = int.parse(startTime[1].substring(0, 2));
+    int endHour = int.parse(endTime[0]);
+    int endMinute = int.parse(endTime[1].substring(0, 2));
+    List<DateTime> time = [DateTime(year, month, day, startHour, startMinute), DateTime(year, month, day, endHour, endMinute)];
+    return time;
+  }
+
   loadRemovedCoursesData () async {
     getRemovedEventsData().listen((data) {
       print(data);
@@ -99,6 +188,15 @@ class _HomePageState extends State<HomePage> {
         if (lc[0] == 'course') {
           _removedEvents.add(EventModel(
             isCourse: true,
+            isExam: false,
+            courseId: lc[1],
+            courseName: lc[2],
+            eventType: lc[3],
+          ));
+        } else if (lc[0] == 'exam') {
+          _removedEvents.add(EventModel(
+            isCourse: false,
+            isExam: true,
             courseId: lc[1],
             courseName: lc[2],
             eventType: lc[3],
@@ -106,6 +204,7 @@ class _HomePageState extends State<HomePage> {
         } else {
           _removedEvents.add(EventModel(
             isCourse: false,
+            isExam: false,
             description: lc[1],
             summary: lc[2],
             location: lc[3],
@@ -147,9 +246,9 @@ class _HomePageState extends State<HomePage> {
     sheet.getData('slots!A:F').listen((data) {
       todayCourses = makeTodayTimeSlotList(data);
     });
-    _courses = listWithoutRepetitionCourse(courses);
+
     sheet.getData('timetable!A:Q').listen((data) {
-      myCourses = makeMyCourseList(data, _courses);
+      myCourses = makeMyCourseList(data, coursesWithoutRepetition);
     });
   }
 
@@ -237,21 +336,7 @@ class _HomePageState extends State<HomePage> {
     return seTime;
   }
 
-  List listWithoutRepetitionCourse (List<Course> courses) {
-    List<Course> withoutRepeat = [];
-    courses.forEach((Course course) {
-      bool notHave = true;
-      withoutRepeat.forEach((Course _course) {
-        if (_course.id == course.id) {
-          notHave = false;
-        }
-      });
-      if (notHave) {
-        withoutRepeat.add(course);
-      }
-    });
-    return withoutRepeat;
-  }
+
 
   loadImportantContactData() async {
     sheet.getData('Contacts!A:E').listen((data) {
