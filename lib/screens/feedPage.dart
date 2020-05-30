@@ -12,7 +12,7 @@ class FeedPage extends StatefulWidget {
   _FeedPageState createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<FeedPage> {
  
   List<PostModel> posts = [];
   bool loading = true;
@@ -65,7 +65,6 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Feed")),
       body: (loading == true)
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
@@ -84,4 +83,8 @@ class _FeedPageState extends State<FeedPage> {
             ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

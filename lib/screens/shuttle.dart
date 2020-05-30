@@ -207,30 +207,16 @@ class _ShuttleState extends State<Shuttle> {
         platformChannelSpecifics,
         payload: 'item x');
   }
-
+  List<Widget> busList = [];
   Widget build(BuildContext context) {
+    busList = [SizedBox(height: 80)];
+    busList.addAll(buses.map((buses) => busesTemplate(buses)).toList());
+    
     return Scaffold(
         // backgroundColor: Colors.grey[100],
-        appBar: AppBar(
-          title: Text('Bus Schedule'),
-          centerTitle: true,
-          backgroundColor: secondaryColor,
-          // actions: <Widget>[
-          //   PopupMenuButton<String>(onSelected: (choice) {
-          //     Navigator.pushNamed(context, '/$choice');
-          //   }, itemBuilder: (BuildContext context) {
-          //     return Constants.Choices.map(
-          //       (String choice) {
-          //         return PopupMenuItem<String>(
-          //             value: choice, child: Text(choice));
-          //       },
-          //     ).toList();
-          //   }),
-          // ],
-        ),
         body: SingleChildScrollView(
           child: Column(
-            children: buses.map((buses) => busesTemplate(buses)).toList(),
+            children:busList ,
           ),
         ));
   }
