@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/utilities/constants.dart';
 //TODO: AUTOMATICALLY EXPAND MENU FOR NEXT MEAL IN THIS PAGE
 //TODO: THE CODE CAN BE COMPRESSED A LOT!!!! USE LIST<LIST>
 
@@ -170,15 +171,24 @@ class _MessMenuState extends State<MessMenu> {
       length: 7,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
-          title: Text(
-            'Mess Menu',
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Text('Mess Menu',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,
-              unselectedLabelColor: Colors.white.withOpacity(0.3),
-              indicatorColor: Colors.white,
+              unselectedLabelColor: Colors.transparent,
+              unselectedLabelStyle: TextStyle(  color: Colors.black.withAlpha(150)),
+              indicatorColor: Colors.black.withAlpha(150),
               tabs: <Widget>[
                 WeekDayCard(day: 'Monday').dayBar(),
                 WeekDayCard(day: 'Tueday').dayBar(),
@@ -396,7 +406,10 @@ class _MessMenuState extends State<MessMenu> {
           ],
         ),
         floatingActionButton: RaisedButton.icon(
-          color: Colors.indigo,
+          color: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
           onPressed: () {
             return Navigator.pushNamed(context, '/messfeedback');
           },

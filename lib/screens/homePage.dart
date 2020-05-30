@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:instiapp/screens/loading.dart';
+import 'package:instiapp/utilities/bottomNavBar.dart';
+import 'package:instiapp/utilities/carouselSlider.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
@@ -68,13 +69,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  loadExamTimeTableData () async {
+  loadExamTimeTableData() async {
     sheet.getData('ExamTimeTable!A:H').listen((data) {
       examCourses = makeMyExamCoursesList(data, coursesWithoutRepetition);
     });
   }
 
-  List<EventModel> makeMyExamCoursesList (List data, List<Course> _courses) {
+  List<EventModel> makeMyExamCoursesList(List data, List<Course> _courses) {
     List<EventModel> myExamCourses = [];
 
     _courses.forEach((Course course) {
@@ -87,14 +88,18 @@ class _HomePageState extends State<HomePage> {
           }
           if (lc[2] != '' && lc[2] != '-') {
             if (lc[2].replaceAll(' ', '').contains(new RegExp(
-                course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+                    course.name.replaceAll(' ', ''),
+                    caseSensitive: false)) ||
                 course.name.replaceAll(' ', '').contains(new RegExp(
-                    lc[2].replaceAll(' ', ''), caseSensitive: false)) ||
+                    lc[2].replaceAll(' ', ''),
+                    caseSensitive: false)) ||
                 compareStrings(course.name, lc[2]) ||
                 lc[3].replaceAll(' ', '').contains(new RegExp(
-                    course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+                    course.name.replaceAll(' ', ''),
+                    caseSensitive: false)) ||
                 course.name.replaceAll(' ', '').contains(new RegExp(
-                    lc[3].replaceAll(' ', ''), caseSensitive: false)) ||
+                    lc[3].replaceAll(' ', ''),
+                    caseSensitive: false)) ||
                 compareStrings(course.name, lc[3])) {
               List<DateTime> time = getTime(baseLc);
               myExamCourses.add(EventModel(
@@ -108,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                 rollNumbers: lc[7].toString(),
                 eventType: 'Exam',
               ));
-              mine= true;
+              mine = true;
             }
           }
         }
@@ -119,22 +124,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   Map<String, int> monthData = {
-    'January' : 1,
-    'February' : 2,
-    'March' : 3,
-    'April' : 4,
-    'May' : 5,
-    'June' : 6,
-    'July' : 7,
-    'August' : 8,
-    'September' : 9,
-    'October' : 10,
-    'November' : 11,
-    'December' : 12,
+    'January': 1,
+    'February': 2,
+    'March': 3,
+    'April': 4,
+    'May': 5,
+    'June': 6,
+    'July': 7,
+    'August': 8,
+    'September': 9,
+    'October': 10,
+    'November': 11,
+    'December': 12,
   };
 
-  List<DateTime> getTime (var baseLc) {
-
+  List<DateTime> getTime(var baseLc) {
     int index = 1;
 
     var date = baseLc[0].split(',');
@@ -152,18 +156,21 @@ class _HomePageState extends State<HomePage> {
     int startMinute = int.parse(startTime[1].substring(0, 2));
     int endHour = int.parse(endTime[0]);
     int endMinute = int.parse(endTime[1].substring(0, 2));
-    List<DateTime> time = [DateTime(year, month, day, startHour, startMinute), DateTime(year, month, day, endHour, endMinute)];
+    List<DateTime> time = [
+      DateTime(year, month, day, startHour, startMinute),
+      DateTime(year, month, day, endHour, endMinute)
+    ];
     return time;
   }
 
-  loadRemovedCoursesData () async {
+  loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
       print(data);
       removedEvents = makeRemovedEventsList(data);
     });
   }
 
-  List<EventModel> makeRemovedEventsList (var removedEventsDataList) {
+  List<EventModel> makeRemovedEventsList(var removedEventsDataList) {
     List<EventModel> _removedEvents = [];
 
     if (removedEventsDataList != null && removedEventsDataList.length != 0) {
@@ -215,7 +222,7 @@ class _HomePageState extends State<HomePage> {
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -224,8 +231,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-  loadCourseData () async {
+  loadCourseData() async {
     sheet.getData('slots!A:F').listen((data) {
       todayCourses = makeTodayTimeSlotList(data);
     });
@@ -243,33 +249,44 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  List<MyCourse> makeMyCourseList (List data, List<Course> _courses) {
+  List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
     List<MyCourse> _myCourses = [];
 
     _courses.forEach((Course course) {
       bool mine = false;
       data.forEach((var lc) {
-        if (mine == false && lc[0] != '-' && lc[0] != '' && lc[1] != '-' && lc[1] != '') {
+        if (mine == false &&
+            lc[0] != '-' &&
+            lc[0] != '' &&
+            lc[1] != '-' &&
+            lc[1] != '') {
           if (lc[0].replaceAll(' ', '').contains(new RegExp(
-              course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+                  course.name.replaceAll(' ', ''),
+                  caseSensitive: false)) ||
               course.name.replaceAll(' ', '').contains(new RegExp(
-                  lc[0].replaceAll(' ', ''), caseSensitive: false)) ||
+                  lc[0].replaceAll(' ', ''),
+                  caseSensitive: false)) ||
               compareStrings(course.name, lc[0]) ||
               lc[1].replaceAll(' ', '').contains(new RegExp(
-                  course.name.replaceAll(' ', ''), caseSensitive: false)) ||
+                  course.name.replaceAll(' ', ''),
+                  caseSensitive: false)) ||
               course.name.replaceAll(' ', '').contains(new RegExp(
-                  lc[1].replaceAll(' ', ''), caseSensitive: false)) ||
+                  lc[1].replaceAll(' ', ''),
+                  caseSensitive: false)) ||
               compareStrings(course.name, lc[1])) {
-            _myCourses.add(MyCourse(courseCode: lc[0],
+            _myCourses.add(MyCourse(
+                courseCode: lc[0],
                 courseName: lc[1],
                 noOfLectures: lc[2].toString(),
                 noOfTutorials: lc[3].toString(),
                 credits: lc[5].toString(),
                 instructors: lc[6].split(','),
                 preRequisite: lc[10],
-                lectureCourse: lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                lectureCourse:
+                    lc[11].split('(')[0].replaceAll(' ', '').split('+'),
                 lectureLocation: returnLocation(lc[11]),
-                tutorialCourse: lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                tutorialCourse:
+                    lc[12].split('(')[0].replaceAll(' ', '').split('+'),
                 tutorialLocation: returnLocation(lc[12]),
                 labCourse: lc[13].split('(')[0].replaceAll(' ', '').split('+'),
                 labLocation: returnLocation(lc[13]),
@@ -284,7 +301,7 @@ class _HomePageState extends State<HomePage> {
     return _myCourses;
   }
 
-  String returnLocation (var text) {
+  String returnLocation(var text) {
     if (text.split('(').length == 1) {
       return 'None';
     } else {
@@ -292,7 +309,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  List<TodayCourse> makeTodayTimeSlotList (var courseSlotDataList) {
+  List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
     int day = DateTime.now().weekday;
     List<TodayCourse> courses = [];
     if (day != 6 && day != 7) {
@@ -307,19 +324,21 @@ class _HomePageState extends State<HomePage> {
     return courses;
   }
 
-  List<DateTime> returnTime (String time) {
+  List<DateTime> returnTime(String time) {
     List<DateTime> seTime = [];
     DateTime today = DateTime.now();
     var list1 = time.split('-');
     var startString = list1[0].split(':');
     var endString = list1[1].split(':');
-    seTime = [DateTime(today.year, today.month, today.day, int.parse(startString[0]), int.parse(startString[1])),
-      DateTime(today.year, today.month, today.day, int.parse(endString[0]), int.parse(endString[1]))];
+    seTime = [
+      DateTime(today.year, today.month, today.day, int.parse(startString[0]),
+          int.parse(startString[1])),
+      DateTime(today.year, today.month, today.day, int.parse(endString[0]),
+          int.parse(endString[1]))
+    ];
 
     return seTime;
   }
-
-
 
   loadImportantContactData() async {
     sheet.getData('Contacts!A:E').listen((data) {
@@ -392,11 +411,61 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  bool prevConnected = false;
+  bool prevConnected = false;  
+  int selectedIndex = 0;
   Widget homeScreen() {
     return Scaffold(
+      // backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
+      bottomNavigationBar: BottomNavyBar(
+        selectedIndex: selectedIndex,
+        showElevation: true,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        onItemSelected: (index) {
+          selectedIndex = index;
+          setState(() {});
+        },
+        items: [
+          BottomNavyBarItem(
+            icon: Icon(Icons.apps),
+            title: Text('Home'),
+            activeColor: primaryColor,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.rss_feed),
+            title: Text('Feed'),
+            activeColor: primaryColor,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.airport_shuttle),
+            title: Text('Shuttle'),
+            activeColor: primaryColor,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.map),
+            textAlign: TextAlign.center,
+            title: Text('Map'),
+            activeColor: primaryColor,
+            inactiveColor: Colors.grey,
+          ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.add_alert),
+            title: Text('Booking'),
+            textAlign: TextAlign.center,
+            activeColor: primaryColor,
+            inactiveColor: Colors.grey,
+          ),
+        ],
+      ),
       appBar: AppBar(
-        backgroundColor: secondaryColor,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.menu),
           onPressed: () {
@@ -405,16 +474,24 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: Icon(Icons.refresh, color: Colors.grey.withAlpha(100)),
+            onPressed: () {
+              reloadData();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
               reloadData();
             },
           )
         ],
-        title: Text(
-          'InstiApp',
-          style: TextStyle(fontFamily: 'OpenSans'),
-        ),
+        // title: Text('Institute App',
+        //     style: TextStyle(
+        //       fontFamily: 'OpenSans',
+        //       // color: Colors.black,
+        //       fontSize: 22,
+        //     )),
         centerTitle: true,
       ),
       body: OfflineBuilder(
@@ -426,86 +503,345 @@ class _HomePageState extends State<HomePage> {
             prevConnected = connected;
           }
           return new SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                AnimatedContainer(
-                  height: (connected) ? 0 : 24,
-                  color: Color(0xFFEE4400),
-                  duration: Duration(milliseconds: 500),
-                  child: Center(
-                    child: Text("Offline"),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 60),
+                  AnimatedContainer(
+                    height: (connected) ? 0 : 24,
+                    color: Color(0xFFEE4400),
+                    duration: Duration(milliseconds: 500),
+                    child: Center(
+                      child: Text("Offline"),
+                    ),
                   ),
-                ),
-                (connected)
-                    ? Container()
-                    : SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      //INSERT OTHER WIDGETS HERE
-                      Text(
-                        "What's for ${selectMeal(foodCards)['meal']}?",
-                        style: TextStyle(
-                          fontSize: 20.0,
+                  (connected)
+                      ? Container()
+                      : SizedBox(
+                          height: 10,
                         ),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      CarouselSlider(
-                        height: 120.0,
-                        viewportFraction: 0.6,
-                        enlargeCenterPage: true,
-                        items: selectMeal(foodCards)['list'].map<Widget>((i) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return GestureDetector(
-                                onTap: () {
-                                  return Navigator.pushNamed(
-                                      context, '/messmenu');
-                                },
-                                child: Container(
-                                  width: 200.0,
-                                  height: 120.0,
-                                  child: Card(
-                                    // color: primaryColor,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Center(
-                                        child: Text(
-                                          i,
-                                          style: TextStyle(
-                                            fontSize: 20.0,
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.orange,
+                          minRadius: 30,
+                          child: ClipOval(
+                              child: Image.network(
+                            (gSignIn.currentUser == null)
+                                ? ""
+                                : gSignIn.currentUser.photoUrl,
+                            fit: BoxFit.cover,
+                            width: 90.0,
+                            height: 90.0,
+                          )),
+                        ),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                (gSignIn.currentUser == null)
+                                    ? "Hey John Doe!"
+                                    : "Hey " +
+                                        gSignIn.currentUser.displayName
+                                            .split(' ')[0] +
+                                        '!',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "How are you doing today? ",
+                                style: TextStyle(
+                                    color: Colors.black.withAlpha(150)),
+                              ),
+                              // Text(
+                              //   "3 days to the weekend \uf601",
+                              //   style: TextStyle(
+                              //     fontSize: 12.0,
+                              //     fontStyle: FontStyle.italic,
+                              //       color: Colors.black.withAlpha(150)),
+                              // ),
+                            ]),
+                      ]),
+                  SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      return Navigator.pushNamed(context, '/messmenu');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Hungry?",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Here's what's in the mess",
+                                    style: TextStyle(
+                                        color: Colors.black.withAlpha(150)
+                                        // fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          CarouselSlider(
+                            height: 100.0,
+                            viewportFraction: 0.3,
+                            enlargeCenterPage: false,
+                            autoPlay: true,
+                            items:
+                                selectMeal(foodCards)['list'].map<Widget>((i) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: 250.0,
+                                    height: 120.0,
+                                    child: Card(
+                                      // color: primaryColor,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Center(
+                                          child: Text(
+                                            i,
+                                            style: TextStyle(
+                                                // fontSize: 20.0,
+                                                ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
-                            },
-                          );
-                        }).toList(),
+                            }).toList(),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                RaisedButton(
-                  child: Text("Daily Schedule"),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/schedule');
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Feed"),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/feed');
-                  },
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      return Navigator.pushNamed(context, '/schedule');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Wondering what's next?",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Here's your schedule",
+                                    style: TextStyle(
+                                        color: Colors.black.withAlpha(150)
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      return Navigator.pushNamed(context, '/eventscalendar');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Bored?",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Checkout ongoing events",
+                                    style: TextStyle(
+                                        color: Colors.black.withAlpha(150)
+                                        // fontSize: 18.0,
+                                        // fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              Icon(Icons.arrow_forward),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          CarouselSlider(
+                            height: 300.0,
+                            viewportFraction: 1.0,
+                            enlargeCenterPage: false,
+                            autoPlay: true,
+                            items:
+                                selectMeal(foodCards)['list'].map<Widget>((i) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    // color: Colors.black,
+                                    child: Container(
+                                      child: Center(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              // color: Colors.black,
+                                              height: 200.0,
+                                              width: ScreenSize.size.width,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft:
+                                                      Radius.circular(10.0),
+                                                  topRight:
+                                                      Radius.circular(10.0),
+                                                ),
+                                                child: Image(
+                                                  fit: BoxFit.cover,
+                                                  height: 200.0,
+                                                  // width: 300,
+                                                  image: NetworkImage(
+                                                      'https://assets.entrepreneur.com/content/3x2/2000/20191009140007-GettyImages-1053962188.jpeg'),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: new BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      new BorderRadius.only(
+                                                          bottomLeft: const Radius
+                                                              .circular(10.0),
+                                                          bottomRight: const Radius
+                                                              .circular(10.0))),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 8, 8, 8.0),
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  // mainAxisAlignment:
+                                                  //     MainAxisAlignment
+                                                  //         .spaceAround,
+                                                  children: <Widget>[
+                                                    SizedBox(width: 10),
+                                                    Column(
+                                                      children: <Widget>[
+                                                        Text("24",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 20,
+                                                            )),
+                                                        Text('July')
+                                                      ],
+                                                    ),
+                                                    verticalDivider(),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(
+                                                            "Photography Contest",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 16,
+                                                            )),
+                                                        Text("Starts 7pm!",
+                                                            style: TextStyle(
+                                                              color: Colors
+                                                                  .black
+                                                                  .withAlpha(
+                                                                      150),
+                                                              // fontWeight:
+                                                              //     FontWeight.bold,
+                                                              // fontSize: 16,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  
+                  // RaisedButton(
+                  //   child: Text("Feed"),
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(context, '/feed');
+                  //   },
+                  // ),
+                ],
+              ),
             ),
           );
         },

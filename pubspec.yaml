@@ -30,7 +30,6 @@ dependencies:
   flare_splash_screen: ^3.0.1
   googleapis_auth: ^0.2.11+1
   progressive_image: ^1.0.1
-  carousel_slider: ^1.4.1
   flutter_spinkit: ^4.1.2+1
   table_calendar: ^2.2.3
   intl: ^0.16.1

@@ -12,7 +12,9 @@ class WeekDayCard {
       child: Text(
         day,
         style: TextStyle(
-          fontSize: 18.0,
+          // fontSize: 18.0,
+          color: Colors.black.withAlpha(150)
+
         ),
       ),
     );
