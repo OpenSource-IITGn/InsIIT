@@ -18,7 +18,7 @@ import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
-
+//TODO: Add title for each menu
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
   final Function() notifyParent;
@@ -485,12 +485,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         backgroundColor: Colors.transparent,
         elevation: 0,
         
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            widget.notifyParent();
-          },
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.menu),
+        //   onPressed: () {
+        //     widget.notifyParent();
+        //   },
+        // ),
         // title: Text(titles[selectedIndex], style: TextStyle(color: Colors.black.withAlpha(180), fontWeight: FontWeight.bold)),
         actions: <Widget>[
           IconButton(
