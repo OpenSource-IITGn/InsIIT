@@ -213,24 +213,6 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Campus Map'),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CustomSearch(),
-              ).then((value) => setState((){
-                  currentWindow = mapInfoWindowList[int.parse(value)];
-                  mapInfoWindowPosition = -170;
-                }));
-            },
-          )
-        ],
-      ),
       body: Stack(
         children: <Widget>[
           GoogleMap(
@@ -240,6 +222,8 @@ class _MapPageState extends State<MapPage> {
               compassEnabled: true,
               myLocationEnabled: true,
               tiltGesturesEnabled: false,
+              scrollGesturesEnabled: true,
+              rotateGesturesEnabled: true,
               myLocationButtonEnabled: true,
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
@@ -274,15 +258,17 @@ class _MapPageState extends State<MapPage> {
                           }));
                       },
                       heroTag: "btn1",
-                      tooltip: 'Navigate',
-                      child: Icon(Icons.navigation),
+                      backgroundColor: Colors.white,
+                      tooltip: 'Search',
+                      child: Icon(Icons.search, color: Colors.black45),
                     ),
                     SizedBox(height: 16.0),
                     FloatingActionButton(
                       onPressed: _onMapTypeButtonPressed,
                       heroTag: "btn2",
+                      backgroundColor: Colors.white,
                       tooltip: 'Layers',
-                      child: Icon(Icons.layers),
+                      child: Icon(Icons.layers, color: Colors.black45),
                     ),
                   ],
                 ),
@@ -461,23 +447,23 @@ class _MapPageState extends State<MapPage> {
 
 class CustomSearch extends SearchDelegate<String>{
 
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    assert(context != null);
-    final ThemeData theme = Theme.of(context);
-    assert(theme != null);
-    return theme.copyWith(
-      inputDecorationTheme: InputDecorationTheme(
-            hintStyle: TextStyle(color: theme.primaryTextTheme.headline6.color.withOpacity(0.6))),
-        primaryColor: theme.primaryColor,
-        primaryIconTheme: theme.primaryIconTheme,
-        primaryColorBrightness: theme.primaryColorBrightness,
-        primaryTextTheme: theme.primaryTextTheme,
-        textTheme: theme.textTheme.copyWith(
-            headline6: theme.textTheme.headline6
-                .copyWith(color: theme.primaryTextTheme.headline6.color))
-    );
-  }
+  // @override
+  // ThemeData appBarTheme(BuildContext context) {
+  //   assert(context != null);
+  //   final ThemeData theme = Theme.of(context);
+  //   assert(theme != null);
+  //   return theme.copyWith(
+  //     inputDecorationTheme: InputDecorationTheme(
+  //           hintStyle: TextStyle(color: theme.primaryTextTheme.headline6.color.withOpacity(0.6))),
+  //       primaryColor: theme.primaryColor,
+  //       primaryIconTheme: theme.primaryIconTheme,
+  //       primaryColorBrightness: theme.primaryColorBrightness,
+  //       primaryTextTheme: theme.primaryTextTheme,
+  //       textTheme: theme.textTheme.copyWith(
+  //           headline6: theme.textTheme.headline6
+  //               .copyWith(color: theme.primaryTextTheme.headline6.color))
+  //   );
+  // }
 
   @override
   List<Widget> buildActions(BuildContext context) {
