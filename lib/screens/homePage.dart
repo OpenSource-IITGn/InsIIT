@@ -1058,13 +1058,16 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   List<EventModel> makeListOfTwoEvents () {
     List<EventModel> currentEvents = [];
     DateTime currentTime = DateTime.now();
-    eventsList.forEach((EventModel event) {
-      if (currentEvents.length < 2) {
-        if (event.end.isAfter(currentTime) || event.start.isAfter(currentTime)) {
-          currentEvents.add(event);
+    if (eventsList != null) {
+      eventsList.forEach((EventModel event) {
+        if (currentEvents.length < 2) {
+          if (event.end.isAfter(currentTime) ||
+              event.start.isAfter(currentTime)) {
+            currentEvents.add(event);
+          }
         }
-      }
-    });
+      });
+    }
 
     return currentEvents;
   }
