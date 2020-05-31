@@ -7,7 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter/gestures.dart';
+import 'package:flutter/foundation.dart';
 
 class MapInfoWindow {
    String imagePath;
@@ -226,6 +227,9 @@ class _MapPageState extends State<MapPage> {
               rotateGesturesEnabled: true,
               myLocationButtonEnabled: true,
               onMapCreated: _onMapCreated,
+              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+                  new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
+              ].toSet(),
               initialCameraPosition: CameraPosition(
                 target: _center,
                 zoom: 17.2,
