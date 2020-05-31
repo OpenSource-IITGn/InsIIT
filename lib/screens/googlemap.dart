@@ -501,17 +501,51 @@ class CustomSearch extends SearchDelegate<String>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestions = locationList.where((p) => keywordList[locationList.indexOf(p)].toLowerCase().contains(query.toLowerCase())).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) =>ListTile(
-        onTap: (){
-          close(context, locationList.indexOf(suggestions[index]).toString());
-        },
-        leading: Icon(Icons.location_city),
-        title: Text(suggestions[index]),
+    if (query.isEmpty){
+      return Container(
+        margin: EdgeInsets.all(15),
+        height: 425,
+        decoration: BoxDecoration(
+            color: Colors.white10,
         ),
-      itemCount: suggestions.length,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Column(
+            children: <Widget>[
+              Image(
+                image: AssetImage('assets/images/map_search.png'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(17.0),
+                child: Text(
+                  "This location search is powered by a comprehensive list of keywords. For example, if you search 'library', Academic Block-3 will come up as that's where our library is.",
+                  style: TextStyle(
+                    color: Colors.black38,
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
       );
+    }
+    else{
+      final suggestions = locationList.where((p) => keywordList[locationList.indexOf(p)].toLowerCase().contains(query.toLowerCase())).toList();
+      print(locationList);
+      return ListView.builder(
+        itemBuilder: (context, index) =>ListTile(
+          onTap: (){
+            close(context, locationList.indexOf(suggestions[index]).toString());
+          },
+          leading: Icon(Icons.location_city),
+          title: Text(suggestions[index]),
+          ),
+        itemCount: suggestions.length,
+        );
+    }
+    
   }
 
 }
