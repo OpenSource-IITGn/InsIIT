@@ -218,6 +218,7 @@ class _MapPageState extends State<MapPage> {
         children: <Widget>[
           GoogleMap(
               mapType: _currentMapType,
+              padding: EdgeInsets.only(top: 55.0),
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
               compassEnabled: true,
