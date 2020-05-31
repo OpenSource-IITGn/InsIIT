@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         '/map' : (context) => MapPage(),
       },
       title: 'Instiapp',
-      theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
+      theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
     );
   }
 }
