@@ -1230,7 +1230,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   List<EventModel> makeCourseEventModel (List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
     List<EventModel> coursesEventModelList = [];
 
-    if (todayCourses.length != 0 && todayCourses != null) {
+    if (todayCourses != null && todayCourses.length != 0) {
       todayCourses.forEach((TodayCourse todayCourse) {
         myCourses.forEach((MyCourse myCourse) {
           myCourse.lectureCourse.forEach((String text) {
