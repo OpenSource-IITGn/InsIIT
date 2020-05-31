@@ -9,6 +9,7 @@ import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class MapInfoWindow {
    String imagePath;
@@ -139,7 +140,9 @@ class _MapPageState extends State<MapPage> {
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
-    _markerSet();
+    setState(() {
+      _markerSet();
+    });
     getCurrentLocation();
     controller.setMapStyle(_mapStyle);
   }
@@ -192,7 +195,10 @@ class _MapPageState extends State<MapPage> {
     return _markers;
   }
 
-  
+  moveCamera(CameraPosition position) async{
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(position));
+  }
 
   void launchMap(double lat, double long) async{
       String url = "https://www.google.com/maps/search/?api=1&query=$lat,$long";
@@ -260,6 +266,12 @@ class _MapPageState extends State<MapPage> {
                         ).then((value) => setState((){
                             currentWindow = mapInfoWindowList[int.parse(value)];
                             mapInfoWindowPosition = -170;
+                            moveCamera(CameraPosition(
+                                        target: currentWindow.location,
+                                        zoom: 17.2,
+                                        tilt: 30.0,
+                                        bearing: 180.0,
+                            ));
                           }));
                       },
                       heroTag: "btn1",
@@ -291,7 +303,17 @@ class _MapPageState extends State<MapPage> {
                       setState(() {
                           mapInfoWindowPosition = 0;
                         });
+                    }, 
+                    onVerticalDragDown: (details) {
+                      setState(() {
+                          mapInfoWindowPosition = 0;
+                        });
                     },   
+                    onDoubleTap: (){
+                      setState(() {
+                          mapInfoWindowPosition = -170;
+                        });
+                    },
                     child: Container(
                         margin: EdgeInsets.all(15),
                         height: 350,
@@ -357,22 +379,19 @@ class _MapPageState extends State<MapPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.all(25),
-                                        child: Material(
-                                                 color: Colors.deepOrangeAccent,
-                                                 child: InkWell(
-                                                    customBorder: new CircleBorder(),
-                                                    onTap: () {
-                                                      setState(() {
-                                                          launchMap(currentWindow.location.latitude, currentWindow.location.longitude);
-                                                        });
-                                                    },
-                                                    child: Icon(Icons.directions,
-                                                        color: Colors.white,
-                                                        size : 40,
-                                                      ),
-                                                  ),
-                                        ),
+                                        padding: EdgeInsets.all(22),
+                                        child: CircleAvatar(
+                                          radius: 33,
+                                          backgroundColor: primaryColor,
+                                          foregroundColor: Colors.white,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              launchMap(currentWindow.location.latitude, currentWindow.location.longitude);
+                                            },
+                                            tooltip: 'Directions',
+                                            icon: Icon(Icons.directions),
+                                          ),
+                                        ), 
                                       ),
                                     ],
                                   ),                        
@@ -380,8 +399,9 @@ class _MapPageState extends State<MapPage> {
                             Container(
                               height: 150,
                               child: ListView(
+                                padding: EdgeInsets.zero,
                                 children: <Widget>[
-                                  SizedBox(height: 5),
+                                  SizedBox(height: 10),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
