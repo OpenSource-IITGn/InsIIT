@@ -3,6 +3,7 @@ import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
+import 'dart:math' as math;
 //TODO: AUTOMATICALLY EXPAND MENU FOR NEXT MEAL IN THIS PAGE
 //TODO: THE CODE CAN BE COMPRESSED A LOT!!!! USE LIST<LIST>
 //TODO : State for upvote and downvote
@@ -146,22 +147,29 @@ Widget cardNew( foodList) {
                   ),
                   Row(
                     children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.keyboard_arrow_up),
-                        onPressed: () {
-                          
-                          sheet.writeData([
-                            [
-                              DateTime.now().toString(),
-                              DateTime.now().weekday,
-                              food,
-                              '1'
-                            ]
-                          ], 'messFeedbackItems!A:D');
-                        },
+                      Transform.rotate(
+                        angle: 180 * math.pi / 180,
+                        child: IconButton(
+                          icon: Icon(Icons.details),
+                          iconSize: 20,
+                          color: Colors.black45,
+                          onPressed: () {
+                            
+                            sheet.writeData([
+                              [
+                                DateTime.now().toString(),
+                                DateTime.now().weekday,
+                                food,
+                                '1'
+                              ]
+                            ], 'messFeedbackItems!A:D');
+                          },
+                        ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.keyboard_arrow_down),
+                        icon: Icon(Icons.details),
+                        iconSize: 20,
+                        color: Colors.black45,
                         onPressed: () {
                           sheet.writeData([
                             [
