@@ -37,8 +37,10 @@ class ItemModel {
   String header;
   String subtitle;
   List bodyModel;
+  String timeString;
+  int rating;
 
-  ItemModel({this.isExpanded: false, this.header, this.bodyModel});
+  ItemModel({this.isExpanded: false, this.header, this.bodyModel, this.timeString});
 
 }
 

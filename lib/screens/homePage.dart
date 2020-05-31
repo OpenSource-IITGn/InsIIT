@@ -440,7 +440,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         onItemSelected: (index) {
           selectedIndex = index;
-          _pageController.jumpToPage(index);
+          _pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
           setState(() {});
         },
         items: [
@@ -515,6 +515,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         centerTitle: true,
       ),
       body: PageView(
+        physics:new NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: (index) {
           setState(() => selectedIndex = index);
@@ -709,7 +710,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                       GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(
-                              context, '/eventscalendar');
+                              context, '/schedule');
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
