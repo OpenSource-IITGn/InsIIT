@@ -53,7 +53,7 @@ class _MapPageState extends State<MapPage> {
 
   Set<Marker> _markers = {};
 
-  BitmapDescriptor customIcon;
+  List<BitmapDescriptor> customIcons = List<BitmapDescriptor>(12);
 
   double mapInfoWindowPosition = -370;
 
@@ -72,8 +72,8 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    setCustomIcon();
-    rootBundle.loadString('assets/mapstyle.txt').then((string) {
+    setCustomIcons();
+    rootBundle.loadString('assets/map/mapstyle.txt').then((string) {
     _mapStyle = string;
     });
   }
@@ -89,7 +89,7 @@ class _MapPageState extends State<MapPage> {
           zIndex: 2,
           flat: true,
           anchor: Offset(0.5, 0.5),
-          icon: customIcon);
+          icon: customIcons[0]);
       _markers.add(marker);
       circle = Circle(
           circleId: CircleId("Accuracy"),
@@ -132,10 +132,97 @@ class _MapPageState extends State<MapPage> {
     super.dispose();
   }
 
-  void setCustomIcon() async {
-   customIcon = await BitmapDescriptor.fromAssetImage(
+  void setCustomIcons() async {
+    customIcons[0] = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/mark.png');
+      'assets/map/general.png');
+
+    customIcons[1] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/academic.png');
+
+    customIcons[2] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/hostel.png');
+
+    customIcons[3] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/cafe.png');
+
+    customIcons[4] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/canteen.png');
+
+    customIcons[5] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/grocery.png');
+
+    customIcons[6] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/sports.png');
+
+    customIcons[7] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/landscape.png');
+
+    customIcons[8] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/medical.png');
+    
+    customIcons[9] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/mess.png');
+
+    customIcons[10] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/parking.png');
+
+    customIcons[11] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/housing.png');
+
+  }
+
+  BitmapDescriptor getIcon(String category) {
+    if(category=='general'){
+      return customIcons[0];
+    }
+    else if(category=='academic'){
+      return customIcons[1];
+    }
+    else if(category=='hostel'){
+      return customIcons[2];
+    }
+    else if(category=='cafe'){
+      return customIcons[3];
+    }
+    else if(category=='canteen'){
+      return customIcons[4];
+    }
+    else if(category=='grocery'){
+      return customIcons[5];
+    }
+    else if(category=='sports'){
+      return customIcons[6];
+    }
+    else if(category=='landscape'){
+      return customIcons[7];
+    }
+    else if(category=='medical'){
+      return customIcons[8];
+    }
+    else if(category=='mess'){
+      return customIcons[9];
+    }
+    else if(category=='parking'){
+      return customIcons[10];
+    }
+    else if(category=='housing'){
+      return customIcons[11];
+    }
+    else{
+      return customIcons[0];
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -188,7 +275,7 @@ class _MapPageState extends State<MapPage> {
                 mapInfoWindowPosition = -170;
               });
           },
-          icon: customIcon,
+          icon: getIcon(location[2]),
         ));
        });
     });
