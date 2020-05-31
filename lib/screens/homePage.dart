@@ -1338,33 +1338,36 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
 
   List todayEventsList (List<calendar.Event> _events) {
     List<calendar.Event> todayEvents = [];
-    _events.forEach((calendar.Event _event ) {
-      bool included = false;
-      if (_event.start != null ) {
-        if (_event.start.dateTime != null) {
-          DateTime today = DateTime.now();
-          DateTime eventStartTime = _event.start.dateTime;
-          if (eventStartTime.year == today.year &&
-              eventStartTime.month == today.month &&
-              eventStartTime.day == today.day) {
-            todayEvents.add(_event);
-            included = true;
-          }
-        }
-      }  if (included == false) {
-        if (_event.end != null) {
-          if (_event.end.dateTime != null) {
+    if (_events != null) {
+      _events.forEach((calendar.Event _event) {
+        bool included = false;
+        if (_event.start != null) {
+          if (_event.start.dateTime != null) {
             DateTime today = DateTime.now();
-            DateTime eventEndTime = _event.end.dateTime;
-            if (eventEndTime.year == today.year &&
-                eventEndTime.month == today.month &&
-                eventEndTime.day == today.day) {
+            DateTime eventStartTime = _event.start.dateTime;
+            if (eventStartTime.year == today.year &&
+                eventStartTime.month == today.month &&
+                eventStartTime.day == today.day) {
               todayEvents.add(_event);
+              included = true;
             }
           }
         }
-      }
-    });
+        if (included == false) {
+          if (_event.end != null) {
+            if (_event.end.dateTime != null) {
+              DateTime today = DateTime.now();
+              DateTime eventEndTime = _event.end.dateTime;
+              if (eventEndTime.year == today.year &&
+                  eventEndTime.month == today.month &&
+                  eventEndTime.day == today.day) {
+                todayEvents.add(_event);
+              }
+            }
+          }
+        }
+      });
+    }
     return todayEvents;
   }
 
