@@ -53,7 +53,7 @@ class _MapPageState extends State<MapPage> {
 
   Set<Marker> _markers = {};
 
-  List<BitmapDescriptor> customIcons = List<BitmapDescriptor>(12);
+  List<BitmapDescriptor> customIcons = List<BitmapDescriptor>(13);
 
   double mapInfoWindowPosition = -370;
 
@@ -86,18 +86,19 @@ class _MapPageState extends State<MapPage> {
           position: latlng,
           rotation: newLocalData.heading,
           draggable: false,
-          zIndex: 2,
+          zIndex: 10,
           flat: true,
           anchor: Offset(0.5, 0.5),
-          icon: customIcons[0]);
+          icon: getIcon('user'));
       _markers.add(marker);
       circle = Circle(
           circleId: CircleId("Accuracy"),
           radius: newLocalData.accuracy,
           zIndex: 1,
-          strokeColor: Colors.blue,
+          strokeColor: primaryColor.withAlpha(80),
+          strokeWidth: 1,
           center: latlng,
-          fillColor: Colors.blue.withAlpha(70));
+          fillColor: primaryColor.withAlpha(40));
     });
   }
 
@@ -122,6 +123,17 @@ class _MapPageState extends State<MapPage> {
         debugPrint("Permission Denied");
       }
     }
+  }
+
+  void _goToUserLocation() async{
+    var location = await _locationTracker.getLocation();
+
+    moveCamera(CameraPosition(
+      target: LatLng(location.latitude, location.longitude),
+      zoom: 17.2,
+      tilt: 30.0,
+      bearing: location.heading,
+    ));
   }
 
   @override
@@ -180,6 +192,10 @@ class _MapPageState extends State<MapPage> {
     customIcons[11] = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
       'assets/map/housing.png');
+    
+    customIcons[12] = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/map/user.png');
 
   }
 
@@ -219,6 +235,9 @@ class _MapPageState extends State<MapPage> {
     }
     else if(category=='housing'){
       return customIcons[11];
+    }
+    else if(category=='user'){
+      return customIcons[12];
     }
     else{
       return customIcons[0];
@@ -311,11 +330,11 @@ class _MapPageState extends State<MapPage> {
         children: <Widget>[
           GoogleMap(
               mapType: _currentMapType,
-              padding: EdgeInsets.only(top: 55.0),
+              padding: EdgeInsets.only(top: 75.0),
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
               compassEnabled: true,
-              myLocationEnabled: true,
+              myLocationEnabled: false,
               tiltGesturesEnabled: false,
               scrollGesturesEnabled: true,
               rotateGesturesEnabled: true,
@@ -362,9 +381,9 @@ class _MapPageState extends State<MapPage> {
                           }));
                       },
                       heroTag: "btn1",
-                      backgroundColor: Colors.white,
+                      backgroundColor: primaryColor,
                       tooltip: 'Search',
-                      child: Icon(Icons.search, color: Colors.black45),
+                      child: Icon(Icons.search, color: Colors.white),
                     ),
                     SizedBox(height: 16.0),
                     FloatingActionButton(
@@ -548,6 +567,39 @@ class _MapPageState extends State<MapPage> {
                           ],
                         ),
                       ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right:16.0, top: 75.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      onPressed: _goToUserLocation,
+                      heroTag: "btn3",
+                      backgroundColor: Colors.white,
+                      tooltip: 'Your location',
+                      child: Icon(Icons.my_location, color: Colors.black45),
+                    ),
+                    SizedBox(height:16),
+                    FloatingActionButton(
+                      onPressed: () {
+                        moveCamera(CameraPosition(
+                          target: _center,
+                          zoom: 17.2,
+                          tilt: 30.0,
+                          bearing: 180.0,
+                        ));
+                      },
+                      heroTag: "btn4",
+                      backgroundColor: Colors.white,
+                      tooltip: 'IITGN',
+                      child: Icon(Icons.home, color: Colors.black45),
+                    ),
+                  ],
                 ),
               ),
             ),
