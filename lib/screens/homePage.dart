@@ -162,47 +162,49 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   List<EventModel> makeMyExamCoursesList(List data, List<Course> _courses) {
     List<EventModel> myExamCourses = [];
 
-    _courses.forEach((Course course) {
-      bool mine = false;
-      var baseLc = data[3];
-      data.forEach((var lc) {
-        if (mine == false && lc.length > 3) {
-          if (lc[0] != '' && lc[0] != '-' && lc[1] != '' && lc[1] != '-') {
-            baseLc = lc;
-          }
-          if (lc[2] != '' && lc[2] != '-') {
-            if (lc[2].replaceAll(' ', '').contains(new RegExp(
-                course.name.replaceAll(' ', ''),
-                caseSensitive: false)) ||
-                course.name.replaceAll(' ', '').contains(new RegExp(
-                    lc[2].replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                compareStrings(course.name, lc[2]) ||
-                lc[3].replaceAll(' ', '').contains(new RegExp(
-                    course.name.replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                course.name.replaceAll(' ', '').contains(new RegExp(
-                    lc[3].replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                compareStrings(course.name, lc[3])) {
-              List<DateTime> time = getTime(baseLc);
-              myExamCourses.add(EventModel(
-                isCourse: false,
-                isExam: true,
-                start: time[0],
-                end: time[1],
-                courseId: lc[2],
-                courseName: lc[3],
-                location: lc[5].toString(),
-                rollNumbers: lc[7].toString(),
-                eventType: 'Exam',
-              ));
-              mine = true;
+    if (_courses != null) {
+      _courses.forEach((Course course) {
+        bool mine = false;
+        var baseLc = data[3];
+        data.forEach((var lc) {
+          if (mine == false && lc.length > 3) {
+            if (lc[0] != '' && lc[0] != '-' && lc[1] != '' && lc[1] != '-') {
+              baseLc = lc;
+            }
+            if (lc[2] != '' && lc[2] != '-') {
+              if (lc[2].replaceAll(' ', '').contains(new RegExp(
+                  course.name.replaceAll(' ', ''),
+                  caseSensitive: false)) ||
+                  course.name.replaceAll(' ', '').contains(new RegExp(
+                      lc[2].replaceAll(' ', ''),
+                      caseSensitive: false)) ||
+                  compareStrings(course.name, lc[2]) ||
+                  lc[3].replaceAll(' ', '').contains(new RegExp(
+                      course.name.replaceAll(' ', ''),
+                      caseSensitive: false)) ||
+                  course.name.replaceAll(' ', '').contains(new RegExp(
+                      lc[3].replaceAll(' ', ''),
+                      caseSensitive: false)) ||
+                  compareStrings(course.name, lc[3])) {
+                List<DateTime> time = getTime(baseLc);
+                myExamCourses.add(EventModel(
+                  isCourse: false,
+                  isExam: true,
+                  start: time[0],
+                  end: time[1],
+                  courseId: lc[2],
+                  courseName: lc[3],
+                  location: lc[5].toString(),
+                  rollNumbers: lc[7].toString(),
+                  eventType: 'Exam',
+                ));
+                mine = true;
+              }
             }
           }
-        }
+        });
       });
-    });
+    }
 
     return myExamCourses;
   }
@@ -336,51 +338,54 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
     List<MyCourse> _myCourses = [];
 
-    _courses.forEach((Course course) {
-      bool mine = false;
-      data.forEach((var lc) {
-        if (mine == false &&
-            lc[0] != '-' &&
-            lc[0] != '' &&
-            lc[1] != '-' &&
-            lc[1] != '') {
-          if (lc[0].replaceAll(' ', '').contains(new RegExp(
-              course.name.replaceAll(' ', ''),
-              caseSensitive: false)) ||
-              course.name.replaceAll(' ', '').contains(new RegExp(
-                  lc[0].replaceAll(' ', ''),
-                  caseSensitive: false)) ||
-              compareStrings(course.name, lc[0]) ||
-              lc[1].replaceAll(' ', '').contains(new RegExp(
-                  course.name.replaceAll(' ', ''),
-                  caseSensitive: false)) ||
-              course.name.replaceAll(' ', '').contains(new RegExp(
-                  lc[1].replaceAll(' ', ''),
-                  caseSensitive: false)) ||
-              compareStrings(course.name, lc[1])) {
-            _myCourses.add(MyCourse(
-                courseCode: lc[0],
-                courseName: lc[1],
-                noOfLectures: lc[2].toString(),
-                noOfTutorials: lc[3].toString(),
-                credits: lc[5].toString(),
-                instructors: lc[6].split(','),
-                preRequisite: lc[10],
-                lectureCourse:
-                lc[11].split('(')[0].replaceAll(' ', '').split('+'),
-                lectureLocation: returnLocation(lc[11]),
-                tutorialCourse:
-                lc[12].split('(')[0].replaceAll(' ', '').split('+'),
-                tutorialLocation: returnLocation(lc[12]),
-                labCourse: lc[13].split('(')[0].replaceAll(' ', '').split('+'),
-                labLocation: returnLocation(lc[13]),
-                remarks: lc[14],
-                courseBooks: lc[15]));
-            mine = true;
+    if (_courses != null) {
+      _courses.forEach((Course course) {
+        bool mine = false;
+        data.forEach((var lc) {
+          if (mine == false &&
+              lc[0] != '-' &&
+              lc[0] != '' &&
+              lc[1] != '-' &&
+              lc[1] != '') {
+            if (lc[0].replaceAll(' ', '').contains(new RegExp(
+                course.name.replaceAll(' ', ''),
+                caseSensitive: false)) ||
+                course.name.replaceAll(' ', '').contains(new RegExp(
+                    lc[0].replaceAll(' ', ''),
+                    caseSensitive: false)) ||
+                compareStrings(course.name, lc[0]) ||
+                lc[1].replaceAll(' ', '').contains(new RegExp(
+                    course.name.replaceAll(' ', ''),
+                    caseSensitive: false)) ||
+                course.name.replaceAll(' ', '').contains(new RegExp(
+                    lc[1].replaceAll(' ', ''),
+                    caseSensitive: false)) ||
+                compareStrings(course.name, lc[1])) {
+              _myCourses.add(MyCourse(
+                  courseCode: lc[0],
+                  courseName: lc[1],
+                  noOfLectures: lc[2].toString(),
+                  noOfTutorials: lc[3].toString(),
+                  credits: lc[5].toString(),
+                  instructors: lc[6].split(','),
+                  preRequisite: lc[10],
+                  lectureCourse:
+                  lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                  lectureLocation: returnLocation(lc[11]),
+                  tutorialCourse:
+                  lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                  tutorialLocation: returnLocation(lc[12]),
+                  labCourse: lc[13].split('(')[0].replaceAll(' ', '').split(
+                      '+'),
+                  labLocation: returnLocation(lc[13]),
+                  remarks: lc[14],
+                  courseBooks: lc[15]));
+              mine = true;
+            }
           }
-        }
+        });
       });
-    });
+    }
 
     return _myCourses;
   }
@@ -1187,7 +1192,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     List<EventModel> _mergedCourses = [];
     bool notHave;
 
-    if (currentDayCourses.length != 0 && currentDayCourses != null) {
+    if (currentDayCourses != null && currentDayCourses.length != 0) {
       for (int i = 0; i < currentDayCourses.length; i++) {
         notHave = true;
         if (i == 0) {
@@ -1232,104 +1237,106 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
 
     if (todayCourses != null && todayCourses.length != 0) {
       todayCourses.forEach((TodayCourse todayCourse) {
-        myCourses.forEach((MyCourse myCourse) {
-          myCourse.lectureCourse.forEach((String text) {
-            if (text == todayCourse.course ||
-                text == todayCourse.course.substring(0, 1) ||
-                returnText(text) == todayCourse.course ||
-                returnText(text) == todayCourse.course.substring(0, 1)) {
-              if (text.length > 2) {
-                coursesEventModelList.add(EventModel(start: todayCourse.start,
-                    end: todayCourse.end,
-                    isCourse: true,
-                    isExam: false,
-                    courseId: myCourse.courseCode,
-                    courseName: myCourse.courseName,
-                    eventType: 'Lecture ${text.substring(2, text.length)}',
-                    location: myCourse.lectureLocation,
-                    instructors: myCourse.instructors,
-                    credits: myCourse.credits,
-                    preRequisite: myCourse.preRequisite));
-              } else {
-                coursesEventModelList.add(EventModel(start: todayCourse.start,
-                    end: todayCourse.end,
-                    isCourse: true,
-                    isExam: false,
-                    courseId: myCourse.courseCode,
-                    courseName: myCourse.courseName,
-                    eventType: 'Lecture',
-                    location: myCourse.lectureLocation,
-                    instructors: myCourse.instructors,
-                    credits: myCourse.credits,
-                    preRequisite: myCourse.preRequisite));
+        if (myCourses != null) {
+          myCourses.forEach((MyCourse myCourse) {
+            myCourse.lectureCourse.forEach((String text) {
+              if (text == todayCourse.course ||
+                  text == todayCourse.course.substring(0, 1) ||
+                  returnText(text) == todayCourse.course ||
+                  returnText(text) == todayCourse.course.substring(0, 1)) {
+                if (text.length > 2) {
+                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                      end: todayCourse.end,
+                      isCourse: true,
+                      isExam: false,
+                      courseId: myCourse.courseCode,
+                      courseName: myCourse.courseName,
+                      eventType: 'Lecture ${text.substring(2, text.length)}',
+                      location: myCourse.lectureLocation,
+                      instructors: myCourse.instructors,
+                      credits: myCourse.credits,
+                      preRequisite: myCourse.preRequisite));
+                } else {
+                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                      end: todayCourse.end,
+                      isCourse: true,
+                      isExam: false,
+                      courseId: myCourse.courseCode,
+                      courseName: myCourse.courseName,
+                      eventType: 'Lecture',
+                      location: myCourse.lectureLocation,
+                      instructors: myCourse.instructors,
+                      credits: myCourse.credits,
+                      preRequisite: myCourse.preRequisite));
+                }
               }
-            }
-          });
-          myCourse.tutorialCourse.forEach((String text) {
-            if (text == todayCourse.course ||
-                text == todayCourse.course.substring(0, 1) ||
-                returnText(text) == todayCourse.course ||
-                returnText(text) == todayCourse.course.substring(0, 1)) {
-              if (text.length > 2) {
-                coursesEventModelList.add(EventModel(start: todayCourse.start,
-                    end: todayCourse.end,
-                    isCourse: true,
-                    isExam: false,
-                    courseId: myCourse.courseCode,
-                    courseName: myCourse.courseName,
-                    eventType: 'Tutorial ${text.substring(2, text.length)}',
-                    location: myCourse.tutorialLocation,
-                    instructors: myCourse.instructors,
-                    credits: myCourse.credits,
-                    preRequisite: myCourse.preRequisite));
-              } else {
-                coursesEventModelList.add(EventModel(start: todayCourse.start,
-                    end: todayCourse.end,
-                    isCourse: true,
-                    isExam: false,
-                    courseId: myCourse.courseCode,
-                    courseName: myCourse.courseName,
-                    eventType: 'Tutorial',
-                    location: myCourse.tutorialLocation,
-                    instructors: myCourse.instructors,
-                    credits: myCourse.credits,
-                    preRequisite: myCourse.preRequisite));
+            });
+            myCourse.tutorialCourse.forEach((String text) {
+              if (text == todayCourse.course ||
+                  text == todayCourse.course.substring(0, 1) ||
+                  returnText(text) == todayCourse.course ||
+                  returnText(text) == todayCourse.course.substring(0, 1)) {
+                if (text.length > 2) {
+                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                      end: todayCourse.end,
+                      isCourse: true,
+                      isExam: false,
+                      courseId: myCourse.courseCode,
+                      courseName: myCourse.courseName,
+                      eventType: 'Tutorial ${text.substring(2, text.length)}',
+                      location: myCourse.tutorialLocation,
+                      instructors: myCourse.instructors,
+                      credits: myCourse.credits,
+                      preRequisite: myCourse.preRequisite));
+                } else {
+                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                      end: todayCourse.end,
+                      isCourse: true,
+                      isExam: false,
+                      courseId: myCourse.courseCode,
+                      courseName: myCourse.courseName,
+                      eventType: 'Tutorial',
+                      location: myCourse.tutorialLocation,
+                      instructors: myCourse.instructors,
+                      credits: myCourse.credits,
+                      preRequisite: myCourse.preRequisite));
+                }
               }
-            }
-          });
-          myCourse.labCourse.forEach((String text) {
-            if (text == todayCourse.course ||
-                text == todayCourse.course.substring(0, 1) ||
-                returnText(text) == todayCourse.course ||
-                returnText(text) == todayCourse.course.substring(0, 1)) {
-              if (text.length > 2) {
-                coursesEventModelList.add(EventModel(start: todayCourse.start,
-                    end: todayCourse.end,
-                    isCourse: true,
-                    isExam: false,
-                    courseId: myCourse.courseCode,
-                    courseName: myCourse.courseName,
-                    eventType: 'Lab ${text.substring(2, text.length)}',
-                    location: myCourse.labLocation,
-                    instructors: myCourse.instructors,
-                    credits: myCourse.credits,
-                    preRequisite: myCourse.preRequisite));
-              } else {
-                coursesEventModelList.add(EventModel(start: todayCourse.start,
-                    end: todayCourse.end,
-                    isCourse: true,
-                    isExam: false,
-                    courseId: myCourse.courseCode,
-                    courseName: myCourse.courseName,
-                    eventType: 'Lab',
-                    location: myCourse.labLocation,
-                    instructors: myCourse.instructors,
-                    credits: myCourse.credits,
-                    preRequisite: myCourse.preRequisite));
+            });
+            myCourse.labCourse.forEach((String text) {
+              if (text == todayCourse.course ||
+                  text == todayCourse.course.substring(0, 1) ||
+                  returnText(text) == todayCourse.course ||
+                  returnText(text) == todayCourse.course.substring(0, 1)) {
+                if (text.length > 2) {
+                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                      end: todayCourse.end,
+                      isCourse: true,
+                      isExam: false,
+                      courseId: myCourse.courseCode,
+                      courseName: myCourse.courseName,
+                      eventType: 'Lab ${text.substring(2, text.length)}',
+                      location: myCourse.labLocation,
+                      instructors: myCourse.instructors,
+                      credits: myCourse.credits,
+                      preRequisite: myCourse.preRequisite));
+                } else {
+                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                      end: todayCourse.end,
+                      isCourse: true,
+                      isExam: false,
+                      courseId: myCourse.courseCode,
+                      courseName: myCourse.courseName,
+                      eventType: 'Lab',
+                      location: myCourse.labLocation,
+                      instructors: myCourse.instructors,
+                      credits: myCourse.credits,
+                      preRequisite: myCourse.preRequisite));
+                }
               }
-            }
+            });
           });
-        });
+        }
       });
     }
 
