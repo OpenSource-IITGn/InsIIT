@@ -278,6 +278,9 @@ class _ShuttleState extends State<Shuttle> {
   Widget build(BuildContext context) {
 
     List<Buses> busList = makeBusList(this.origin, this.destination);
+    busList.forEach((Buses bus) {
+      bus.currentlyRunning = false;
+    });
 
     makeBusList(this.origin, this.destination);
     bool getIndex = false;
@@ -290,6 +293,10 @@ class _ShuttleState extends State<Shuttle> {
         bus.currentlyRunning = true;
       }
     });
+
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(50 + _index*150.toDouble(), duration: new Duration(seconds: 1), curve: Curves.ease);
+    }
 
     return Scaffold(
       // backgroundColor: Colors.grey[100],
