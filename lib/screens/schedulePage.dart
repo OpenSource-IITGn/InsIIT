@@ -18,6 +18,9 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
 
+  ScrollController _scrollController;
+  int _index = 0;
+
   Widget body (BuildContext _context) {
     if (eventsList.length == 0) {
       return Center(
@@ -31,23 +34,41 @@ class _SchedulePageState extends State<SchedulePage> {
         ),
       );
     } else {
-      return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ColumnBuilder(
-            mainAxisSize: MainAxisSize.min,
-            itemBuilder: (context, index) {
-              return eventsList[index].buildCard(_context);
-            },
-            itemCount: eventsList.length,
-          ),
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ColumnBuilder(
+          controller: _scrollController,
+          mainAxisSize: MainAxisSize.min,
+          itemBuilder: (context, index) {
+            return eventsList[index].buildCard(_context);
+          },
+          itemCount: eventsList.length,
         ),
       );
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController = new ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _scrollController.animateTo(_index*100.toDouble(), duration: new Duration(milliseconds: 500), curve: Curves.ease);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    bool getIndex = false;
+    DateTime _currentTime = DateTime.now();
+    eventsList.asMap().forEach((int index, EventModel event) {
+      if (!getIndex && event.end.isAfter(_currentTime)) {
+        _index = index;
+        getIndex = true;
+        event.currentlyRunning = true;
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
