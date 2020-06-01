@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
             remarks: event.status));
       }
     });
-    if (eventsList.length != 0 && eventsList != null) {
+    if (eventsList != null && eventsList.length != 0) {
       quickSort(eventsList, 0, eventsList.length - 1);
     }
   }
@@ -251,7 +251,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
 
   loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
-      print(data);
       removedEvents = makeRemovedEventsList(data);
     });
   }
