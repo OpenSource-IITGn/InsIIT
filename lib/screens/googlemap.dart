@@ -349,6 +349,13 @@ class _MapPageState extends State<MapPage> {
                 tilt: 30.0,
                 bearing: 180.0,
               ),
+              cameraTargetBounds: CameraTargetBounds(
+                new LatLngBounds(
+                  northeast: LatLng(23.221005, 72.701542),
+                  southwest: LatLng(23.201905, 72.678445),
+                ),
+              ),
+              minMaxZoomPreference: MinMaxZoomPreference(12, 20),
               markers: _markers,
               circles: Set.of((circle != null) ? [circle] : []),
               onTap: (LatLng location) {
