@@ -9,11 +9,13 @@ class ColumnBuilder extends StatelessWidget {
 	final TextDirection textDirection;
 	final VerticalDirection verticalDirection;
 	final int itemCount;
+	final ScrollController controller;
 
 	const ColumnBuilder({
 		Key key,
 		@required this.itemBuilder,
 		@required this.itemCount,
+		this.controller,
 		this.mainAxisAlignment: MainAxisAlignment.start,
 		this.mainAxisSize: MainAxisSize.max,
 		this.crossAxisAlignment: CrossAxisAlignment.center,
@@ -23,9 +25,11 @@ class ColumnBuilder extends StatelessWidget {
 
 	@override
 	Widget build(BuildContext context) {
-		return new Column(
+
+		return new ListView(
+			controller: controller,
 			children: new List.generate(this.itemCount,
-					(index) => this.itemBuilder(context, index)).toList(),
+							(index) => this.itemBuilder(context, index)).toList(),
 		);
 	}
 }
