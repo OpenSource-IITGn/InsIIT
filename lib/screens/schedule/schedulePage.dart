@@ -2,11 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
-import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/screens/signIn.dart';
-import 'package:googleapis/classroom/v1.dart';
-import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:instiapp/utilities/googleSheets.dart';
+
 import 'package:instiapp/screens/homePage.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -17,18 +13,19 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-
   ScrollController _scrollController;
   int _index = 0;
 
-  Widget body (BuildContext _context) {
+  Widget body(BuildContext _context) {
     if (eventsList.length == 0) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Take rest!'),
-            SizedBox(height: 8,),
+            SizedBox(
+              height: 8,
+            ),
             Text('No Classes or Events to attend Today.'),
           ],
         ),
@@ -36,9 +33,9 @@ class _SchedulePageState extends State<SchedulePage> {
     } else {
       return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ColumnBuilder(
+        child: ListView.builder(
           controller: _scrollController,
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
             return eventsList[index].buildCard(_context);
           },
@@ -52,8 +49,9 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     _scrollController = new ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      _scrollController.animateTo(_index*100.toDouble(), duration: new Duration(milliseconds: 500), curve: Curves.ease);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(_index * 100.toDouble(),
+          duration: new Duration(milliseconds: 500), curve: Curves.ease);
     });
   }
 
@@ -70,17 +68,25 @@ class _SchedulePageState extends State<SchedulePage> {
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
-        title: Text("Your Schedule"),
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Your Schedule',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/editevent');
+              Navigator.pushNamed(context, '/editevent').then((value) => setState((){}));
             },
-            icon: Icon(
-              Icons.edit,
-            ),
+            icon: Icon(Icons.edit, color: Colors.black),
           )
         ],
       ),

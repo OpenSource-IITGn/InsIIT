@@ -22,97 +22,36 @@ class _FullPostPageState extends State<FullPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Post")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Post',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(0.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundColor: Colors.orange,
-                    minRadius: 25,
-                    maxRadius: 25,
-                    child: ClipOval(
-                        child: Image.network(
-                      widget.post.postPersonUrl,
-                      fit: BoxFit.cover,
-                      width: 90.0,
-                      height: 90.0,
-                    )),
-                  ),
-                  SizedBox(width: 8),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        widget.post.postPerson,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        widget.post.postPersonBio,
-                        style: TextStyle(
-                          color: secondaryTextColor,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        widget.post.timeElapsed,
-                        style: TextStyle(
-                            color: secondaryTextColor,
-                            fontSize: 12,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                child: Divider(),
-              ),
-              GestureDetector(
-                  onDoubleTap: () {
-                    widget.post.isLike = true;
-                    setState(() {});
-                  },
-                  child: Container(child: Text(widget.post.mainText))),
-              SizedBox(height: 10),
-              (widget.post.imageUrls[0] == '' ||
-                      widget.post.imageUrls.length == 0)
-                  ? Container()
-                  : ImageSliderWidget(
-                      imageUrls: widget.post.imageUrls,
-                      imageBorderRadius: BorderRadius.circular(8.0),
-                    ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.thumb_up,
-                    color: (widget.post.isLike == true)
-                        ? primaryColor
-                        : secondaryTextColor,
-                  ),
-                  onPressed: () {
-                    widget.post.isLike = !widget.post.isLike;
-                    setState(() {});
-                  },
-                ),
-                IconButton(
-                    icon: Icon(Icons.comment, color: secondaryTextColor),
-                    onPressed: () {}),
-              ]),
+              PostWidget(post: widget.post, showMore: true,),
               Divider(),
-              ColumnBuilder(
-                  itemBuilder: (context, index) {
-                    return buildComment(widget.post.comments[index]);
-                  },
-                  itemCount: widget.post.comments.length)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ColumnBuilder(
+                    itemBuilder: (context, index) {
+                      return buildComment(widget.post.comments[index]);
+                    },
+                    itemCount: widget.post.comments.length),
+              )
             ],
           ),
         ),

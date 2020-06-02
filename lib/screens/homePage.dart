@@ -745,51 +745,56 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          return Navigator.pushNamed(context, '/schedule');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Wondering what's next?",
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
+                      (twoEvents.length == 0)
+                          ? Container()
+                          : GestureDetector(
+                              onTap: () {
+                                return Navigator.pushNamed(
+                                    context, '/schedule');
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              "Wondering what's next?",
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Here's your schedule",
+                                              style: TextStyle(
+                                                  color: Colors.black
+                                                      .withAlpha(150)),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        "Here's your schedule",
-                                        style: TextStyle(
-                                            color: Colors.black.withAlpha(150)),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward),
-                                ],
+                                        Icon(Icons.arrow_forward),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children:
+                                          twoEvents.map((EventModel event) {
+                                        return scheduleCard(event);
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 10),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: twoEvents.map((EventModel event) {
-                                  return scheduleCard(event);
-                                }).toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            ),
                       GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/editEvent.dart';
 import 'package:instiapp/screens/email.dart';
 import 'package:instiapp/screens/eventscalendar.dart';
 import 'package:instiapp/screens/eventpage.dart';
@@ -14,7 +13,8 @@ import 'package:instiapp/screens/roomBooking/AvailableRooms.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/form3.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
-import 'package:instiapp/screens/schedulePage.dart';
+import 'package:instiapp/screens/schedule/editEvent.dart';
+import 'package:instiapp/screens/schedule/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/utilities/constants.dart';

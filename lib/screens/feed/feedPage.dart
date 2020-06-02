@@ -65,6 +65,7 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: (loading == true)
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(

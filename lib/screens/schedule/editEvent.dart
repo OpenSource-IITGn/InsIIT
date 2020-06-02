@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/schedulePage.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,43 +15,58 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+  Widget eventCard(EventModel model) {
+    return Container(
+      width: ScreenSize.size.width * 1,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: ScreenSize.size.width * 0.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      stringReturn(model, model.courseName, model.summary),
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(255),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
+                    // SizedBox(
+                    //   height: 8,
+                    // ),
+                    Text(
+                      stringReturn(model, model.eventType, model.description),
+                      style: TextStyle(
+                        color: Colors.black.withAlpha(150),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
 
-  Widget eventCard (EventModel model) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(height: 8,),
-            Text(
-              stringReturn(model, model.courseName, model.summary),
-              style: TextStyle(
-                  color: Colors.black.withAlpha(255),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
-            ),
-            SizedBox(height: 8,),
-            Text(
-              stringReturn(model, model.eventType, model.description),
-              style: TextStyle(
-                  color: Colors.black.withAlpha(255),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
-            ),
-            SizedBox(height: 8,),
-            FlatButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                    content: Container(
-                      height: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Do you want to remove this event from your schedule?'),
-                          SizedBox(height: 5,),
+                    SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                        actions: <Widget>[
                           FlatButton(
                             onPressed: () async {
                               if (model.isCourse) {
@@ -81,7 +96,7 @@ class _EditEventState extends State<EditEvent> {
                                   remarks: model.remarks,
                                 ));
                               }
-                              Navigator.pushReplacementNamed(context, '/schedule');
+                              Navigator.pop(context);
                               var file = await _localFileForRemovedEvents();
                               bool exists = await file.exists();
                               if (exists) {
@@ -89,31 +104,29 @@ class _EditEventState extends State<EditEvent> {
                               }
                               await file.create();
                               await file.open();
-                              var removedList = makeRemovedEventsList(removedEvents);
-                              await file.writeAsString(ListToCsvConverter().convert(removedList));
+                              var removedList =
+                                  makeRemovedEventsList(removedEvents);
+                              await file.writeAsString(
+                                  ListToCsvConverter().convert(removedList));
                               print('DATA OF REMOVED EVENT STORED IN FILE');
                             },
                             child: Text('Yes'),
                           ),
                         ],
+                        content: Text(
+                            'Do you want to remove this event from your schedule?'),
                       ),
-                    ),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.delete,
-              ),
-              label: Text('Remove this event'),
-            ),
-            SizedBox(height: 8,),
-          ],
+                    );
+                  })
+            ],
+          ),
         ),
       ),
     );
   }
 
-  String stringReturn(EventModel model, String textCourse, String textCalendar) {
+  String stringReturn(
+      EventModel model, String textCourse, String textCalendar) {
     if (model.isCourse || model.isExam) {
       return textCourse;
     } else {
@@ -127,24 +140,16 @@ class _EditEventState extends State<EditEvent> {
     }
   }
 
-  List<List<String>> makeRemovedEventsList (List<EventModel> removedEvents) {
+  List<List<String>> makeRemovedEventsList(List<EventModel> removedEvents) {
     List<List<String>> removedEventsList = [];
 
     removedEvents.forEach((EventModel model) {
       if (model.isCourse) {
-        removedEventsList.add([
-          'course',
-          model.courseId,
-          model.courseName,
-          model.eventType
-        ]);
+        removedEventsList
+            .add(['course', model.courseId, model.courseName, model.eventType]);
       } else if (model.isExam) {
-        removedEventsList.add([
-          'exam',
-          model.courseId,
-          model.courseName,
-          model.eventType
-        ]);
+        removedEventsList
+            .add(['exam', model.courseId, model.courseName, model.eventType]);
       } else {
         removedEventsList.add([
           'calendar',
@@ -167,8 +172,9 @@ class _EditEventState extends State<EditEvent> {
     return File(filename);
   }
 
-  _openGoogleCalendar () async {
-    bool isInstalled = await DeviceApps.isAppInstalled('com.google.android.calendar');
+  _openGoogleCalendar() async {
+    bool isInstalled =
+        await DeviceApps.isAppInstalled('com.google.android.calendar');
     if (isInstalled) {
       DeviceApps.openApp('com.google.android.calendar');
     } else {
@@ -185,8 +191,17 @@ class _EditEventState extends State<EditEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Events'),
+        elevation: 0,
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Edit Schedule',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -202,9 +217,8 @@ class _EditEventState extends State<EditEvent> {
         onPressed: () {
           _openGoogleCalendar();
         },
-        child: Icon(
-          Icons.add,
-        ),
+        backgroundColor: Colors.white,
+        child: Icon(Icons.add, color: Colors.black),
       ),
     );
   }
