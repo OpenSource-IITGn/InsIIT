@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         '/availablerooms' : (context) => AvailableRooms(),
         '/eventdetail' : (context) => EventDetail(),
         '/editevent' : (context) => EditEvent(),
-        '/map' : (context) => MapPage(),
+        // '/map' : (context) => MapPage(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
