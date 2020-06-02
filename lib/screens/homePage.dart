@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/feedPage.dart';
-import 'package:instiapp/screens/googlemap.dart';
 import 'package:instiapp/screens/loading.dart';
+import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/carouselSlider.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
@@ -19,6 +19,8 @@ import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'feed/feedPage.dart';
 //TODO: Add title for each menu
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -38,7 +40,7 @@ List<EventModel> examCourses;
 List<EventModel> eventsList;
 
 class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<HomePage>{
-  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
+  
   var startpos, endpos;
   bool loading = true;
   List<EventModel> twoEvents;
@@ -510,7 +512,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   Widget homeScreen() {
 
     return Scaffold(
-      // backgroundColor: Colors.white,
+      backgroundColor: Colors.white.withAlpha(252),
       extendBodyBehindAppBar: true,
       bottomNavigationBar: BottomNavyBar(
         selectedIndex: selectedIndex,
@@ -781,7 +783,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                 ],
                               ),
                               SizedBox(height: 10),
-                              Row(
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: twoEvents.map((EventModel event) {
                                   return scheduleCard(event);
                                 }).toList(),
@@ -1077,9 +1080,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   }
 
   Widget scheduleCard (EventModel event) {
-    return Expanded(
-      flex: 1,
-      child: Card(
+    return Card(
         child: Container(
           width: ScreenSize.size.width,
           child: Padding(
@@ -1106,26 +1107,176 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                 ],
               )),
         ),
-      ),
-    );
+      );
   }
 
   Widget descriptionWidget (EventModel event) {
-    if (event.isCourse || event.isExam) {
-      return Flexible(
-        child: Text(event.courseId,
-            style: TextStyle(
-                color: Colors.black.withAlpha(120),
-                fontWeight: FontWeight.bold,
-                fontSize: 14)),
+    // if (event.isCourse || event.isExam) {
+    //   return Flexible(
+    //     child: Text(event.courseId,
+    //         style: TextStyle(
+    //             color: Colors.black.withAlpha(120),
+    //             fontWeight: FontWeight.bold,
+    //             fontSize: 14)),
+    //   );
+    // } else {
+    //   return Flexible(
+    //     child: Text(event.description,
+    //         style: TextStyle(
+    //             color: Colors.black.withAlpha(120),
+    //             fontWeight: FontWeight.bold,
+    //             fontSize: 14)),
+    //   );
+    // }
+    if (event.isCourse) {
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.courseId,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(event.courseName,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(event.eventType,
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(200),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14)),
+                  SizedBox(width: 8,),
+                  Flexible(
+                    child: Text('Room: ${event.location}',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+            ]),
+      );
+    } else if (event.isExam) {
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.courseId,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(event.courseName,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(event.eventType,
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(200),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14)),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text('Room: ',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                  SizedBox(width: 8,),
+                  Flexible(
+                    child: Text('Roll Numbers: ',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text(event.location,
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                  SizedBox(width: 8,),
+                  Flexible(
+                    child: Text(event.rollNumbers,
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+            ]),
       );
     } else {
-      return Flexible(
-        child: Text(event.description,
-            style: TextStyle(
-                color: Colors.black.withAlpha(120),
-                fontWeight: FontWeight.bold,
-                fontSize: 14)),
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(stringReturn(event.description),
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(stringReturn(event.summary),
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(stringReturn(event.eventType) + ' (' + stringReturn(event.remarks) + ')',
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(200),
+                      fontStyle: FontStyle.italic,
+                      fontSize: 14)),
+            ]),
       );
     }
   }

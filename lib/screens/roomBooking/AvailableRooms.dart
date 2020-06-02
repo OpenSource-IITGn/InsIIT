@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/functions.dart';
-import 'package:instiapp/screens/Selecttime.dart';
+import 'package:instiapp/screens/roomBooking/Selecttime.dart';
+import 'package:instiapp/screens/roomBooking/functions.dart';
+
 import 'package:instiapp/utilities/constants.dart';
 
 class AvailableRooms extends StatefulWidget {

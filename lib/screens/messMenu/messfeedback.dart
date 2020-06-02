@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/textcard.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 
 //TODO implement upvote downvote on each menu item
@@ -59,13 +60,12 @@ class _MessFeedBackState extends State<MessFeedBack> {
                         hintText: 'Enter your review here.'),
                   ),
                   RaisedButton.icon(
-                    color: primaryColor,
+                    color: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     onPressed: () {
-                      GSheet sheet = GSheet(
-                          '1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
+                     
                       sheet.writeData([
                         [
                           DateTime.now().toString(),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/roomservice.dart';
+import 'package:instiapp/screens/roomBooking/Selecttime.dart';
+import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/screens/functions.dart';
-import 'package:instiapp/screens/Selecttime.dart';
-import 'package:instiapp/screens/AvailableRooms.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 
 class BookingForm extends StatefulWidget {
   @override

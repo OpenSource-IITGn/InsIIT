@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:location/location.dart';
@@ -49,7 +50,6 @@ class _MapPageState extends State<MapPage> {
 
   static const LatLng _center = const LatLng(23.212838, 72.684738);
 
-  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
 
   Set<Marker> _markers = {};
 

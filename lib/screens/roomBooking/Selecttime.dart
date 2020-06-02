@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/functions.dart';
-import 'package:instiapp/screens/roomservice.dart';
+import 'package:instiapp/screens/roomBooking/functions.dart';
+import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 

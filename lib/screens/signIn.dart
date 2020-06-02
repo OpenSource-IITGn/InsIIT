@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
@@ -38,7 +39,6 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
   bool isSignedIn = false;
-  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
   // AuthService _auth = AuthService();
 
   @override

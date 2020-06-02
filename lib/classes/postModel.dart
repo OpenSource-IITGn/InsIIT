@@ -1,9 +1,9 @@
 import 'dart:convert';
-
+import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
-import 'package:instiapp/screens/fullPostPage.dart';
+import 'package:instiapp/screens/feed/fullPostPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/slider.dart';
 import 'package:http/http.dart' as http;
@@ -122,7 +122,7 @@ class _PostWidgetState extends State<PostWidget> {
     );
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     print(jsonDecode(response.body)['results'][0]['reactions']);
-    
+
     print(widget.post.postId);
   }
 
@@ -240,11 +240,14 @@ class _PostWidgetState extends State<PostWidget> {
                         FlatButton(
                           child: Row(
                             children: <Widget>[
-                              Icon(
-                                Icons.thumb_up,
-                                color: (widget.post.isLike == true)
-                                    ? primaryColor
-                                    : secondaryTextColor,
+                              Transform.rotate(
+                                angle: 180 * math.pi / 180,
+                                child: Icon(
+                                  Icons.details,
+                                  color: (widget.post.isLike == true)
+                                      ? primaryColor
+                                      : secondaryTextColor,
+                                ),
                               ),
                               SizedBox(width: 10),
                               Text("${widget.post.reactions['like']}"),
