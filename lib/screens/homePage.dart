@@ -19,6 +19,7 @@ import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:instiapp/screens/roomBooking/roomservice.dart';
 
 import 'feed/feedPage.dart';
 
@@ -978,6 +979,7 @@ class _HomePageState extends State<HomePage>
           FeedPage(),
           Shuttle(),
           MapPage(),
+          RoomService(),
         ],
       ),
     );

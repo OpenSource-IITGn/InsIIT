@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
+import 'package:instiapp/classes/scheduleModel.dart';
 
 import 'package:instiapp/utilities/constants.dart';
 
@@ -569,23 +570,7 @@ class _RoomServiceState extends State<RoomService> {
   }
 }
 
-verticalDivider() {
-  return Row(
-    children: <Widget>[
-      SizedBox(
-        width: 16,
-      ),
-      Container(
-        height: 50,
-        width: 1,
-        color: Colors.grey,
-      ),
-      SizedBox(
-        width: 16,
-      ),
-    ],
-  );
-}
+
 
 
 
