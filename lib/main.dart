@@ -5,7 +5,7 @@ import 'package:instiapp/screens/eventpage.dart';
 import 'package:instiapp/screens/feed/feedPage.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/importantContacts.dart';
-import 'package:instiapp/screens/map/eventDetail.dart';
+import 'package:instiapp/screens/schedule/eventDetail.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/messMenu/messfeedback.dart';
 import 'package:instiapp/screens/messMenu/messmenu.dart';

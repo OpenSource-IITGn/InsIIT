@@ -251,8 +251,17 @@ class _EventDetailState extends State<EventDetail> {
     EventModel event = eventModelData['eventModel'];
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event Details'),
+        elevation: 0,
         centerTitle: true,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Details',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: body(event),
