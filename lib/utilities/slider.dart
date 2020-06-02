@@ -1,10 +1,6 @@
-import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/dot_indicator.dart';
 
 class ImageSliderWidget extends StatefulWidget {

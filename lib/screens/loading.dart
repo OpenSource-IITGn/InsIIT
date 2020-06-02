@@ -3,19 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'dart:math' as math;
 
 Widget loadScreen() {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: secondaryColor,
-        title: Text('InstiApp'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: SpinKitChasingDots(
-          color: primaryColor,
-          size: 50.0,
-        ),
-      ),
-    );
-  }
+  Color color = Colors.blue;
+  return Scaffold(
+    body: AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      onEnd: () {
+        color = Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+            .withOpacity(1.0);
+      },
+      height: ScreenSize.size.height,
+      width: ScreenSize.size.width,
+      color: color,
+      child: Center(child: Text("Please wait...",style: TextStyle(color:Colors.white),)),
+    ),
+  );
+}

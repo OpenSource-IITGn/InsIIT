@@ -1,9 +1,9 @@
 import 'dart:convert';
-
+import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
-import 'package:instiapp/screens/fullPostPage.dart';
+import 'package:instiapp/screens/feed/fullPostPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/slider.dart';
 import 'package:http/http.dart' as http;
@@ -90,8 +90,13 @@ class PostModel {
 
 class PostWidget extends StatefulWidget {
   PostModel post;
-  PostWidget({this.post}) {
-    post.isShowingMore = (post.mainText.length > 400) ? false : true;
+  bool showMore;
+  PostWidget({this.post, this.showMore}) {
+    if (showMore != null) {
+      post.isShowingMore = true;
+    } else {
+      post.isShowingMore = (post.mainText.length > 400) ? false : true;
+    }
     post.isLike = false;
   }
 
@@ -122,160 +127,171 @@ class _PostWidgetState extends State<PostWidget> {
     );
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     print(jsonDecode(response.body)['results'][0]['reactions']);
-    
+
     print(widget.post.postId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onDoubleTap: () {
-          widget.post.isLike = true;
-          updateLikes();
-          setState(() {});
-        },
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FullPostPage(post: widget.post)),
-          );
-        },
-        child: Card(
-            elevation: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.orange,
-                        minRadius: 25,
-                        maxRadius: 25,
-                        child: ClipOval(
-                            child: Image.network(
-                          widget.post.postPersonUrl,
-                          fit: BoxFit.cover,
-                          width: 90.0,
-                          height: 90.0,
-                        )),
-                      ),
-                      SizedBox(width: 8),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            widget.post.postPerson,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            widget.post.postPersonBio,
-                            style: TextStyle(
-                              color: secondaryTextColor,
-                              fontSize: 12,
+    return Container(
+      color: Colors.grey.withAlpha(10),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0.0, 0, 0, 1),
+        child: GestureDetector(
+          onDoubleTap: () {
+            widget.post.isLike = true;
+            updateLikes();
+            setState(() {});
+          },
+          onTap: () {
+            if (widget.showMore == null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FullPostPage(post: widget.post)),
+              );
+            }
+          },
+          child: Card(
+              elevation: 0,
+              borderOnForeground: true,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.orange,
+                          minRadius: 25,
+                          maxRadius: 25,
+                          child: ClipOval(
+                              child: Image.network(
+                            widget.post.postPersonUrl,
+                            fit: BoxFit.cover,
+                            width: 90.0,
+                            height: 90.0,
+                          )),
+                        ),
+                        SizedBox(width: 8),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              widget.post.postPerson,
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Text(
-                            widget.post.timeElapsed,
-                            style: TextStyle(
+                            Text(
+                              widget.post.postPersonBio,
+                              style: TextStyle(
                                 color: secondaryTextColor,
                                 fontSize: 12,
-                                fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                    child: Divider(),
-                  ),
-                  (widget.post.isShowingMore == true)
-                      ? Text(widget.post.mainText)
-                      : RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              // fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: widget.post.mainText.substring(0, 400)),
-                              TextSpan(
-                                  text: '\nRead More... ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic,
-                                      color: secondaryTextColor)),
-                            ],
-                          ),
-                        ),
-                  SizedBox(height: 10),
-                  (widget.post.imageUrls[0] == '' ||
-                          widget.post.imageUrls.length == 0)
-                      ? Container()
-                      : ImageSliderWidget(
-                          imageUrls: widget.post.imageUrls,
-                          imageBorderRadius: BorderRadius.circular(8.0),
-                        ),
-                  // (widget.post.imageUrl == null)
-                  //     ? Container()
-                  //     : Container(
-                  //         color: Colors.grey.withAlpha(50),
-                  //         alignment: Alignment.center,
-                  //         height: ScreenSize.size.height * 0.4,
-                  //         child: Image.network(widget.post.imageUrl),
-                  //       ),
-
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FlatButton(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.thumb_up,
-                                color: (widget.post.isLike == true)
-                                    ? primaryColor
-                                    : secondaryTextColor,
                               ),
-                              SizedBox(width: 10),
-                              Text("${widget.post.reactions['like']}"),
-                            ],
-                          ),
-                          onPressed: () {
-                            widget.post.isLike = !widget.post.isLike;
-                            updateLikes();
-                            setState(() {});
-                          },
+                            ),
+                            Text(
+                              widget.post.timeElapsed,
+                              style: TextStyle(
+                                  color: secondaryTextColor,
+                                  fontSize: 12,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                          ],
                         ),
-                        FlatButton(
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      child: Divider(),
+                    ),
+                    (widget.post.isShowingMore == true)
+                        ? Text(widget.post.mainText)
+                        : RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                // fontSize: 14.0,
+                                color: Colors.black,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        widget.post.mainText.substring(0, 400)),
+                                TextSpan(
+                                    text: '\nRead More... ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic,
+                                        color: secondaryTextColor)),
+                              ],
+                            ),
+                          ),
+                    SizedBox(height: 10),
+                    (widget.post.imageUrls[0] == '' ||
+                            widget.post.imageUrls.length == 0)
+                        ? Container()
+                        : ImageSliderWidget(
+                            imageUrls: widget.post.imageUrls,
+                            imageBorderRadius: BorderRadius.circular(8.0),
+                          ),
+                    // (widget.post.imageUrl == null)
+                    //     ? Container()
+                    //     : Container(
+                    //         color: Colors.grey.withAlpha(50),
+                    //         alignment: Alignment.center,
+                    //         height: ScreenSize.size.height * 0.4,
+                    //         child: Image.network(widget.post.imageUrl),
+                    //       ),
+
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FlatButton(
                             child: Row(
                               children: <Widget>[
-                                Icon(Icons.comment, color: secondaryTextColor),
+                                Transform.rotate(
+                                  angle: 180 * math.pi / 180,
+                                  child: Icon(
+                                    Icons.details,
+                                    color: (widget.post.isLike == true)
+                                        ? primaryColor
+                                        : secondaryTextColor,
+                                  ),
+                                ),
                                 SizedBox(width: 10),
-                                Text("${widget.post.comments.length}"),
+                                Text("${widget.post.reactions['like']}"),
                               ],
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        FullPostPage(post: widget.post)),
-                              );
-                            }),
-                      ]),
-                ],
-              ),
-            )),
+                              widget.post.isLike = !widget.post.isLike;
+                              updateLikes();
+                              setState(() {});
+                            },
+                          ),
+                          FlatButton(
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.comment,
+                                      color: secondaryTextColor),
+                                  SizedBox(width: 10),
+                                  Text("${widget.post.comments.length}"),
+                                ],
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FullPostPage(post: widget.post)),
+                                );
+                              }),
+                        ]),
+                  ],
+                ),
+              )),
+        ),
       ),
     );
   }

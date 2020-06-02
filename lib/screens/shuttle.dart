@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:instiapp/classes/buses.dart';
+import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/screens/homePage.dart';
 
 //TODO: ADD LINK TO GOOGLE MAP ROUTEs
@@ -21,7 +21,14 @@ class _ShuttleState extends State<Shuttle> {
   DateTime _busTime;
   String origin = 'Origin';
   String destination = 'Destination';
-  List<String> places = ['Palaj', 'Visat Circle', 'Kudasan', 'Infocity', 'RakshaShakti', 'Pathikashram'];
+  List<String> places = [
+    'Palaj',
+    'Visat Circle',
+    'Kudasan',
+    'Infocity',
+    'RakshaShakti',
+    'Pathikashram'
+  ];
 
   void reminder(buses) {
     if (buses.minute > 10) {
@@ -34,7 +41,9 @@ class _ShuttleState extends State<Shuttle> {
   }
 
   _scheduledNotificationDateTime(DateTime busTime, DateTime currentTime) {
-    if ((busTime.hour - currentTime.hour)*60 + (busTime.minute - currentTime.minute) >= 0) {
+    if ((busTime.hour - currentTime.hour) * 60 +
+            (busTime.minute - currentTime.minute) >=
+        0) {
       _busTime = busTime;
       return DateTime.now().add(_busTime.difference(currentTime));
     } else {
@@ -43,7 +52,7 @@ class _ShuttleState extends State<Shuttle> {
     }
   }
 
-  Widget current (bus) {
+  Widget current(bus) {
     if (bus.currentlyRunning) {
       return Icon(
         Icons.adjust,
@@ -127,26 +136,9 @@ class _ShuttleState extends State<Shuttle> {
                           showDialog(
                             context: context,
                             builder: (_) => new AlertDialog(
-                              content: Image.network(
-                                buses.url,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value: loadingProgress
-                                          .expectedTotalBytes !=
-                                          null
-                                          ? loadingProgress
-                                          .cumulativeBytesLoaded /
-                                          loadingProgress
-                                              .expectedTotalBytes
-                                          : null,
-                                    ),
-                                  );
-                                },
-                              ),
+                              content: FadeInImage.assetNetwork(
+                                  placeholder: "assets/images/logo.png",
+                                  image: buses.url),
                             ),
                           );
                         },
@@ -172,14 +164,8 @@ class _ShuttleState extends State<Shuttle> {
   @override
   void initState() {
     super.initState();
-
-    _scrollController = new ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      _scrollController.animateTo(50 + _index*150.toDouble(), duration: new Duration(seconds: 1), curve: Curves.ease);
-    });
-
     var initializationSettingsAndroid =
-    new AndroidInitializationSettings('app_icon');
+        new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
@@ -190,14 +176,22 @@ class _ShuttleState extends State<Shuttle> {
         onSelectNotification: onSelectNotification);
   }
 
+  void initialize() {
+    _scrollController = new ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(50 + _index * 150.toDouble(),
+          duration: new Duration(seconds: 1), curve: Curves.ease);
+    });
+  }
+
   Future onSelectNotification(String payload) async {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-          title: const Text('Bus Reminder'),
-          content:
-          new Text('Hey buddy!! You have a bus to catch in 10 minutes'),
-        ));
+              title: const Text('Bus Reminder'),
+              content:
+                  new Text('Hey buddy!! You have a bus to catch in 10 minutes'),
+            ));
   }
 
   Future _showNotificationWithDefaultSound(buses) async {
@@ -206,7 +200,8 @@ class _ShuttleState extends State<Shuttle> {
     var busTime = new DateTime(DateTime.now().year, DateTime.now().month,
         DateTime.now().day, hour, minute, 0);
     var currentTime = new DateTime.now();
-    var scheduledNotificationDateTime = _scheduledNotificationDateTime(busTime, currentTime);
+    var scheduledNotificationDateTime =
+        _scheduledNotificationDateTime(busTime, currentTime);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your new channel id',
         'your new channel name',
@@ -234,8 +229,8 @@ class _ShuttleState extends State<Shuttle> {
         payload: 'item x');
   }
 
-  List<List<Buses>> dividedBuses () {
-    List<List<Buses>> _dividedBuses = [[],[]];
+  List<List<Buses>> dividedBuses() {
+    List<List<Buses>> _dividedBuses = [[], []];
     if (buses != null) {
       buses.forEach((Buses bus) {
         if (bus.origin == 'Palaj') {
@@ -249,7 +244,7 @@ class _ShuttleState extends State<Shuttle> {
     return _dividedBuses;
   }
 
-  List<Buses> makeBusList (String origin, String destination) {
+  List<Buses> makeBusList(String origin, String destination) {
     List<Buses> _busList = [];
     List<Buses> busesAccordingToOrigin = [];
     if (origin == 'Origin') {
@@ -275,8 +270,64 @@ class _ShuttleState extends State<Shuttle> {
     return _busList;
   }
 
-  Widget build(BuildContext context) {
+  bool destinationSelected = false;
 
+  Widget build(BuildContext context) {
+    if (!destinationSelected) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Where are you going?",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Let's get you on that bus!",
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(150),
+                      fontWeight: FontWeight.bold),
+                ),
+                ColumnBuilder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        destinationSelected = true;
+                        destination = places[index];
+                        setState(() {});
+                        initialize();
+                      },
+                      child: Container(
+                        width: ScreenSize.size.width,
+                        child: Card(
+                            child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(places[index],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              )),
+                        )),
+                      ),
+                    );
+                  },
+                  itemCount: places.length,
+                )
+              ],
+            ),
+          )),
+        ),
+      );
+    }
     List<Buses> busList = makeBusList(this.origin, this.destination);
     busList.forEach((Buses bus) {
       bus.currentlyRunning = false;
@@ -286,7 +337,8 @@ class _ShuttleState extends State<Shuttle> {
     bool getIndex = false;
     DateTime _currentTime = DateTime.now();
     busList.asMap().forEach((int index, Buses bus) {
-      DateTime _busTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, bus.hour, bus.minute);
+      DateTime _busTime = DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, bus.hour, bus.minute);
       if (!getIndex && _busTime.isAfter(_currentTime)) {
         _index = index;
         getIndex = true;
@@ -295,11 +347,12 @@ class _ShuttleState extends State<Shuttle> {
     });
 
     if (_scrollController.hasClients) {
-      _scrollController.animateTo(50 + _index*150.toDouble(), duration: new Duration(seconds: 1), curve: Curves.ease);
+      _scrollController.animateTo(50 + _index * 150.toDouble(),
+          duration: new Duration(seconds: 1), curve: Curves.ease);
     }
 
     return Scaffold(
-      // backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: ListView(
         controller: _scrollController,
         children: <Widget>[
@@ -355,5 +408,3 @@ class _ShuttleState extends State<Shuttle> {
     );
   }
 }
-
-
