@@ -520,7 +520,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         onPageChanged: (index) {
           setState(() => selectedIndex = index);
         },
-        physics: NeverScrollableScrollPhysics(),
+        // physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           OfflineBuilder(
             connectivityBuilder: (context, connectivity, child) {
