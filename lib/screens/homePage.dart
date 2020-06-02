@@ -21,6 +21,7 @@ import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'feed/feedPage.dart';
+
 //TODO: Add title for each menu
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -39,8 +40,8 @@ List<EventModel> removedEvents;
 List<EventModel> examCourses;
 List<EventModel> eventsList;
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<HomePage>{
-  
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin<HomePage> {
   var startpos, endpos;
   bool loading = true;
   List<EventModel> twoEvents;
@@ -66,7 +67,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     loadExamTimeTableData();
   }
 
-  prepareEventsList () {
+  prepareEventsList() {
     List<calendar.Event> todayEvents;
     List<EventModel> currentDayCourses;
     List<EventModel> currentDayExamCourses;
@@ -120,7 +121,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         }
       });
       if (shouldContain) {
-        eventsList.add(EventModel(start: event.start.dateTime.toLocal(),
+        eventsList.add(EventModel(
+            start: event.start.dateTime.toLocal(),
             end: event.end.dateTime.toLocal(),
             isCourse: false,
             isExam: false,
@@ -175,8 +177,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
             }
             if (lc[2] != '' && lc[2] != '-') {
               if (lc[2].replaceAll(' ', '').contains(new RegExp(
-                  course.name.replaceAll(' ', ''),
-                  caseSensitive: false)) ||
+                      course.name.replaceAll(' ', ''),
+                      caseSensitive: false)) ||
                   course.name.replaceAll(' ', '').contains(new RegExp(
                       lc[2].replaceAll(' ', ''),
                       caseSensitive: false)) ||
@@ -309,7 +311,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -349,8 +351,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
               lc[1] != '-' &&
               lc[1] != '') {
             if (lc[0].replaceAll(' ', '').contains(new RegExp(
-                course.name.replaceAll(' ', ''),
-                caseSensitive: false)) ||
+                    course.name.replaceAll(' ', ''),
+                    caseSensitive: false)) ||
                 course.name.replaceAll(' ', '').contains(new RegExp(
                     lc[0].replaceAll(' ', ''),
                     caseSensitive: false)) ||
@@ -371,13 +373,13 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                   instructors: lc[6].split(','),
                   preRequisite: lc[10],
                   lectureCourse:
-                  lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                      lc[11].split('(')[0].replaceAll(' ', '').split('+'),
                   lectureLocation: returnLocation(lc[11]),
                   tutorialCourse:
-                  lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                      lc[12].split('(')[0].replaceAll(' ', '').split('+'),
                   tutorialLocation: returnLocation(lc[12]),
-                  labCourse: lc[13].split('(')[0].replaceAll(' ', '').split(
-                      '+'),
+                  labCourse:
+                      lc[13].split('(')[0].replaceAll(' ', '').split('+'),
                   labLocation: returnLocation(lc[13]),
                   remarks: lc[14],
                   courseBooks: lc[15]));
@@ -504,13 +506,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   bool prevConnected = false;
   int selectedIndex = 0;
   PageController _pageController;
-  List<String> titles = [
-    "",
-    "News",
-    "Shuttle"
-  ];
+  List<String> titles = ["", "News", "Shuttle"];
   Widget homeScreen() {
-
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
       extendBodyBehindAppBar: true,
@@ -520,7 +517,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         onItemSelected: (index) {
           selectedIndex = index;
-          _pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+          _pageController.jumpToPage(index);
           setState(() {});
         },
         items: [
@@ -595,7 +592,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
         centerTitle: true,
       ),
       body: PageView(
-        physics:new NeverScrollableScrollPhysics(),
+        physics: new NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: (index) {
           setState(() => selectedIndex = index);
@@ -627,8 +624,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                       (connected)
                           ? Container()
                           : SizedBox(
-                        height: 10,
-                      ),
+                              height: 10,
+                            ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -637,13 +634,13 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                               minRadius: 30,
                               child: ClipOval(
                                   child: Image.network(
-                                    (gSignIn.currentUser == null)
-                                        ? ""
-                                        : gSignIn.currentUser.photoUrl,
-                                    fit: BoxFit.cover,
-                                    width: 90.0,
-                                    height: 90.0,
-                                  )),
+                                (gSignIn.currentUser == null)
+                                    ? ""
+                                    : gSignIn.currentUser.photoUrl,
+                                fit: BoxFit.cover,
+                                width: 90.0,
+                                height: 90.0,
+                              )),
                             ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -652,9 +649,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                     (gSignIn.currentUser == null)
                                         ? "Hey John Doe!"
                                         : "Hey " +
-                                        gSignIn.currentUser.displayName
-                                            .split(' ')[0] +
-                                        '!',
+                                            gSignIn.currentUser.displayName
+                                                .split(' ')[0] +
+                                            '!',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 19,
@@ -686,11 +683,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Hungry?",
@@ -703,9 +700,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                         "Here's what's in the mess",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)
-                                          // fontSize: 18.0,
-                                          // fontWeight: FontWeight.bold,
-                                        ),
+                                            // fontSize: 18.0,
+                                            // fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -733,8 +730,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                               child: Text(
                                                 i,
                                                 style: TextStyle(
-                                                  // fontSize: 20.0,
-                                                ),
+                                                    // fontSize: 20.0,
+                                                    ),
                                               ),
                                             ),
                                           ),
@@ -759,11 +756,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Wondering what's next?",
@@ -795,8 +792,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                       ),
                       GestureDetector(
                         onTap: () {
-                          return Navigator.pushNamed(
-                              context, '/schedule');
+                          return Navigator.pushNamed(context, '/schedule');
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -805,11 +801,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Bored?",
@@ -822,9 +818,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                         "Checkout ongoing events",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)
-                                          // fontSize: 18.0,
-                                          // fontWeight: FontWeight.bold,
-                                        ),
+                                            // fontSize: 18.0,
+                                            // fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -843,15 +839,15 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                     builder: (BuildContext context) {
                                       return Container(
                                         width:
-                                        MediaQuery.of(context).size.width,
+                                            MediaQuery.of(context).size.width,
                                         // color: Colors.black,
                                         child: Container(
                                           child: Center(
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Container(
                                                   // color: Colors.black,
@@ -859,11 +855,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                                   width: ScreenSize.size.width,
                                                   child: ClipRRect(
                                                     borderRadius:
-                                                    BorderRadius.only(
+                                                        BorderRadius.only(
                                                       topLeft:
-                                                      Radius.circular(10.0),
+                                                          Radius.circular(10.0),
                                                       topRight:
-                                                      Radius.circular(10.0),
+                                                          Radius.circular(10.0),
                                                     ),
                                                     child: Image(
                                                       fit: BoxFit.cover,
@@ -878,22 +874,22 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                                   decoration: new BoxDecoration(
                                                       color: Colors.white,
                                                       borderRadius: new BorderRadius
-                                                          .only(
+                                                              .only(
                                                           bottomLeft:
-                                                          const Radius
-                                                              .circular(
-                                                              10.0),
+                                                              const Radius
+                                                                      .circular(
+                                                                  10.0),
                                                           bottomRight:
-                                                          const Radius
-                                                              .circular(
-                                                              10.0))),
+                                                              const Radius
+                                                                      .circular(
+                                                                  10.0))),
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .fromLTRB(8, 8, 8, 8.0),
                                                     child: Row(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       // mainAxisAlignment:
                                                       //     MainAxisAlignment
                                                       //         .spaceAround,
@@ -903,10 +899,10 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                                           children: <Widget>[
                                                             Text("24",
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                      FontWeight
+                                                                          .bold,
                                                                   fontSize: 20,
                                                                 )),
                                                             Text('July')
@@ -915,28 +911,28 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                                                         verticalDivider(),
                                                         Column(
                                                           crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                           children: <Widget>[
                                                             Text(
                                                                 "Photography Contest",
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                      FontWeight
+                                                                          .bold,
                                                                   fontSize: 16,
                                                                 )),
                                                             Text("Starts 7pm!",
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withAlpha(
-                                                                      150),
+                                                                          150),
                                                                   // fontWeight:
                                                                   //     FontWeight.bold,
                                                                   // fontSize: 16,
@@ -1062,7 +1058,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     }
   }
 
-  List<EventModel> makeListOfTwoEvents () {
+  List<EventModel> makeListOfTwoEvents() {
     List<EventModel> currentEvents = [];
     DateTime currentTime = DateTime.now();
     if (eventsList != null) {
@@ -1079,38 +1075,38 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     return currentEvents;
   }
 
-  Widget scheduleCard (EventModel event) {
+  Widget scheduleCard(EventModel event) {
     return Card(
-        child: Container(
-          width: ScreenSize.size.width,
-          child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    time(event.start),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text("to",
-                        style: TextStyle(
-                            color: Colors.black.withAlpha(120), fontSize: 14)),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    time(event.end),
-                  ]),
-                  verticalDivider(),
-                  descriptionWidget(event),
-                ],
-              )),
-        ),
-      );
+      child: Container(
+        width: ScreenSize.size.width,
+        child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  time(event.start),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text("to",
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(120), fontSize: 14)),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  time(event.end),
+                ]),
+                verticalDivider(),
+                descriptionWidget(event),
+              ],
+            )),
+      ),
+    );
   }
 
-  Widget descriptionWidget (EventModel event) {
+  Widget descriptionWidget(EventModel event) {
     // if (event.isCourse || event.isExam) {
     //   return Flexible(
     //     child: Text(event.courseId,
@@ -1158,7 +1154,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Flexible(
                     child: Text('Room: ${event.location}',
                         style: TextStyle(
@@ -1214,7 +1212,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Flexible(
                     child: Text('Roll Numbers: ',
                         style: TextStyle(
@@ -1236,7 +1236,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Flexible(
                     child: Text(event.rollNumbers,
                         style: TextStyle(
@@ -1271,7 +1273,11 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
               SizedBox(
                 height: 8,
               ),
-              Text(stringReturn(event.eventType) + ' (' + stringReturn(event.remarks) + ')',
+              Text(
+                  stringReturn(event.eventType) +
+                      ' (' +
+                      stringReturn(event.remarks) +
+                      ')',
                   style: TextStyle(
                       color: Colors.black.withAlpha(200),
                       fontStyle: FontStyle.italic,
@@ -1281,10 +1287,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     }
   }
 
-  Widget time (DateTime time) {
-    return Text(twoDigitTime(time.hour.toString()) + ':' + twoDigitTime(time.minute.toString()),
-        style: TextStyle(
-            color: Colors.black.withAlpha(200), fontSize: 14));
+  Widget time(DateTime time) {
+    return Text(
+        twoDigitTime(time.hour.toString()) +
+            ':' +
+            twoDigitTime(time.minute.toString()),
+        style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 14));
   }
 
   String twoDigitTime(String text) {
@@ -1323,7 +1331,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     }
   }
 
-  List<EventModel> todayExamCourses (List<EventModel> examCourses) {
+  List<EventModel> todayExamCourses(List<EventModel> examCourses) {
     List<EventModel> todayExamCourses = [];
     DateTime today = DateTime.now();
     if (examCourses != null) {
@@ -1338,7 +1346,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     return todayExamCourses;
   }
 
-  List<EventModel> mergeSameCourses (List<EventModel> currentDayCourses) {
+  List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
     List<EventModel> _mergedCourses = [];
     bool notHave;
 
@@ -1351,11 +1359,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
           _mergedCourses.forEach((EventModel _model) {
             double _modelEndTime = _model.end.hour.toDouble() +
                 (_model.end.minute.toDouble() / 60);
-            double _courseStartTime = currentDayCourses[i].start.hour
-                .toDouble() +
-                (currentDayCourses[i].start.minute.toDouble() / 60);
+            double _courseStartTime =
+                currentDayCourses[i].start.hour.toDouble() +
+                    (currentDayCourses[i].start.minute.toDouble() / 60);
             double diff = _modelEndTime - _courseStartTime;
-            if (diff < 10 && diff > -10 &&
+            if (diff < 10 &&
+                diff > -10 &&
                 currentDayCourses[i].courseId == _model.courseId &&
                 currentDayCourses[i].courseName == _model.courseName &&
                 currentDayCourses[i].remarks == _model.remarks &&
@@ -1374,15 +1383,16 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     return _mergedCourses;
   }
 
-  String returnText (String text) {
+  String returnText(String text) {
     if (text.length > 2) {
-      return text.substring(0,2);
+      return text.substring(0, 2);
     } else {
       return text;
     }
   }
 
-  List<EventModel> makeCourseEventModel (List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
+  List<EventModel> makeCourseEventModel(
+      List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
     List<EventModel> coursesEventModelList = [];
 
     if (todayCourses != null && todayCourses.length != 0) {
@@ -1395,7 +1405,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                   returnText(text) == todayCourse.course ||
                   returnText(text) == todayCourse.course.substring(0, 1)) {
                 if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                  coursesEventModelList.add(EventModel(
+                      start: todayCourse.start,
                       end: todayCourse.end,
                       isCourse: true,
                       isExam: false,
@@ -1407,7 +1418,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite));
                 } else {
-                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                  coursesEventModelList.add(EventModel(
+                      start: todayCourse.start,
                       end: todayCourse.end,
                       isCourse: true,
                       isExam: false,
@@ -1427,7 +1439,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                   returnText(text) == todayCourse.course ||
                   returnText(text) == todayCourse.course.substring(0, 1)) {
                 if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                  coursesEventModelList.add(EventModel(
+                      start: todayCourse.start,
                       end: todayCourse.end,
                       isCourse: true,
                       isExam: false,
@@ -1439,7 +1452,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite));
                 } else {
-                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                  coursesEventModelList.add(EventModel(
+                      start: todayCourse.start,
                       end: todayCourse.end,
                       isCourse: true,
                       isExam: false,
@@ -1459,7 +1473,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                   returnText(text) == todayCourse.course ||
                   returnText(text) == todayCourse.course.substring(0, 1)) {
                 if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                  coursesEventModelList.add(EventModel(
+                      start: todayCourse.start,
                       end: todayCourse.end,
                       isCourse: true,
                       isExam: false,
@@ -1471,7 +1486,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite));
                 } else {
-                  coursesEventModelList.add(EventModel(start: todayCourse.start,
+                  coursesEventModelList.add(EventModel(
+                      start: todayCourse.start,
                       end: todayCourse.end,
                       isCourse: true,
                       isExam: false,
@@ -1493,7 +1509,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     return coursesEventModelList;
   }
 
-  List todayEventsList (List<calendar.Event> _events) {
+  List todayEventsList(List<calendar.Event> _events) {
     List<calendar.Event> todayEvents = [];
     if (_events != null) {
       _events.forEach((calendar.Event _event) {
@@ -1534,13 +1550,14 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
     int i = low - 1;
 
     for (int j = low; j < high; j++) {
-      if (list[j].start.isBefore(pivot) || list[j].start.isAtSameMomentAs(pivot)) {
+      if (list[j].start.isBefore(pivot) ||
+          list[j].start.isAtSameMomentAs(pivot)) {
         i++;
         swap(list, i, j);
       }
     }
-    swap(list, i+1, high);
-    return i+1;
+    swap(list, i + 1, high);
+    return i + 1;
   }
 
   void swap(List<EventModel> list, int i, int j) {
@@ -1552,8 +1569,8 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
   void quickSort(List<EventModel> list, int low, int high) {
     if (low < high) {
       int pi = partition(list, low, high);
-      quickSort(list, low, pi-1);
-      quickSort(list, pi+1, high);
+      quickSort(list, low, pi - 1);
+      quickSort(list, pi + 1, high);
     }
   }
 
