@@ -9,6 +9,7 @@ import 'package:instiapp/screens/email.dart';
 import 'package:instiapp/screens/eventscalendar.dart';
 import 'package:instiapp/screens/eventpage.dart';
 import 'package:instiapp/screens/feedPage.dart';
+import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/importantContacts.dart';
 import 'package:instiapp/screens/menuBarBase.dart';
 import 'package:instiapp/screens/messfeedback.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         // '/map' : (context) => MapPage(),
       },
       title: 'Instiapp',
-      theme: ThemeData(primarySwatch: Colors.purple, fontFamily: 'OpenSans'),
+      theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
     );
   }
 }
@@ -69,7 +70,7 @@ class HomeWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize.size = MediaQuery.of(context).size;
-    return MenuBarBase();
+    return HomePage((){});
   }
 }
 

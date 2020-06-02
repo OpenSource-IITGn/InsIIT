@@ -6,6 +6,7 @@ class Buses {
   String url;
   int hour;
   int minute;
+  bool currentlyRunning;
 
-  Buses({this.origin,this.destination, this.time, this.url, this.hour, this.minute});
+  Buses({this.origin,this.destination, this.time, this.url, this.hour, this.minute, this.currentlyRunning: false});
 }

@@ -1,49 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
+import 'dart:math' as math;
 //TODO: AUTOMATICALLY EXPAND MENU FOR NEXT MEAL IN THIS PAGE
 //TODO: THE CODE CAN BE COMPRESSED A LOT!!!! USE LIST<LIST>
+//TODO : State for upvote and downvote
 
-/*
-
-+25
-First, it isn't recommended to not use elevation for ExpansionPanelList according to Material design spec.
-
-However, if you really want to do that, there are 2 solutions for you, either you create your own custom ExpansionPanelList, or get ready to add couple of lines to the source file. I'm providing you the latter solution.
-
-Open expansion_panel.dart file, go to the build() method of _ExpansionPanelListState and make following changes
-
-return MergeableMaterial(
-  hasDividers: true,
-  children: items,
-  elevation: 0, // 1st add this line
-);
-Now open mergeable_material.dart file, navigate to _paintShadows method of _RenderMergeableMaterialListBody class and make following changes:
-
-void _paintShadows(Canvas canvas, Rect rect) {
-
-  // 2nd add this line
-  if (boxShadows == null) return;
-
-  for (final BoxShadow boxShadow in boxShadows) {
-    final Paint paint = boxShadow.toPaint();
-    canvas.drawRRect(kMaterialEdges[MaterialType.card].toRRect(rect), paint);
-  }
-}
-
-
-*/
 class MessMenu extends StatefulWidget {
   @override
   _MessMenuState createState() => _MessMenuState();
 }
 
+Map<int, String> foodMap = {
+  0: 'Monday',
+  1: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday',
+  7: 'Sunday'
+};
+Map<int, String> timeMap = {
+  0: 'Breakfast',
+  1: 'Lunch',
+  2: 'Snacks',
+  3: 'Dinner',
+};
 List<ItemModel> monday = [
   ItemModel(
-      header: 'Breakfast  -  8:00 am to 10:00 am',
+      header: 'Breakfast',
+      timeString: '8:00 am to 10:00 am',
       bodyModel: foodCards[0].breakfast),
-  ItemModel(
-      header: 'Lunch  -  12:15 pm to 2:15 pm', bodyModel: foodCards[0].lunch),
+  ItemModel(header: 'Lunch', bodyModel: foodCards[0].lunch),
   ItemModel(
       header: 'Snacks  -  4:30 pm to 6:00 pm', bodyModel: foodCards[0].snacks),
   ItemModel(
@@ -121,25 +111,81 @@ List<ItemModel> sunday = [
   ItemModel(
       header: 'Dinner - 7:30 pm to 9:30 pm', bodyModel: foodCards[6].dinner),
 ];
-
-Widget cardNew(foodList) {
+List<List<ItemModel>> foodItems = [
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
+  saturday,
+  sunday
+];
+Widget cardNew( foodList) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: foodList.map<Widget>((food) {
         if (food != '-') {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                food,
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
+          return Card(
+            elevation: 0,
+            color: Colors.blueAccent.withAlpha(5),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: ScreenSize.size.width * 0.6,
+                    child: Text(
+                      food,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Transform.rotate(
+                        angle: 180 * math.pi / 180,
+                        child: IconButton(
+                          icon: Icon(Icons.details),
+                          iconSize: 20,
+                          color: Colors.black45,
+                          onPressed: () {
+                            
+                            sheet.writeData([
+                              [
+                                DateTime.now().toString(),
+                                DateTime.now().weekday,
+                                food,
+                                '1'
+                              ]
+                            ], 'messFeedbackItems!A:D');
+                          },
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.details),
+                        iconSize: 20,
+                        color: Colors.black45,
+                        onPressed: () {
+                          sheet.writeData([
+                            [
+                              DateTime.now().toString(),
+                              DateTime.now().weekday,
+                              food,
+                              '-1'
+                            ]
+                          ], 'messFeedbackItems!A:D');
+                        },
+                      )
+                    ],
+                  ),
+                ],
               ),
-              SizedBox(height: 10),
-            ],
+            ),
           );
         }
         return Container();
@@ -148,6 +194,7 @@ Widget cardNew(foodList) {
   );
 }
 
+GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
 Widget foodHead(name) {
   return Container(
     padding: EdgeInsets.all(10.0),
@@ -155,7 +202,7 @@ Widget foodHead(name) {
       name,
       style: TextStyle(
         color: Colors.black,
-        fontSize: 18.0,
+        fontSize: 16.0,
         fontWeight: FontWeight.bold,
       ),
     ),
@@ -170,15 +217,25 @@ class _MessMenuState extends State<MessMenu> {
       length: 7,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
-          title: Text(
-            'Mess Menu',
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Text('Mess Menu',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,
-              unselectedLabelColor: Colors.white.withOpacity(0.3),
-              indicatorColor: Colors.white,
+              unselectedLabelColor: Colors.transparent,
+              unselectedLabelStyle:
+                  TextStyle(color: Colors.black.withAlpha(150)),
+              indicatorColor: Colors.black.withAlpha(150),
               tabs: <Widget>[
                 WeekDayCard(day: 'Monday').dayBar(),
                 WeekDayCard(day: 'Tueday').dayBar(),
@@ -193,219 +250,44 @@ class _MessMenuState extends State<MessMenu> {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
+          children: [0, 1, 2, 3, 4, 5, 6].map((e) {
+            return Container(
+              padding: EdgeInsets.all(0.0),
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        monday[index].isExpanded = !monday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(monday[index].bodyModel),
+                  return Container(
+                    padding: EdgeInsets.all(.0),
+                    child: Column(
+                      children: <Widget>[
+                        ExpansionTile(
+                          title: foodHead(foodItems[e][index].header),
+                          children: <Widget>[
+                            cardNew(foodItems[e][index].bodyModel),
+                          ],
                         ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(monday[index].header);
-                        },
-                        isExpanded: monday[index].isExpanded,
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        tuesday[index].isExpanded = !tuesday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(tuesday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(tuesday[index].header);
-                        },
-                        isExpanded: tuesday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        wednesday[index].isExpanded =
-                            !wednesday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(wednesday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(wednesday[index].header);
-                        },
-                        isExpanded: wednesday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        thursday[index].isExpanded =
-                            !thursday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(thursday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(thursday[index].header);
-                        },
-                        isExpanded: thursday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        friday[index].isExpanded = !friday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(friday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(friday[index].header);
-                        },
-                        isExpanded: friday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        saturday[index].isExpanded =
-                            !saturday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(saturday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(saturday[index].header);
-                        },
-                        isExpanded: saturday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return ExpansionPanelList(
-                    expansionCallback: (int item, bool status) {
-                      setState(() {
-                        sunday[index].isExpanded = !sunday[index].isExpanded;
-                      });
-                    },
-                    animationDuration: Duration(seconds: 1),
-                    children: [
-                      ExpansionPanel(
-                        body: Container(
-                          padding: EdgeInsets.all(10.0),
-                          child: cardNew(sunday[index].bodyModel),
-                        ),
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return foodHead(sunday[index].header);
-                        },
-                        isExpanded: sunday[index].isExpanded,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
+            );
+          }).toList(),
         ),
         floatingActionButton: RaisedButton.icon(
-          color: Colors.indigo,
+          color: primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
           onPressed: () {
             return Navigator.pushNamed(context, '/messfeedback');
           },
           icon: Icon(
-            Icons.feedback,
+            Icons.rate_review,
             color: Colors.white,
           ),
           label: Text(
-            'Feedback',
+            'Review',
             style: TextStyle(
               fontSize: 18.0,
               color: Colors.white,

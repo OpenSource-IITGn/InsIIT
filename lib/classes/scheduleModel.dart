@@ -6,6 +6,7 @@ class EventModel {
   DateTime end;
   bool isCourse;
   bool isExam;
+  bool currentlyRunning;
   String rollNumbers;
   String courseName;
   String courseId;
@@ -23,6 +24,7 @@ class EventModel {
         this.end,
         this.isCourse,
         this.isExam,
+        this.currentlyRunning: false,
         this.rollNumbers,
         this.courseName,
         this.courseId,
@@ -224,6 +226,17 @@ class EventModel {
     }
   }
 
+  Widget current () {
+    if (this.currentlyRunning) {
+      return Icon(
+        Icons.adjust,
+        color: Colors.green,
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget buildCard(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -255,6 +268,7 @@ class EventModel {
                   ]),
                   verticalDivider(),
                   descriptionWidget(),
+                  current(),
                 ],
               )),
         ),
