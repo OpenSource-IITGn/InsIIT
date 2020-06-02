@@ -17,7 +17,7 @@ Widget loadScreen() {
       height: ScreenSize.size.height,
       width: ScreenSize.size.width,
       color: color,
-      child: Text("Please wait..."),
+      child: Center(child: Text("Please wait...",style: TextStyle(color:Colors.white),)),
     ),
   );
 }

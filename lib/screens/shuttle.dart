@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:instiapp/classes/buses.dart';
+import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/screens/homePage.dart';
 
 //TODO: ADD LINK TO GOOGLE MAP ROUTEs
@@ -164,13 +164,6 @@ class _ShuttleState extends State<Shuttle> {
   @override
   void initState() {
     super.initState();
-
-    _scrollController = new ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(50 + _index * 150.toDouble(),
-          duration: new Duration(seconds: 1), curve: Curves.ease);
-    });
-
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
@@ -181,6 +174,14 @@ class _ShuttleState extends State<Shuttle> {
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
+  }
+
+  void initialize() {
+    _scrollController = new ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(50 + _index * 150.toDouble(),
+          duration: new Duration(seconds: 1), curve: Curves.ease);
+    });
   }
 
   Future onSelectNotification(String payload) async {
@@ -269,7 +270,64 @@ class _ShuttleState extends State<Shuttle> {
     return _busList;
   }
 
+  bool destinationSelected = false;
+
   Widget build(BuildContext context) {
+    if (!destinationSelected) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Where are you going?",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Let's get you on that bus!",
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(150),
+                      fontWeight: FontWeight.bold),
+                ),
+                ColumnBuilder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        destinationSelected = true;
+                        destination = places[index];
+                        setState(() {});
+                        initialize();
+                      },
+                      child: Container(
+                        width: ScreenSize.size.width,
+                        child: Card(
+                            child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(places[index],
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              )),
+                        )),
+                      ),
+                    );
+                  },
+                  itemCount: places.length,
+                )
+              ],
+            ),
+          )),
+        ),
+      );
+    }
     List<Buses> busList = makeBusList(this.origin, this.destination);
     busList.forEach((Buses bus) {
       bus.currentlyRunning = false;
@@ -294,7 +352,7 @@ class _ShuttleState extends State<Shuttle> {
     }
 
     return Scaffold(
-      // backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: ListView(
         controller: _scrollController,
         children: <Widget>[
