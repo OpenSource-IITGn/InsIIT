@@ -979,7 +979,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin<
           ),
           FeedPage(),
           Shuttle(),
-          MapPage(),
+          // MapPage(),
         ],
       ),
     );
