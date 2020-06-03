@@ -30,7 +30,7 @@ class _BookingFormState extends State<BookingForm> {
   bookRoom(RoomTime time, Room room) {
     String sheetName = '${room.block}/${room.room}';
     List data = [[time.id, time.name, time.mobileNo, '${time.startDate.day}/${time.startDate.month}/${time.startDate.year}', '${time.startTime.hour}:${time.startTime.minute}', '${time.endDate.day}/${time.endDate.month}/${time.endDate.year}', '${time.endTime.hour}:${time.endTime.minute}', time.status, time.purpose]];
-    sheet.writeData(data, '$sheetName!A:I').then((onValue) {
+    roomSheet.writeData(data, '$sheetName!A:I').then((onValue) {
       Navigator.pushReplacementNamed(context, '/RoomBooking');
     });
   }

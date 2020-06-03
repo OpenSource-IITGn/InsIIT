@@ -14,38 +14,39 @@ class RoomService extends StatefulWidget {
 
 
 List<Room> rooms;
-  String userID = gSignIn.currentUser.email;
+String userID = gSignIn.currentUser.email;
 
-  dynamic dataList;
-  Future<dynamic> data;
-  List r7101;
-  List r7102;
-  List r1101;
-  List r6202;
-  List r6203;
-  List<ItemModelComplex> blocks;
+bool loading = true;
 
-  List<Room> block1 = [];
-  List<Room> block2 = [];
-  List<Room> block3 = [];
-  List<Room> block4 = [];
-  List<Room> block5 = [];
-  List<Room> block6 = [];
-  List<Room> block7 = [];
+dynamic dataList;
+List r7101;
+List r7102;
+List r1101;
+List r6202;
+List r6203;
+List<ItemModelComplex> blocks;
 
-  List<YourRoom> userRooms;
+List<Room> block1 = [];
+List<Room> block2 = [];
+List<Room> block3 = [];
+List<Room> block4 = [];
+List<Room> block5 = [];
+List<Room> block6 = [];
+List<Room> block7 = [];
+
+List<YourRoom> userRooms;
 class _RoomServiceState extends State<RoomService> {
 
-  
+
 
   @override
   void initState() {
     super.initState();
-    data = loadData();
+    loadData();
   }
 
   loadData() async{
-    dataList = [await sheet.getDataOnline('7/101!A:I'), await sheet.getDataOnline('7/102!A:I'), await sheet.getDataOnline('1/101!A:I'), await sheet.getDataOnline('6/202!A:I'), await sheet.getDataOnline('6/203!A:I')];
+    dataList = [await roomSheet.getDataOnline('7/101!A:I'), await roomSheet.getDataOnline('7/102!A:I'), await roomSheet.getDataOnline('1/101!A:I'), await roomSheet.getDataOnline('6/202!A:I'), await roomSheet.getDataOnline('6/203!A:I')];
     r7101 = dataList[0];
     r7102 = dataList[1];
     r1101 = dataList[2];
@@ -69,7 +70,7 @@ class _RoomServiceState extends State<RoomService> {
       ItemModelComplex(header: 'Block 6', bodyModel: block6, timesOfRooms: makeItemModelSimple(block6)),
       ItemModelComplex(header: 'Block 7', bodyModel: block7, timesOfRooms: makeItemModelSimple(block7)),
     ];
-    return dataList;
+    loading = false;
   }
 
   List<ItemModelSimple> makeItemModelSimple (List<Room> rooms) {
@@ -534,38 +535,13 @@ class _RoomServiceState extends State<RoomService> {
     );
   }
 
-  Widget loadScreen () {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: Text('Room Booking'),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: SpinKitChasingDots(
-          color: Colors.indigo,
-          size: 50.0,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Future.wait([data]),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return loadScreen();
-          case ConnectionState.waiting:
-            return loadScreen();
-          case ConnectionState.done:
-            return homeScreen();
-          default:
-            return loadScreen();
-        }
-      },
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: (loading == true)
+            ? Center(child: CircularProgressIndicator())
+            : homeScreen()
     );
   }
 }
