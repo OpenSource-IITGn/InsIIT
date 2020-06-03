@@ -65,24 +65,24 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: (loading == true)
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              controller: _controller,
-              itemBuilder: (context, index) {
-                if (reloading == true && index == posts.length) {
-                  return Center(
-                      child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0,8.0,16.0,16.0),
-                    child: CircularProgressIndicator(),
-                  ));
-                }
-                return PostWidget(post: posts[index]);
-              },
-              itemCount: (reloading == true) ? posts.length + 1 : posts.length,
-            ),
-    );
+        backgroundColor: Colors.white,
+        body: (loading == true)
+      ? Center(child: CircularProgressIndicator())
+      : ListView.builder(
+          controller: _controller,
+          itemBuilder: (context, index) {
+            if (reloading == true && index == posts.length) {
+              return Center(
+                  child: Padding(
+                padding: const EdgeInsets.fromLTRB(16.0,8.0,16.0,16.0),
+                child: CircularProgressIndicator(),
+              ));
+            }
+            return PostWidget(post: posts[index]);
+          },
+          itemCount: (reloading == true) ? posts.length + 1 : posts.length,
+        ),
+      );
   }
 
   @override

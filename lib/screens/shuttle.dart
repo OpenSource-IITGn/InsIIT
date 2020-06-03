@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
@@ -12,7 +13,8 @@ class Shuttle extends StatefulWidget {
   _ShuttleState createState() => _ShuttleState();
 }
 
-class _ShuttleState extends State<Shuttle> {
+class _ShuttleState extends State<Shuttle>
+    with TickerProviderStateMixin<Shuttle> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   ScrollController _scrollController;
   int _index = 0;
@@ -50,6 +52,11 @@ class _ShuttleState extends State<Shuttle> {
       _busTime = busTime.add(new Duration(days: 1));
       return DateTime.now().add(_busTime.difference(currentTime));
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Widget current(bus) {
@@ -164,6 +171,7 @@ class _ShuttleState extends State<Shuttle> {
   @override
   void initState() {
     super.initState();
+
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = new IOSInitializationSettings();
@@ -174,6 +182,15 @@ class _ShuttleState extends State<Shuttle> {
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
+
+    buses.forEach((element) {
+      if (!places.contains(element.origin.trim())) {
+        places.add(element.origin.trim());
+      }
+      if (!places.contains(element.destination.trim())) {
+        places.add(element.destination.trim());
+      }
+    });
   }
 
   void initialize() {
@@ -181,6 +198,18 @@ class _ShuttleState extends State<Shuttle> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(50 + _index * 150.toDouble(),
           duration: new Duration(seconds: 1), curve: Curves.ease);
+    });
+    _scrollController.addListener(() {
+      print(_scrollController.position.pixels);
+      print(_scrollController.position.maxScrollExtent);
+      if (_scrollController.position.pixels <=
+          _scrollController.position.maxScrollExtent - 50) {
+        isFabVisible = true;
+        setState(() {});
+      } else {
+        isFabVisible = false;
+        setState(() {});
+      }
     });
   }
 
@@ -271,8 +300,9 @@ class _ShuttleState extends State<Shuttle> {
   }
 
   bool destinationSelected = false;
-
+  bool isFabVisible = true;
   Widget build(BuildContext context) {
+    // initialize();
     if (!destinationSelected) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -346,57 +376,73 @@ class _ShuttleState extends State<Shuttle> {
       }
     });
 
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(50 + _index * 150.toDouble(),
-          duration: new Duration(seconds: 1), curve: Curves.ease);
-    }
+    // if (_scrollController.hasClients) {
+    //   _scrollController.animateTo(50 + _index * 150.toDouble(),
+    //       duration: new Duration(seconds: 1), curve: Curves.ease);
+    // }
 
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: Visibility(
+        visible: isFabVisible,
+        // duration: Duration(milliseconds: 200),
+        child: FloatingActionButton(
+            backgroundColor: Colors.white,
+            onPressed: () {
+              _scrollController.animateTo(0,
+                  duration: Duration(milliseconds: 800),
+                  curve: Curves.easeInOut);
+            },
+            child: Icon(Icons.keyboard_arrow_up, color: Colors.black)),
+      ),
       body: ListView(
         controller: _scrollController,
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: ExpansionTile(
-                      key: GlobalKey(),
-                      title: Text(this.origin),
-                      children: places.map((String place) {
-                        return ListTile(
-                          title: Text(place),
-                          onTap: () {
-                            setState(() {
-                              this.origin = place;
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: ExpansionTile(
-                      key: GlobalKey(),
-                      title: Text(this.destination),
-                      children: places.map((String place) {
-                        return ListTile(
-                          title: Text(place),
-                          onTap: () {
-                            setState(() {
-                              this.destination = place;
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          ExpansionTile(
+            key: GlobalKey(),
+            title: Row(
+              children: <Widget>[
+                Text("From: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(this.origin,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black.withAlpha(150))),
+              ],
+            ),
+            children: places.map((String place) {
+              return ListTile(
+                title: Text(place),
+                onTap: () {
+                  setState(() {
+                    this.origin = place;
+                  });
+                },
+              );
+            }).toList(),
+          ),
+          ExpansionTile(
+            key: GlobalKey(),
+            title: Row(
+              children: <Widget>[
+                Text("To: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(this.destination,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black.withAlpha(150))),
+              ],
+            ),
+            children: places.map((String place) {
+              return ListTile(
+                title: Text(place),
+                onTap: () {
+                  setState(() {
+                    this.destination = place;
+                  });
+                },
+              );
+            }).toList(),
           ),
           Column(
             children: busList.map((Buses bus) {
