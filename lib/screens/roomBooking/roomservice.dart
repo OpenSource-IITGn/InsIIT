@@ -19,7 +19,7 @@ class RoomService extends StatefulWidget {
 
 
 
-List<Room> rooms;
+List<Room> rooms = [];
 String userID = gSignIn.currentUser.email;
 
 bool loading = true;
