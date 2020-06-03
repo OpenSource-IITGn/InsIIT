@@ -39,7 +39,7 @@ class _EventDetailState extends State<EventDetail> {
   Widget body (EventModel event) {
     if (event.isCourse) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
