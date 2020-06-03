@@ -28,11 +28,7 @@ class _BookingFormState extends State<BookingForm> {
   }
 
   bookRoom(RoomTime time, Room room) {
-    String sheetName = '${room.block}/${room.room}';
-    List data = [[time.id, time.name, time.mobileNo, '${time.startDate.day}/${time.startDate.month}/${time.startDate.year}', '${time.startTime.hour}:${time.startTime.minute}', '${time.endDate.day}/${time.endDate.month}/${time.endDate.year}', '${time.endTime.hour}:${time.endTime.minute}', time.status, time.purpose]];
-    roomSheet.writeData(data, '$sheetName!A:I').then((onValue) {
-      Navigator.pushReplacementNamed(context, '/RoomBooking');
-    });
+    //TODO: BookRoom
   }
 
   @override
@@ -93,7 +89,7 @@ class _BookingFormState extends State<BookingForm> {
                     ),
                   );
                 } else {
-                  bookRoom(RoomTime(id: gSignIn.currentUser.email, name: gSignIn.currentUser.displayName, mobileNo: _mobileNoController.text, startDate: startDate, startTime: startTime, endDate: endDate, endTime: endTime, status: '-', purpose: _purposeController.text), Room(block: roomData['_block'], room: roomData['_room']));
+                  bookRoom(RoomTime(userId: gSignIn.currentUser.email, name: gSignIn.currentUser.displayName, mobNo: _mobileNoController.text, start: start,  end: end,  purpose: _purposeController.text), Room(block: roomData['_block'], roomno: roomData['_room']));
                 }
               },
               child: Text('Book ${roomData['_block']}/${roomData['_room']}'),

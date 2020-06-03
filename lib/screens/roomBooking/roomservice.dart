@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:instiapp/utilities/constants.dart';
 
@@ -13,67 +16,55 @@ class RoomService extends StatefulWidget {
 }
 
 
+
+
+
 List<Room> rooms;
 String userID = gSignIn.currentUser.email;
 
 bool loading = true;
-
-dynamic dataList;
-List r7101;
-List r7102;
-List r1101;
-List r6202;
-List r6203;
-List<ItemModelComplex> blocks;
-
-List<Room> block1 = [];
-List<Room> block2 = [];
-List<Room> block3 = [];
-List<Room> block4 = [];
-List<Room> block5 = [];
-List<Room> block6 = [];
-List<Room> block7 = [];
-
+List<ItemModelComplex> blocks = [];
 List<YourRoom> userRooms;
+
 class _RoomServiceState extends State<RoomService> {
-
-
-
+  Map<String, List<Room>> allBlocks = {};
   @override
   void initState() {
     super.initState();
-    loadData();
-  }
+    getRooms();
 
-  loadData() async{
-    dataList = [await roomSheet.getDataOnline('7/101!A:I'), await roomSheet.getDataOnline('7/102!A:I'), await roomSheet.getDataOnline('1/101!A:I'), await roomSheet.getDataOnline('6/202!A:I'), await roomSheet.getDataOnline('6/203!A:I')];
-    r7101 = dataList[0];
-    r7102 = dataList[1];
-    r1101 = dataList[2];
-    r6202 = dataList[3];
-    r6203 = dataList[4];
-    rooms = [
-      Room(block: '7', room: '101',capacity: '40', roomType: 'Classroom', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r7101))),
-      Room(block: '7', room: '102',capacity: '50', roomType: 'Classroom', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r7102))),
-      Room(block: '1', room: '101', capacity: '150', roomType: 'Classroom', facility: 'Air condition, Audio system, Furniture, Projector', bookedTimes: customizeTimeDataList(makeTimeList(r1101))),
-      Room(block: '6', room: '202', capacity: '50', roomType: 'Classroom', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r6202))),
-      Room(block: '6', room: '203', capacity: '25', roomType: 'Meeting room', facility: '-', bookedTimes: customizeTimeDataList(makeTimeList(r6203))),
-    ];
+  }
+  getRooms () async {
+    var queryParameters = {
+      'api_key': 'NIKS',
+    };
+    var uri = Uri.https(baseUrl, '/getRoomsBookings', queryParameters);
+    print("PINGING:" + uri.toString());
+    var response = await http.get(uri);
+    Map<String, dynamic> responseJson = jsonDecode(response.body);
+
+    for (int i = 0; i < responseJson['results'].length; i++) {
+      Room room = Room.fromJson(responseJson['results'][i]);
+      rooms.add(room);
+      if (allBlocks.containsKey(room.block)) {
+        allBlocks[room.block].add(room);
+      } else {
+        allBlocks.putIfAbsent(room.block, () => [room]);
+      }
+    }
+
     userRooms = makeListOfYourRooms(rooms);
-    makeOccupiedRoomsList(rooms);
-    blocks = [
-      ItemModelComplex(header: 'Block 1', bodyModel: block1, timesOfRooms: makeItemModelSimple(block1)),
-      ItemModelComplex(header: 'Block 2', bodyModel: block2, timesOfRooms: makeItemModelSimple(block2)),
-      ItemModelComplex(header: 'Block 3', bodyModel: block3, timesOfRooms: makeItemModelSimple(block3)),
-      ItemModelComplex(header: 'Block 4', bodyModel: block4, timesOfRooms: makeItemModelSimple(block4)),
-      ItemModelComplex(header: 'Block 5', bodyModel: block5, timesOfRooms: makeItemModelSimple(block5)),
-      ItemModelComplex(header: 'Block 6', bodyModel: block6, timesOfRooms: makeItemModelSimple(block6)),
-      ItemModelComplex(header: 'Block 7', bodyModel: block7, timesOfRooms: makeItemModelSimple(block7)),
-    ];
+
+    allBlocks.forEach((String block, List<Room> rooms) {
+      blocks.add(ItemModelComplex(header: block, bodyModel: rooms, timesOfRooms: makeItemModelSimple(rooms)));
+    });
+
     setState(() {
       loading = false;
     });
   }
+
+
 
   List<ItemModelSimple> makeItemModelSimple (List<Room> rooms) {
     List<ItemModelSimple> timesOfRooms = [];
@@ -81,39 +72,15 @@ class _RoomServiceState extends State<RoomService> {
       return timesOfRooms;
     } else {
       rooms.forEach((Room room) {
-        timesOfRooms.add(ItemModelSimple(header: 'Booked Time Slots', bodyModel: room.bookedTimes));
+        timesOfRooms.add(ItemModelSimple(header: 'Booked Time Slots', bodyModel: room.bookedslots));
       });
       return timesOfRooms;
     }
   }
 
-  addToBlock(Room room) {
-    if (room.block == '1') {
-      block1.add(room);
-    } else if (room.block == '2') {
-      block2.add(room);
-    } else if (room.block == '3') {
-      block3.add(room);
-    } else if (room.block == '4') {
-      block4.add(room);
-    } else if (room.block == '5') {
-      block5.add(room);
-    } else if (room.block == '6') {
-      block6.add(room);
-    } else if (room.block == '7') {
-      block7.add(room);
-    }
-  }
 
-  makeOccupiedRoomsList (List<Room> rooms) {
-    rooms.forEach((room) {
-      List<RoomTime> _bookedTimes = searchForCurrentBookedRoomTimes(room.bookedTimes);
-      if (_bookedTimes.length != 0) {
-        Room _room = Room(block: room.block, room: room.room, capacity: room.capacity, roomType: room.roomType, facility: room.facility, bookedTimes: _bookedTimes);
-        addToBlock(_room);
-      }
-    });
-  }
+
+
 
   Widget showBookedTimeSlots (int blockIndex, int roomIndex) {
     return ExpansionPanelList(
@@ -151,7 +118,7 @@ class _RoomServiceState extends State<RoomService> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text(
-                    '${room.block}/${room.room}',
+                    '${room.block}/${room.roomno}',
                     style: TextStyle(
                       fontSize: 17.0,
                       fontWeight: FontWeight.bold,
@@ -203,7 +170,7 @@ class _RoomServiceState extends State<RoomService> {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                content: Text('Booked by: ${time.name}, Mobile no.: ${time.mobileNo}'),
+                content: Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
               ),
             );
           },
@@ -211,7 +178,7 @@ class _RoomServiceState extends State<RoomService> {
             Icons.person_outline,
           ),
           label: Flexible(
-              child: Text('${time.startDate.day}/${time.startDate.month}/${time.startDate.year}  ${time.startTime.hour}:${time.startTime.minute} - ${time.endDate.day}/${time.endDate.month}/${time.endDate.year}  ${time.endTime.hour}:${time.endTime.minute}')),
+              child: Text('${time.start.day}/${time.start.month}/${time.start.year}  ${time.start.hour}:${time.start.minute} - ${time.end.day}/${time.end.month}/${time.end.year}  ${time.end.hour}:${time.end.minute}')),
         );
       }).toList(),
     );
@@ -237,7 +204,7 @@ class _RoomServiceState extends State<RoomService> {
     return Container(
       padding: EdgeInsets.all(10.0),
       child: ListView.builder(
-        itemCount: 7,
+        itemCount: allBlocks.length,
         itemBuilder: (BuildContext context, int index) {
           return ExpansionPanelList(
             expansionCallback: (int item, bool status) {
@@ -349,9 +316,9 @@ class _RoomServiceState extends State<RoomService> {
     List<YourRoom> yourRooms = [];
 
     rooms.forEach((Room room){
-      room.bookedTimes.forEach((RoomTime time){
-        if (time.id == gSignIn.currentUser.email && time.status == '-' && isNotFinished(time)) {
-          yourRooms.add(YourRoom(id: time.id, block: room.block, roomNo: room.room, startDate: time.startDate, startTime: time.startTime, endDate: time.endDate, endTime: time.endTime, purpose: time.purpose));
+      room.bookedslots.forEach((RoomTime time){
+        if (time.userId == userID ) {
+          yourRooms.add(YourRoom(roomId: room.roomId, userId: time.userId, block: room.block, roomNo: room.roomno, start: time.start,  end: time.end, purpose: time.purpose));
         }
       });
     });
@@ -360,17 +327,7 @@ class _RoomServiceState extends State<RoomService> {
   }
 
   cancelRoom (YourRoom yourRoom) {
-    String sheetName = '${yourRoom.block}/${yourRoom.roomNo}';
-    rooms.forEach((Room room) {
-      if (room.block == yourRoom.block && room.room == yourRoom.roomNo) {
-        room.bookedTimes.asMap().forEach((int index, RoomTime time) {
-          if (time.id == yourRoom.id && time.startDate == yourRoom.startDate && time.startTime == yourRoom.startTime && time.endDate == yourRoom.endDate && time.endTime == yourRoom.endTime && time.status == '-') {
-            int i = index + 2;
-            sheet.updateData([['cancelled']],'$sheetName!H$i:H$i');
-          }
-        });
-      }
-    });
+    //TODO: IMPLEMENT CANCEL
   }
 
   Widget yourRoomCard(YourRoom room){
@@ -390,11 +347,11 @@ class _RoomServiceState extends State<RoomService> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text('${room.startDate.day}/${room.startDate.month}/${room.startDate.year}  ${room.startTime.hour}:${room.startTime.minute}'),
+                        Text('${room.start.day}/${room.start.month}/${room.start.year}  ${room.start.hour}:${room.start.minute}'),
                         SizedBox(height: 5,),
                         Text('To'),
                         SizedBox(height: 5,),
-                        Text('${room.endDate.day}/${room.endDate.month}/${room.endDate.year}  ${room.endTime.hour}:${room.endTime.minute}'),
+                        Text('${room.end.day}/${room.end.month}/${room.end.year}  ${room.end.hour}:${room.end.minute}'),
                       ],
                     ),
                     SizedBox(width: 15,),
