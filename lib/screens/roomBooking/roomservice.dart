@@ -70,7 +70,9 @@ class _RoomServiceState extends State<RoomService> {
       ItemModelComplex(header: 'Block 6', bodyModel: block6, timesOfRooms: makeItemModelSimple(block6)),
       ItemModelComplex(header: 'Block 7', bodyModel: block7, timesOfRooms: makeItemModelSimple(block7)),
     ];
-    loading = false;
+    setState(() {
+      loading = false;
+    });
   }
 
   List<ItemModelSimple> makeItemModelSimple (List<Room> rooms) {
@@ -544,6 +546,8 @@ class _RoomServiceState extends State<RoomService> {
             : homeScreen()
     );
   }
+
+
 }
 
 
