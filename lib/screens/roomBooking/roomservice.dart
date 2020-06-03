@@ -1,23 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:instiapp/utilities/constants.dart';
 
 class RoomService extends StatefulWidget {
   @override
   _RoomServiceState createState() => _RoomServiceState();
 }
-
-
-
-
 
 List<Room> rooms = [];
 String userID = gSignIn.currentUser.email;
@@ -27,13 +19,15 @@ List<ItemModelComplex> blocks = [];
 List<YourRoom> userRooms;
 
 class _RoomServiceState extends State<RoomService> {
+
   Map<String, List<Room>> allBlocks = {};
+
   @override
   void initState() {
     super.initState();
     getRooms();
-
   }
+
   getRooms () async {
     var queryParameters = {
       'api_key': 'NIKS',
@@ -64,8 +58,6 @@ class _RoomServiceState extends State<RoomService> {
     });
   }
 
-
-
   List<ItemModelSimple> makeItemModelSimple (List<Room> rooms) {
     List<ItemModelSimple> timesOfRooms = [];
     if (rooms.length == 0) {
@@ -77,10 +69,6 @@ class _RoomServiceState extends State<RoomService> {
       return timesOfRooms;
     }
   }
-
-
-
-
 
   Widget showBookedTimeSlots (int blockIndex, int roomIndex) {
     return ExpansionPanelList(
@@ -118,7 +106,7 @@ class _RoomServiceState extends State<RoomService> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text(
-                    '${room.block}/${room.roomno}',
+                    '${room.roomno}',
                     style: TextStyle(
                       fontSize: 17.0,
                       fontWeight: FontWeight.bold,
@@ -503,8 +491,6 @@ class _RoomServiceState extends State<RoomService> {
             : homeScreen()
     );
   }
-
-
 }
 
 

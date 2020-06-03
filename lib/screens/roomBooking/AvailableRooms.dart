@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 
-import 'package:instiapp/utilities/constants.dart';
-
 class AvailableRooms extends StatefulWidget {
   @override
   _AvailableRoomsState createState() => _AvailableRoomsState();
@@ -14,17 +12,13 @@ class _AvailableRoomsState extends State<AvailableRooms> {
 
   List<ItemModel> blocks = [];
 
-
-
   @override
   void initState() {
     super.initState();
     makeItemModel();
   }
 
-
   Map<String, List<Room>> allBlocks = {};
-
 
   makeItemModel () {
     availableRooms.forEach((Room room) {
@@ -39,8 +33,6 @@ class _AvailableRoomsState extends State<AvailableRooms> {
       blocks.add(ItemModel(header: block, bodyModel: rooms));
     });
   }
-
-
 
   Widget blockHead (name) {
     return Container(
@@ -70,7 +62,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '${room.block}/${room.roomno}',
+                    '${room.roomno}',
                     style: TextStyle(
                       fontSize: 17.0,
                       fontWeight: FontWeight.bold,
@@ -116,7 +108,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
       body: Container(
         padding: EdgeInsets.all(10.0),
         child: ListView.builder(
-          itemCount: 7,
+          itemCount: allBlocks.length,
           itemBuilder: (BuildContext context, int index) {
             return ExpansionPanelList(
               expansionCallback: (int item, bool status) {

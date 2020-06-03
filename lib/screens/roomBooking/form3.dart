@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
 
 class BookingForm extends StatefulWidget {
   @override
