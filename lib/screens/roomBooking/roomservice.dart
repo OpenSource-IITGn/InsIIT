@@ -347,7 +347,11 @@ class _RoomServiceState extends State<RoomService> {
     };
     var uri = Uri.https(baseUrl, '/deleteBooking', queryParameters);
     print("PINGING:" + uri.toString());
+    Navigator.pop(context);
+    loading = true;
+    setState(() {});
     var response = await http.get(uri);
+    loading = false;
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
     Navigator.pushReplacementNamed(context, '/menuBarBase');

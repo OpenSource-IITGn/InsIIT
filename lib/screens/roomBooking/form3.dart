@@ -13,6 +13,7 @@ class BookingForm extends StatefulWidget {
 }
 
 class _BookingFormState extends State<BookingForm> {
+  bool loadingBooking = false;
   TextEditingController _mobileNoController;
   TextEditingController _purposeController;
   TextEditingController _bioController;
@@ -58,6 +59,8 @@ class _BookingFormState extends State<BookingForm> {
       "end": time.end.millisecondsSinceEpoch,
     });
     print(jsonBody);
+    loadingBooking = true;
+    setState(() {});
     var response = await http.post(
         uri,
         body: jsonBody,
@@ -65,11 +68,11 @@ class _BookingFormState extends State<BookingForm> {
           'Content-Type': 'application/json; charset=UTF-8',
         }
     );
+    loadingBooking = false;
     print(response.statusCode);
     //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
     Navigator.pushReplacementNamed(context, '/menuBarBase');
-
   }
 
   @override
@@ -90,7 +93,9 @@ class _BookingFormState extends State<BookingForm> {
         title: Text('Confirm booking',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
-      body: SingleChildScrollView(
+      body: (loadingBooking == true)
+          ? Center(child: CircularProgressIndicator(),)
+          : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
