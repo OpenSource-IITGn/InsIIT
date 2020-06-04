@@ -135,7 +135,6 @@ class _RoomServiceState extends State<RoomService> {
         name,
         textAlign: TextAlign.right,
         style: TextStyle(
-          
           color: Colors.black,
           fontSize: 12.0,
           // fontWeight: FontWeight.bold,
@@ -405,6 +404,7 @@ class _RoomServiceState extends State<RoomService> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FloatingActionButton(
+            heroTag: "fab1rs",
             onPressed: null,
             child: PopupMenuButton<String>(
               itemBuilder: (context) => [
@@ -437,6 +437,7 @@ class _RoomServiceState extends State<RoomService> {
           ),
           SizedBox(height: 10),
           FloatingActionButton(
+            heroTag: "fab2rs",
             onPressed: () {
               Navigator.pushNamed(context, '/selecttime');
             },

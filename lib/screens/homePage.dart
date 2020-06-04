@@ -571,7 +571,9 @@ class _HomePageState extends State<HomePage>
         // ),
         title: Container(
             decoration: new BoxDecoration(
-                color: Colors.white.withAlpha(120),
+                color: (titles[selectedIndex] == "")
+                    ? Colors.transparent
+                    : Colors.white.withAlpha(120),
                 borderRadius: new BorderRadius.all(Radius.circular(40))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
