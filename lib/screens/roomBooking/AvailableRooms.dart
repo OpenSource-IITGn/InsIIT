@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 
-import 'package:instiapp/utilities/constants.dart';
-
 class AvailableRooms extends StatefulWidget {
   @override
   _AvailableRoomsState createState() => _AvailableRoomsState();
@@ -12,15 +10,7 @@ class AvailableRooms extends StatefulWidget {
 
 class _AvailableRoomsState extends State<AvailableRooms> {
 
-  List<ItemModel> blocks;
-
-  List<Room> block1 = [];
-  List<Room> block2 = [];
-  List<Room> block3 = [];
-  List<Room> block4 = [];
-  List<Room> block5 = [];
-  List<Room> block6 = [];
-  List<Room> block7 = [];
+  List<ItemModel> blocks = [];
 
   @override
   void initState() {
@@ -28,37 +18,20 @@ class _AvailableRoomsState extends State<AvailableRooms> {
     makeItemModel();
   }
 
-  addToBlock(Room room) {
-    if (room.block == '1') {
-      block1.add(room);
-    } else if (room.block == '2') {
-      block2.add(room);
-    } else if (room.block == '3') {
-      block3.add(room);
-    } else if (room.block == '4') {
-      block4.add(room);
-    } else if (room.block == '5') {
-      block5.add(room);
-    } else if (room.block == '6') {
-      block6.add(room);
-    } else if (room.block == '7') {
-      block7.add(room);
-    }
-  }
+  Map<String, List<Room>> allBlocks = {};
 
   makeItemModel () {
     availableRooms.forEach((Room room) {
-      addToBlock(room);
+      if (allBlocks.containsKey(room.block)) {
+        allBlocks[room.block].add(room);
+      } else {
+        allBlocks.putIfAbsent(room.block, () => [room]);
+      }
     });
-    blocks = [
-      ItemModel(header: 'Block 1', bodyModel: block1),
-      ItemModel(header: 'Block 2', bodyModel: block2),
-      ItemModel(header: 'Block 3', bodyModel: block3),
-      ItemModel(header: 'Block 4', bodyModel: block4),
-      ItemModel(header: 'Block 5', bodyModel: block5),
-      ItemModel(header: 'Block 6', bodyModel: block6),
-      ItemModel(header: 'Block 7', bodyModel: block7),
-    ];
+
+    allBlocks.forEach((String block, List<Room> rooms) {
+      blocks.add(ItemModel(header: block, bodyModel: rooms));
+    });
   }
 
   Widget blockHead (name) {
@@ -89,7 +62,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '${room.block}/${room.room}',
+                    '${room.roomno}',
                     style: TextStyle(
                       fontSize: 17.0,
                       fontWeight: FontWeight.bold,
@@ -102,7 +75,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                     onPressed: () {
                       Navigator.pushReplacementNamed(
                           context, '/bookingform', arguments: {
-                        '_room': room.room,
+                        '_room': room.roomno,
                         '_block': room.block,
                       });
                     },
@@ -135,7 +108,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
       body: Container(
         padding: EdgeInsets.all(10.0),
         child: ListView.builder(
-          itemCount: 7,
+          itemCount: allBlocks.length,
           itemBuilder: (BuildContext context, int index) {
             return ExpansionPanelList(
               expansionCallback: (int item, bool status) {

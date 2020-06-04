@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 
 class SelectTime extends StatefulWidget {
   @override
@@ -18,9 +17,10 @@ DateTime startDate;
 DateTime endDate;
 TimeOfDay startTime;
 TimeOfDay endTime;
+DateTime start;
+DateTime end;
 
 class _SelectTimeState extends State<SelectTime> {
-
 
   @override
   void initState() {
@@ -262,7 +262,9 @@ class _SelectTimeState extends State<SelectTime> {
       });
     }
     else{
-      userTime = RoomTime(id: userID,startDate: startDate, startTime: startTime, endDate: endDate, endTime: endTime, status: '-');
+      start = DateTime(startDate.year, startDate.month, startDate.day, startTime.hour,startTime.minute);
+      end = DateTime(endDate.year,endDate.month,endDate.day,endTime.hour,endTime.minute);
+      userTime = RoomTime(userId: userID, start: start, end: end);
       searchForRooms(userTime, rooms);
     }
 
@@ -274,11 +276,11 @@ class _SelectTimeState extends State<SelectTime> {
     bool onePersonOneBooking = true;
     rooms.forEach((Room room) {
       bool available = true;
-      if (room.bookedTimes.length != 0) {
-        room.bookedTimes.forEach((RoomTime time) {
+      if (room.bookedslots.length != 0) {
+        room.bookedslots.forEach((RoomTime time) {
           if (timeClash(userTime, time)) {
             available = false;
-            if (userTime.id ==time.id) {
+            if (userTime.userId ==time.userId) {
               onePersonOneBooking = false;
             }
           }
@@ -292,10 +294,10 @@ class _SelectTimeState extends State<SelectTime> {
     });
     if (onePersonOneBooking) {
       availableRooms.forEach((Room room) {
-        print('${room.block}/${room.room} is available.');
+        print('${room.block}/${room.roomno} is available.');
       });
       unavailableRooms.forEach((Room room) {
-        print('${room.block}/${room.room} is not available.');
+        print('${room.block}/${room.roomno} is not available.');
       });
       Navigator.pushReplacementNamed(context, '/availablerooms');
     } else {
@@ -303,14 +305,12 @@ class _SelectTimeState extends State<SelectTime> {
         showDialog(
           context: context,
           builder: (_) => new AlertDialog(
-            content: Text('Sorry, You can not book any room in this time slot as you have already booked using id: ${userTime.id}'),
+            content: Text('Sorry, You can not book any room in this time slot as you have already booked using id: ${userTime.userId}'),
           ),
         );
       });
     }
   }
-
-
 }
 
 
