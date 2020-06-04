@@ -297,6 +297,7 @@ class _MapPageState extends State<MapPage> {
           icon: getIcon(location[2]),
         ));
        });
+       setState((){});
     });
     return _markers;
   }

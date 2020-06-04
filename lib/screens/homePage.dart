@@ -507,7 +507,7 @@ class _HomePageState extends State<HomePage>
   bool prevConnected = false;
   int selectedIndex = 0;
   PageController _pageController;
-  List<String> titles = ["", "News", "Shuttle"];
+  List<String> titles = ["", "News", "Buses", "Campus Map", "Room Booking"];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
@@ -569,7 +569,19 @@ class _HomePageState extends State<HomePage>
         //     widget.notifyParent();
         //   },
         // ),
-        // title: Text(titles[selectedIndex], style: TextStyle(color: Colors.black.withAlpha(180), fontWeight: FontWeight.bold)),
+        title: Container(
+            decoration: new BoxDecoration(
+                color: (titles[selectedIndex] == "")
+                    ? Colors.transparent
+                    : Colors.white.withAlpha(120),
+                borderRadius: new BorderRadius.all(Radius.circular(40))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(titles[selectedIndex],
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(250),
+                      fontWeight: FontWeight.bold)),
+            )),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh, color: Colors.grey.withAlpha(100)),

@@ -19,7 +19,6 @@ List<ItemModelComplex> blocks = [];
 List<YourRoom> userRooms;
 
 class _RoomServiceState extends State<RoomService> {
-
   Map<String, List<Room>> allBlocks = {};
 
   @override
@@ -28,7 +27,7 @@ class _RoomServiceState extends State<RoomService> {
     getRooms();
   }
 
-  getRooms () async {
+  getRooms() async {
     var queryParameters = {
       'api_key': 'NIKS',
     };
@@ -50,7 +49,10 @@ class _RoomServiceState extends State<RoomService> {
     userRooms = makeListOfYourRooms(rooms);
 
     allBlocks.forEach((String block, List<Room> rooms) {
-      blocks.add(ItemModelComplex(header: block, bodyModel: rooms, timesOfRooms: makeItemModelSimple(rooms)));
+      blocks.add(ItemModelComplex(
+          header: block,
+          bodyModel: rooms,
+          timesOfRooms: makeItemModelSimple(rooms)));
     });
 
     setState(() {
@@ -58,66 +60,58 @@ class _RoomServiceState extends State<RoomService> {
     });
   }
 
-  List<ItemModelSimple> makeItemModelSimple (List<Room> rooms) {
+  List<ItemModelSimple> makeItemModelSimple(List<Room> rooms) {
     List<ItemModelSimple> timesOfRooms = [];
     if (rooms.length == 0) {
       return timesOfRooms;
     } else {
       rooms.forEach((Room room) {
-        timesOfRooms.add(ItemModelSimple(header: 'Booked Time Slots', bodyModel: room.bookedslots));
+        timesOfRooms.add(ItemModelSimple(
+            header: 'Booked Time Slots', bodyModel: room.bookedslots));
       });
       return timesOfRooms;
     }
   }
 
-  Widget showBookedTimeSlots (int blockIndex, int roomIndex) {
-    return ExpansionPanelList(
-      expansionCallback: (int item, bool status) {
-        setState(() {
-          blocks[blockIndex].timesOfRooms[roomIndex].isExpanded = !blocks[blockIndex].timesOfRooms[roomIndex].isExpanded;
-        });
-      },
-      animationDuration: Duration(seconds: 1),
-      children: [
-        ExpansionPanel(
-          body: Container(
-            padding: EdgeInsets.all(10.0),
-            child: timeBody(blocks[blockIndex].timesOfRooms[roomIndex].bodyModel),
-          ),
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return timeHeader(blocks[blockIndex].timesOfRooms[roomIndex].header);
-          },
-          isExpanded: blocks[blockIndex].timesOfRooms[roomIndex].isExpanded,
+  Widget showBookedTimeSlots(int blockIndex, int roomIndex) {
+    return ExpansionTile(
+      title: timeHeader(blocks[blockIndex].timesOfRooms[roomIndex].header),
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(15.0),
+          child: timeBody(blocks[blockIndex].timesOfRooms[roomIndex].bodyModel),
         ),
       ],
     );
   }
 
-  Widget roomsDetail (List<Room> rooms, int index) {
+  Widget roomsDetail(List<Room> rooms, int index) {
     if (rooms.length != 0) {
       return Column(
         children: rooms.asMap().entries.map<Widget>((entry) {
           int i = entry.key;
           Room room = entry.value;
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    '${room.roomno}',
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  '${room.roomno}',
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(height: 8,),
-                  Text('${room.roomType} Capacity: ${room.capacity}'),
-                  SizedBox(height: 8,),
-                  showBookedTimeSlots(index, i),
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Text('${room.roomType} Capacity: ${room.capacity}'),
+                SizedBox(
+                  height: 8,
+                ),
+                showBookedTimeSlots(index, i),
+              ],
             ),
           );
         }).toList(),
@@ -134,23 +128,22 @@ class _RoomServiceState extends State<RoomService> {
     }
   }
 
-  Widget timeHeader (name) {
+  Widget timeHeader(name) {
     return Container(
       padding: EdgeInsets.all(10.0),
-      child: Center(
-        child: Text(
-          name,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15.0,
-            fontWeight: FontWeight.bold,
-          ),
+      child: Text(
+        name,
+        textAlign: TextAlign.right,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 12.0,
+          // fontWeight: FontWeight.bold,
         ),
       ),
     );
   }
 
-  Widget timeBody (List<RoomTime> times) {
+  Widget timeBody(List<RoomTime> times) {
     return Column(
       children: times.map<Widget>((time) {
         return FlatButton.icon(
@@ -158,7 +151,8 @@ class _RoomServiceState extends State<RoomService> {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                content: Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
+                content:
+                    Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
               ),
             );
           },
@@ -166,51 +160,39 @@ class _RoomServiceState extends State<RoomService> {
             Icons.person_outline,
           ),
           label: Flexible(
-              child: Text('${time.start.day}/${time.start.month}/${time.start.year}  ${time.start.hour}:${time.start.minute} - ${time.end.day}/${time.end.month}/${time.end.year}  ${time.end.hour}:${time.end.minute}')),
+              child: Text(
+                  '${time.start.day}/${time.start.month}/${time.start.year}  ${time.start.hour}:${time.start.minute} - ${time.end.day}/${time.end.month}/${time.end.year}  ${time.end.hour}:${time.end.minute}')),
         );
       }).toList(),
     );
   }
 
-  Widget blockHead (name) {
+  Widget blockHead(name) {
     return Container(
       padding: EdgeInsets.all(10.0),
-      child: Center(
-        child: Text(
-          name,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
+      child: Text(
+        name,
+        style: TextStyle(
+          color: Colors.black,
+          // fontSize: 18.0,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
   }
 
-  Widget occupiedRooms () {
+  Widget occupiedRooms() {
     return Container(
       padding: EdgeInsets.all(10.0),
       child: ListView.builder(
         itemCount: allBlocks.length,
         itemBuilder: (BuildContext context, int index) {
-          return ExpansionPanelList(
-            expansionCallback: (int item, bool status) {
-              setState(() {
-                blocks[index].isExpanded = !blocks[index].isExpanded;
-              });
-            },
-            animationDuration: Duration(seconds: 1),
-            children: [
-              ExpansionPanel(
-                body: Container(
-                  padding: EdgeInsets.all(15.0),
-                  child: roomsDetail(blocks[index].bodyModel, index),
-                ),
-                headerBuilder: (BuildContext context, bool isExpanded) {
-                  return blockHead(blocks[index].header);
-                },
-                isExpanded: blocks[index].isExpanded,
+          return ExpansionTile(
+            title: blockHead(blocks[index].header),
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(15.0),
+                child: roomsDetail(blocks[index].bodyModel, index),
               ),
             ],
           );
@@ -221,10 +203,11 @@ class _RoomServiceState extends State<RoomService> {
 
   Widget logoWidget() {
     return Container(
-      height: 1720,
+      height: 100,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
         boxShadow: [
           BoxShadow(
             color: Colors.white,
@@ -233,17 +216,14 @@ class _RoomServiceState extends State<RoomService> {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-        child: Stack(
-          children: <Widget>[
-            Image.asset(
-              'assets/images/TL2.gif',
-              //'http://students.iitgn.ac.in/Tinkerers_Lab/images/TL2.png',
-              height: 410,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-          ],
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+        child: Image.asset(
+          'assets/images/TL2.gif',
+          //'http://students.iitgn.ac.in/Tinkerers_Lab/images/TL2.png',
+          // height: 410,
+          // width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -251,9 +231,10 @@ class _RoomServiceState extends State<RoomService> {
 
   Widget machineWidget(String link) {
     return Container(
-      height: 450,
+      height: 100,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
         boxShadow: [
           BoxShadow(
             color: Colors.white,
@@ -261,46 +242,35 @@ class _RoomServiceState extends State<RoomService> {
           ),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-        child: Stack(
+      child: Image.asset(
+        link,
+        //'http://students.iitgn.ac.in/Tinkerers_Lab/images/TL2.png',
+        // height: 410,
+
+        // width: MediaQuery.of(context).size.width,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget tinkerersLab() {
+    //add better pics
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Column(
           children: <Widget>[
-            Image(
-              image: NetworkImage(link),
-              height: 500,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            )
+            logoWidget(),
+            machineWidget('assets/images/3dprinter.png'),
+            machineWidget('assets/images/3dprinter.png'),
+            machineWidget('assets/images/3dprinter.png'),
           ],
         ),
       ),
     );
   }
 
-  Widget tinkerersLab () {
-    return Container(
-      color: Colors.white,
-      child: Stack(
-        children: <Widget>[
-          logoWidget(),
-          Positioned(
-            bottom: 840,
-            child: machineWidget('https://bizimages.withfloats.com/actual/5c2de30bde86d10001d07ae4.jpg'),
-          ),
-          Positioned(
-            bottom: 430,
-            child: machineWidget('http://students.iitgn.ac.in/Tinkerers_Lab/images/3dprinter.png'),
-          ),
-          Positioned(
-            bottom: 0,
-            child: machineWidget('https://i.dlpng.com/static/png/3920770-roland-gr-540-camm-1-vinyl-cutter-plotter-grant-graphics-png-vinyl-cutters-720_720_preview.webp'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  List<YourRoom> makeListOfYourRooms (List<Room> rooms){
+  List<YourRoom> makeListOfYourRooms(List<Room> rooms) {
     List<YourRoom> yourRooms = [];
 
     rooms.forEach((Room room){
@@ -332,73 +302,89 @@ class _RoomServiceState extends State<RoomService> {
   Widget yourRoomCard(YourRoom room){
     return Card(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            child: Column(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Text('${room.block}/${room.roomNo}'),
+                SizedBox(
+                  width: 15,
+                ),
+                verticalDivider(),
+                SizedBox(
+                  width: 15,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('${room.block}/${room.roomNo}'),
-                    SizedBox(width: 15,),
-                    verticalDivider(),
-                    SizedBox(width: 15,),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('${room.start.day}/${room.start.month}/${room.start.year}  ${room.start.hour}:${room.start.minute}'),
-                        SizedBox(height: 5,),
-                        Text('To'),
-                        SizedBox(height: 5,),
-                        Text('${room.end.day}/${room.end.month}/${room.end.year}  ${room.end.hour}:${room.end.minute}'),
-                      ],
+                    Text(
+                        '${room.start.day}/${room.start.month}/${room.start.year}  ${room.start.hour}:${room.start.minute}'),
+                    SizedBox(
+                      height: 5,
                     ),
-                    SizedBox(width: 15,),
-                    verticalDivider(),
-                    SizedBox(width: 15,),
-                    Flexible(
-                      child: Text('${room.purpose}'),
+                    Text('To'),
+                    SizedBox(
+                      height: 5,
                     ),
+                    Text(
+                        '${room.end.day}/${room.end.month}/${room.end.year}  ${room.end.hour}:${room.end.minute}'),
                   ],
                 ),
-                FlatButton.icon(
-                  onPressed: (){
-                    showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                        content: Container(
-                          height: 150,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('Do you want to cancel this booking?'),
-                              SizedBox(height: 5,),
-                              FlatButton(
-                                onPressed: () {
-                                  cancelRoom(room);
-                                  Navigator.pushReplacementNamed(context, '/RoomBooking');
-                                },
-                                child: Text('Yes'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.cancel,
-                  ),
-                  label: Text('Cancel Booking'),
-                )
+                SizedBox(
+                  width: 15,
+                ),
+                verticalDivider(),
+                SizedBox(
+                  width: 15,
+                ),
+                Flexible(
+                  child: Text('${room.purpose}'),
+                ),
               ],
             ),
-          ),
-        )
-    );
+            FlatButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => new AlertDialog(
+                    content: Container(
+                      height: 150,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('Do you want to cancel this booking?'),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              cancelRoom(room);
+                              Navigator.pushReplacementNamed(
+                                  context, '/RoomBooking');
+                            },
+                            child: Text('Yes'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.cancel,
+              ),
+              label: Text('Cancel Booking'),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 
-  Widget mapYourRooms () {
+  Widget mapYourRooms() {
     if (userRooms.length == 0) {
       return Center(
         child: Text('You have not booked any rooms.'),
@@ -406,7 +392,7 @@ class _RoomServiceState extends State<RoomService> {
     } else {
       return SingleChildScrollView(
         child: Column(
-          children: userRooms.map<Widget>((YourRoom room){
+          children: userRooms.map<Widget>((YourRoom room) {
             return yourRoomCard(room);
           }).toList(),
         ),
@@ -414,32 +400,17 @@ class _RoomServiceState extends State<RoomService> {
     }
   }
 
-  Widget yourRooms () {
+  Widget yourRooms() {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: mapYourRooms(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/selecttime');
-        },
-        backgroundColor: primaryColor,
-        child: Icon(
-          Icons.add,
-        ),
-      ),
-    );
-  }
-
-  Widget homeScreen () {
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: primaryColor,
-          title: Text('Room Booking'),
-          centerTitle: true,
-          actions: <Widget>[
-            PopupMenuButton<String>(
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FloatingActionButton(
+            heroTag: "fab1rs",
+            onPressed: null,
+            child: PopupMenuButton<String>(
               itemBuilder: (context) => [
                 PopupMenuItem(
                   value: '/tlemergencycontacts',
@@ -462,32 +433,74 @@ class _RoomServiceState extends State<RoomService> {
                 // Navigator.pushNamed(context, value);
               },
               icon: Icon(
-                Icons.short_text,
+                Icons.menu,
                 color: Colors.white,
-                size: 38,
+                // size: 38,
               ),
-            )
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: TabBar(
-              isScrollable: true,
-              unselectedLabelColor: Colors.white.withOpacity(0.3),
-              indicatorColor: Colors.white,
-              tabs: <Widget>[
-                Tab(text: 'Your Rooms'),
-                Tab(text: 'Occupied Rooms'),
-                Tab(text: 'Tinkerers Lab',)
+            ),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: "fab2rs",
+            onPressed: () {
+              Navigator.pushNamed(context, '/selecttime');
+            },
+            backgroundColor: primaryColor,
+            child: Icon(
+              Icons.add,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget homeScreen() {
+    return DefaultTabController(
+      initialIndex: 1,
+      length: 3,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          // appBar: AppBar(
+          //   backgroundColor: primaryColor,
+          //   title: Text('Room Booking'),
+          //   centerTitle: true,
+          //   actions: <Widget>[],
+          // ),
+          body: Container(
+            height: ScreenSize.size.height,
+            width: ScreenSize.size.width,
+            child: Column(
+              children: <Widget>[
+                TabBar(
+                  isScrollable: true,
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.black.withOpacity(0.3),
+                  indicatorColor: Colors.black,
+                  tabs: <Widget>[
+                    Tab(text: 'Your Rooms'),
+                    Tab(text: 'Occupied Rooms'),
+                    Tab(
+                      text: 'Tinkerers Lab',
+                    )
+                  ],
+                ),
+                Container(
+                  // color: Colors.black,
+                  height: MediaQuery.of(context).size.height - 200,
+                  width: ScreenSize.size.width,
+                  child: TabBarView(
+                    children: <Widget>[
+                      yourRooms(),
+                      occupiedRooms(),
+                      SingleChildScrollView(child: tinkerersLab()),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-        body: TabBarView(
-          children: <Widget>[
-            yourRooms(),
-            occupiedRooms(),
-            SingleChildScrollView(child: tinkerersLab()),
-          ],
         ),
       ),
     );
@@ -499,14 +512,6 @@ class _RoomServiceState extends State<RoomService> {
         backgroundColor: Colors.white,
         body: (loading == true)
             ? Center(child: CircularProgressIndicator())
-            : homeScreen()
-    );
+            : homeScreen());
   }
 }
-
-
-
-
-
-
-
