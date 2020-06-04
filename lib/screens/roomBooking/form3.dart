@@ -141,6 +141,16 @@ class _BookingFormState extends State<BookingForm> {
             SizedBox(
               height: 20.0,
             ),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Your Bio',
+              ),
+              controller: _bioController,
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
             Column(
               children: <Widget>[
                 Text(" ${roomData['_block']}/${roomData['_room']}",
@@ -168,7 +178,7 @@ class _BookingFormState extends State<BookingForm> {
               color: Colors.black,
               onPressed: () {
                 if (_mobileNoController.text == '' ||
-                    _purposeController.text == '') {
+                    _purposeController.text == '' || _bioController.text == '') {
                   showDialog(
                     context: context,
                     builder: (_) => new AlertDialog(

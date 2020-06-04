@@ -85,6 +85,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                         arguments: {
                           '_room': room.roomno,
                           '_block': room.block,
+                          '_id': room.roomId,
                         });
                   },
                   icon: Icon(Icons.add_box),
