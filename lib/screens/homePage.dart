@@ -507,7 +507,7 @@ class _HomePageState extends State<HomePage>
   bool prevConnected = false;
   int selectedIndex = 0;
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "Campus Map", ""];
+  List<String> titles = ["", "News", "Buses", "Campus Map", "Room Booking"];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),

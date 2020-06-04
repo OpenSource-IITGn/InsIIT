@@ -275,18 +275,32 @@ class _MessMenuState extends State<MessMenu> {
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,
-              unselectedLabelColor: Colors.transparent,
-              unselectedLabelStyle:
-                  TextStyle(color: Colors.black.withAlpha(150)),
-              indicatorColor: Colors.black.withAlpha(150),
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.black.withOpacity(0.3),
+              indicatorColor: Colors.black,
+              // unselectedLabelStyle:
+              //     TextStyle(color: Colors.black.withOpacity(0.3)),
               tabs: <Widget>[
-                WeekDayCard(day: 'Monday').dayBar(),
-                WeekDayCard(day: 'Tueday').dayBar(),
-                WeekDayCard(day: 'Wednesday').dayBar(),
-                WeekDayCard(day: 'Thursday').dayBar(),
-                WeekDayCard(day: 'Friday').dayBar(),
-                WeekDayCard(day: 'Saturday').dayBar(),
-                WeekDayCard(day: 'Sunday').dayBar(),
+                Tab(text: 'Monday'),
+                Tab(text: 'Tuesday'),
+                Tab(
+                  text: 'Wednesday',
+                ),
+                Tab(text: 'Thursday'),
+                Tab(text: 'Friday'),
+                Tab(
+                  text: 'Saturday',
+                ),
+                Tab(
+                  text: 'Sunday',
+                ),
+                // WeekDayCard(day: 'Monday').dayBar(),
+                // WeekDayCard(day: 'Tueday').dayBar(),
+                // WeekDayCard(day: 'Wednesday').dayBar(),
+                // WeekDayCard(day: 'Thursday').dayBar(),
+                // WeekDayCard(day: 'Friday').dayBar(),
+                // WeekDayCard(day: 'Saturday').dayBar(),
+                // WeekDayCard(day: 'Sunday').dayBar(),
               ],
             ),
             preferredSize: Size.fromHeight(50.0),
