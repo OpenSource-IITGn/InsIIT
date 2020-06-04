@@ -32,55 +32,102 @@ class _BookingFormState extends State<BookingForm> {
 
   @override
   Widget build(BuildContext context) {
-
     roomData = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
-        title: Text('Your Details'),
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Confirm booking',
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
-      body:Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             Row(
               children: <Widget>[
                 Text(
                   'Name:',
                   style: TextStyle(
-                    fontSize: 20,
+                    // fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 15,),
+                SizedBox(
+                  width: 15,
+                ),
                 Text(
                   gSignIn.currentUser.displayName,
                   style: TextStyle(
                     fontSize: 15,
+                    fontStyle: FontStyle.italic,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Mobile Number',),
+                labelText: 'Mobile Number',
+              ),
               controller: _mobileNoController,
             ),
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Purpose',),
+                labelText: 'Purpose',
+              ),
               controller: _purposeController,
             ),
-            SizedBox(height: 20.0,),
-            FlatButton(
+            SizedBox(
+              height: 20.0,
+            ),
+            Column(
+              children: <Widget>[
+                Text(" ${roomData['_block']}/${roomData['_room']}",
+                    style: TextStyle(
+                      // fontSize: 12,
+                      // fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black.withAlpha(150),
+                    )),
+                Text(
+                    " ${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')} to ${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}",
+                    style: TextStyle(
+                      // fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                      // fontWeight: FontWeight.bold,
+                      color: Colors.black.withAlpha(150),
+                    )),
+              ],
+            ),
+            SizedBox(height: 10),
+            RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              color: Colors.black,
               onPressed: () {
-                if (_mobileNoController.text == '' || _purposeController.text == '') {
+                if (_mobileNoController.text == '' ||
+                    _purposeController.text == '') {
                   showDialog(
                     context: context,
                     builder: (_) => new AlertDialog(
@@ -88,10 +135,27 @@ class _BookingFormState extends State<BookingForm> {
                     ),
                   );
                 } else {
-                  bookRoom(RoomTime(userId: gSignIn.currentUser.email, name: gSignIn.currentUser.displayName, mobNo: _mobileNoController.text, start: start,  end: end,  purpose: _purposeController.text), Room(block: roomData['_block'], roomno: roomData['_room']));
+                  bookRoom(
+                      RoomTime(
+                          userId: gSignIn.currentUser.email,
+                          name: gSignIn.currentUser.displayName,
+                          mobNo: _mobileNoController.text,
+                          start: start,
+                          end: end,
+                          purpose: _purposeController.text),
+                      Room(
+                          block: roomData['_block'],
+                          roomno: roomData['_room']));
                 }
               },
-              child: Text('Book ${roomData['_block']}/${roomData['_room']}'),
+              icon: Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
+              label: Text(
+                'Book',
+                style: TextStyle(color: Colors.white),
+              ),
             )
           ],
         ),
@@ -99,5 +163,3 @@ class _BookingFormState extends State<BookingForm> {
     );
   }
 }
-
-

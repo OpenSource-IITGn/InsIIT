@@ -85,33 +85,36 @@ class _RoomServiceState extends State<RoomService> {
     );
   }
 
-  Widget roomsDetail(List<Room> rooms, int index) {
+  Widget roomsDetail(List<Room> rooms, int index, roomdetail) {
     if (rooms.length != 0) {
       return Column(
         children: rooms.asMap().entries.map<Widget>((entry) {
           int i = entry.key;
           Room room = entry.value;
           return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  '${room.roomno}',
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: ExpansionTile(
+              title: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'AB-${roomdetail.split(' ')[2]}/${room.roomno}',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Text('${room.roomType} Capacity: ${room.capacity}'),
-                SizedBox(
-                  height: 8,
-                ),
-                showBookedTimeSlots(index, i),
-              ],
+                  Text('Capacity: ${room.capacity}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black.withAlpha(150),
+                      )),
+                ],
+              ),
+              children: [timeBody(blocks[index].timesOfRooms[i].bodyModel)],
             ),
           );
         }).toList(),
@@ -119,13 +122,54 @@ class _RoomServiceState extends State<RoomService> {
     } else {
       return Center(
         child: Text(
-          'All rooms are available.',
+          'No rooms are available.',
           style: TextStyle(
             color: Colors.black,
           ),
         ),
       );
     }
+    // if (rooms.length != 0) {
+    //   return Column(
+    //     children: rooms.asMap().entries.map<Widget>((entry) {
+    //       int i = entry.key;
+    //       Room room = entry.value;
+    //       return Padding(
+    //         padding: const EdgeInsets.all(8.0),
+    //         child: Column(
+    //           crossAxisAlignment: CrossAxisAlignment.stretch,
+    //           children: <Widget>[
+    //             Text(
+    //               '${room.roomno}',
+    //               style: TextStyle(
+    //                 fontSize: 17.0,
+    //                 fontWeight: FontWeight.bold,
+    //               ),
+    //             ),
+    //             SizedBox(
+    //               height: 8,
+    //             ),
+    //             Text('${room.roomType} Capacity: ${room.capacity}'),
+    //             SizedBox(
+    //               height: 8,
+    //             ),
+
+    //           ],
+    //         ),
+    //       );
+    //     }).toList(),
+    //   );
+    // } else {
+    //   return Center(
+    //     child: Text(
+    //       'All rooms are available.',
+    //       style: TextStyle(
+    //         color: Colors.black,
+    //       ),
+    //     ),
+    //   );
+    // }
+    // showBookedTimeSlots(index, i),
   }
 
   Widget timeHeader(name) {
@@ -144,6 +188,12 @@ class _RoomServiceState extends State<RoomService> {
   }
 
   Widget timeBody(List<RoomTime> times) {
+    if (times.length == 0) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Room is free!"),
+      );
+    }
     return Column(
       children: times.map<Widget>((time) {
         return FlatButton.icon(
@@ -192,7 +242,8 @@ class _RoomServiceState extends State<RoomService> {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(15.0),
-                child: roomsDetail(blocks[index].bodyModel, index),
+                child: roomsDetail(
+                    blocks[index].bodyModel, index, blocks[index].header),
               ),
             ],
           );

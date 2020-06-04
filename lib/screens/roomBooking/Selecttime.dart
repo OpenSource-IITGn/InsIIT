@@ -64,9 +64,6 @@ class _SelectTimeState extends State<SelectTime> {
               SizedBox(
                 height: 30,
               ),
-              SizedBox(
-                height: 20,
-              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -86,7 +83,7 @@ class _SelectTimeState extends State<SelectTime> {
                     onPressed: _pickStartDate,
                     icon: Icon(Icons.calendar_today, color: Colors.black),
                     label: Text(
-                      "${startDate.day.toString().padLeft(2,'0')} / ${startDate.month.toString().padLeft(2,'0')} / ${startDate.year}",
+                      "${startDate.day.toString().padLeft(2, '0')} / ${startDate.month.toString().padLeft(2, '0')} / ${startDate.year}",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -98,7 +95,7 @@ class _SelectTimeState extends State<SelectTime> {
                     onPressed: _pickStartTime,
                     icon: Icon(Icons.access_time, color: Colors.black),
                     label: Text(
-                      "${startTime.hour.toString().padLeft(2,'0')} : ${startTime.minute.toString().padLeft(2,'0')}",
+                      "${startTime.hour.toString().padLeft(2, '0')} : ${startTime.minute.toString().padLeft(2, '0')}",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -123,7 +120,7 @@ class _SelectTimeState extends State<SelectTime> {
                     onPressed: _pickEndDate,
                     icon: Icon(Icons.calendar_today, color: Colors.black),
                     label: Text(
-                      "${endDate.day.toString().padLeft(2,'0')} / ${endDate.month.toString().padLeft(2,'0')} / ${endDate.year.toString().padLeft(2,'0')}",
+                      "${endDate.day.toString().padLeft(2, '0')} / ${endDate.month.toString().padLeft(2, '0')} / ${endDate.year.toString().padLeft(2, '0')}",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -135,14 +132,14 @@ class _SelectTimeState extends State<SelectTime> {
                     onPressed: _pickEndTime,
                     icon: Icon(Icons.access_time, color: Colors.black),
                     label: Text(
-                      "${endTime.hour.toString().padLeft(2,'0')} : ${endTime.minute.toString().padLeft(2,'0')}",
+                      "${endTime.hour.toString().padLeft(2, '0')} : ${endTime.minute.toString().padLeft(2, '0')}",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 30,
+                height: 15,
               ),
               Center(
                 child: RaisedButton.icon(
@@ -157,6 +154,9 @@ class _SelectTimeState extends State<SelectTime> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 15,
               ),
               (isTimeSelected != true)
                   ? Container()
