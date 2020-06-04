@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/screens/homePage.dart';
 
 class RoomService extends StatefulWidget {
   @override
@@ -14,16 +16,18 @@ class RoomService extends StatefulWidget {
 List<Room> rooms = [];
 String userID = gSignIn.currentUser.email;
 
-bool loading = true;
-List<ItemModelComplex> blocks = [];
-List<YourRoom> userRooms;
-
 class _RoomServiceState extends State<RoomService> {
+
+  bool loading = true;
+  List<ItemModelComplex> blocks = [];
+  List<YourRoom> userRooms;
+
   Map<String, List<Room>> allBlocks = {};
 
   @override
   void initState() {
     super.initState();
+    rooms = [];
     getRooms();
   }
 
@@ -202,7 +206,7 @@ class _RoomServiceState extends State<RoomService> {
               context: context,
               builder: (_) => new AlertDialog(
                 content:
-                    Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
+                Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
               ),
             );
           },
@@ -345,7 +349,8 @@ class _RoomServiceState extends State<RoomService> {
     print("PINGING:" + uri.toString());
     var response = await http.get(uri);
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-    Navigator.pushReplacementNamed(context, 'RoomBooking');
+    selectedIndex = 4;
+    Navigator.pushReplacementNamed(context, '/menuBarBase');
   }
 
 
@@ -353,86 +358,91 @@ class _RoomServiceState extends State<RoomService> {
   Widget yourRoomCard(YourRoom room){
     return Card(
         child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            child: Column(
               children: <Widget>[
-                Text('${room.block}/${room.roomNo}'),
-                SizedBox(
-                  width: 15,
-                ),
-                verticalDivider(),
-                SizedBox(
-                  width: 15,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                        '${room.start.day}/${room.start.month}/${room.start.year}  ${room.start.hour}:${room.start.minute}'),
+                    Text('AB-${room.block.split(' ')[2]}/${room.roomNo}'),
                     SizedBox(
-                      height: 5,
+                      width: 15,
                     ),
-                    Text('To'),
+                    verticalDivider(),
                     SizedBox(
-                      height: 5,
+                      width: 15,
                     ),
-                    Text(
-                        '${room.end.day}/${room.end.month}/${room.end.year}  ${room.end.hour}:${room.end.minute}'),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Text(
+                              '${room.start.day}/${room.start.month}/${room.start.year}  ${room.start.hour}:${room.start.minute}'),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text('To'),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: Text(
+                              '${room.end.day}/${room.end.month}/${room.end.year}  ${room.end.hour}:${room.end.minute}'),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    verticalDivider(),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Flexible(
+                      child: Text('${room.purpose}'),
+                    ),
                   ],
                 ),
-                SizedBox(
-                  width: 15,
-                ),
-                verticalDivider(),
-                SizedBox(
-                  width: 15,
-                ),
-                Flexible(
-                  child: Text('${room.purpose}'),
-                ),
+                FlatButton.icon(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => new AlertDialog(
+                        content: Container(
+                          height: 150,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text('Do you want to cancel this booking?'),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  cancelRoom(room);
+                                },
+                                child: Text('Yes'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.cancel,
+                  ),
+                  label: Text('Cancel Booking'),
+                )
               ],
             ),
-            FlatButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                    content: Container(
-                      height: 150,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Do you want to cancel this booking?'),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              cancelRoom(room);
-                              Navigator.pushReplacementNamed(
-                                  context, '/RoomBooking');
-                            },
-                            child: Text('Yes'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.cancel,
-              ),
-              label: Text('Cancel Booking'),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   Widget mapYourRooms() {

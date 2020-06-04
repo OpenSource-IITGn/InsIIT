@@ -161,9 +161,9 @@ class _SelectTimeState extends State<SelectTime> {
               (isTimeSelected != true)
                   ? Container()
                   : Container(
-                      height: ScreenSize.size.height,
-                      width: ScreenSize.size.width,
-                      child: AvailableRooms()),
+                  height: ScreenSize.size.height,
+                  width: ScreenSize.size.width,
+                  child: AvailableRooms()),
             ],
           ),
         ),
@@ -207,7 +207,7 @@ class _SelectTimeState extends State<SelectTime> {
 
   _pickStartTime() async {
     TimeOfDay t =
-        await showTimePicker(context: context, initialTime: startTime);
+    await showTimePicker(context: context, initialTime: startTime);
     if (t != null)
       setState(() {
         startTime = t;
@@ -253,9 +253,6 @@ class _SelectTimeState extends State<SelectTime> {
       userTime = RoomTime(userId: userID, start: start, end: end);
       searchForRooms(userTime, rooms);
     }
-    setState(() {
-      isTimeSelected = true;
-    });
   }
 
   searchForRooms(RoomTime userTime, List<Room> rooms) {
