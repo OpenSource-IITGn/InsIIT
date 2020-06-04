@@ -306,7 +306,7 @@ class _RoomServiceState extends State<RoomService> {
     rooms.forEach((Room room){
       room.bookedslots.forEach((RoomTime time){
         if (time.userId == userID ) {
-          yourRooms.add(YourRoom(roomId: room.roomId, userId: time.userId, block: room.block, roomNo: room.roomno, start: time.start,  end: time.end, purpose: time.purpose));
+          yourRooms.add(YourRoom(roomId: room.roomId, userId: time.userId, block: room.block, roomNo: room.roomno, start: time.start,  end: time.end, purpose: time.purpose, bookingID: time.bookingId));
         }
       });
     });
@@ -314,9 +314,20 @@ class _RoomServiceState extends State<RoomService> {
     return yourRooms;
   }
 
-  cancelRoom (YourRoom yourRoom) {
-    //TODO: IMPLEMENT CANCEL
+  cancelRoom (YourRoom yourRoom) async {
+    var queryParameters = {
+      'api_key': 'NIKS',
+      'booking_id': yourRoom.bookingID,
+      'room_id': yourRoom.roomId
+    };
+    var uri = Uri.https(baseUrl, '/deleteBooking', queryParameters);
+    print("PINGING:" + uri.toString());
+    var response = await http.get(uri);
+    print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
+    Navigator.pushReplacementNamed(context, 'RoomBooking');
   }
+
+
 
   Widget yourRoomCard(YourRoom room){
     return Card(

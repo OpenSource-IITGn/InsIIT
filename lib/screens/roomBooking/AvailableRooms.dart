@@ -77,6 +77,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                           context, '/bookingform', arguments: {
                         '_room': room.roomno,
                         '_block': room.block,
+                        '_id' : room.roomId,
                       });
                     },
                     child: Text('Book'),

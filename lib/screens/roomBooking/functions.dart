@@ -41,8 +41,9 @@ class RoomTime{
   DateTime end;
   String purpose;
   String url;
+  String bookingId;
 
-  RoomTime({this.userId,this.name,this.mobNo,this.bio,this.start,this.end,this.purpose,this.url});
+  RoomTime({this.userId,this.name,this.mobNo,this.bio,this.start,this.end,this.purpose,this.url, this.bookingId});
 
   factory RoomTime.fromJson(Map<String, dynamic> json){
     return RoomTime(
@@ -50,10 +51,11 @@ class RoomTime{
         name: json['booked_by']['full_name'],
         mobNo: json['booked_by']['contact'].toString(),
         bio: json['booked_by']['bio'],
-        start: DateTime.parse(json['start'].toString()),
-        end: DateTime.parse(json['end'].toString()),
+        start: DateTime.fromMillisecondsSinceEpoch(json['start']),
+        end: DateTime.fromMillisecondsSinceEpoch(json['end']),
         purpose: json['purpose'],
-        url: json['booked_by']['image_link']
+        url: json['booked_by']['image_link'],
+        bookingId: json['booking_id']
     );
   }
 
@@ -67,8 +69,9 @@ class YourRoom{
   DateTime start;
   DateTime end;
   String purpose;
+  String bookingID;
 
-  YourRoom({this.userId, this.roomId,this.block,this.roomNo, this.start, this.end, this.purpose});
+  YourRoom({this.userId, this.roomId,this.block,this.roomNo, this.start, this.end, this.purpose, this.bookingID});
 
 }
 
