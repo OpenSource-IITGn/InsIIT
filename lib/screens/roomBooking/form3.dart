@@ -25,7 +25,6 @@ class _BookingFormState extends State<BookingForm> {
     _mobileNoController = TextEditingController();
     _purposeController = TextEditingController();
     _bioController = TextEditingController();
-
   }
 
   void dispose() {
@@ -35,7 +34,7 @@ class _BookingFormState extends State<BookingForm> {
     super.dispose();
   }
 
-  bookRoom(RoomTime time, Room room) async{
+  bookRoom(RoomTime time, Room room) async {
     var queryParameters = {
       'api_key': 'NIKS',
       'room_id': room.roomId,
@@ -61,18 +60,16 @@ class _BookingFormState extends State<BookingForm> {
     print(jsonBody);
     loadingBooking = true;
     setState(() {});
-    var response = await http.post(
-        uri,
-        body: jsonBody,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        }
-    );
+    var response =
+        await http.post(uri, body: jsonBody, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
     loadingBooking = false;
     print(response.statusCode);
     //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
-    Navigator.pushReplacementNamed(context, '/menuBarBase');
+    // Navigator.pushReplacementNamed(context, '/menuBarBase');
+    Navigator.pop(context);
   }
 
   @override
@@ -94,121 +91,139 @@ class _BookingFormState extends State<BookingForm> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: (loadingBooking == true)
-          ? Center(child: CircularProgressIndicator(),)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
           : SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: 20.0,
-              ),
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Name:',
-                    style: TextStyle(
-                      // fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20.0,
                     ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    gSignIn.currentUser.displayName,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontStyle: FontStyle.italic,
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          'Name:',
+                          style: TextStyle(
+                            // fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Text(
+                          gSignIn.currentUser.displayName,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Mobile Number',
-                ),
-                controller: _mobileNoController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Purpose',
-                ),
-                controller: _purposeController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Your Bio',
-                ),
-                controller: _bioController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Column(
-                children: <Widget>[
-                  Text(" ${roomData['_block']}/${roomData['_room']}",
-                      style: TextStyle(
-                        // fontSize: 12,
-                        // fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black.withAlpha(150),
-                      )),
-                  Text(
-                      " ${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')} to ${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}",
-                      style: TextStyle(
-                        // fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                        // fontWeight: FontWeight.bold,
-                        color: Colors.black.withAlpha(150),
-                      )),
-                ],
-              ),
-              SizedBox(height: 10),
-              RaisedButton.icon(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                color: Colors.black,
-                onPressed: () {
-                  if (_mobileNoController.text == '' ||
-                      _purposeController.text == '' || _bioController.text == '') {
-                    showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                        content: Text("Please Enter Mobile number,purpose and bio!"),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Mobile Number',
                       ),
-                    );
-                  } else {
-                    bookRoom(RoomTime(userId: gSignIn.currentUser.email, name: gSignIn.currentUser.displayName, mobNo: _mobileNoController.text, start: start,  end: end,  purpose: _purposeController.text, bio: _bioController.text, url: gSignIn.currentUser.photoUrl), Room(block: roomData['_block'], roomno: roomData['_room'], roomId: roomData['_id']));
-                  }
-                },
-                icon: Icon(
-                  Icons.send,
-                  color: Colors.white,
+                      keyboardType: TextInputType.phone,
+                      controller: _mobileNoController,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Purpose',
+                      ),
+                      controller: _purposeController,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Your Bio',
+                      ),
+                      controller: _bioController,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(" ${roomData['_block']}/${roomData['_room']}",
+                            style: TextStyle(
+                              // fontSize: 12,
+                              // fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withAlpha(150),
+                            )),
+                        Text(
+                            " ${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')} to ${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}",
+                            style: TextStyle(
+                              // fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.black.withAlpha(150),
+                            )),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    RaisedButton.icon(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      color: Colors.black,
+                      onPressed: () {
+                        if (_mobileNoController.text == '' ||
+                            _purposeController.text == '' ||
+                            _bioController.text == '') {
+                          showDialog(
+                            context: context,
+                            builder: (_) => new AlertDialog(
+                              content: Text(
+                                  "Please Enter Mobile number,purpose and bio!"),
+                            ),
+                          );
+                        } else {
+                          bookRoom(
+                              RoomTime(
+                                  userId: gSignIn.currentUser.email,
+                                  name: gSignIn.currentUser.displayName,
+                                  mobNo: _mobileNoController.text,
+                                  start: start,
+                                  end: end,
+                                  purpose: _purposeController.text,
+                                  bio: _bioController.text,
+                                  url: gSignIn.currentUser.photoUrl),
+                              Room(
+                                  block: roomData['_block'],
+                                  roomno: roomData['_room'],
+                                  roomId: roomData['_id']));
+                        }
+                      },
+                      icon: Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Book',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
                 ),
-                label: Text(
-                  'Book',
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }

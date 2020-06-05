@@ -17,7 +17,6 @@ List<Room> rooms = [];
 String userID = gSignIn.currentUser.email;
 
 class _RoomServiceState extends State<RoomService> {
-
   bool loading = true;
   List<ItemModelComplex> blocks = [];
   List<YourRoom> userRooms;
@@ -32,6 +31,9 @@ class _RoomServiceState extends State<RoomService> {
   }
 
   getRooms() async {
+    setState(() {
+      loading = true;
+    });
     var queryParameters = {
       'api_key': 'NIKS',
     };
@@ -206,7 +208,7 @@ class _RoomServiceState extends State<RoomService> {
               context: context,
               builder: (_) => new AlertDialog(
                 content:
-                Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
+                    Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
               ),
             );
           },
@@ -328,10 +330,18 @@ class _RoomServiceState extends State<RoomService> {
   List<YourRoom> makeListOfYourRooms(List<Room> rooms) {
     List<YourRoom> yourRooms = [];
 
-    rooms.forEach((Room room){
-      room.bookedslots.forEach((RoomTime time){
-        if (time.userId == userID ) {
-          yourRooms.add(YourRoom(roomId: room.roomId, userId: time.userId, block: room.block, roomNo: room.roomno, start: time.start,  end: time.end, purpose: time.purpose, bookingID: time.bookingId));
+    rooms.forEach((Room room) {
+      room.bookedslots.forEach((RoomTime time) {
+        if (time.userId == userID) {
+          yourRooms.add(YourRoom(
+              roomId: room.roomId,
+              userId: time.userId,
+              block: room.block,
+              roomNo: room.roomno,
+              start: time.start,
+              end: time.end,
+              purpose: time.purpose,
+              bookingID: time.bookingId));
         }
       });
     });
@@ -339,7 +349,7 @@ class _RoomServiceState extends State<RoomService> {
     return yourRooms;
   }
 
-  cancelRoom (YourRoom yourRoom) async {
+  cancelRoom(YourRoom yourRoom) async {
     var queryParameters = {
       'api_key': 'NIKS',
       'booking_id': yourRoom.bookingID,
@@ -354,105 +364,123 @@ class _RoomServiceState extends State<RoomService> {
     loading = false;
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
-    Navigator.pushReplacementNamed(context, '/menuBarBase');
+    Navigator.pop(context);
   }
 
-
-
-  Widget yourRoomCard(YourRoom room){
-    return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+  Widget yourRoomCard(YourRoom room) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                width: ScreenSize.size.width * 0.7,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('AB-${room.block.split(' ')[2]}/${room.roomNo}'),
-                    SizedBox(
-                      width: 15,
+                    Text(
+                      'AB-${room.block.split(' ')[2]}/${room.roomNo}',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    verticalDivider(),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: Text(
-                              '${room.start.day}/${room.start.month}/${room.start.year}  ${room.start.hour}:${room.start.minute}'),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text('To'),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: Text(
-                              '${room.end.day}/${room.end.month}/${room.end.year}  ${room.end.hour}:${room.end.minute}'),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    verticalDivider(),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Flexible(
-                      child: Text('${room.purpose}'),
-                    ),
+                    (room.start.day == room.end.day)
+                        ? Text(
+                            '${room.start.hour.toString().padLeft(2, '0')}:${room.start.minute.toString().padLeft(2, '0')} to ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withAlpha(150),
+                            ))
+                        : Container(),
+                    (room.start.day == room.end.day)
+                        ? Text(
+                            '${room.start.day.toString().padLeft(2, '0')}/${room.start.month.toString().padLeft(2, '0')}/${room.end.year.toString()} ',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withAlpha(150),
+                            ))
+                        : Container(),
+                    (room.start.day == room.end.day)
+                        ? Container()
+                        : Text(
+                            '${room.end.day.toString().padLeft(2, '0')}/${room.end.month.toString().padLeft(2, '0')}  ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black.withAlpha(150),
+                            )),
+                    (room.start.day != room.end.day)
+                        ? Text(
+                            '${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')} (${room.end.day.toString().padLeft(2, '0')}/${room.end.month.toString().padLeft(2, '0')}) to ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}(${room.start.day.toString().padLeft(2, '0')}/${room.start.month.toString().padLeft(2, '0')})',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black.withAlpha(150),
+                            ))
+                        : Container(),
+                    Text('Purpose: ${room.purpose}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black.withAlpha(150),
+                        )),
                   ],
                 ),
-                FlatButton.icon(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                        content: Container(
-                          height: 150,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text('Do you want to cancel this booking?'),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  cancelRoom(room);
-                                },
-                                child: Text('Yes'),
-                              ),
-                            ],
-                          ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => new AlertDialog(
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            cancelRoom(room);
+                          },
+                          child: Text('Yes'),
                         ),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.cancel,
-                  ),
-                  label: Text('Cancel Booking'),
-                )
-              ],
-            ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('No'),
+                        ),
+                      ],
+                      content: Text('Do you want to cancel this booking?'),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.delete,
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      )),
+    );
   }
 
   Widget mapYourRooms() {
     if (userRooms.length == 0) {
       return Center(
-        child: Text('You have not booked any rooms.'),
+        child: Text('Book a room by pressing the + button!'),
       );
     } else {
       return SingleChildScrollView(
@@ -475,6 +503,7 @@ class _RoomServiceState extends State<RoomService> {
           FloatingActionButton(
             heroTag: "fab1rs",
             onPressed: null,
+            backgroundColor: Colors.white,
             child: PopupMenuButton<String>(
               itemBuilder: (context) => [
                 PopupMenuItem(
@@ -499,7 +528,7 @@ class _RoomServiceState extends State<RoomService> {
               },
               icon: Icon(
                 Icons.menu,
-                color: Colors.white,
+                color: Colors.black,
                 // size: 38,
               ),
             ),
@@ -507,13 +536,13 @@ class _RoomServiceState extends State<RoomService> {
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: "fab2rs",
+            backgroundColor: Colors.white,
             onPressed: () {
-              Navigator.pushNamed(context, '/selecttime');
+              Navigator.pushNamed(context, '/selecttime').then((value) => setState((){rooms = [];
+    getRooms();
+    }));
             },
-            backgroundColor: primaryColor,
-            child: Icon(
-              Icons.add,
-            ),
+            child: Icon(Icons.add, color: Colors.black),
           ),
         ],
       ),
