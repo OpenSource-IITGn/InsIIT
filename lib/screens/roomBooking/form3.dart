@@ -68,8 +68,8 @@ class _BookingFormState extends State<BookingForm> {
     print(response.statusCode);
     //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
-    // Navigator.pushReplacementNamed(context, '/menuBarBase');
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, '/menuBarBase');
+
   }
 
   @override

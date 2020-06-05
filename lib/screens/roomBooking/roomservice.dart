@@ -365,7 +365,7 @@ class _RoomServiceState extends State<RoomService> {
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
     // Navigator.pop(context);
-    setState(() {});
+    Navigator.pushReplacementNamed(context, '/menuBarBase');
   }
 
   Widget yourRoomCard(YourRoom room) {
