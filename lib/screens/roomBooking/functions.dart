@@ -51,8 +51,8 @@ class RoomTime{
         name: json['booked_by']['full_name'],
         mobNo: json['booked_by']['contact'].toString(),
         bio: json['booked_by']['bio'],
-        start: DateTime.fromMillisecondsSinceEpoch(json['start']),
-        end: DateTime.fromMillisecondsSinceEpoch(json['end']),
+        start: DateTime.fromMillisecondsSinceEpoch((json['start'] is int) ? json['start'] : int.parse(json['start'])),
+        end: DateTime.fromMillisecondsSinceEpoch((json['end'] is int) ? json['end'] : int.parse(json['end'])),
         purpose: json['purpose'],
         url: json['booked_by']['image_link'],
         bookingId: json['booking_id']
@@ -143,6 +143,92 @@ bool isNotFinished (RoomTime time) {
   } else {
     return false;
   }
+}
+
+class Machine {
+
+  String machineId;
+  String type;
+  String model;
+  String tier;
+  String machineImgUrl;
+  List<dynamic> allowedExtensions;
+  List<RoomTime> bookedslots;
+  List<MachineTime> bookedSlotsWithFiles;
+
+  Machine({this.machineId, this.type, this.model, this.tier, this.machineImgUrl, this.allowedExtensions, this.bookedslots, this.bookedSlotsWithFiles});
+
+  factory Machine.fromJson(Map<String, dynamic> json){
+
+    List <RoomTime> bookedTimes = [];
+    List<dynamic> users = json['booked_slots'];
+    int noOfBookings = users.length;
+    for(int i=0; i<noOfBookings;i++){
+      bookedTimes.add(RoomTime.fromJson(users[i]));
+    }
+
+    List <MachineTime> bookedTimesWithFiles = [];
+    for(int i=0; i<noOfBookings;i++){
+      bookedTimesWithFiles.add(MachineTime.fromJson(users[i]));
+    }
+    return Machine(
+        machineId: json['_id'],
+        type : json['type'],
+        model: json['model'],
+        tier: json['tier'],
+        machineImgUrl: json['machine_img_url'],
+        allowedExtensions: json['allowed_extensions'],
+        bookedslots: bookedTimes,
+        bookedSlotsWithFiles: bookedTimesWithFiles
+    );
+  }
+}
+
+class MachineTime{
+  String userId;
+  String name;
+  String mobNo;
+  String bio;
+  DateTime start;
+  DateTime end;
+  String purpose;
+  String url;
+  List<String> urlOfUploadedFiles;
+  String bookingId;
+
+  MachineTime({this.userId,this.name,this.mobNo,this.bio,this.start,this.end,this.purpose,this.url,this.urlOfUploadedFiles, this.bookingId});
+
+  factory MachineTime.fromJson(Map<String, dynamic> json){
+    return MachineTime(
+        userId: json['booked_by']['user_id'],
+        name: json['booked_by']['full_name'],
+        mobNo: json['booked_by']['contact'].toString(),
+        bio: json['booked_by']['bio'],
+        start: DateTime.fromMillisecondsSinceEpoch((json['start'] is int) ? json['start'] : int.parse(json['start'])),
+        end: DateTime.fromMillisecondsSinceEpoch((json['end'] is int) ? json['end'] : int.parse(json['end'])),
+        purpose: json['purpose'],
+        url: json['booked_by']['image_link'],
+        urlOfUploadedFiles: json['booked_by']['file_links'],
+        bookingId: json['booking_id']
+    );
+  }
+
+}
+
+
+class YourBookedMachine {
+
+  String userId;
+  String machineId;
+  String type;
+  String model;
+  String tier;
+  DateTime start;
+  DateTime end;
+  String purpose;
+  String bookingId;
+
+  YourBookedMachine({this.userId, this.machineId, this.type, this.model, this.tier, this.start, this.end, this.purpose, this.bookingId});
 }
 
 

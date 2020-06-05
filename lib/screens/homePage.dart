@@ -73,6 +73,17 @@ class _HomePageState extends State<HomePage>
     loadCourseData();
     loadRemovedCoursesData();
     loadExamTimeTableData();
+    loadCertificateData();
+  }
+
+  loadCertificateData() async{
+    emailIds = [];
+    sheetTL.getData('CertificateList!A:E').listen((data) {
+      var certificateData = (data);
+      certificateData.forEach((i) {
+        emailIds.add(data[1]);
+      });
+    });
   }
 
   prepareEventsList() {

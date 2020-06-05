@@ -1,9 +1,8 @@
 import 'dart:convert';
-
+import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
-import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/screens/homePage.dart';
@@ -15,19 +14,27 @@ class RoomService extends StatefulWidget {
 
 List<Room> rooms = [];
 String userID = gSignIn.currentUser.email;
+List<Machine> machines = [];
+List<dynamic> emailIds = [];
 
 class _RoomServiceState extends State<RoomService> {
   bool loading = true;
+  bool loadingMachines = true;
   List<ItemModelComplex> blocks = [];
-  List<YourRoom> userRooms;
+  List<Widget> machineTypes = [];
+  List<YourRoom> userRooms = [];
+  List<YourBookedMachine> userBookedMachines = [];
+  int noOfMachines;
 
   Map<String, List<Room>> allBlocks = {};
+  Map<String, List<Machine>> allMachines = {};
 
   @override
   void initState() {
     super.initState();
     rooms = [];
     getRooms();
+    getMachines();
   }
 
   getRooms() async {
@@ -65,6 +72,38 @@ class _RoomServiceState extends State<RoomService> {
       loading = false;
     });
   }
+
+  getMachines () async {
+    var queryParameters = {
+      'api_key': 'GULLU',
+    };
+    var uri = Uri.https(baseUrlTL, '/getMachines', queryParameters);
+    print("PINGING:" + uri.toString());
+    var response = await http.get(uri);
+    Map<String, dynamic> responseJson = jsonDecode(response.body);
+
+    for (int i = 0; i < responseJson['results'].length; i++) {
+      Machine machine = Machine.fromJson(responseJson['results'][i]);
+      machines.add(machine);
+      if (allMachines.containsKey(machine.type)) {
+        allMachines[machine.type].add(machine);
+      } else {
+        allMachines.putIfAbsent(machine.type, () => [machine]);
+      }
+    }
+
+    noOfMachines = allMachines.length;
+    allMachines.forEach((String type, List<Machine> machines) {
+      machineTypes.add(machineWidget(type, machines));
+    });
+
+    userBookedMachines = makeListOfYourBookedMachines(machines);
+
+    setState(() {
+      loadingMachines = false;
+    });
+  }
+
 
   List<ItemModelSimple> makeItemModelSimple(List<Room> rooms) {
     List<ItemModelSimple> timesOfRooms = [];
@@ -260,7 +299,7 @@ class _RoomServiceState extends State<RoomService> {
 
   Widget logoWidget() {
     return Container(
-      height: 100,
+      height: 350,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -286,29 +325,57 @@ class _RoomServiceState extends State<RoomService> {
     );
   }
 
-  Widget machineWidget(String link) {
+  Widget machineWidget(String type, List<Machine> machines) {
     return Container(
-      height: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white,
-            offset: Offset(0, 9),
+        width: MediaQuery.of(context).size.width,
+        height: 350,
+        decoration: BoxDecoration(
+          image: new DecorationImage(
+            image: NetworkImage(
+              machines[0].machineImgUrl,
+            ),
+            fit: BoxFit.cover,
           ),
-        ],
-      ),
-      child: Image.asset(
-        link,
-        //'http://students.iitgn.ac.in/Tinkerers_Lab/images/TL2.png',
-        // height: 410,
-
-        // width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
-      ),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white,
+              offset: Offset(0, 9),
+            ),
+          ],
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            Positioned(
+              bottom: 75,
+              child: FlatButton.icon(
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/firstPage',
+                      arguments: {
+                        'type': type,
+                        'machines': machines,
+                      });
+                },
+                icon: Icon(Icons.add_box),
+                label: Text('Book ' + type),
+              ),
+            )
+          ],
+        )
+//      child: Image.network(
+//        link,
+//        //'http://students.iitgn.ac.in/Tinkerers_Lab/images/TL2.png',
+//        // height: 410,
+//
+//        // width: MediaQuery.of(context).size.width,
+//        fit: BoxFit.cover,
+//      ),
     );
   }
+
 
   Widget tinkerersLab() {
     //add better pics
@@ -318,9 +385,11 @@ class _RoomServiceState extends State<RoomService> {
         child: Column(
           children: <Widget>[
             logoWidget(),
-            machineWidget('assets/images/3dprinter.png'),
-            machineWidget('assets/images/3dprinter.png'),
-            machineWidget('assets/images/3dprinter.png'),
+            Column(
+              children: machineTypes,
+            ),
+//            machineWidget('assets/images/3dprinter.png'),
+//            machineWidget('assets/images/3dprinter.png'),
           ],
         ),
       ),
@@ -347,6 +416,20 @@ class _RoomServiceState extends State<RoomService> {
     });
 
     return yourRooms;
+  }
+
+  List<YourBookedMachine> makeListOfYourBookedMachines (List<Machine> machines){
+    List<YourBookedMachine> yourBookedMachines = [];
+
+    machines.forEach((Machine machine){
+      machine.bookedslots.forEach((RoomTime time){
+        if (time.userId == userID ) {
+          yourBookedMachines.add(YourBookedMachine(machineId: machine.machineId, userId: time.userId, type: machine.type, model: machine.model, tier: machine.tier, start: time.start,  end: time.end, purpose: time.purpose, bookingId: time.bookingId));
+        }
+      });
+    });
+
+    return yourBookedMachines;
   }
 
   cancelRoom(YourRoom yourRoom) async {
@@ -605,7 +688,7 @@ class _RoomServiceState extends State<RoomService> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: (loading == true)
+        body: (loading == true && loadingMachines == true)
             ? Center(child: CircularProgressIndicator())
             : homeScreen());
   }

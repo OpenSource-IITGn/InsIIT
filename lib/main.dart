@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/screens/TLForms/firstPage.dart';
+import 'package:instiapp/screens/TLForms/fourthPage.dart';
+import 'package:instiapp/screens/TLForms/secondPage.dart';
+import 'package:instiapp/screens/TLForms/thirdPage.dart';
 import 'package:instiapp/screens/email.dart';
 import 'package:instiapp/screens/eventscalendar.dart';
 import 'package:instiapp/screens/eventpage.dart';
@@ -51,6 +55,10 @@ class MyApp extends StatelessWidget {
         '/eventdetail' : (context) => EventDetail(),
         '/editevent' : (context) => EditEvent(),
         '/map' : (context) => MapPage(),
+        '/firstPage': (context) => FirstPage(),
+        '/secondPage': (context) => SecondPage(),
+        '/thirdPage': (context) => ThirdPage(),
+        '/fourthPage': (context) => FourthPage(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
