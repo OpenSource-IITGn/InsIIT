@@ -16,22 +16,40 @@ class OnboardingPageState extends State<OnboardingPage> {
     "assets/images/slide_1.png",
     "assets/images/slide_2.png",
     "assets/images/slide_3.png",
-    "assets/images/slide_4.png"
+    "assets/images/slide_4.png",
+    "assets/images/slide_5.png",
+    "assets/images/slide_6.png",
+    "assets/images/slide_7.png",
+    "assets/images/slide_8.png",
+    "assets/images/slide_9.png",
+    ""
   ];
 
 
   final List<String> text0 = [
-    "Lorem Ipsum is",
-    "Lorem Ipsum is",
-    "Lorem Ipsum is",
-    "Lorem Ipsum is"
+    "Feed",
+    "Mess Menu",
+    "Campus Map",
+    "Shuttle Timings",
+    "Schedule",
+    "Calendar",
+    "Booking",
+    "Contacts",
+    "Quick Links",
+    ""
   ];
 
   final List<String> text1 = [
-    "Lorem Ipsum is just dummy text",
-    "Lorem Ipsum is just dummy text",
-    "Lorem Ipsum is just dummy text",
-    "Lorem Ipsum is just dummy text"
+    "View announcements and news",
+    "Know what's in the mess and give feedback",
+    "Search for places and get directions",
+    "Know timings and set reminders",
+    "Know what's on your day",
+    "All events in one place",
+    "Book rooms, 3D printers and more",
+    "Important campus contacts",
+    "A collection of IITGN links",
+    ""
   ];
 
 
@@ -41,7 +59,7 @@ class OnboardingPageState extends State<OnboardingPage> {
     TransformerPageView transformerPageView = TransformerPageView(
         pageSnapping: true,
         onPageChanged: (index) {
-          if(this._slideIndex == 2){
+          if(this._slideIndex == 8){
             Navigator.pop(context);
             Navigator.pushNamed(context, '/signin');
           }
@@ -113,7 +131,7 @@ class OnboardingPageState extends State<OnboardingPage> {
                       child: Dots(
                         controller: controller,
                         slideIndex: _slideIndex,
-                        numberOfDots: images.length,
+                        numberOfDots: images.length - 1,
                       ),
                     )
                   ],
@@ -122,7 +140,7 @@ class OnboardingPageState extends State<OnboardingPage> {
             ),
           );
         }),
-        itemCount: 4);
+        itemCount: 10);
 
     return Scaffold(
       backgroundColor: Colors.white,
