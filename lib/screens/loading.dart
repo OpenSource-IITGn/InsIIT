@@ -5,7 +5,7 @@ import 'package:instiapp/utilities/constants.dart';
 import 'dart:math' as math;
 
 Widget loadScreen() {
-  Color color = Colors.blue;
+  Color color = primaryColor;
   return Scaffold(
     body: AnimatedContainer(
       duration: Duration(milliseconds: 500),
