@@ -110,9 +110,18 @@ class _RoomServiceState extends State<RoomService> {
     if (rooms.length == 0) {
       return timesOfRooms;
     } else {
+
       rooms.forEach((Room room) {
-        timesOfRooms.add(ItemModelSimple(
-            header: 'Booked Time Slots', bodyModel: room.bookedslots));
+        List<RoomTime> bookedSlots = [];
+        room.bookedslots.forEach((RoomTime time){
+          if (time.end.isAfter(DateTime.now()) || time.start.isBefore(DateTime.now()) ){
+            bookedSlots.add(time);
+          }
+          timesOfRooms.add(ItemModelSimple(
+              header: 'Booked Time Slots', bodyModel: bookedSlots));
+        });
+
+
       });
       return timesOfRooms;
     }
