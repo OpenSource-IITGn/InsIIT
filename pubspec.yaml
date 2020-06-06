@@ -48,6 +48,8 @@ dependencies:
   csv: ^4.0.3
   rxdart: ^0.23.1
   avataaar_image: ^1.0.8
+  transformer_page_view: ^0.1.6
+  shared_preferences: ^0.5.7+3
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
