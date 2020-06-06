@@ -19,7 +19,7 @@ import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
-
+import 'package:avataaar_image/avataaar_image.dart';
 import 'feed/feedPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -520,6 +520,7 @@ class _HomePageState extends State<HomePage>
     });
   }
 
+  var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = false;
   PageController _pageController;
   List<String> titles = ["", "News", "Buses", "Campus Map", "Room Booking"];
@@ -656,20 +657,33 @@ class _HomePageState extends State<HomePage>
                       ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.orange,
-                              minRadius: 30,
-                              child: ClipOval(
-                                  child: Image.network(
-                                    (gSignIn.currentUser == null)
-                                        ? ""
-                                        : gSignIn.currentUser.photoUrl,
-                                    fit: BoxFit.cover,
-                                    width: 90.0,
-                                    height: 90.0,
-                                  )),
-                            ),
+                          children: [ 
+                            (gSignIn.currentUser == null)
+                              ?AvataaarImage(
+                                avatar: avatar,
+                                errorImage: Icon(Icons.error),
+                                placeholder: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  minRadius: 45,
+                                  child: Image.asset(
+                                        'assets/images/avatar.png',
+                                        fit: BoxFit.cover,
+                                        width: 90.0,
+                                  )
+                                ),
+                                width: 90.0,
+                              ) 
+                              :CircleAvatar(
+                                backgroundColor: Colors.indigo,
+                                minRadius: 30,
+                                child: ClipOval(
+                                    child: Image.network(
+                                            gSignIn.currentUser.photoUrl,
+                                            fit: BoxFit.cover,
+                                            width: 90.0,
+                                            height: 90.0,
+                                    )),
+                              ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
