@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 
+Map<DateTime, String> attendanceData = {
+  DateTime(2020, 05, 30): 'P',
+  DateTime(2020, 05, 31): 'A',
+  DateTime(2020, 06, 01): 'P',
+  DateTime(2020, 06, 02): 'P',
+  DateTime(2020, 06, 03): 'P',
+  DateTime(2020, 06, 04): 'A',
+  DateTime(2020, 06, 05): 'A',
+  DateTime(2020, 06, 06): 'P',
+  DateTime(2020, 06, 07): 'A',
+  DateTime(2020, 06, 08): 'P',
+};
+
 class EventModel {
   DateTime start;
   DateTime end;
@@ -20,6 +33,7 @@ class EventModel {
   List<String> instructors;
   String credits;
   String preRequisite;
+  Map<DateTime, String> attendanceManager;
   EventModel(
       {this.start,
         this.end,
@@ -37,7 +51,8 @@ class EventModel {
         this.creator,
         this.instructors,
         this.credits,
-        this.preRequisite});
+        this.preRequisite,
+        this.attendanceManager});
 
   Widget time (DateTime time) {
     if (time == null) {
@@ -54,6 +69,16 @@ class EventModel {
     }
   }
 
+  int totalAttendance (Map<DateTime, String> attendanceManager) {
+    int count = 0;
+    attendanceManager.forEach((DateTime time, String attendance) {
+      if (attendance == 'P') {
+        count++;
+      }
+    });
+    return count;
+  }
+
   String twoDigitTime(String text) {
     if (text.length == 1) {
       String _text = '0' + text;
@@ -63,7 +88,7 @@ class EventModel {
     }
   }
 
- 
+
 
   Widget descriptionWidget () {
     if (this.isCourse) {
@@ -106,6 +131,14 @@ class EventModel {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 8,
+              ),
+              Text('Your attendance: ' + totalAttendance(this.attendanceManager).toString(),
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
             ]),
       );
     } else if (this.isExam) {
@@ -331,3 +364,5 @@ verticalDivider() {
     ],
   );
 }
+
+

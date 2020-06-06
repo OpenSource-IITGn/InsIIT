@@ -1473,7 +1473,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.lectureLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
@@ -1486,7 +1487,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.lectureLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 }
               }
             });
@@ -1507,7 +1509,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.tutorialLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
@@ -1520,7 +1523,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.tutorialLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 }
               }
             });
@@ -1541,7 +1545,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.labLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
@@ -1554,7 +1559,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.labLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 }
               }
             });
