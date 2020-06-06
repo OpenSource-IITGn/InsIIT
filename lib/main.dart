@@ -21,6 +21,7 @@ import 'package:instiapp/screens/schedule/editEvent.dart';
 import 'package:instiapp/screens/schedule/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
+import 'package:instiapp/screens/onboarding.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/announcements': (context) => Announcements(),
         // '/articles': (context) => Articles(),
+        '/onboarding': (context) => OnboardingPage(),
         '/eventscalendar': (context) => EventsCalendar(),
         '/eventpage': (context) => EventPage(),
         '/schedule':(context) => SchedulePage(),

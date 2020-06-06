@@ -7,6 +7,7 @@ import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<Course> courses = [];
 List<Course> coursesWithoutRepetition;
@@ -40,9 +41,26 @@ class _SignInPageState extends State<SignInPage> {
   bool isSignedIn = false;
   // AuthService _auth = AuthService();
 
+  Future checkWelcome() async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    String x = s.getString("welcome");
+    print(x.runtimeType);
+    if (x == null) {
+      s.setString("welcome", "true");
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    checkWelcome().then((val) {
+      if (val == true) {
+        Navigator.pushNamed(context, '/onboarding');
+      }
+    });
     gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
       controlSignIn(gSigninAccount);
     }, onError: (gError) {
