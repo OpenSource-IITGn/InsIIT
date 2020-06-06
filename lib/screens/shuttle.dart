@@ -7,7 +7,6 @@ import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/screens/homePage.dart';
 
-//TODO: ADD LINK TO GOOGLE MAP ROUTEs
 class Shuttle extends StatefulWidget {
   @override
   _ShuttleState createState() => _ShuttleState();

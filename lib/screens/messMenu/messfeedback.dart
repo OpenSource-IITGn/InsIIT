@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/textcard.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 
 //TODO implement upvote downvote on each menu item
 class MessFeedBack extends StatefulWidget {

@@ -30,7 +30,7 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
     var response = await http.get(uri);
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     numberOfPosts = responseJson['results'].length;
-    print("Number of posts: ${numberOfPosts}");
+    print("Number of posts: $numberOfPosts");
 
     for (int i = 0; i < responseJson['results'].length; i++) {
       posts.add(PostModel.fromJson(responseJson, i));
@@ -43,7 +43,7 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     getPosts();
 
@@ -64,6 +64,7 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: (loading == true)
@@ -86,6 +87,5 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

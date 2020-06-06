@@ -3,10 +3,7 @@ import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 import 'dart:math' as math;
-//TODO: AUTOMATICALLY EXPAND MENU FOR NEXT MEAL IN THIS PAGE
-//TODO: THE CODE CAN BE COMPRESSED A LOT!!!! USE LIST<LIST>
 //TODO : State for upvote and downvote
 
 class MessMenu extends StatefulWidget {

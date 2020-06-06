@@ -1,7 +1,6 @@
 //TODO: ADD FLARE SPLASH SCREEN BETWEEN LOGIN AND HOMEPAGE.s
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'dart:math' as math;
 

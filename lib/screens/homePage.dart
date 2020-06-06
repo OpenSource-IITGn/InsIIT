@@ -8,7 +8,6 @@ import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/carouselSlider.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
@@ -23,7 +22,6 @@ import 'package:instiapp/screens/roomBooking/roomservice.dart';
 
 import 'feed/feedPage.dart';
 
-//TODO: Add title for each menu
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
   final Function() notifyParent;
@@ -1021,7 +1019,7 @@ class _HomePageState extends State<HomePage>
   var friday = [];
   var saturday = [];
   var sunday = [];
-
+//TODO make mess list dynamic. Dont pass numbers as arguments. Add a separator cell in the sheet.
   makeMessList(var messDataList,
       {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
