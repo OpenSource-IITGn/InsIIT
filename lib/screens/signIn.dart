@@ -194,7 +194,7 @@ class _SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Image.asset('assets/images/homepageGif.gif'),
+                Image.asset('assets/images/homepage.png'),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                   child: Text("All things IITGN",
@@ -222,7 +222,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                     ),
-                    color: Color.fromRGBO(228, 110, 96, 1),
+                    color: primaryColor,
                   ),
                 ),
                 Padding(
