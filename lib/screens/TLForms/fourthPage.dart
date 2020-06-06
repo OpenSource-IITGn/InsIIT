@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class FourthPage extends StatefulWidget {
   @override
@@ -15,9 +16,9 @@ class FourthPage extends StatefulWidget {
 
 class _FourthPageState extends State<FourthPage> {
 
-  bool loading = false;
-
   Map machineData = {};
+  bool uploading = false;
+  int count = 0;
 
   String type;
   Machine machine;
@@ -44,21 +45,26 @@ class _FourthPageState extends State<FourthPage> {
   }
 
   bookMachine(MachineTime time, Machine machine) async{
-    List<File> _files = [];
-    files.forEach((String type, File file) {
-      _files.add(file);
-    });
 
     var queryParameters = {
       'api_key': 'GULLU',
       'machine_id': machine.machineId,
     };
-    var uri = Uri.https(
+    var uri1 = Uri.https(
+      baseUrlTL,
+      '/addBookingFile',
+      queryParameters,
+    );
+    var uri2 = Uri.https(
       baseUrlTL,
       '/addBooking',
       queryParameters,
     );
-    print('Booking ' + machine.model + ': ' + uri.toString());
+    List<String> fileNames = [];
+    files.forEach((String type, File file) {
+      fileNames.add(machine.machineId + '&' + time.start.millisecondsSinceEpoch.toString() + '_' + time.end.millisecondsSinceEpoch.toString() + '.' + type);
+    });
+    print('Booking ' + machine.model + ': ' + uri1.toString());
     var jsonBody = jsonEncode({
       "booked_by": {
         "user_id": time.userId,
@@ -70,11 +76,20 @@ class _FourthPageState extends State<FourthPage> {
       "purpose": time.purpose,
       "start": time.start.millisecondsSinceEpoch,
       "end": time.end.millisecondsSinceEpoch,
-      "url_of_uploaded_files": time.urlOfUploadedFiles,
+      "url_of_uploaded_files": fileNames,
     });
     print(jsonBody);
-    loading = true;
-    setState(() {});
+    setState(() {
+      uploading = true;
+    });
+    uploadData(uri2, jsonBody);
+    files.forEach((String type, File file) {
+      String filename = machine.machineId + '&' + time.start.millisecondsSinceEpoch.toString() + '_' + time.end.millisecondsSinceEpoch.toString() + '.' + type;
+      uploadFile(uri1, filename, file);
+    });
+  }
+
+  uploadData (var uri, var jsonBody) async {
     var response = await http.post(
         uri,
         body: jsonBody,
@@ -82,192 +97,212 @@ class _FourthPageState extends State<FourthPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         }
     );
-    loading = false;
+    setState(() {
+      count++;
+      if (count == files.length + 1) {
+        uploading = false;
+        //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
+        selectedIndex = 4;
+        Navigator.pushReplacementNamed(context, '/menuBarBase');
+      }
+    });
     print(response.statusCode);
-    //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-    selectedIndex = 4;
-    Navigator.pushReplacementNamed(context, '/menuBarBase');
+  }
+  uploadFile (var uri, String filename, File file) async {
+    var request = http.MultipartRequest('POST', uri);
+    request.files.add(http.MultipartFile.fromBytes('file', file.readAsBytesSync(), filename: filename, contentType: MediaType('application', 'x-tar')));
+    var response = await request.send();
+    setState(() {
+      count++;
+      if (count == files.length + 1) {
+        uploading = false;
+        //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
+        selectedIndex = 4;
+        Navigator.pushReplacementNamed(context, '/menuBarBase');
+      }
+    });
+    print(response.statusCode);
   }
 
   Widget homeScreen() {
     return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 30,),
-            Column(
-              children: <Widget>[
-                Center(
-                  child: Text(
-                    'From',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: ListTile(
-                        title: Center(
-                            child: Text(
-                              "Date",
-                            )
-                        ),
-                        subtitle: Center(
-                            child: Text(
-                              "${startDate.day} / ${startDate.month} / ${startDate.year}",
-                              style: TextStyle(
-                                color: Colors.grey[800],
-                              ),
-                            )
-                        ),
-                        trailing: Icon(
-                          Icons.calendar_today,
-                        ),
-                        onTap: _pickStartDate,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: ListTile(
-                        title: Center(
-                            child: Text(
-                              "Time",
-                            )),
-                        subtitle: Center(
-                          child: Text(
-                            "${startTime.hour} : ${startTime.minute}",
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                        trailing: Icon(
-                          Icons.access_time,
-                        ),
-                        onTap: _pickStartTime,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 30,),
-            Divider(indent: 40, endIndent: 40, color: Colors.grey[800],),
-            SizedBox(height: 30,),
-            Column(
-              children: <Widget>[
-                Center(
-                  child: Text(
-                    'To',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20,),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: ListTile(
-                        title: Center(
-                          child: Text(
-                            "Date",
-                          ),
-                        ),
-                        subtitle: Center(
-                          child: Text(
-                            "${endDate.day} / ${endDate.month} / ${endDate.year}",
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                        trailing: Icon(
-                          Icons.calendar_today,
-                        ),
-                        onTap: _pickEndDate,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: ListTile(
-                        title: Center(
-                          child: Text(
-                            "Time",
-                          ),
-                        ),
-                        subtitle: Center(
-                          child: Text(
-                            "${endTime.hour} : ${endTime.minute}",
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                        trailing: Icon(
-                          Icons.access_time,
-                        ),
-                        onTap: _pickEndTime,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Divider(indent: 40, endIndent: 40, color: Colors.grey[800],),
-            SizedBox(height: 80,),
-            ExpansionTile(
-              key: GlobalKey(),
-              title: Text(purpose),
-              children: purposes.map((String text) {
-                return ListTile(
-                  title: Text(text),
-                  onTap: () {
-                    setState(() {
-                      this.purpose = text;
-                      this.startDate = startDate;
-                      this.startTime = startTime;
-                      this.endDate = endDate;
-                      this.endTime = endTime;
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20.0,),
-            Center(
-              child: FlatButton(
-                color: primaryColor,
-                onPressed: () {
-                  if (purpose == 'Select your purpose') {
-                    showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                        content: Text('Please select your purpose'),
-                      ),
-                    );
-                  } else {
-                    DateTime start = DateTime(startDate.year, startDate.month, startDate.day, startTime.hour, startTime.minute);
-                    DateTime end = DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute);
-                    bookMachine(MachineTime(userId: userID, name: gSignIn.currentUser.displayName, mobNo: userMobileNumber, bio: userBio, start: start, end: end, purpose: purpose, url: gSignIn.currentUser.photoUrl, urlOfUploadedFiles: ['gcodefile', 'stlfile', 'imgfile']), machine);
-                  }
-                },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 30,),
+          Column(
+            children: <Widget>[
+              Center(
                 child: Text(
-                  'Book ' + machine.model,
+                  'From',
                   style: TextStyle(
-                    color: Colors.white,
+                    fontSize: 20,
                   ),
                 ),
               ),
-            )
-          ],
-        ),
-      );
+              SizedBox(height: 20,),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: ListTile(
+                      title: Center(
+                          child: Text(
+                            "Date",
+                          )
+                      ),
+                      subtitle: Center(
+                          child: Text(
+                            "${startDate.day} / ${startDate.month} / ${startDate.year}",
+                            style: TextStyle(
+                              color: Colors.grey[800],
+                            ),
+                          )
+                      ),
+                      trailing: Icon(
+                        Icons.calendar_today,
+                      ),
+                      onTap: _pickStartDate,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ListTile(
+                      title: Center(
+                          child: Text(
+                            "Time",
+                          )),
+                      subtitle: Center(
+                        child: Text(
+                          "${startTime.hour} : ${startTime.minute}",
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.access_time,
+                      ),
+                      onTap: _pickStartTime,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 30,),
+          Divider(indent: 40, endIndent: 40, color: Colors.grey[800],),
+          SizedBox(height: 30,),
+          Column(
+            children: <Widget>[
+              Center(
+                child: Text(
+                  'To',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          "Date",
+                        ),
+                      ),
+                      subtitle: Center(
+                        child: Text(
+                          "${endDate.day} / ${endDate.month} / ${endDate.year}",
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.calendar_today,
+                      ),
+                      onTap: _pickEndDate,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          "Time",
+                        ),
+                      ),
+                      subtitle: Center(
+                        child: Text(
+                          "${endTime.hour} : ${endTime.minute}",
+                          style: TextStyle(
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.access_time,
+                      ),
+                      onTap: _pickEndTime,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Divider(indent: 40, endIndent: 40, color: Colors.grey[800],),
+          SizedBox(height: 80,),
+          ExpansionTile(
+            key: GlobalKey(),
+            title: Text(purpose),
+            children: purposes.map((String text) {
+              return ListTile(
+                title: Text(text),
+                onTap: () {
+                  setState(() {
+                    this.purpose = text;
+                    this.startDate = startDate;
+                    this.startTime = startTime;
+                    this.endDate = endDate;
+                    this.endTime = endTime;
+                  });
+                },
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 20.0,),
+          Center(
+            child: FlatButton(
+              color: primaryColor,
+              onPressed: () {
+                if (purpose == 'Select your purpose') {
+                  showDialog(
+                    context: context,
+                    builder: (_) => new AlertDialog(
+                      content: Text('Please select your purpose'),
+                    ),
+                  );
+                } else {
+                  DateTime start = DateTime(startDate.year, startDate.month, startDate.day, startTime.hour, startTime.minute);
+                  DateTime end = DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute);
+                  bookMachine(MachineTime(userId: userID, name: gSignIn.currentUser.displayName, mobNo: userMobileNumber, bio: userBio, start: start, end: end, purpose: purpose, url: gSignIn.currentUser.photoUrl, urlOfUploadedFiles: ['gcodefile', 'stlfile', 'imgfile']), machine);
+                }
+              },
+              child: Text(
+                'Book ' + machine.model,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   _pickStartDate() async {
@@ -318,6 +353,19 @@ class _FourthPageState extends State<FourthPage> {
       });
   }
 
+  Widget loadScreen () {
+    return Center(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20,),
+          Text('Your Files are being uploaded'),
+          Text('Please wait a few minutes.....'),
+          SizedBox(height: 5,),
+          CircularProgressIndicator(),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -328,23 +376,23 @@ class _FourthPageState extends State<FourthPage> {
     files = machineData['files'];
 
     return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () {
-                selectedIndex = 4;
-                Navigator.pushReplacementNamed(context, '/menuBarBase');
-                },
-              ),
-              title: Text('Step 3',
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-              ),
-            body: (loading == true)
-                ? Center(child: CircularProgressIndicator(),)
-                : homeScreen()
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              selectedIndex = 4;
+              Navigator.pushReplacementNamed(context, '/menuBarBase');
+            },
+          ),
+          title: Text('Step 3',
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        ),
+        body: (uploading == true && count != files.length + 1)
+            ? loadScreen()
+            : homeScreen()
     );
   }
 }

@@ -117,11 +117,9 @@ class _RoomServiceState extends State<RoomService> {
           if (time.end.isAfter(DateTime.now()) && time.start.isBefore(DateTime.now()) ){
             bookedSlots.add(time);
           }
-          timesOfRooms.add(ItemModelSimple(
-              header: 'Booked Time Slots', bodyModel: bookedSlots));
         });
-
-
+        timesOfRooms.add(ItemModelSimple(
+            header: 'Booked Time Slots', bodyModel: bookedSlots));
       });
       return timesOfRooms;
     }
