@@ -13,10 +13,13 @@ class _ImportantContactsState extends State<ImportantContacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
-        title: Text('Important Contacts'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: Text('Important Contacts', style: TextStyle(color: Colors.black)),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
         child: Column(
