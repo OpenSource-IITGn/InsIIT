@@ -19,6 +19,7 @@ List<Machine> machines = [];
 List<dynamic> emailIds = [];
 
 class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClientMixin<RoomService> {
+  String bookingTitle = 'Rooms';
   bool loading = true;
   bool loadingMachines = true;
   List<ItemModelComplex> blocks = [];
@@ -423,6 +424,25 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
     // Navigator.pushReplacementNamed(context, '/menuBarBase');
   }
 
+  cancelMachine(YourBookedMachine machine) async {
+    var queryParameters = {
+      'api_key': 'GULLU',
+      'machine_id': machine.machineId,
+      'booking_id': machine.bookingId
+    };
+    var uri = Uri.https(baseUrlTL, '/deleteBooking', queryParameters);
+    print("PINGING:" + uri.toString());
+    Navigator.pop(context);
+    loadingMachines = true;
+    setState(() {});
+    var response = await http.get(uri);
+    loadingMachines = false;
+    print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
+    selectedIndex = 4;
+    // Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, '/menuBarBase');
+  }
+
   Widget yourRoomCard(YourRoom room) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -533,6 +553,163 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
     );
   }
 
+  Widget yourBookedMachineCard(YourBookedMachine machine) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    width: ScreenSize.size.width * 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          machine.type,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          machine.model,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        (machine.start.day == machine.end.day)
+                            ? Text(
+                            '${machine.start.hour.toString().padLeft(2, '0')}:${machine.start.minute.toString().padLeft(2, '0')} to ${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withAlpha(150),
+                            ))
+                            : Container(),
+                        (machine.start.day == machine.end.day)
+                            ? Text(
+                            '${machine.start.day.toString().padLeft(2, '0')}/${machine.start.month.toString().padLeft(2, '0')}/${machine.end.year.toString()} ',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withAlpha(150),
+                            ))
+                            : Container(),
+                        (machine.start.day == machine.end.day)
+                            ? Container()
+                            : Text(
+                            '${machine.end.day.toString().padLeft(2, '0')}/${machine.end.month.toString().padLeft(2, '0')}  ${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black.withAlpha(150),
+                            )),
+                        (machine.start.day != machine.end.day)
+                            ? Text(
+                            '${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')} (${machine.end.day.toString().padLeft(2, '0')}/${machine.end.month.toString().padLeft(2, '0')}) to ${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')}(${machine.start.day.toString().padLeft(2, '0')}/${machine.start.month.toString().padLeft(2, '0')})',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black.withAlpha(150),
+                            ))
+                            : Container(),
+                        Text('Purpose: ${machine.purpose}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black.withAlpha(150),
+                            )),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () {
+                                cancelMachine(machine);
+                              },
+                              child: Text('Yes'),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('No'),
+                            ),
+                          ],
+                          content: Text('Do you want to cancel this booking?'),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )),
+    );
+  }
+
+
+  Widget mapYourMachines () {
+    if (userBookedMachines.length == 0) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 60,
+            ),
+            Image.asset(
+                'assets/images/addnew.png'
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Text("Book a machine by going to the Tinkerers' Lab page!",
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return SingleChildScrollView(
+        child: Column(
+            children: userBookedMachines.map((YourBookedMachine machine) {
+              return yourBookedMachineCard(machine);
+            }).toList()
+        ),
+      );
+    }
+  }
+
+
   Widget mapYourRooms() {
     if (userRooms.length == 0) {
       return Center(
@@ -570,7 +747,32 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
   Widget yourRooms() {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: mapYourRooms(),
+      body: ListView(
+        children: <Widget>[
+          ExpansionTile(
+            title: Text(bookingTitle),
+            children: <Widget>[
+              ListTile(
+                title: Text('Rooms'),
+                onTap: () {
+                  setState(() {
+                    this.bookingTitle = 'Rooms';
+                  });
+                },
+              ),
+              ListTile(
+                title: Text('Machines'),
+                onTap: () {
+                  setState(() {
+                    this.bookingTitle = 'Machines';
+                  });
+                },
+              ),
+            ],
+          ),
+          (bookingTitle == 'Rooms') ? mapYourRooms() : mapYourMachines(),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -612,12 +814,9 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
             heroTag: "fab2rs",
             backgroundColor: primaryColor,
             onPressed: () {
-              Navigator.pushNamed(context, '/selecttime')
-                  .then((value) => setState(() {
-                        rooms = [];
-                        getRooms();
-                      }));
-              
+              Navigator.pushNamed(context, '/selecttime').then((value) => setState((){rooms = [];
+              getRooms();
+              }));
             },
             tooltip: 'Book a room',
             child: Icon(Icons.add, color: Colors.white),
@@ -693,7 +892,7 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
               SizedBox(
                 height: 40,
               ),
-              Text('Please Signin to view this page',
+              Text('Please sign in to view this page',
                 style: TextStyle(
                   color: Colors.black38,
                   fontSize: 18,
