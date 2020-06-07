@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class FirstPage extends StatefulWidget {
   @override
@@ -27,6 +28,13 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   Widget timeBody(List<RoomTime> times) {
+    if (times.length == 0) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Machine"
+            " is free!"),
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -81,8 +89,15 @@ class _FirstPageState extends State<FirstPage> {
     String type = machineData['type'];
     List<Machine> machines = machineData['machines'];
     machines.forEach((Machine machine) {
-      machineModels.add(ItemModelSimple(
-          header: machine.model, bodyModel: machine.bookedslots));
+      List<RoomTime> bookedSlots = [];
+      machine.bookedslots.forEach((RoomTime time) {
+        if (time.end.isAfter(DateTime.now()) &&
+            time.start.isBefore(DateTime.now())) {
+          bookedSlots.add(time);
+        }
+      });
+      machineModels
+          .add(ItemModelSimple(header: machine.model, bodyModel: bookedSlots));
     });
 
     return Scaffold(
@@ -147,6 +162,7 @@ class _FirstPageState extends State<FirstPage> {
             'machines': machines,
           });
         },
+        backgroundColor: primaryColor,
         child: Icon(
           Icons.add,
         ),

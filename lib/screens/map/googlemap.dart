@@ -321,6 +321,9 @@ class _MapPageState extends State<MapPage> {
       }
   }
 
+  void navigateTo(){
+    Navigator.pushNamed(context, '/importantcontacts');
+  }
   
   @override
   Widget build(BuildContext context) {

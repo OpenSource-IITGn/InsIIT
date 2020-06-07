@@ -58,7 +58,7 @@ class _MessFeedBackState extends State<MessFeedBack> {
                         hintText: 'Enter your review here.'),
                   ),
                   RaisedButton.icon(
-                    color: Colors.black,
+                    color: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),

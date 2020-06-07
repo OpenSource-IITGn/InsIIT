@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage>
 
   void reloadData() {
     loadMessData();
+    loadlinks();
     loadImportantContactData();
     loadShuttleData();
     loadCourseData();
@@ -458,12 +459,10 @@ class _HomePageState extends State<HomePage>
   loadlinks() async {
     sheet.getData('QuickLinks!A:C').listen((data) {
       var d = (data);
+      d.removeAt(0);
       emails = [];
       d.forEach((i) {
-        int c = 0;
-        var t = i[c].split(',');
-        emails.add(Data(descp: t[1], name: t[0], email: t[2]));
-        c++;
+        emails.add(Data(descp: i[1], name: i[0], email: i[2]));
       });
     });
   }

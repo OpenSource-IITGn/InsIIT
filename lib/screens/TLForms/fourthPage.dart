@@ -52,7 +52,48 @@ class _FourthPageState extends State<FourthPage> {
     endTime = TimeOfDay.fromDateTime(_currentTime.add(new Duration(hours: 1)));
   }
 
-  bookMachine(MachineTime time, Machine machine) async {
+  checkCorrectTime(MachineTime time, Machine machine) {
+    if (time.end.isAfter(time.start)) {
+      checkTimeClash(time, machine);
+    } else {
+      setState(() {
+        this.purpose = purpose;
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            content: Text("Please Enter Appropriate Time and Date!"),
+          ),
+        );
+      });
+    }
+  }
+
+  checkTimeClash(MachineTime time, Machine machine) {
+    bool clash = false;
+    machine.bookedSlotsWithFiles.forEach((MachineTime machineTime) {
+      if (clash == false) {
+        if (timeClashMachine(time, machineTime)) {
+          clash = true;
+        }
+      }
+    });
+    if (clash) {
+      setState(() {
+        this.purpose = purpose;
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            content: Text("Please Enter Appropriate Time and Date!"),
+          ),
+        );
+      });
+    } else {
+      bookMachine(time, machine);
+    }
+  }
+
+  bookMachine(MachineTime time, Machine machine) async{
+
     var queryParameters = {
       'api_key': 'GULLU',
       'machine_id': machine.machineId,
@@ -89,7 +130,7 @@ class _FourthPageState extends State<FourthPage> {
       "purpose": time.purpose,
       "start": time.start.millisecondsSinceEpoch,
       "end": time.end.millisecondsSinceEpoch,
-      "url_of_uploaded_files": fileNames,
+      "url_of_uploaded_files": time.urlOfUploadedFiles,
     });
     print(jsonBody);
     setState(() {

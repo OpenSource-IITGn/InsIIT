@@ -13,6 +13,7 @@ List<Course> courses = [];
 List<Course> coursesWithoutRepetition;
 List<calendar.Event> events = [];
 List<calendar.Event> eventsWithoutRepetition;
+bool guest = false;
 
 class GoogleHttpClient extends IOClient {
   Map<String, String> _headers;
@@ -101,6 +102,7 @@ class _SignInPageState extends State<SignInPage> {
   void authorize(asGuest) async {
     // Navigator.pop(context);
     if (asGuest) {
+      guest = true;
       await sheet.writeData([
         [
           DateTime.now().toString(),
