@@ -34,7 +34,7 @@ class HomePage extends StatefulWidget {
 List<FoodCard> foodCards;
 List<ContactCard> contactCards;
 List<Buses> buses;
-List<Data> emails;
+List<Data> emails = [];
 List<TodayCourse> todayCourses;
 List<MyCourse> myCourses;
 List<EventModel> removedEvents;
@@ -66,6 +66,23 @@ class _HomePageState extends State<HomePage>
     loadCourseData();
     loadRemovedCoursesData();
     loadExamTimeTableData();
+  }
+  // var emails = [];
+  loadlinks() async {
+    sheet.getData('QuickLinks!A:C').listen((data) {
+      var d = (data);
+      d.forEach((i) {
+        // int c = 0;
+        // var t = i.split(',');
+        emails.add(
+          Data(
+            descp: i[1][0],
+            name: i[0][0], 
+            email: i[2][0]
+          ));
+        // c++;
+      });
+    });
   }
 
   prepareEventsList() {
@@ -439,18 +456,7 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  loadlinks() async {
-    sheet.getData('QuickLinks!A:C').listen((data) {
-      var d = (data);
-      emails = [];
-      d.forEach((i) {
-        int c = 0;
-        var t = i[c].split(',');
-        emails.add(Data(descp: t[1], name: t[0], email: t[2]));
-        c++;
-      });
-    });
-  }
+  
 
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
@@ -978,8 +984,7 @@ class _HomePageState extends State<HomePage>
           ),
           FeedPage(),
           Shuttle(),
-          MapPage(),
-          RoomService(),
+          // MapPage(),
         ],
       ),
     );
