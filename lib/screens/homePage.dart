@@ -523,7 +523,7 @@ class _HomePageState extends State<HomePage>
   var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = false;
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
+  List<String> titles = ["", "News", "Buses", "Campus Map", "Misc."];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
@@ -568,7 +568,7 @@ class _HomePageState extends State<HomePage>
           ),
           BottomNavyBarItem(
             icon: Icon(Icons.menu),
-            title: Text('More'),
+            title: Text('Misc.'),
             textAlign: TextAlign.center,
             activeColor: primaryColor,
             inactiveColor: Colors.grey,
