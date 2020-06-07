@@ -65,7 +65,13 @@ class _FirstPageState extends State<FirstPage> {
     String type = machineData['type'];
     List<Machine> machines = machineData['machines'];
     machines.forEach((Machine machine) {
-      machineModels.add(ItemModelSimple(header: machine.model, bodyModel: machine.bookedslots));
+      List<RoomTime> bookedSlots = [];
+      machine.bookedslots.forEach((RoomTime time) {
+        if (time.end.isAfter(DateTime.now()) && time.start.isBefore(DateTime.now()) ){
+          bookedSlots.add(time);
+        }
+      });
+      machineModels.add(ItemModelSimple(header: machine.model, bodyModel: bookedSlots));
     });
 
     return Scaffold(

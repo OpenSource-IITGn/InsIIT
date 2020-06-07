@@ -408,7 +408,7 @@ class _RoomServiceState extends State<RoomService> {
 
     rooms.forEach((Room room) {
       room.bookedslots.forEach((RoomTime time) {
-        if (time.userId == userID) {
+        if (time.userId == userID && time.end.isAfter(DateTime.now())) {
           yourRooms.add(YourRoom(
               roomId: room.roomId,
               userId: time.userId,
@@ -430,7 +430,7 @@ class _RoomServiceState extends State<RoomService> {
 
     machines.forEach((Machine machine){
       machine.bookedslots.forEach((RoomTime time){
-        if (time.userId == userID ) {
+        if (time.userId == userID && time.end.isAfter(DateTime.now())) {
           yourBookedMachines.add(YourBookedMachine(machineId: machine.machineId, userId: time.userId, type: machine.type, model: machine.model, tier: machine.tier, start: time.start,  end: time.end, purpose: time.purpose, bookingId: time.bookingId));
         }
       });
