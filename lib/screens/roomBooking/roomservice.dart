@@ -54,6 +54,8 @@ class _RoomServiceState extends State<RoomService>
 
 
   getRooms() async {
+    allBlocks = {};
+    blocks = [];
     rooms = [];
     setState(() {
       loading = true;
@@ -91,6 +93,7 @@ class _RoomServiceState extends State<RoomService>
   }
 
   getMachines() async {
+    allMachines = {};
     setState(() {
       loadingMachines = true;
     });
@@ -325,7 +328,10 @@ class _RoomServiceState extends State<RoomService>
         Navigator.pushNamed(context, '/firstPage', arguments: {
           'type': type,
           'machines': machines,
-        });
+        }).then((value) => setState(() {
+          machines = [];
+          getMachines();
+        }));
       },
       child: Card(
         child: Container(
@@ -438,11 +444,10 @@ class _RoomServiceState extends State<RoomService>
     loading = true;
     setState(() {});
     var response = await http.get(uri);
-    loading = false;
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-    selectedIndex = 4;
-    // Navigator.pop(context);
-    // Navigator.pushReplacementNamed(context, '/menuBarBase');
+    setState(() {
+      getRooms();
+    });
   }
 
   cancelMachine(YourBookedMachine machine) async {
@@ -459,9 +464,9 @@ class _RoomServiceState extends State<RoomService>
     var response = await http.get(uri);
     loadingMachines = false;
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-    selectedIndex = 4;
-    // Navigator.pop(context);
-    Navigator.pushReplacementNamed(context, '/menuBarBase');
+    setState(() {
+      getMachines();
+    });
   }
 
   Widget yourRoomCard(YourRoom room) {
@@ -476,7 +481,7 @@ class _RoomServiceState extends State<RoomService>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                width: ScreenSize.size.width * 0.7,
+                width: ScreenSize.size.width * 0.6,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -586,7 +591,7 @@ class _RoomServiceState extends State<RoomService>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                width: ScreenSize.size.width * 0.7,
+                width: ScreenSize.size.width * 0.6,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -994,11 +999,10 @@ class _RoomServiceState extends State<RoomService>
             heroTag: "fab2rs",
             backgroundColor: primaryColor,
             onPressed: () {
-              Navigator.pushNamed(context, '/selecttime')
-                  .then((value) => setState(() {
-                        rooms = [];
-                        getRooms();
-                      }));
+              Navigator.pushNamed(context, '/selecttime').then((value) => setState(() {
+                rooms = [];
+                getRooms();
+              }));
             },
             tooltip: 'Book a room',
             child: Icon(Icons.add, color: Colors.white),
@@ -1083,7 +1087,7 @@ class _RoomServiceState extends State<RoomService>
                   ],
                 ),
               )
-            : (loading == true && loadingMachines == true)
+            : (loading == true || loadingMachines == true)
                 ? Center(child: CircularProgressIndicator())
                 : homeScreen());
   }

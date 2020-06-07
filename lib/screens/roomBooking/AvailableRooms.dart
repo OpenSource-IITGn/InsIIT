@@ -81,7 +81,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                 ),
                 OutlineButton.icon(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/bookingform',
+                    Navigator.pushNamed(context, '/bookingform',
                         arguments: {
                           '_room': room.roomno,
                           '_block': room.block,

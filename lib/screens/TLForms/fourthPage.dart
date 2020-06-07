@@ -159,9 +159,8 @@ class _FourthPageState extends State<FourthPage> {
       if (count == files.length + 1) {
         uploading = false;
         //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-        selectedIndex = 4;
         // Navigator.pushReplacementNamed(context, '/menuBarBase');
-        Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+        Navigator.popUntil(context, ModalRoute.withName('/RoomBooking'));
       }
     });
     print(response.statusCode);
@@ -178,8 +177,7 @@ class _FourthPageState extends State<FourthPage> {
       if (count == files.length + 1) {
         uploading = false;
         //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-        selectedIndex = 4;
-       Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+       Navigator.popUntil(context, ModalRoute.withName('/RoomBooking'));
       }
     });
     print(response.statusCode);

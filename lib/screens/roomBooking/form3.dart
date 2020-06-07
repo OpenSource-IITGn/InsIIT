@@ -67,9 +67,7 @@ class _BookingFormState extends State<BookingForm> {
     loadingBooking = false;
     print(response.statusCode);
     //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-    selectedIndex = 4;
-    Navigator.pushReplacementNamed(context, '/menuBarBase');
-
+    Navigator.popUntil(context, ModalRoute.withName('/RoomBooking'));
   }
 
   @override
