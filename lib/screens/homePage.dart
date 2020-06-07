@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage>
     loadCertificateData();
   }
 
-  loadCertificateData() async{
+  loadCertificateData() async {
     emailIds = [];
     sheetTL.getData('CertificateList!A:E').listen((data) {
       var certificateData = (data);
@@ -196,8 +196,8 @@ class _HomePageState extends State<HomePage>
             }
             if (lc[2] != '' && lc[2] != '-') {
               if (lc[2].replaceAll(' ', '').contains(new RegExp(
-                  course.name.replaceAll(' ', ''),
-                  caseSensitive: false)) ||
+                      course.name.replaceAll(' ', ''),
+                      caseSensitive: false)) ||
                   course.name.replaceAll(' ', '').contains(new RegExp(
                       lc[2].replaceAll(' ', ''),
                       caseSensitive: false)) ||
@@ -330,7 +330,7 @@ class _HomePageState extends State<HomePage>
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -370,8 +370,8 @@ class _HomePageState extends State<HomePage>
               lc[1] != '-' &&
               lc[1] != '') {
             if (lc[0].replaceAll(' ', '').contains(new RegExp(
-                course.name.replaceAll(' ', ''),
-                caseSensitive: false)) ||
+                    course.name.replaceAll(' ', ''),
+                    caseSensitive: false)) ||
                 course.name.replaceAll(' ', '').contains(new RegExp(
                     lc[0].replaceAll(' ', ''),
                     caseSensitive: false)) ||
@@ -392,13 +392,13 @@ class _HomePageState extends State<HomePage>
                   instructors: lc[6].split(','),
                   preRequisite: lc[10],
                   lectureCourse:
-                  lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                      lc[11].split('(')[0].replaceAll(' ', '').split('+'),
                   lectureLocation: returnLocation(lc[11]),
                   tutorialCourse:
-                  lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                      lc[12].split('(')[0].replaceAll(' ', '').split('+'),
                   tutorialLocation: returnLocation(lc[12]),
                   labCourse:
-                  lc[13].split('(')[0].replaceAll(' ', '').split('+'),
+                      lc[13].split('(')[0].replaceAll(' ', '').split('+'),
                   labLocation: returnLocation(lc[13]),
                   remarks: lc[14],
                   courseBooks: lc[15]));
@@ -579,12 +579,7 @@ class _HomePageState extends State<HomePage>
         backgroundColor: Colors.transparent,
         elevation: 0,
 
-        // leading: IconButton(
-        //   icon: Icon(Icons.menu),
-        //   onPressed: () {
-        //     widget.notifyParent();
-        //   },
-        // ),
+        leading:Icon(Icons.menu, color: Colors.transparent,),
         title: Container(
             decoration: new BoxDecoration(
                 color: (titles[selectedIndex] == "")
@@ -654,37 +649,28 @@ class _HomePageState extends State<HomePage>
                       (connected)
                           ? Container()
                           : SizedBox(
-                        height: 10,
-                      ),
+                              height: 10,
+                            ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [ 
+                          children: [
                             (gSignIn.currentUser == null)
-                              ?AvataaarImage(
-                                avatar: avatar,
-                                errorImage: Icon(Icons.error),
-                                placeholder: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  minRadius: 45,
-                                  child: Image.asset(
-                                        'assets/images/avatar.png',
-                                        fit: BoxFit.cover,
-                                        width: 90.0,
+                                ? Image.asset(
+                                    'assets/images/avatar.png',
+                                    fit: BoxFit.cover,
+                                    width: 90.0,
                                   )
-                                ),
-                                width: 90.0,
-                              ) 
-                              :CircleAvatar(
-                                backgroundColor: Colors.indigo,
-                                minRadius: 30,
-                                child: ClipOval(
-                                    child: Image.network(
-                                            gSignIn.currentUser.photoUrl,
-                                            fit: BoxFit.cover,
-                                            width: 90.0,
-                                            height: 90.0,
+                                : CircleAvatar(
+                                    backgroundColor: Colors.indigo,
+                                    minRadius: 30,
+                                    child: ClipOval(
+                                        child: Image.network(
+                                      gSignIn.currentUser.photoUrl,
+                                      fit: BoxFit.cover,
+                                      width: 90.0,
+                                      height: 90.0,
                                     )),
-                              ),
+                                  ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -692,9 +678,9 @@ class _HomePageState extends State<HomePage>
                                     (gSignIn.currentUser == null)
                                         ? "Hey John Doe!"
                                         : "Hey " +
-                                        gSignIn.currentUser.displayName
-                                            .split(' ')[0] +
-                                        '!',
+                                            gSignIn.currentUser.displayName
+                                                .split(' ')[0] +
+                                            '!',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 19,
@@ -726,11 +712,11 @@ class _HomePageState extends State<HomePage>
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Hungry?",
@@ -743,9 +729,9 @@ class _HomePageState extends State<HomePage>
                                         "Here's what's in the mess",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)
-                                          // fontSize: 18.0,
-                                          // fontWeight: FontWeight.bold,
-                                        ),
+                                            // fontSize: 18.0,
+                                            // fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -773,8 +759,8 @@ class _HomePageState extends State<HomePage>
                                               child: Text(
                                                 i,
                                                 style: TextStyle(
-                                                  // fontSize: 20.0,
-                                                ),
+                                                    // fontSize: 20.0,
+                                                    ),
                                               ),
                                             ),
                                           ),
@@ -791,53 +777,53 @@ class _HomePageState extends State<HomePage>
                       (twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(
-                        onTap: () {
-                          return Navigator.pushNamed(
-                              context, '/schedule');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Wondering what's next?",
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
+                              onTap: () {
+                                return Navigator.pushNamed(
+                                    context, '/schedule');
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              "Wondering what's next?",
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Here's your schedule",
+                                              style: TextStyle(
+                                                  color: Colors.black
+                                                      .withAlpha(150)),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Text(
-                                        "Here's your schedule",
-                                        style: TextStyle(
-                                            color: Colors.black
-                                                .withAlpha(150)),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward),
-                                ],
+                                        Icon(Icons.arrow_forward),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children:
+                                          twoEvents.map((EventModel event) {
+                                        return scheduleCard(event);
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              SizedBox(height: 10),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children:
-                                twoEvents.map((EventModel event) {
-                                  return scheduleCard(event);
-                                }).toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            ),
                       GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
@@ -849,11 +835,11 @@ class _HomePageState extends State<HomePage>
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Bored?",
@@ -866,9 +852,9 @@ class _HomePageState extends State<HomePage>
                                         "Checkout ongoing events",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)
-                                          // fontSize: 18.0,
-                                          // fontWeight: FontWeight.bold,
-                                        ),
+                                            // fontSize: 18.0,
+                                            // fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -887,15 +873,15 @@ class _HomePageState extends State<HomePage>
                                     builder: (BuildContext context) {
                                       return Container(
                                         width:
-                                        MediaQuery.of(context).size.width,
+                                            MediaQuery.of(context).size.width,
                                         // color: Colors.black,
                                         child: Container(
                                           child: Center(
                                             child: Column(
                                               crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                               mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Container(
                                                   // color: Colors.black,
@@ -903,11 +889,11 @@ class _HomePageState extends State<HomePage>
                                                   width: ScreenSize.size.width,
                                                   child: ClipRRect(
                                                     borderRadius:
-                                                    BorderRadius.only(
+                                                        BorderRadius.only(
                                                       topLeft:
-                                                      Radius.circular(10.0),
+                                                          Radius.circular(10.0),
                                                       topRight:
-                                                      Radius.circular(10.0),
+                                                          Radius.circular(10.0),
                                                     ),
                                                     child: Image(
                                                       fit: BoxFit.cover,
@@ -922,22 +908,22 @@ class _HomePageState extends State<HomePage>
                                                   decoration: new BoxDecoration(
                                                       color: Colors.white,
                                                       borderRadius: new BorderRadius
-                                                          .only(
+                                                              .only(
                                                           bottomLeft:
-                                                          const Radius
-                                                              .circular(
-                                                              10.0),
+                                                              const Radius
+                                                                      .circular(
+                                                                  10.0),
                                                           bottomRight:
-                                                          const Radius
-                                                              .circular(
-                                                              10.0))),
+                                                              const Radius
+                                                                      .circular(
+                                                                  10.0))),
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .fromLTRB(8, 8, 8, 8.0),
                                                     child: Row(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       // mainAxisAlignment:
                                                       //     MainAxisAlignment
                                                       //         .spaceAround,
@@ -947,10 +933,10 @@ class _HomePageState extends State<HomePage>
                                                           children: <Widget>[
                                                             Text("24",
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                      FontWeight
+                                                                          .bold,
                                                                   fontSize: 20,
                                                                 )),
                                                             Text('July')
@@ -959,28 +945,28 @@ class _HomePageState extends State<HomePage>
                                                         verticalDivider(),
                                                         Column(
                                                           crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
+                                                              MainAxisAlignment
+                                                                  .start,
                                                           children: <Widget>[
                                                             Text(
                                                                 "Photography Contest",
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                      FontWeight
+                                                                          .bold,
                                                                   fontSize: 16,
                                                                 )),
                                                             Text("Starts 7pm!",
                                                                 style:
-                                                                TextStyle(
+                                                                    TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withAlpha(
-                                                                      150),
+                                                                          150),
                                                                   // fontWeight:
                                                                   //     FontWeight.bold,
                                                                   // fontSize: 16,
@@ -1135,7 +1121,8 @@ class _HomePageState extends State<HomePage>
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  child:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     time(event.start),
                     SizedBox(
                       height: 8,

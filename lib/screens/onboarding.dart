@@ -61,7 +61,6 @@ class OnboardingPageState extends State<OnboardingPage> {
         onPageChanged: (index) {
           if(this._slideIndex == 8){
             Navigator.pop(context);
-            Navigator.pushNamed(context, '/signin');
           }
           setState(() {
             this._slideIndex = index;
