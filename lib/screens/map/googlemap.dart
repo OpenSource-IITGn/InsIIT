@@ -321,6 +321,9 @@ class _MapPageState extends State<MapPage> {
       }
   }
 
+  void navigateTo(){
+    Navigator.pushNamed(context, '/Quicklinks');
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -399,6 +402,14 @@ class _MapPageState extends State<MapPage> {
                       backgroundColor: Colors.white,
                       tooltip: 'Layers',
                       child: Icon(Icons.layers, color: Colors.black45),
+                    ),
+                    SizedBox(height: 16.0),
+                    FloatingActionButton(
+                      onPressed: navigateTo,
+                      heroTag: "btn9",
+                      backgroundColor: Colors.white,
+                      tooltip: 'Layers',
+                      child: Icon(Icons.link, color: Colors.black45),
                     ),
                   ],
                 ),
