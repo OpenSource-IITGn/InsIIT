@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/utilities/constants.dart';
 
 class MiscPage extends StatefulWidget {
   @override
