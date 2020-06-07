@@ -36,7 +36,7 @@ class _SchedulePageState extends State<SchedulePage> {
             SizedBox(
               height: 8,
             ),
-            Text('No Classes or Events to attend Today.',
+            Text('No classes or events to attend today.',
               style: TextStyle(
                 color: Colors.black38,
                 fontSize: 18,
