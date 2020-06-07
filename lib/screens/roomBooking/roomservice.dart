@@ -23,11 +23,12 @@ class RoomService extends StatefulWidget {
 }
 
 List<Room> rooms = [];
-String userID = (guest) ?'Guest' :gSignIn.currentUser.email;
+String userID = (guest) ? 'Guest' : gSignIn.currentUser.email;
 List<Machine> machines = [];
 List<dynamic> emailIds = [];
 
-class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClientMixin<RoomService> {
+class _RoomServiceState extends State<RoomService>
+    with AutomaticKeepAliveClientMixin<RoomService> {
   String bookingTitle = 'Rooms';
   bool loading = true;
   bool loadingMachines = true;
@@ -240,7 +241,7 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
               context: context,
               builder: (_) => new AlertDialog(
                 content:
-                Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
+                    Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
               ),
             );
           },
@@ -405,10 +406,19 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
   List<YourBookedMachine> makeListOfYourBookedMachines(List<Machine> machines) {
     List<YourBookedMachine> yourBookedMachines = [];
 
-    machines.forEach((Machine machine){
-      machine.bookedslots.forEach((RoomTime time){
+    machines.forEach((Machine machine) {
+      machine.bookedslots.forEach((RoomTime time) {
         if (time.userId == userID && time.end.isAfter(DateTime.now())) {
-          yourBookedMachines.add(YourBookedMachine(machineId: machine.machineId, userId: time.userId, type: machine.type, model: machine.model, tier: machine.tier, start: time.start,  end: time.end, purpose: time.purpose, bookingId: time.bookingId));
+          yourBookedMachines.add(YourBookedMachine(
+              machineId: machine.machineId,
+              userId: time.userId,
+              type: machine.type,
+              model: machine.model,
+              tier: machine.tier,
+              start: time.start,
+              end: time.end,
+              purpose: time.purpose,
+              bookingId: time.bookingId));
         }
       });
     });
@@ -459,27 +469,27 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
       padding: const EdgeInsets.all(8.0),
       child: Card(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: ScreenSize.size.width * 0.7,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'AB-${room.block.split(' ')[2]}/${room.roomNo}',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        (room.start.day == room.end.day)
-                            ? Text(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                width: ScreenSize.size.width * 0.7,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'AB-${room.block.split(' ')[2]}/${room.roomNo}',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    (room.start.day == room.end.day)
+                        ? Text(
                             '${room.start.hour.toString().padLeft(2, '0')}:${room.start.minute.toString().padLeft(2, '0')} to ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 12,
@@ -487,9 +497,9 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontWeight: FontWeight.bold,
                               color: Colors.black.withAlpha(150),
                             ))
-                            : Container(),
-                        (room.start.day == room.end.day)
-                            ? Text(
+                        : Container(),
+                    (room.start.day == room.end.day)
+                        ? Text(
                             '${room.start.day.toString().padLeft(2, '0')}/${room.start.month.toString().padLeft(2, '0')}/${room.end.year.toString()} ',
                             style: TextStyle(
                               fontSize: 12,
@@ -497,10 +507,10 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontWeight: FontWeight.bold,
                               color: Colors.black.withAlpha(150),
                             ))
-                            : Container(),
-                        (room.start.day == room.end.day)
-                            ? Container()
-                            : Text(
+                        : Container(),
+                    (room.start.day == room.end.day)
+                        ? Container()
+                        : Text(
                             '${room.end.day.toString().padLeft(2, '0')}/${room.end.month.toString().padLeft(2, '0')}  ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 12,
@@ -508,8 +518,8 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontStyle: FontStyle.italic,
                               color: Colors.black.withAlpha(150),
                             )),
-                        (room.start.day != room.end.day)
-                            ? Text(
+                    (room.start.day != room.end.day)
+                        ? Text(
                             '${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')} (${room.end.day.toString().padLeft(2, '0')}/${room.end.month.toString().padLeft(2, '0')}) to ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}(${room.start.day.toString().padLeft(2, '0')}/${room.start.month.toString().padLeft(2, '0')})',
                             style: TextStyle(
                               fontSize: 12,
@@ -517,50 +527,50 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontStyle: FontStyle.italic,
                               color: Colors.black.withAlpha(150),
                             ))
-                            : Container(),
-                        Text('Purpose: ${room.purpose}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.black.withAlpha(150),
-                            )),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => new AlertDialog(
-                          actions: <Widget>[
-                            FlatButton(
-                              onPressed: () {
-                                cancelRoom(room);
-                              },
-                              child: Text('Yes'),
-                            ),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('No'),
-                            ),
-                          ],
-                          content: Text('Do you want to cancel this booking?'),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                    ),
-                  )
-                ],
+                        : Container(),
+                    Text('Purpose: ${room.purpose}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black.withAlpha(150),
+                        )),
+                  ],
+                ),
               ),
-            ),
-          )),
+              SizedBox(
+                width: 15,
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => new AlertDialog(
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            cancelRoom(room);
+                          },
+                          child: Text('Yes'),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('No'),
+                        ),
+                      ],
+                      content: Text('Do you want to cancel this booking?'),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.delete,
+                ),
+              )
+            ],
+          ),
+        ),
+      )),
     );
   }
 
@@ -569,34 +579,34 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
       padding: const EdgeInsets.all(8.0),
       child: Card(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: ScreenSize.size.width * 0.7,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          machine.type,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          machine.model,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        (machine.start.day == machine.end.day)
-                            ? Text(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Container(
+                width: ScreenSize.size.width * 0.7,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      machine.type,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      machine.model,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    (machine.start.day == machine.end.day)
+                        ? Text(
                             '${machine.start.hour.toString().padLeft(2, '0')}:${machine.start.minute.toString().padLeft(2, '0')} to ${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 12,
@@ -604,9 +614,9 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontWeight: FontWeight.bold,
                               color: Colors.black.withAlpha(150),
                             ))
-                            : Container(),
-                        (machine.start.day == machine.end.day)
-                            ? Text(
+                        : Container(),
+                    (machine.start.day == machine.end.day)
+                        ? Text(
                             '${machine.start.day.toString().padLeft(2, '0')}/${machine.start.month.toString().padLeft(2, '0')}/${machine.end.year.toString()} ',
                             style: TextStyle(
                               fontSize: 12,
@@ -614,10 +624,10 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontWeight: FontWeight.bold,
                               color: Colors.black.withAlpha(150),
                             ))
-                            : Container(),
-                        (machine.start.day == machine.end.day)
-                            ? Container()
-                            : Text(
+                        : Container(),
+                    (machine.start.day == machine.end.day)
+                        ? Container()
+                        : Text(
                             '${machine.end.day.toString().padLeft(2, '0')}/${machine.end.month.toString().padLeft(2, '0')}  ${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 12,
@@ -625,8 +635,8 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontStyle: FontStyle.italic,
                               color: Colors.black.withAlpha(150),
                             )),
-                        (machine.start.day != machine.end.day)
-                            ? Text(
+                    (machine.start.day != machine.end.day)
+                        ? Text(
                             '${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')} (${machine.end.day.toString().padLeft(2, '0')}/${machine.end.month.toString().padLeft(2, '0')}) to ${machine.end.hour.toString().padLeft(2, '0')}:${machine.end.minute.toString().padLeft(2, '0')}(${machine.start.day.toString().padLeft(2, '0')}/${machine.start.month.toString().padLeft(2, '0')})',
                             style: TextStyle(
                               fontSize: 12,
@@ -634,55 +644,54 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
                               fontStyle: FontStyle.italic,
                               color: Colors.black.withAlpha(150),
                             ))
-                            : Container(),
-                        Text('Purpose: ${machine.purpose}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.black.withAlpha(150),
-                            )),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => new AlertDialog(
-                          actions: <Widget>[
-                            FlatButton(
-                              onPressed: () {
-                                cancelMachine(machine);
-                              },
-                              child: Text('Yes'),
-                            ),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('No'),
-                            ),
-                          ],
-                          content: Text('Do you want to cancel this booking?'),
-                        ),
-                      );
-                    },
-                    icon: Icon(
-                      Icons.delete,
-                    ),
-                  )
-                ],
+                        : Container(),
+                    Text('Purpose: ${machine.purpose}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black.withAlpha(150),
+                        )),
+                  ],
+                ),
               ),
-            ),
-          )),
+              SizedBox(
+                width: 15,
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => new AlertDialog(
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            cancelMachine(machine);
+                          },
+                          child: Text('Yes'),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('No'),
+                        ),
+                      ],
+                      content: Text('Do you want to cancel this booking?'),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.delete,
+                ),
+              )
+            ],
+          ),
+        ),
+      )),
     );
   }
 
-
-  Widget mapYourMachines () {
+  Widget mapYourMachines() {
     if (userBookedMachines.length == 0) {
       return Center(
         child: Column(
@@ -691,15 +700,14 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
             SizedBox(
               height: 60,
             ),
-            Image.asset(
-                'assets/images/addnew.png'
-            ),
+            Image.asset('assets/images/addnew.png'),
             SizedBox(
               height: 40,
             ),
             Padding(
               padding: const EdgeInsets.all(25.0),
-              child: Text("Book a machine by going to the Tinkerers' Lab page!",
+              child: Text(
+                "Book a machine by going to the Tinkerers' Lab page!",
                 style: TextStyle(
                   color: Colors.black38,
                   fontSize: 18,
@@ -713,13 +721,11 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
       return SingleChildScrollView(
         child: Column(
             children: userBookedMachines.map((YourBookedMachine machine) {
-              return yourBookedMachineCard(machine);
-            }).toList()
-        ),
+          return yourBookedMachineCard(machine);
+        }).toList()),
       );
     }
   }
-
 
   Widget mapYourRooms() {
     if (userRooms.length == 0) {
@@ -730,17 +736,17 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
             SizedBox(
               height: 60,
             ),
-            Image.asset(
-                'assets/images/addnew.png'
-            ),
+            Image.asset('assets/images/addnew.png'),
             SizedBox(
               height: 40,
             ),
-            Text('Book a room by pressing the + button!',
+            Text(
+              'Book a room by pressing the + button!',
               style: TextStyle(
                 color: Colors.black38,
                 fontSize: 18,
-              ),),
+              ),
+            ),
           ],
         ),
       );
@@ -988,9 +994,11 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
             heroTag: "fab2rs",
             backgroundColor: primaryColor,
             onPressed: () {
-              Navigator.pushNamed(context, '/selecttime').then((value) => setState((){rooms = [];
-              getRooms();
-              }));
+              Navigator.pushNamed(context, '/selecttime')
+                  .then((value) => setState(() {
+                        rooms = [];
+                        getRooms();
+                      }));
             },
             tooltip: 'Book a room',
             child: Icon(Icons.add, color: Colors.white),
@@ -1006,41 +1014,42 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
       length: 3,
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              isScrollable: true,
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.black.withOpacity(0.3),
+              indicatorColor: Colors.black,
+              tabs: <Widget>[
+                Tab(text: 'Your Rooms'),
+                Tab(text: 'Occupied Rooms'),
+                Tab(
+                  text: 'Tinkerers Lab',
+                )
+              ],
+            ),
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            title: Text('Facility Booking',
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold)),
+          ),
           backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Container(
-              height: ScreenSize.size.height,
-              width: ScreenSize.size.width,
-              child: Column(
-                children: <Widget>[
-                  TabBar(
-                    isScrollable: true,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.black.withOpacity(0.3),
-                    indicatorColor: Colors.black,
-                    tabs: <Widget>[
-                      Tab(text: 'Your Rooms'),
-                      Tab(text: 'Occupied Rooms'),
-                      Tab(
-                        text: 'Tinkerers Lab',
-                      )
-                    ],
-                  ),
-                  Container(
-                    // color: Colors.black,
-                    height: MediaQuery.of(context).size.height - 220,
-                    width: ScreenSize.size.width,
-                    child: TabBarView(
-                      children: <Widget>[
-                        yourRooms(),
-                        occupiedRooms(),
-                        SingleChildScrollView(child: tinkerersLab()),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            child: TabBarView(
+              children: <Widget>[
+                yourRooms(),
+                occupiedRooms(),
+                SingleChildScrollView(child: tinkerersLab()),
+              ],
             ),
           ),
         ),
@@ -1054,29 +1063,29 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
         backgroundColor: Colors.white,
         body: (guest)
             ? Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 60,
-              ),
-              Image.asset(
-                  'assets/images/signin.png'
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Text('Please sign in to view this page',
-                style: TextStyle(
-                  color: Colors.black38,
-                  fontSize: 18,
-                ),),
-            ],
-          ),
-        )
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Image.asset('assets/images/signin.png'),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Text(
+                      'Please sign in to view this page',
+                      style: TextStyle(
+                        color: Colors.black38,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             : (loading == true && loadingMachines == true)
-            ? Center(child: CircularProgressIndicator())
-            : homeScreen());
+                ? Center(child: CircularProgressIndicator())
+                : homeScreen());
   }
 
   @override

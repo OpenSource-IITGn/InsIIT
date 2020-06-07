@@ -347,14 +347,17 @@ class MyCourse {
   });
 }
 
-verticalDivider() {
+verticalDivider({double height}) {
+  if(height == null){
+    height = 50.0;
+  }
   return Row(
     children: <Widget>[
       SizedBox(
         width: 16,
       ),
       Container(
-        height: 50,
+        height: height,
         width: 1,
         color: Colors.grey,
       ),

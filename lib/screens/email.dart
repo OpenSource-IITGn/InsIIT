@@ -9,7 +9,6 @@ class Email extends StatefulWidget {
 }
 
 class _EmailState extends State<Email> {
-  
   loadlinks() async {
     sheet.getData('QuickLinks!A:C').listen((data) {
       var d = (data);
@@ -18,12 +17,12 @@ class _EmailState extends State<Email> {
       d.forEach((i) {
         emails.add(Data(descp: i[1], name: i[0], email: i[2]));
       });
-      setState((){});
+      setState(() {});
     });
   }
 
   @override
-  void initState(){
+  void initState() {
     loadlinks();
     super.initState();
   }
@@ -31,45 +30,43 @@ class _EmailState extends State<Email> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: Text('Quick Links', style: TextStyle(color: Colors.black)),
-        elevation: 0,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-      ),
-
-      body : SingleChildScrollView(
-              child: Column(
-          // children: {template(emails[0])}.toList(),
-          children : emails.map( (currentobject) => Template(obj: currentobject)).toList(),
-
-          //.toList across the whole emails.map(), since the children of coloumn need to be in list 
-          
-          //since children property expects a list, adding .toList()
+        appBar: AppBar(
+          title: Text('Quick Links',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          elevation: 0,
+          centerTitle: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: Colors.transparent,
         ),
-      )
-      
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            // children: {template(emails[0])}.toList(),
+            children: emails
+                .map((currentobject) => Template(obj: currentobject))
+                .toList(),
+
+            //.toList across the whole emails.map(), since the children of coloumn need to be in list
+
+            //since children property expects a list, adding .toList()
+          ),
+        ));
   }
 }
 
 class Data {
-
   String email;
   String name;
   String descp;
 
-  Data({ String email, String name, String descp}){
+  Data({String email, String name, String descp}) {
     this.email = email;
     this.name = name;
-    this.descp = descp ; 
+    this.descp = descp;
 
-  // Data({this.email, this.name}); // a way of writing the same as above
-
+    // Data({this.email, this.name}); // a way of writing the same as above
   }
-
 }
 
 class Template extends StatelessWidget {
@@ -83,53 +80,43 @@ class Template extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-          onTap: () async {
-            var url = obj.email;
+      onTap: () async {
+        var url = obj.email;
 
-            if (await canLaunch(url)) {
-              await launch(url, forceSafariVC: false);
-            } else {
-              throw 'Could not launch $url';
-            }
-          },
-          child: Card(
-            margin : EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-            child : Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Column(
-
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                
-                children: <Widget>[
-                  Text(
-                    
-                    obj.name,
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.grey[800],
-                      ),
-                  ),
-
-                  SizedBox(height: 6.0,),
-
-                  Text(
-                    obj.email,
-                    style : TextStyle(fontSize: 20.0, color: Colors.blue[600])
-
-                  ),
-
-                  SizedBox(height: 6.0,),
-
-                  Text(
-                    obj.descp,
-                    style : TextStyle(fontSize: 16.0, color: Colors.grey)
-
-                  )
-                ],
+        if (await canLaunch(url)) {
+          await launch(url, forceSafariVC: false);
+        } else {
+          throw 'Could not launch $url';
+        }
+      },
+      child: Card(
+        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text(
+                obj.name,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
               ),
-            ),
+              SizedBox(
+                height: 6.0,
+              ),
+              Text(obj.email, style: TextStyle(color: Colors.blue[600])),
+              SizedBox(
+                height: 6.0,
+              ),
+              Text(obj.descp,
+                  style: TextStyle(fontSize: 14.0, color: Colors.grey, fontStyle: FontStyle.italic))
+            ],
+          ),
+        ),
       ),
     );
-
   }
 }

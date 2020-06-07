@@ -13,7 +13,7 @@ class _ImportantContactsState extends State<ImportantContacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -22,8 +22,11 @@ class _ImportantContactsState extends State<ImportantContacts> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: contactCards.map((card) => card.contactCard()).toList(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0,0,0,16),
+          child: Column(
+            children: contactCards.map((card) => card.contactCard()).toList(),
+          ),
         ),
       ),
     );
