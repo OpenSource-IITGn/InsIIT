@@ -111,7 +111,7 @@ class _SecondPageState extends State<SecondPage> {
                     width: 15,
                   ),
                   Text(
-                    gSignIn.currentUser.displayName,
+                    firebaseUser.displayName,
                     style: TextStyle(
                       fontSize: 15,
                       fontStyle: FontStyle.italic,

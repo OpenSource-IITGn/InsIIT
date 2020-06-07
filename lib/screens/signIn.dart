@@ -27,7 +27,6 @@ class GoogleHttpClient extends IOClient {
   @override
   Future<Response> head(Object url, {Map<String, String> headers}) =>
       super.head(url, headers: headers..addAll(_headers));
-
 }
 
 class SignInPage extends StatefulWidget {
@@ -37,6 +36,9 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+// final GoogleSignIn gSig = GoogleSignIn();
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
   bool isSignedIn = false;
@@ -45,13 +47,17 @@ class _SignInPageState extends State<SignInPage> {
   Future checkWelcome() async {
     SharedPreferences s = await SharedPreferences.getInstance();
     String x = s.getString("welcome");
-    print(x.runtimeType);
     if (x == null) {
       s.setString("welcome", "true");
       return true;
     } else {
       return false;
     }
+  }
+
+  Future checkSignIn() async {
+    firebaseUser = await _auth.currentUser();
+    return firebaseUser;
   }
 
   @override
@@ -62,21 +68,61 @@ class _SignInPageState extends State<SignInPage> {
         Navigator.pushNamed(context, '/onboarding');
       }
     });
-    gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
-      controlSignIn(gSigninAccount);
-    }, onError: (gError) {
-      print("Error message :" + gError);
+    checkSignIn().then((value) {
+      print(value);
+      if (value == null) {
+        try {
+          print("Sign in silent");
+          gSignIn.signInSilently().then((gSignInAccount) {
+            print('Sign in successful');
+            controlSignIn(gSignInAccount);
+          }).catchError((gError) {
+            print("Error message :" + gError);
+          });
+        } catch (e) {
+          print('Error:' + e);
+        }
+        try {
+          print("on current user changed");
+          gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
+            controlSignIn(gSigninAccount);
+          }, onError: (gError) {
+            print("Error message :" + gError);
+          });
+        } catch (e) {
+          print('Error:' + e);
+        }
+      } else {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, '/menuBarBase');
+      }
     });
-    gSignIn.signInSilently().then((gSignInAccount) {
-      controlSignIn(gSignInAccount);
-    }).catchError((gError) {
-      print("Error message :" + gError);
-    });
+
+    // signInWithGoogle().then((value) => print(value));
   }
 
+  // Future<String> signInWithGoogle() async {
+  //   final GoogleSignInAccount googleSignInAccount = await gSignIn.signIn();
+  //   final GoogleSignInAuthentication googleSignInAuthentication =
+  //       await googleSignInAccount.authentication;
+  //   final AuthCredential credential = GoogleAuthProvider.getCredential(
+  //     accessToken: googleSignInAuthentication.accessToken,
+  //     idToken: googleSignInAuthentication.idToken,
+  //   );
+  //   final AuthResult authResult = await _auth.signInWithCredential(credential);
+  //   final FirebaseUser user = authResult.user;
+  //   assert(!user.isAnonymous);
+  //   assert(await user.getIdToken() != null);
+  //   final FirebaseUser currentUser = await _auth.currentUser();
+  //   assert(user.uid == currentUser.uid);
+  //   return 'signInWithGoogle succeeded: $user';
+  // }
+
   controlSignIn(GoogleSignInAccount signInAccount) async {
+    print('Checking for correct account');
+    print(signInAccount);
     if (signInAccount != null) {
-      print(gSignIn.currentUser.email);
+      print('actually signed in');
       if (gSignIn.currentUser.email.split('@')[1] != 'iitgn.ac.in') {
         await logoutUser();
         key.currentState.hideCurrentSnackBar();
@@ -95,15 +141,13 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  logoutUser() {
-    gSignIn.signOut();
-  }
+  
 
   void authorize(asGuest) async {
     // Navigator.pop(context);
     if (asGuest) {
       guest = true;
-      await sheet.writeData([
+      sheet.writeData([
         [
           DateTime.now().toString(),
           "Anon",
@@ -111,6 +155,7 @@ class _SignInPageState extends State<SignInPage> {
         ]
       ], 'logins!A:C');
     } else {
+      print("Awaiting gsignin sign in");
       await gSignIn.signIn();
 
       final authHeaders = await gSignIn.currentUser.authHeaders;
@@ -119,21 +164,23 @@ class _SignInPageState extends State<SignInPage> {
       var courseData = await ClassroomApi(httpClient).courses.list();
       courses.addAll(courseData.courses);
       coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-      var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
+      var eventData =
+          await calendar.CalendarApi(httpClient).events.list('primary');
       events.addAll(eventData.items);
       eventsWithoutRepetition = listWithoutRepetitionEvent(events);
 
       final GoogleSignInAuthentication googleAuth =
-      await gSignIn.currentUser.authentication;
+          await gSignIn.currentUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final FirebaseUser user =
+      firebaseUser =
           (await firebaseauth.signInWithCredential(credential)).user;
-      await sheet.writeData([
+          
+      sheet.writeData([
         [
           DateTime.now().toString(),
           gSignIn.currentUser.displayName,
@@ -145,7 +192,7 @@ class _SignInPageState extends State<SignInPage> {
     Navigator.pushNamed(context, '/menuBarBase');
   }
 
-  List listWithoutRepetitionCourse (List<Course> courses) {
+  List listWithoutRepetitionCourse(List<Course> courses) {
     List<Course> withoutRepeat = [];
     courses.forEach((Course course) {
       bool notHave = true;
@@ -161,7 +208,7 @@ class _SignInPageState extends State<SignInPage> {
     return withoutRepeat;
   }
 
-  List listWithoutRepetitionEvent (List<calendar.Event> events) {
+  List listWithoutRepetitionEvent(List<calendar.Event> events) {
     List<calendar.Event> withoutRepeat = [];
     events.forEach((calendar.Event event) {
       bool notHave = true;
@@ -201,7 +248,7 @@ class _SignInPageState extends State<SignInPage> {
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                   child: Text("All things IITGN",
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
                 ),
                 SizedBox(height: 100),
                 AnimatedContainer(
@@ -266,3 +313,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 }
+logoutUser() {
+    gSignIn.signOut();
+    FirebaseAuth.instance.signOut();
+  }

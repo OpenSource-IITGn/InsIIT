@@ -458,13 +458,13 @@ class _FourthPageState extends State<FourthPage> {
                     checkCorrectTime(
                         MachineTime(
                             userId: userID,
-                            name: gSignIn.currentUser.displayName,
+                            name: firebaseUser.displayName,
                             mobNo: userMobileNumber,
                             bio: userBio,
                             start: start,
                             end: end,
                             purpose: purpose,
-                            url: gSignIn.currentUser.photoUrl,
+                            url: firebaseUser.photoUrl,
                             urlOfUploadedFiles: [
                               'gcodefile',
                               'stlfile',

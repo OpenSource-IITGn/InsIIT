@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/loading.dart';
@@ -579,7 +580,10 @@ class _HomePageState extends State<HomePage>
         backgroundColor: Colors.transparent,
         elevation: 0,
 
-        leading:Icon(Icons.menu, color: Colors.transparent,),
+        leading: Icon(
+          Icons.menu,
+          color: Colors.transparent,
+        ),
         title: Container(
             decoration: new BoxDecoration(
                 color: (titles[selectedIndex] == "")
@@ -603,7 +607,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              gSignIn.signOut();
+              logoutUser();
               Navigator.pushReplacementNamed(context, '/signin');
             },
           )
@@ -635,15 +639,25 @@ class _HomePageState extends State<HomePage>
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 60),
                       AnimatedContainer(
+                        decoration: new BoxDecoration(
+                            color: Color(0xFFEE4400),
+                            borderRadius: new BorderRadius.all(
+                                const Radius.circular(10.0))),
                         height: (connected) ? 0 : 24,
-                        color: Color(0xFFEE4400),
-                        duration: Duration(milliseconds: 500),
+                        width: 100,
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.linear,
                         child: Center(
-                          child: Text("Offline"),
+                          child: Text(
+                            "Offline",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                       (connected)
@@ -654,31 +668,33 @@ class _HomePageState extends State<HomePage>
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            (gSignIn.currentUser == null)
+                            (firebaseUser == null)
                                 ? Image.asset(
                                     'assets/images/avatar.png',
                                     fit: BoxFit.cover,
                                     width: 90.0,
                                   )
                                 : CircleAvatar(
-                                    backgroundColor: Colors.indigo,
+                                    backgroundColor: Colors.transparent,
                                     minRadius: 30,
                                     child: ClipOval(
-                                        child: Image.network(
-                                      gSignIn.currentUser.photoUrl,
+                                        child: CachedNetworkImage(
                                       fit: BoxFit.cover,
                                       width: 90.0,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
                                       height: 90.0,
+                                      imageUrl: firebaseUser.photoUrl,
                                     )),
                                   ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    (gSignIn.currentUser == null)
+                                    (firebaseUser == null)
                                         ? "Hey John Doe!"
                                         : "Hey " +
-                                            gSignIn.currentUser.displayName
+                                            firebaseUser.displayName
                                                 .split(' ')[0] +
                                             '!',
                                     style: TextStyle(

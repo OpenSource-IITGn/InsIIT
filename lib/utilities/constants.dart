@@ -18,6 +18,7 @@ final GoogleSignIn gSignIn = GoogleSignIn(
     'https://www.googleapis.com/auth/calendar.events.readonly',
   ],
 );
+FirebaseUser firebaseUser;
 final FirebaseAuth firebaseauth = FirebaseAuth.instance ;
 class ScreenSize {
   static Size size;
