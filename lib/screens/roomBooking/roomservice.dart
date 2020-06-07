@@ -624,7 +624,7 @@ class _RoomServiceState extends State<RoomService> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 16),
           FloatingActionButton(
             heroTag: "fab2rs",
             backgroundColor: primaryColor,
