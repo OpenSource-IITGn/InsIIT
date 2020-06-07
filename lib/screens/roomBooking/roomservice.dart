@@ -571,7 +571,25 @@ class _RoomServiceState extends State<RoomService> {
   Widget mapYourRooms() {
     if (userRooms.length == 0) {
       return Center(
-        child: Text('Book a room by pressing the + button!'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 60,
+            ),
+            Image.asset(
+              'assets/images/addnew.png'
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Text('Book a room by pressing the + button!',
+            style: TextStyle(
+                    color: Colors.black38,
+                    fontSize: 18,
+                  ),),
+          ],
+        ),
       );
     } else {
       return SingleChildScrollView(
