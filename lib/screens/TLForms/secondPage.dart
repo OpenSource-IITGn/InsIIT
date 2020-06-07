@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:instiapp/screens/homePage.dart';
 
-
 class SecondPage extends StatefulWidget {
   @override
   _SecondPageState createState() => _SecondPageState();
@@ -15,7 +14,6 @@ String userMobileNumber;
 String userBio;
 
 class _SecondPageState extends State<SecondPage> {
-
   Map machineData = {};
   List<dynamic> allowedExtensions = [];
   List<Widget> buttons = [];
@@ -38,11 +36,11 @@ class _SecondPageState extends State<SecondPage> {
 
   @override
   Widget build(BuildContext context) {
-
     machineData = ModalRoute.of(context).settings.arguments;
     String type = machineData['type'];
     List<Machine> machines = machineData['machines'];
     allowedExtensions = machines[0].allowedExtensions;
+    buttons = [];
     allowedExtensions.forEach((var extension) {
       List<String> extensions = [];
       String text;
@@ -56,6 +54,9 @@ class _SecondPageState extends State<SecondPage> {
       buttons.add(Column(
         children: <Widget>[
           OutlineButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
             onPressed: () async {
               File file = await FilePicker.getFile(
                 type: FileType.custom,
@@ -65,14 +66,17 @@ class _SecondPageState extends State<SecondPage> {
                 files.putIfAbsent(extension, () => file);
               }
             },
-            child: Text('Choose ' + text + ' File'),
+            child: Text('Choose ' + text + ' file'),
           ),
-          SizedBox(height: 10,)
+          SizedBox(
+            height: 10,
+          )
         ],
       ));
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -81,10 +85,10 @@ class _SecondPageState extends State<SecondPage> {
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             selectedIndex = 4;
-            Navigator.pushReplacementNamed(context, '/menuBarBase');
+            Navigator.pop(context);
           },
         ),
-        title: Text('Step 1',
+        title: Text('TL Booking',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
@@ -92,7 +96,9 @@ class _SecondPageState extends State<SecondPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 children: <Widget>[
                   Text(
@@ -101,7 +107,9 @@ class _SecondPageState extends State<SecondPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: 15,),
+                  SizedBox(
+                    width: 15,
+                  ),
                   Text(
                     gSignIn.currentUser.displayName,
                     style: TextStyle(
@@ -111,14 +119,20 @@ class _SecondPageState extends State<SecondPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
               TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Mobile Number',),
+                  labelText: 'Mobile Number',
+                ),
                 controller: _mobileNoController,
+                keyboardType: TextInputType.phone,
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -126,33 +140,42 @@ class _SecondPageState extends State<SecondPage> {
                 ),
                 controller: _bioController,
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               Column(
                 children: buttons,
               ),
-              FlatButton(
+              FlatButton.icon(
+                label: Text('Book machine!',
+                    style: TextStyle(color: Colors.white)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                icon: Icon(Icons.send, color: Colors.white),
                 onPressed: () {
-                  if (files.length == allowedExtensions.length && !(_mobileNoController.text == '') && !(_bioController.text == '')) {
+                  if (files.length == allowedExtensions.length &&
+                      !(_mobileNoController.text == '') &&
+                      !(_bioController.text == '')) {
                     userMobileNumber = _mobileNoController.text;
                     userBio = _bioController.text;
-                    Navigator.pushReplacementNamed(context, '/thirdPage', arguments: {
-                      'type': type,
-                      'machines': machines,
-                      'files': files,
-                    });
+                    Navigator.pushNamed(context, '/thirdPage',
+                        arguments: {
+                          'type': type,
+                          'machines': machines,
+                          'files': files,
+                        });
                   } else {
                     showDialog(
                       context: context,
-                      builder: (_) =>
-                      new AlertDialog(
+                      builder: (_) => new AlertDialog(
                         content: Text(
                             'Please provide your mobile number, bio and Files'),
                       ),
                     );
                   }
                 },
-                color: Colors.grey,
-                child: Text('Submit Files'),
+                color: Colors.black,
               ),
             ],
           ),

@@ -32,12 +32,13 @@ class _RoomServiceState extends State<RoomService> {
   @override
   void initState() {
     super.initState();
-    rooms = [];
+
     getRooms();
     getMachines();
   }
 
   getRooms() async {
+    rooms = [];
     setState(() {
       loading = true;
     });
@@ -73,7 +74,12 @@ class _RoomServiceState extends State<RoomService> {
     });
   }
 
-  getMachines () async {
+  getMachines() async {
+    setState(() {
+      loadingMachines = true;
+    });
+    machines = [];
+
     var queryParameters = {
       'api_key': 'GULLU',
     };
@@ -98,23 +104,29 @@ class _RoomServiceState extends State<RoomService> {
     });
 
     userBookedMachines = makeListOfYourBookedMachines(machines);
-
     setState(() {
       loadingMachines = false;
     });
+    print('Got machines');
   }
 
+  void refreshMachineTypes() {
+    machineTypes = [];
+    allMachines.forEach((String type, List<Machine> machines) {
+      machineTypes.add(machineWidget(type, machines));
+    });
+  }
 
   List<ItemModelSimple> makeItemModelSimple(List<Room> rooms) {
     List<ItemModelSimple> timesOfRooms = [];
     if (rooms.length == 0) {
       return timesOfRooms;
     } else {
-
       rooms.forEach((Room room) {
         List<RoomTime> bookedSlots = [];
-        room.bookedslots.forEach((RoomTime time){
-          if (time.end.isAfter(DateTime.now()) && time.start.isBefore(DateTime.now()) ){
+        room.bookedslots.forEach((RoomTime time) {
+          if (time.end.isAfter(DateTime.now()) &&
+              time.start.isBefore(DateTime.now())) {
             bookedSlots.add(time);
           }
         });
@@ -181,47 +193,6 @@ class _RoomServiceState extends State<RoomService> {
         ),
       );
     }
-    // if (rooms.length != 0) {
-    //   return Column(
-    //     children: rooms.asMap().entries.map<Widget>((entry) {
-    //       int i = entry.key;
-    //       Room room = entry.value;
-    //       return Padding(
-    //         padding: const EdgeInsets.all(8.0),
-    //         child: Column(
-    //           crossAxisAlignment: CrossAxisAlignment.stretch,
-    //           children: <Widget>[
-    //             Text(
-    //               '${room.roomno}',
-    //               style: TextStyle(
-    //                 fontSize: 17.0,
-    //                 fontWeight: FontWeight.bold,
-    //               ),
-    //             ),
-    //             SizedBox(
-    //               height: 8,
-    //             ),
-    //             Text('${room.roomType} Capacity: ${room.capacity}'),
-    //             SizedBox(
-    //               height: 8,
-    //             ),
-
-    //           ],
-    //         ),
-    //       );
-    //     }).toList(),
-    //   );
-    // } else {
-    //   return Center(
-    //     child: Text(
-    //       'All rooms are available.',
-    //       style: TextStyle(
-    //         color: Colors.black,
-    //       ),
-    //     ),
-    //   );
-    // }
-    // showBookedTimeSlots(index, i),
   }
 
   Widget timeHeader(name) {
@@ -306,7 +277,7 @@ class _RoomServiceState extends State<RoomService> {
 
   Widget logoWidget() {
     return Container(
-      height: 350,
+      height: 170,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -333,65 +304,56 @@ class _RoomServiceState extends State<RoomService> {
   }
 
   Widget machineWidget(String type, List<Machine> machines) {
-    return Container(
-        width: MediaQuery.of(context).size.width,
-        height: 350,
-        decoration: BoxDecoration(
-          image: new DecorationImage(
-            image: NetworkImage(
-              machines[0].machineImgUrl,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/firstPage', arguments: {
+          'type': type,
+          'machines': machines,
+        });
+      },
+      child: Card(
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            // height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
             ),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.white,
-              offset: Offset(0, 9),
-            ),
-          ],
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Positioned(
-              bottom: 75,
-              child: FlatButton.icon(
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/firstPage',
-                      arguments: {
-                        'type': type,
-                        'machines': machines,
-                      });
-                },
-                icon: Icon(Icons.add_box),
-                label: Text('Book ' + type),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Image.network(
+                    machines[0].machineImgUrl,
+                    width: ScreenSize.size.width * 0.25,
+                    fit: BoxFit.cover,
+                  ),
+                  OutlineButton(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    onPressed: null,
+                    child: Text('Book ' + type,
+                        style: TextStyle(fontStyle: FontStyle.italic)),
+                  )
+                ],
               ),
-            )
-          ],
-        )
-//      child: Image.network(
-//        link,
-//        //'http://students.iitgn.ac.in/Tinkerers_Lab/images/TL2.png',
-//        // height: 410,
-//
-//        // width: MediaQuery.of(context).size.width,
-//        fit: BoxFit.cover,
-//      ),
+            )),
+      ),
     );
   }
 
-
   Widget tinkerersLab() {
+    refreshMachineTypes();
     //add better pics
     return SafeArea(
       child: Container(
         color: Colors.white,
         child: Column(
           children: <Widget>[
-            logoWidget(),
+            // logoWidget(),
             Column(
               children: machineTypes,
             ),
@@ -425,13 +387,22 @@ class _RoomServiceState extends State<RoomService> {
     return yourRooms;
   }
 
-  List<YourBookedMachine> makeListOfYourBookedMachines (List<Machine> machines){
+  List<YourBookedMachine> makeListOfYourBookedMachines(List<Machine> machines) {
     List<YourBookedMachine> yourBookedMachines = [];
 
-    machines.forEach((Machine machine){
-      machine.bookedslots.forEach((RoomTime time){
-        if (time.userId == userID ) {
-          yourBookedMachines.add(YourBookedMachine(machineId: machine.machineId, userId: time.userId, type: machine.type, model: machine.model, tier: machine.tier, start: time.start,  end: time.end, purpose: time.purpose, bookingId: time.bookingId));
+    machines.forEach((Machine machine) {
+      machine.bookedslots.forEach((RoomTime time) {
+        if (time.userId == userID) {
+          yourBookedMachines.add(YourBookedMachine(
+              machineId: machine.machineId,
+              userId: time.userId,
+              type: machine.type,
+              model: machine.model,
+              tier: machine.tier,
+              start: time.start,
+              end: time.end,
+              purpose: time.purpose,
+              bookingId: time.bookingId));
         }
       });
     });
@@ -455,7 +426,7 @@ class _RoomServiceState extends State<RoomService> {
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     selectedIndex = 4;
     // Navigator.pop(context);
-    Navigator.pushReplacementNamed(context, '/menuBarBase');
+    // Navigator.pushReplacementNamed(context, '/menuBarBase');
   }
 
   Widget yourRoomCard(YourRoom room) {
@@ -629,9 +600,11 @@ class _RoomServiceState extends State<RoomService> {
             heroTag: "fab2rs",
             backgroundColor: primaryColor,
             onPressed: () {
-              Navigator.pushNamed(context, '/selecttime').then((value) => setState((){rooms = [];
-    getRooms();
-    }));
+              Navigator.pushNamed(context, '/selecttime')
+                  .then((value) => setState(() {
+                        rooms = [];
+                        getRooms();
+                      }));
             },
             tooltip: 'Book a room',
             child: Icon(Icons.add, color: Colors.white),
@@ -648,43 +621,40 @@ class _RoomServiceState extends State<RoomService> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
-          // appBar: AppBar(
-          //   backgroundColor: primaryColor,
-          //   title: Text('Room Booking'),
-          //   centerTitle: true,
-          //   actions: <Widget>[],
-          // ),
-          body: Container(
-            height: ScreenSize.size.height,
-            width: ScreenSize.size.width,
-            child: Column(
-              children: <Widget>[
-                TabBar(
-                  isScrollable: true,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.black.withOpacity(0.3),
-                  indicatorColor: Colors.black,
-                  tabs: <Widget>[
-                    Tab(text: 'Your Rooms'),
-                    Tab(text: 'Occupied Rooms'),
-                    Tab(
-                      text: 'Tinkerers Lab',
-                    )
-                  ],
-                ),
-                Container(
-                  // color: Colors.black,
-                  height: MediaQuery.of(context).size.height - 200,
-                  width: ScreenSize.size.width,
-                  child: TabBarView(
-                    children: <Widget>[
-                      yourRooms(),
-                      occupiedRooms(),
-                      SingleChildScrollView(child: tinkerersLab()),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              height: ScreenSize.size.height,
+              width: ScreenSize.size.width,
+              child: Column(
+                children: <Widget>[
+                  TabBar(
+                    isScrollable: true,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.black.withOpacity(0.3),
+                    indicatorColor: Colors.black,
+                    tabs: <Widget>[
+                      Tab(text: 'Your Rooms'),
+                      Tab(text: 'Occupied Rooms'),
+                      Tab(
+                        text: 'Tinkerers Lab',
+                      )
                     ],
                   ),
-                ),
-              ],
+                  Container(
+                    // color: Colors.black,
+                    height: MediaQuery.of(context).size.height - 220,
+                    width: ScreenSize.size.width,
+                    child: TabBarView(
+                      children: <Widget>[
+                        yourRooms(),
+                        occupiedRooms(),
+                        SingleChildScrollView(child: tinkerersLab()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

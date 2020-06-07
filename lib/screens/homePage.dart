@@ -608,7 +608,8 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              reloadData();
+              gSignIn.signOut();
+              Navigator.pushReplacementNamed(context, '/signin');
             },
           )
         ],

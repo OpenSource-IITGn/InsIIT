@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FirstPage extends StatefulWidget {
   @override
@@ -8,43 +9,67 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-
   Map machineData = {};
   List<ItemModelSimple> machineModels = [];
 
-  Widget machineHead (name) {
+  Widget machineHead(name) {
     return Container(
       padding: EdgeInsets.all(10.0),
-      child: Center(
-        child: Text(
-          name,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
+      child: Text(
+        name,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18.0,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
   }
 
-  Widget timeBody (List<RoomTime> times) {
+  Widget timeBody(List<RoomTime> times) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: times.map<Widget>((time) {
-        return FlatButton.icon(
-          onPressed: () {
+        return GestureDetector(
+          onTap: () {
             showDialog(
               context: context,
               builder: (_) => new AlertDialog(
-                content: Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () {
+                        launch(time.mobNo);
+                      },
+                      child: Text("Call")),
+                  FlatButton(
+                      onPressed: () {
+                        launch("whatsapp://send?phone=+91${time.mobNo}");
+                      },
+                      child: Text("WhatsApp")),
+                  FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Ok"))
+                ],
+                content: Text(
+                    'Booked by: ${time.name} \n Mobile no.: ${time.mobNo}'),
               ),
             );
           },
-          icon: Icon(
-            Icons.person_outline,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(Icons.calendar_today),
+                  Text(
+                      '${time.start.hour.toString().padLeft(2, '0')}:${time.start.minute.toString().padLeft(2, '0')} (${time.start.day}/${time.start.month}) to ${time.end.hour.toString().padLeft(2, '0')}:${time.end.minute.toString().padLeft(2, '0')} (${time.end.day}/${time.end.month})'),
+                  OutlineButton(onPressed: null, child: Text("View"))
+                ]),
           ),
-          label: Flexible(
-              child: Text('${time.start.day}/${time.start.month}/${time.start.year}  ${time.start.hour}:${time.start.minute} - ${time.end.day}/${time.end.month}/${time.end.year}  ${time.end.hour}:${time.end.minute}')),
         );
       }).toList(),
     );
@@ -52,15 +77,16 @@ class _FirstPageState extends State<FirstPage> {
 
   @override
   Widget build(BuildContext context) {
-
     machineData = ModalRoute.of(context).settings.arguments;
     String type = machineData['type'];
     List<Machine> machines = machineData['machines'];
     machines.forEach((Machine machine) {
-      machineModels.add(ItemModelSimple(header: machine.model, bodyModel: machine.bookedslots));
+      machineModels.add(ItemModelSimple(
+          header: machine.model, bodyModel: machine.bookedslots));
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -69,7 +95,7 @@ class _FirstPageState extends State<FirstPage> {
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             selectedIndex = 4;
-            Navigator.pushReplacementNamed(context, '/menuBarBase');
+            Navigator.pop(context);
           },
         ),
         title: Text(type,
@@ -80,10 +106,15 @@ class _FirstPageState extends State<FirstPage> {
         child: ListView.builder(
           itemCount: machines.length,
           itemBuilder: (BuildContext context, int index) {
+            return ExpansionTile(
+              title: machineHead(machineModels[index].header),
+              children: <Widget>[timeBody(machineModels[index].bodyModel)],
+            );
             return ExpansionPanelList(
               expansionCallback: (int item, bool status) {
                 setState(() {
-                  machineModels[index].isExpanded = !machineModels[index].isExpanded;
+                  machineModels[index].isExpanded =
+                      !machineModels[index].isExpanded;
                 });
               },
               animationDuration: Duration(seconds: 1),
@@ -105,7 +136,13 @@ class _FirstPageState extends State<FirstPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, '/secondPage', arguments: {
+          // Navigator.pushReplacementNamed(context, '/thirdPage',
+          //               arguments: {
+          //                 'type': type,
+          //                 'machines': machines,
+          //                 'files': null,
+          //               });
+          Navigator.pushNamed(context, '/secondPage', arguments: {
             'type': type,
             'machines': machines,
           });

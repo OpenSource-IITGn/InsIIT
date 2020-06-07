@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
 import 'package:instiapp/classes/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:http/http.dart' as http;
 
 class FullPostPage extends StatefulWidget {
   PostModel post;
@@ -18,6 +21,37 @@ class _FullPostPageState extends State<FullPostPage> {
     super.initState();
   }
 
+  void postComment(String commentText) async {
+    var commentObj = CommentModel(
+        poster: Person(
+            name: gSignIn.currentUser.displayName,
+            imageUrl: gSignIn.currentUser.photoUrl,
+            uid: gSignIn.currentUser.id),
+        text: commentText,
+        timestamp: dateFormat.format(DateTime.now()),
+        timeText: 'now');
+    widget.post.comments.add(commentObj);
+    setState(() {});
+
+    ///postComment?api_key=NIKS&feed_id=5eba443934175d4e208e9058
+    var queryParameters = {
+      'api_key': 'NIKS',
+      'feed_id': widget.post.postId.toString(),
+    };
+    var uri = Uri.https(baseUrl, '/postComment', queryParameters);
+    print("PINGING:" + uri.toString());
+    var jsonComment = jsonEncode(commentObj.toJson());
+    print("SENDING: " + jsonComment.toString());
+    var response =
+        await http.post(uri, body: jsonComment, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    print('RECEIVED: ' + response.statusCode.toString());
+    print(response.body);
+  }
+
+  String comment = '';
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +75,44 @@ class _FullPostPageState extends State<FullPostPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              PostWidget(post: widget.post, showMore: true,),
+              PostWidget(
+                post: widget.post,
+                showMore: true,
+              ),
               Divider(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  minLines: 1,
+                  maxLines: 5,
+                  controller: controller,
+                  onEditingComplete: () => FocusScope.of(context).unfocus(),
+                  onChanged: (value) {
+                    comment = value;
+                  },
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                          borderSide: new BorderSide(color: Colors.teal)),
+                      hintText: 'Comment...',
+                      // prefixIcon: const Icon(
+                      //   Icons.comment,
+                      // ),
+
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.send),
+                        onPressed: () {
+                          if (comment.trim().length > 0) {
+                            postComment(comment);
+                            controller.clear();
+                          }
+
+                          FocusScope.of(context).unfocus();
+                        },
+                      ),
+                      prefixText: ' ',
+                      suffixStyle: const TextStyle(color: Colors.green)),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ColumnBuilder(
@@ -95,7 +165,7 @@ Widget buildComment(CommentModel comment) {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      comment.timestamp,
+                      comment.timeText,
                       style: TextStyle(
                           color: secondaryTextColor,
                           fontSize: 12,
