@@ -116,7 +116,7 @@ class _BookingFormState extends State<BookingForm> {
                           width: 15,
                         ),
                         Text(
-                          gSignIn.currentUser.displayName,
+                          firebaseUser.displayName,
                           style: TextStyle(
                             fontSize: 15,
                             fontStyle: FontStyle.italic,
@@ -197,14 +197,14 @@ class _BookingFormState extends State<BookingForm> {
                         } else {
                           bookRoom(
                               RoomTime(
-                                  userId: gSignIn.currentUser.email,
-                                  name: gSignIn.currentUser.displayName,
+                                  userId: firebaseUser.email,
+                                  name: firebaseUser.displayName,
                                   mobNo: _mobileNoController.text,
                                   start: start,
                                   end: end,
                                   purpose: _purposeController.text,
                                   bio: _bioController.text,
-                                  url: gSignIn.currentUser.photoUrl),
+                                  url: firebaseUser.photoUrl),
                               Room(
                                   block: roomData['_block'],
                                   roomno: roomData['_room'],

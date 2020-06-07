@@ -14,7 +14,7 @@ class RoomService extends StatefulWidget {
 }
 
 List<Room> rooms = [];
-String userID = (guest) ? 'Guest' : gSignIn.currentUser.email;
+String userID = (guest) ? 'Guest' : firebaseUser.email;
 List<Machine> machines = [];
 List<dynamic> emailIds = [];
 

@@ -37,6 +37,7 @@ dependencies:
   google_maps_flutter: ^0.5.27+3
   location: ^3.0.2
   file_picker: ^1.9.0+1
+  cached_network_image: ^2.2.0+1
 
   firebase_core: ^0.4.0+9
   firebase_analytics: ^5.0.2

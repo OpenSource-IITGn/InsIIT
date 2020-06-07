@@ -24,9 +24,9 @@ class _FullPostPageState extends State<FullPostPage> {
   void postComment(String commentText) async {
     var commentObj = CommentModel(
         poster: Person(
-            name: gSignIn.currentUser.displayName,
-            imageUrl: gSignIn.currentUser.photoUrl,
-            uid: gSignIn.currentUser.id),
+            name: firebaseUser.displayName,
+            imageUrl: firebaseUser.photoUrl,
+            uid: firebaseUser.uid),
         text: commentText,
         timestamp: dateFormat.format(DateTime.now()),
         timeText: 'now');

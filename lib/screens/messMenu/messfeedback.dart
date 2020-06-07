@@ -67,8 +67,8 @@ class _MessFeedBackState extends State<MessFeedBack> {
                       sheet.writeData([
                         [
                           DateTime.now().toString(),
-                          gSignIn.currentUser.displayName,
-                          gSignIn.currentUser.email,
+                          firebaseUser.displayName,
+                          firebaseUser.email,
                           review
                         ]
                       ], 'messFeedbackText!A:D');
