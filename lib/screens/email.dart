@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'homePage.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 
 class Email extends StatefulWidget {
   @override
@@ -8,17 +10,23 @@ class Email extends StatefulWidget {
 
 class _EmailState extends State<Email> {
   
-  // List <Data> emails = [
-  
+  loadlinks() async {
+    sheet.getData('QuickLinks!A:C').listen((data) {
+      var d = (data);
+      d.removeAt(0);
+      emails = [];
+      d.forEach((i) {
+        emails.add(Data(descp: i[1], name: i[0], email: i[2]));
+      });
+      setState((){});
+    });
+  }
 
-  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
-  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
-  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
-  //   // Data(email: 'python@iitgn.ac.in', name: 'Random'),
-
-
-  // ];
-
+  @override
+  void initState(){
+    loadlinks();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +82,21 @@ class Template extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin : EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-      
-      child : Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
+    return GestureDetector(
+          onTap: () async {
+            var url = obj.email;
+
+            if (await canLaunch(url)) {
+              await launch(url, forceSafariVC: false);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
+          child: Card(
+            margin : EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+            child : Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Column(
 
           crossAxisAlignment: CrossAxisAlignment.stretch,
           
@@ -93,15 +110,24 @@ class Template extends StatelessWidget {
                 ),
             ),
 
-            SizedBox(height: 6.0,),
+                  SizedBox(height: 6.0,),
 
-            Text(
-              obj.name,
-              style : TextStyle(fontSize: 20.0, color: Colors.grey[800])
+                  Text(
+                    obj.email,
+                    style : TextStyle(fontSize: 20.0, color: Colors.blue[600])
 
-            )
-          ],
-        ),
+                  ),
+
+                  SizedBox(height: 6.0,),
+
+                  Text(
+                    obj.descp,
+                    style : TextStyle(fontSize: 16.0, color: Colors.grey)
+
+                  )
+                ],
+              ),
+            ),
       ),
     );
 

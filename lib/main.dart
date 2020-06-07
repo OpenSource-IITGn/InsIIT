@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/screens/TLForms/firstPage.dart';
+import 'package:instiapp/screens/TLForms/fourthPage.dart';
+import 'package:instiapp/screens/TLForms/secondPage.dart';
+import 'package:instiapp/screens/TLForms/thirdPage.dart';
 import 'package:instiapp/screens/email.dart';
 import 'package:instiapp/screens/eventscalendar.dart';
 import 'package:instiapp/screens/eventpage.dart';
@@ -17,6 +21,7 @@ import 'package:instiapp/screens/schedule/editEvent.dart';
 import 'package:instiapp/screens/schedule/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
+import 'package:instiapp/screens/onboarding.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 
@@ -28,9 +33,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/signin',
+      debugShowCheckedModeBanner: false,
       routes: {
         // '/announcements': (context) => Announcements(),
         // '/articles': (context) => Articles(),
+        '/onboarding': (context) => OnboardingPage(),
         '/eventscalendar': (context) => EventsCalendar(),
         '/eventpage': (context) => EventPage(),
         '/schedule':(context) => SchedulePage(),
@@ -54,7 +61,7 @@ class MyApp extends StatelessWidget {
         // '/map' : (context) => MapPage(),
       },
       title: 'Instiapp',
-      theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
+      theme: ThemeData(primarySwatch: Colors.deepOrange, fontFamily: 'OpenSans'),
     );
   }
 }

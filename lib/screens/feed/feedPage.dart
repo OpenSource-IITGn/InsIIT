@@ -12,15 +12,26 @@ class FeedPage extends StatefulWidget {
   _FeedPageState createState() => _FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<FeedPage> {
- 
+class _FeedPageState extends State<FeedPage>
+    with AutomaticKeepAliveClientMixin<FeedPage> {
   List<PostModel> posts = [];
   bool loading = true;
   bool reloading = false;
   int offset = 0;
   int numberOfPosts = 3;
   ScrollController _controller = new ScrollController();
+  void refresh() {
+    setState(() {
+      loading = true;
+      reloading = false;
+    });
+    posts = [];
+    offset = 0;
+    getPosts();
+  }
+
   void getPosts() async {
+    
     var queryParameters = {
       'api_key': 'NIKS',
       'start_from': offset.toString(),
@@ -30,7 +41,7 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
     var response = await http.get(uri);
     Map<String, dynamic> responseJson = jsonDecode(response.body);
     numberOfPosts = responseJson['results'].length;
-    print("Number of posts: ${numberOfPosts}");
+    print("Number of posts: $numberOfPosts");
 
     for (int i = 0; i < responseJson['results'].length; i++) {
       posts.add(PostModel.fromJson(responseJson, i));
@@ -43,7 +54,6 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPosts();
 
@@ -64,28 +74,37 @@ class _FeedPageState extends State<FeedPage> with AutomaticKeepAliveClientMixin<
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: (loading == true)
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              controller: _controller,
-              itemBuilder: (context, index) {
-                if (reloading == true && index == posts.length) {
-                  return Center(
-                      child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0,8.0,16.0,16.0),
-                    child: CircularProgressIndicator(),
-                  ));
-                }
-                return PostWidget(post: posts[index]);
-              },
-              itemCount: (reloading == true) ? posts.length + 1 : posts.length,
-            ),
+    super.build(context);
+    return SafeArea(
+          child: Scaffold(
+        backgroundColor: Colors.white,
+        body: (loading == true)
+            ? Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: () {
+                  refresh();
+                  return Future.value(true);
+                },
+                child: ListView.builder(
+                  controller: _controller,
+                  itemBuilder: (context, index) {
+                    if (reloading == true && index == posts.length) {
+                      return Center(
+                          child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+                        child: CircularProgressIndicator(),
+                      ));
+                    }
+                    return PostWidget(post: posts[index]);
+                  },
+                  itemCount:
+                      (reloading == true) ? posts.length + 1 : posts.length,
+                ),
+              ),
+      ),
     );
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

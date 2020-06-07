@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math' as math;
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
 import 'package:instiapp/screens/feed/fullPostPage.dart';
@@ -116,6 +115,7 @@ class _PostWidgetState extends State<PostWidget> {
       baseUrl,
       '/feedReactionUpdate',
       queryParameters,
+      
     );
     print('Sending like/unlike: ' + uri.toString());
     int change = (widget.post.isLike == true) ? 1 : -1;
@@ -123,7 +123,10 @@ class _PostWidgetState extends State<PostWidget> {
     print(jsonbody);
     var response = await http.post(
       uri,
-      body: jsonbody,
+      body: jsonbody.toString(),
+      headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    }
     );
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     print(jsonDecode(response.body)['results'][0]['reactions']);
@@ -279,14 +282,16 @@ class _PostWidgetState extends State<PostWidget> {
                                   Text("${widget.post.comments.length}"),
                                 ],
                               ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FullPostPage(post: widget.post)),
-                                );
-                              }),
+                              onPressed: null,
+                              // onPressed: () {
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             FullPostPage(post: widget.post)),
+                              //   );
+                              // }
+                              ),
                         ]),
                   ],
                 ),

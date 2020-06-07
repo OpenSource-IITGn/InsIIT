@@ -16,109 +16,116 @@ class EditEvent extends StatefulWidget {
 
 class _EditEventState extends State<EditEvent> {
   Widget eventCard(EventModel model) {
-    return Container(
-      width: ScreenSize.size.width * 1,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: ScreenSize.size.width * 0.5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      stringReturn(model, model.courseName, model.summary),
-                      style: TextStyle(
-                          color: Colors.black.withAlpha(255),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/eventdetail', arguments: {
+          'eventModel': model,
+        });
+      },
+      child: Container(
+        width: ScreenSize.size.width * 1,
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: ScreenSize.size.width * 0.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        stringReturn(model, model.courseName, model.summary),
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(255),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                      // SizedBox(
+                      //   height: 8,
+                      // ),
+                      Text(
+                        stringReturn(model, model.eventType, model.description),
+                        style: TextStyle(
+                          color: Colors.black.withAlpha(150),
                           fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
-                    // SizedBox(
-                    //   height: 8,
-                    // ),
-                    Text(
-                      stringReturn(model, model.eventType, model.description),
-                      style: TextStyle(
-                        color: Colors.black.withAlpha(150),
-                        fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
+                      SizedBox(
+                        height: 8,
+                      ),
 
-                    SizedBox(
-                      height: 8,
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                        actions: <Widget>[
-                          FlatButton(
-                            onPressed: () async {
-                              if (model.isCourse) {
-                                removedEvents.add(EventModel(
-                                  isCourse: true,
-                                  isExam: false,
-                                  courseId: model.courseId,
-                                  courseName: model.courseName,
-                                  eventType: model.eventType,
-                                ));
-                              } else if (model.isExam) {
-                                removedEvents.add(EventModel(
-                                  isCourse: false,
-                                  isExam: true,
-                                  courseId: model.courseId,
-                                  courseName: model.courseName,
-                                  eventType: model.eventType,
-                                ));
-                              } else {
-                                removedEvents.add(EventModel(
-                                  isCourse: false,
-                                  isExam: false,
-                                  description: model.description,
-                                  summary: model.summary,
-                                  location: model.location,
-                                  creator: model.creator,
-                                  remarks: model.remarks,
-                                ));
-                              }
-                              Navigator.pop(context);
-                              var file = await _localFileForRemovedEvents();
-                              bool exists = await file.exists();
-                              if (exists) {
-                                await file.delete();
-                              }
-                              await file.create();
-                              await file.open();
-                              var removedList =
-                                  makeRemovedEventsList(removedEvents);
-                              await file.writeAsString(
-                                  ListToCsvConverter().convert(removedList));
-                              print('DATA OF REMOVED EVENT STORED IN FILE');
-                            },
-                            child: Text('Yes'),
-                          ),
-                        ],
-                        content: Text(
-                            'Do you want to remove this event from your schedule?'),
+                      SizedBox(
+                        height: 8,
                       ),
-                    );
-                  })
-            ],
+                    ],
+                  ),
+                ),
+                IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () async {
+                                if (model.isCourse) {
+                                  removedEvents.add(EventModel(
+                                    isCourse: true,
+                                    isExam: false,
+                                    courseId: model.courseId,
+                                    courseName: model.courseName,
+                                    eventType: model.eventType,
+                                  ));
+                                } else if (model.isExam) {
+                                  removedEvents.add(EventModel(
+                                    isCourse: false,
+                                    isExam: true,
+                                    courseId: model.courseId,
+                                    courseName: model.courseName,
+                                    eventType: model.eventType,
+                                  ));
+                                } else {
+                                  removedEvents.add(EventModel(
+                                    isCourse: false,
+                                    isExam: false,
+                                    description: model.description,
+                                    summary: model.summary,
+                                    location: model.location,
+                                    creator: model.creator,
+                                    remarks: model.remarks,
+                                  ));
+                                }
+                                Navigator.pop(context);
+                                var file = await _localFileForRemovedEvents();
+                                bool exists = await file.exists();
+                                if (exists) {
+                                  await file.delete();
+                                }
+                                await file.create();
+                                await file.open();
+                                var removedList =
+                                    makeRemovedEventsList(removedEvents);
+                                await file.writeAsString(
+                                    ListToCsvConverter().convert(removedList));
+                                print('DATA OF REMOVED EVENT STORED IN FILE');
+                              },
+                              child: Text('Yes'),
+                            ),
+                          ],
+                          content: Text(
+                              'Do you want to remove this event from your schedule?'),
+                        ),
+                      );
+                    })
+              ],
+            ),
           ),
         ),
       ),

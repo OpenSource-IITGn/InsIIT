@@ -10,6 +10,18 @@ class EventDetail extends StatefulWidget {
 class _EventDetailState extends State<EventDetail> {
 
   Map eventModelData = {};
+  List<Widget> attendance;
+
+  List<Widget> attendanceManager (Map<DateTime, String> attendanceManager) {
+    List<Widget> listTiles = [];
+    attendanceManager.forEach((DateTime time, String attendance) {
+      listTiles.add(ListTile(
+        title: Text('${time.day} /${time.month} /${time.year}'),
+        trailing: Text(attendance),
+      ));
+    });
+    return listTiles;
+  }
 
   String stringReturn(String text) {
     if (text == null) {
@@ -39,7 +51,7 @@ class _EventDetailState extends State<EventDetail> {
   Widget body (EventModel event) {
     if (event.isCourse) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -131,6 +143,11 @@ class _EventDetailState extends State<EventDetail> {
                     fontWeight: FontWeight.bold,
                     fontSize: 16)
             ),
+            ExpansionTile(
+              key: GlobalKey(),
+              title: Text('Attendance Manager'),
+              children: attendance,
+            )
           ],
         ),
       );
@@ -249,6 +266,9 @@ class _EventDetailState extends State<EventDetail> {
 
     eventModelData = ModalRoute.of(context).settings.arguments;
     EventModel event = eventModelData['eventModel'];
+    if (event.isCourse) {
+      attendance = attendanceManager(event.attendanceManager);
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

@@ -22,11 +22,25 @@ class _SchedulePageState extends State<SchedulePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Take rest!'),
+            Image.asset(
+                'assets/images/freetime.png'
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Text('Take rest!',
+              style: TextStyle(
+                color: Colors.black38,
+                fontSize: 18,
+              ),),
             SizedBox(
               height: 8,
             ),
-            Text('No Classes or Events to attend Today.'),
+            Text('No Classes or Events to attend Today.',
+              style: TextStyle(
+                color: Colors.black38,
+                fontSize: 18,
+              ),),
           ],
         ),
       );
@@ -50,8 +64,10 @@ class _SchedulePageState extends State<SchedulePage> {
     super.initState();
     _scrollController = new ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(_index * 100.toDouble(),
-          duration: new Duration(milliseconds: 500), curve: Curves.ease);
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(_index * 100.toDouble(),
+            duration: new Duration(milliseconds: 500), curve: Curves.ease);
+      }
     });
   }
 

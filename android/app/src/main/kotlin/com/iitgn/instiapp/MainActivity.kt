@@ -1,4 +1,4 @@
-package com.example.instiapp
+package com.iitgn.instiapp
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

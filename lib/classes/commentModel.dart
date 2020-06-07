@@ -4,7 +4,19 @@ class CommentModel {
   Person poster;
   String text;
   String timestamp;
-  CommentModel({this.poster, this.text, this.timestamp});
+  String timeText;
+  CommentModel({this.poster, this.text, this.timestamp, this.timeText});
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> ret = {
+      'posted_by': poster.toJson(),
+      'content': text,
+      'timestamp': timestamp,
+      "reactions": {"like": 0, "insightful": 0, "celebrate": 0, "haha": 0},
+      "reacted_by": [],
+    };
+    return ret;
+  }
+
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     DateTime post = dateFormat.parse(json['timestamp']);
     Duration difference = DateTime.now().difference(post);
@@ -24,7 +36,8 @@ class CommentModel {
             imageUrl: json['posted_by']['image_link'],
             uid: json['posted_by']['user_id']),
         text: json['content'],
-        timestamp: timediff);
+        timeText: timediff,
+        timestamp: json['timestamp']);
   }
 }
 
@@ -33,4 +46,8 @@ class Person {
   String imageUrl;
   String uid;
   Person({this.name, this.imageUrl, this.uid});
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> ret = {'full_name': name, "image_link": imageUrl, "user_id": uid};
+    return ret;
+  }
 }

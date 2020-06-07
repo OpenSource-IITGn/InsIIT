@@ -8,7 +8,6 @@ import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/carouselSlider.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
@@ -20,10 +19,9 @@ import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
-
+import 'package:avataaar_image/avataaar_image.dart';
 import 'feed/feedPage.dart';
 
-//TODO: Add title for each menu
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
   final Function() notifyParent;
@@ -41,15 +39,22 @@ List<EventModel> removedEvents;
 List<EventModel> examCourses;
 List<EventModel> eventsList;
 
+bool mainPageLoading = true;
+int selectedIndex = 0;
+
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin<HomePage> {
   var startpos, endpos;
-  bool loading = true;
   List<EventModel> twoEvents;
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_pageController.hasClients) {
+        _pageController.jumpToPage(selectedIndex);
+      }
+    });
     reloadData();
   }
 
@@ -61,11 +66,23 @@ class _HomePageState extends State<HomePage>
 
   void reloadData() {
     loadMessData();
+    loadlinks();
     loadImportantContactData();
     loadShuttleData();
     loadCourseData();
     loadRemovedCoursesData();
     loadExamTimeTableData();
+    loadCertificateData();
+  }
+
+  loadCertificateData() async{
+    emailIds = [];
+    sheetTL.getData('CertificateList!A:E').listen((data) {
+      var certificateData = (data);
+      certificateData.forEach((i) {
+        emailIds.add(data[1]);
+      });
+    });
   }
   // var emails = [];
   loadlinks() async {
@@ -195,8 +212,8 @@ class _HomePageState extends State<HomePage>
             }
             if (lc[2] != '' && lc[2] != '-') {
               if (lc[2].replaceAll(' ', '').contains(new RegExp(
-                      course.name.replaceAll(' ', ''),
-                      caseSensitive: false)) ||
+                  course.name.replaceAll(' ', ''),
+                  caseSensitive: false)) ||
                   course.name.replaceAll(' ', '').contains(new RegExp(
                       lc[2].replaceAll(' ', ''),
                       caseSensitive: false)) ||
@@ -329,7 +346,7 @@ class _HomePageState extends State<HomePage>
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-          CsvToListConverter().convert(values);
+      CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -369,8 +386,8 @@ class _HomePageState extends State<HomePage>
               lc[1] != '-' &&
               lc[1] != '') {
             if (lc[0].replaceAll(' ', '').contains(new RegExp(
-                    course.name.replaceAll(' ', ''),
-                    caseSensitive: false)) ||
+                course.name.replaceAll(' ', ''),
+                caseSensitive: false)) ||
                 course.name.replaceAll(' ', '').contains(new RegExp(
                     lc[0].replaceAll(' ', ''),
                     caseSensitive: false)) ||
@@ -391,13 +408,13 @@ class _HomePageState extends State<HomePage>
                   instructors: lc[6].split(','),
                   preRequisite: lc[10],
                   lectureCourse:
-                      lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                  lc[11].split('(')[0].replaceAll(' ', '').split('+'),
                   lectureLocation: returnLocation(lc[11]),
                   tutorialCourse:
-                      lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                  lc[12].split('(')[0].replaceAll(' ', '').split('+'),
                   tutorialLocation: returnLocation(lc[12]),
                   labCourse:
-                      lc[13].split('(')[0].replaceAll(' ', '').split('+'),
+                  lc[13].split('(')[0].replaceAll(' ', '').split('+'),
                   labLocation: returnLocation(lc[13]),
                   remarks: lc[14],
                   courseBooks: lc[15]));
@@ -505,15 +522,15 @@ class _HomePageState extends State<HomePage>
             snacks: sunday[2],
             dinner: sunday[3]),
       ];
-      loading = false;
+      mainPageLoading = false;
       setState(() {});
     });
   }
 
+  var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = false;
-  int selectedIndex = 0;
   PageController _pageController;
-  List<String> titles = ["", "News", "Shuttle"];
+  List<String> titles = ["", "News", "Buses", "Campus Map", "Room Booking"];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
@@ -575,7 +592,19 @@ class _HomePageState extends State<HomePage>
         //     widget.notifyParent();
         //   },
         // ),
-        // title: Text(titles[selectedIndex], style: TextStyle(color: Colors.black.withAlpha(180), fontWeight: FontWeight.bold)),
+        title: Container(
+            decoration: new BoxDecoration(
+                color: (titles[selectedIndex] == "")
+                    ? Colors.transparent
+                    : Colors.white.withAlpha(120),
+                borderRadius: new BorderRadius.all(Radius.circular(40))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(titles[selectedIndex],
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(250),
+                      fontWeight: FontWeight.bold)),
+            )),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh, color: Colors.grey.withAlpha(100)),
@@ -586,7 +615,8 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              reloadData();
+              gSignIn.signOut();
+              Navigator.pushReplacementNamed(context, '/signin');
             },
           )
         ],
@@ -631,24 +661,37 @@ class _HomePageState extends State<HomePage>
                       (connected)
                           ? Container()
                           : SizedBox(
-                              height: 10,
-                            ),
+                        height: 10,
+                      ),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.orange,
-                              minRadius: 30,
-                              child: ClipOval(
-                                  child: Image.network(
-                                (gSignIn.currentUser == null)
-                                    ? ""
-                                    : gSignIn.currentUser.photoUrl,
-                                fit: BoxFit.cover,
+                          children: [ 
+                            (gSignIn.currentUser == null)
+                              ?AvataaarImage(
+                                avatar: avatar,
+                                errorImage: Icon(Icons.error),
+                                placeholder: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  minRadius: 45,
+                                  child: Image.asset(
+                                        'assets/images/avatar.png',
+                                        fit: BoxFit.cover,
+                                        width: 90.0,
+                                  )
+                                ),
                                 width: 90.0,
-                                height: 90.0,
-                              )),
-                            ),
+                              ) 
+                              :CircleAvatar(
+                                backgroundColor: Colors.indigo,
+                                minRadius: 30,
+                                child: ClipOval(
+                                    child: Image.network(
+                                            gSignIn.currentUser.photoUrl,
+                                            fit: BoxFit.cover,
+                                            width: 90.0,
+                                            height: 90.0,
+                                    )),
+                              ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -656,9 +699,9 @@ class _HomePageState extends State<HomePage>
                                     (gSignIn.currentUser == null)
                                         ? "Hey John Doe!"
                                         : "Hey " +
-                                            gSignIn.currentUser.displayName
-                                                .split(' ')[0] +
-                                            '!',
+                                        gSignIn.currentUser.displayName
+                                            .split(' ')[0] +
+                                        '!',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 19,
@@ -690,11 +733,11 @@ class _HomePageState extends State<HomePage>
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Hungry?",
@@ -707,9 +750,9 @@ class _HomePageState extends State<HomePage>
                                         "Here's what's in the mess",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)
-                                            // fontSize: 18.0,
-                                            // fontWeight: FontWeight.bold,
-                                            ),
+                                          // fontSize: 18.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -737,8 +780,8 @@ class _HomePageState extends State<HomePage>
                                               child: Text(
                                                 i,
                                                 style: TextStyle(
-                                                    // fontSize: 20.0,
-                                                    ),
+                                                  // fontSize: 20.0,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -755,53 +798,53 @@ class _HomePageState extends State<HomePage>
                       (twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(
-                              onTap: () {
-                                return Navigator.pushNamed(
-                                    context, '/schedule');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Wondering what's next?",
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Here's your schedule",
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withAlpha(150)),
-                                            ),
-                                          ],
+                        onTap: () {
+                          return Navigator.pushNamed(
+                              context, '/schedule');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "Wondering what's next?",
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Icon(Icons.arrow_forward),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children:
-                                          twoEvents.map((EventModel event) {
-                                        return scheduleCard(event);
-                                      }).toList(),
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                      Text(
+                                        "Here's your schedule",
+                                        style: TextStyle(
+                                            color: Colors.black
+                                                .withAlpha(150)),
+                                      ),
+                                    ],
+                                  ),
+                                  Icon(Icons.arrow_forward),
+                                ],
                               ),
-                            ),
+                              SizedBox(height: 10),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children:
+                                twoEvents.map((EventModel event) {
+                                  return scheduleCard(event);
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
@@ -813,11 +856,11 @@ class _HomePageState extends State<HomePage>
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         "Bored?",
@@ -830,9 +873,9 @@ class _HomePageState extends State<HomePage>
                                         "Checkout ongoing events",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)
-                                            // fontSize: 18.0,
-                                            // fontWeight: FontWeight.bold,
-                                            ),
+                                          // fontSize: 18.0,
+                                          // fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -851,15 +894,15 @@ class _HomePageState extends State<HomePage>
                                     builder: (BuildContext context) {
                                       return Container(
                                         width:
-                                            MediaQuery.of(context).size.width,
+                                        MediaQuery.of(context).size.width,
                                         // color: Colors.black,
                                         child: Container(
                                           child: Center(
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Container(
                                                   // color: Colors.black,
@@ -867,11 +910,11 @@ class _HomePageState extends State<HomePage>
                                                   width: ScreenSize.size.width,
                                                   child: ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.only(
+                                                    BorderRadius.only(
                                                       topLeft:
-                                                          Radius.circular(10.0),
+                                                      Radius.circular(10.0),
                                                       topRight:
-                                                          Radius.circular(10.0),
+                                                      Radius.circular(10.0),
                                                     ),
                                                     child: Image(
                                                       fit: BoxFit.cover,
@@ -886,22 +929,22 @@ class _HomePageState extends State<HomePage>
                                                   decoration: new BoxDecoration(
                                                       color: Colors.white,
                                                       borderRadius: new BorderRadius
-                                                              .only(
+                                                          .only(
                                                           bottomLeft:
-                                                              const Radius
-                                                                      .circular(
-                                                                  10.0),
+                                                          const Radius
+                                                              .circular(
+                                                              10.0),
                                                           bottomRight:
-                                                              const Radius
-                                                                      .circular(
-                                                                  10.0))),
+                                                          const Radius
+                                                              .circular(
+                                                              10.0))),
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .fromLTRB(8, 8, 8, 8.0),
                                                     child: Row(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       // mainAxisAlignment:
                                                       //     MainAxisAlignment
                                                       //         .spaceAround,
@@ -911,10 +954,10 @@ class _HomePageState extends State<HomePage>
                                                           children: <Widget>[
                                                             Text("24",
                                                                 style:
-                                                                    TextStyle(
+                                                                TextStyle(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                                   fontSize: 20,
                                                                 )),
                                                             Text('July')
@@ -923,28 +966,28 @@ class _HomePageState extends State<HomePage>
                                                         verticalDivider(),
                                                         Column(
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                           children: <Widget>[
                                                             Text(
                                                                 "Photography Contest",
                                                                 style:
-                                                                    TextStyle(
+                                                                TextStyle(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                                   fontSize: 16,
                                                                 )),
                                                             Text("Starts 7pm!",
                                                                 style:
-                                                                    TextStyle(
+                                                                TextStyle(
                                                                   color: Colors
                                                                       .black
                                                                       .withAlpha(
-                                                                          150),
+                                                                      150),
                                                                   // fontWeight:
                                                                   //     FontWeight.bold,
                                                                   // fontSize: 16,
@@ -997,7 +1040,7 @@ class _HomePageState extends State<HomePage>
   var friday = [];
   var saturday = [];
   var sunday = [];
-
+//TODO make mess list dynamic. Dont pass numbers as arguments. Add a separator cell in the sheet.
   makeMessList(var messDataList,
       {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
@@ -1090,28 +1133,33 @@ class _HomePageState extends State<HomePage>
   Widget scheduleCard(EventModel event) {
     return Card(
       child: Container(
-        width: ScreenSize.size.width,
         child: Padding(
             padding: EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  time(event.start),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text("to",
-                      style: TextStyle(
-                          color: Colors.black.withAlpha(120), fontSize: 14)),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  time(event.end),
-                ]),
+                Expanded(
+                  flex: 1,
+                  child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    time(event.start),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text("to",
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(120), fontSize: 14)),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    time(event.end),
+                  ]),
+                ),
                 verticalDivider(),
-                descriptionWidget(event),
+                Expanded(
+                  flex: 3,
+                  child: descriptionWidget(event),
+                ),
               ],
             )),
       ),
@@ -1151,11 +1199,14 @@ class _HomePageState extends State<HomePage>
               SizedBox(
                 height: 8,
               ),
-              Text(event.courseName,
-                  style: TextStyle(
-                      color: Colors.black.withAlpha(255),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Text(event.courseName,
+                    style: TextStyle(
+                        color: Colors.black.withAlpha(255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
+              ),
               SizedBox(
                 height: 8,
               ),
@@ -1170,6 +1221,7 @@ class _HomePageState extends State<HomePage>
                     width: 8,
                   ),
                   Flexible(
+                    fit: FlexFit.loose,
                     child: Text('Room: ${event.location}',
                         style: TextStyle(
                             color: Colors.black.withAlpha(200),
@@ -1319,7 +1371,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (loading == true) {
+    if (mainPageLoading == true) {
       return loadScreen();
     } else {
       prepareEventsList();
@@ -1428,7 +1480,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.lectureLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
@@ -1441,7 +1494,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.lectureLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 }
               }
             });
@@ -1462,7 +1516,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.tutorialLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
@@ -1475,7 +1530,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.tutorialLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 }
               }
             });
@@ -1496,7 +1552,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.labLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
@@ -1509,7 +1566,8 @@ class _HomePageState extends State<HomePage>
                       location: myCourse.labLocation,
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite));
+                      preRequisite: myCourse.preRequisite,
+                      attendanceManager: attendanceData));
                 }
               }
             });

@@ -3,24 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 
-import 'package:instiapp/utilities/constants.dart';
-
 class AvailableRooms extends StatefulWidget {
   @override
   _AvailableRoomsState createState() => _AvailableRoomsState();
 }
 
 class _AvailableRoomsState extends State<AvailableRooms> {
-
-  List<ItemModel> blocks;
-
-  List<Room> block1 = [];
-  List<Room> block2 = [];
-  List<Room> block3 = [];
-  List<Room> block4 = [];
-  List<Room> block5 = [];
-  List<Room> block6 = [];
-  List<Room> block7 = [];
+  List<ItemModel> blocks = [];
 
   @override
   void initState() {
@@ -28,40 +17,23 @@ class _AvailableRoomsState extends State<AvailableRooms> {
     makeItemModel();
   }
 
-  addToBlock(Room room) {
-    if (room.block == '1') {
-      block1.add(room);
-    } else if (room.block == '2') {
-      block2.add(room);
-    } else if (room.block == '3') {
-      block3.add(room);
-    } else if (room.block == '4') {
-      block4.add(room);
-    } else if (room.block == '5') {
-      block5.add(room);
-    } else if (room.block == '6') {
-      block6.add(room);
-    } else if (room.block == '7') {
-      block7.add(room);
-    }
-  }
+  Map<String, List<Room>> allBlocks = {};
 
-  makeItemModel () {
+  makeItemModel() {
     availableRooms.forEach((Room room) {
-      addToBlock(room);
+      if (allBlocks.containsKey(room.block)) {
+        allBlocks[room.block].add(room);
+      } else {
+        allBlocks.putIfAbsent(room.block, () => [room]);
+      }
     });
-    blocks = [
-      ItemModel(header: 'Block 1', bodyModel: block1),
-      ItemModel(header: 'Block 2', bodyModel: block2),
-      ItemModel(header: 'Block 3', bodyModel: block3),
-      ItemModel(header: 'Block 4', bodyModel: block4),
-      ItemModel(header: 'Block 5', bodyModel: block5),
-      ItemModel(header: 'Block 6', bodyModel: block6),
-      ItemModel(header: 'Block 7', bodyModel: block7),
-    ];
+
+    allBlocks.forEach((String block, List<Room> rooms) {
+      blocks.add(ItemModel(header: block, bodyModel: rooms));
+    });
   }
 
-  Widget blockHead (name) {
+  Widget blockHead(name) {
     return Container(
       padding: EdgeInsets.all(10.0),
       child: Center(
@@ -77,39 +49,49 @@ class _AvailableRoomsState extends State<AvailableRooms> {
     );
   }
 
-  Widget roomsDetail (List<Room> rooms) {
+  Widget roomsDetail(List<Room> rooms, roomdetail) {
     if (rooms.length != 0) {
       return Column(
         children: rooms.map((Room room) {
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '${room.block}/${room.room}',
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold,
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'AB-${roomdetail.split(' ')[2]}/${room.roomno}',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8,),
-                  Text('${room.roomType} Capacity: ${room.capacity}'),
-                  SizedBox(height: 8,),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, '/bookingform', arguments: {
-                        '_room': room.room,
-                        '_block': room.block,
-                      });
-                    },
-                    child: Text('Book'),
-                  ),
-                ],
-              ),
+                    Text('Capacity: ${room.capacity}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black.withAlpha(150),
+                        )),
+                  ],
+                ),
+                OutlineButton.icon(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/bookingform',
+                        arguments: {
+                          '_room': room.roomno,
+                          '_block': room.block,
+                          '_id': room.roomId,
+                        });
+                  },
+                  icon: Icon(Icons.add_box),
+                  label: Text('Book'),
+                ),
+              ],
             ),
           );
         }).toList(),
@@ -128,40 +110,19 @@ class _AvailableRoomsState extends State<AvailableRooms> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Choose Room'),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(10.0),
-        child: ListView.builder(
-          itemCount: 7,
-          itemBuilder: (BuildContext context, int index) {
-            return ExpansionPanelList(
-              expansionCallback: (int item, bool status) {
-                setState(() {
-                  blocks[index].isExpanded = !blocks[index].isExpanded;
-                });
-              },
-              animationDuration: Duration(seconds: 1),
-              children: [
-                ExpansionPanel(
-                  body: Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: roomsDetail(blocks[index].bodyModel),
-                  ),
-                  headerBuilder: (BuildContext context, bool isExpanded) {
-                    return blockHead(blocks[index].header);
-                  },
-                  isExpanded: blocks[index].isExpanded,
-                ),
-              ],
-            );
-          },
-        ),
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: ListView.builder(
+        itemCount: allBlocks.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ExpansionTile(
+            title: blockHead(blocks[index].header),
+            children: <Widget>[
+              roomsDetail(blocks[index].bodyModel, blocks[index].header)
+            ],
+          );
+        },
       ),
     );
   }
 }
-
-
