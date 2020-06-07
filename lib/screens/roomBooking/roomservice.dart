@@ -7,6 +7,15 @@ import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+void customlaunch(command) async{
+  if (await canLaunch(command)){
+    await launch(command);
+  }else{
+    throw 'Could not launch $command';
+  }
+}
 
 class RoomService extends StatefulWidget {
   @override
@@ -41,6 +50,8 @@ class _RoomServiceState extends State<RoomService>
       getMachines();
     }
   }
+
+
 
   getRooms() async {
     rooms = [];
@@ -789,20 +800,183 @@ class _RoomServiceState extends State<RoomService>
             child: PopupMenuButton<String>(
               itemBuilder: (context) => [
                 PopupMenuItem(
+
                   value: '/tlemergencycontacts',
-                  child: Text("Emergency Contacts"),
+                  child: Row(
+                    children: <Widget>[
+                      Text('Emergency Contacts'),
+                      SizedBox(width: 10,),
+                      PopupMenuButton(
+                        icon: Icon(Icons.call, color: Colors.blue,),
+                        itemBuilder: (context) =>[
+                          PopupMenuItem(
+                            value: 'tel:9978765167',
+                            child: Row(
+                              children: <Widget>[
+                                Text('Pushan Patel'),
+                                SizedBox(width: 20,),
+                                Text('3D Printer')
+                              ],
+                            )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:9824109389 ',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Jay Shah'),
+                                  SizedBox(width: 20,),
+                                  Text('3D Printer')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:9903292026',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Souritra Garai'),
+                                  SizedBox(width: 20,),
+                                  Text('3D Printer')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:9328130757',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Harsh Mandaliya'),
+                                  SizedBox(width: 20,),
+                                  Text('3D Printer')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:9352180309',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Kritika Kumawat'),
+                                  SizedBox(width: 20,),
+                                  Text('Vinyl Cutter')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:9712549922',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Saagar Parikh'),
+                                  SizedBox(width: 20,),
+                                  Text('Vinyl Cutter')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:7874626478',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Gaurav Viramgami'),
+                                  SizedBox(width: 20,),
+                                  Text('Laser Cutter')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:9979598050',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Jaydeep Kakadiya'),
+                                  SizedBox(width: 20,),
+                                  Text('Laser Cutter')
+                                ],
+                              )
+                          ),
+                          PopupMenuItem(
+                              value: 'tel:8770517094',
+                              child: Row(
+                                children: <Widget>[
+                                  Text('Pallav Jain'),
+                                  SizedBox(width: 20,),
+                                  Text('Laser Cutter')
+                                ],
+                              )
+                          ),
+                        ],
+                        onSelected:(value) {customlaunch(value);},
+
+                      )
+
+                    ],
+                  ),
                 ),
                 PopupMenuItem(
                   value: '/tlcourseaccessrequest',
-                  child: Text("Course Access Request"),
+                  child: Row(
+                    children: <Widget>[
+                      Text('Course Access Request'),
+                      SizedBox(width: 10,),
+                      PopupMenuButton(
+                        icon: Icon(Icons.call, color: Colors.blue,),
+                        itemBuilder: (context) =>[
+                          PopupMenuItem(
+                            value: 'tel:7761875102',
+                            child: Text('Rahul Gupta'),
+                           ),
+                          PopupMenuItem(
+                            value: 'tel:9979598050',
+                            child: Text('Jaydeep Kakadiya')
+                          )
+                        ],
+                          onSelected:(value) {customlaunch(value);},
+                      )
+                    ],
+                  ),
                 ),
                 PopupMenuItem(
                   value: '/tllabaccessforworkshop',
-                  child: Text("Lab Access For Workshop"),
+                  child: Row(
+                    children: <Widget>[
+                      Text("Lab Access For Workshop"),
+                      SizedBox(width: 10),
+                      PopupMenuButton<String>(
+                        icon: Icon(Icons.call,
+                        color: Colors.blue,),
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'tel:9978765167',
+                            child: Text('Pushan Patel'),
+                          ),
+                          PopupMenuItem(
+                            value: 'tel:9903292026',
+                            child: Text('Souritra Garai')
+                          )
+                        ],
+                        onSelected:(value) {customlaunch(value);},
+                      )
+                    ],
+                  ),
                 ),
                 PopupMenuItem(
                   value: '/tlinventoryaccess',
-                  child: Text("Inventory Access"),
+                  child: Row(
+                    children: <Widget>[
+                      Text("Inventory Access"),
+                      SizedBox(width: 10),
+                      PopupMenuButton(
+                        icon: Icon(Icons.call,
+                        color: Colors.blue,),
+                        itemBuilder: (context)=>[
+                          PopupMenuItem(
+                            value: 'tel:7372959343',
+                            child: Text('Satyam Kumar')
+                          ),
+                          PopupMenuItem(
+                            value: 'tel:7761875102',
+                            child: Text('Rahul Gupta')
+                          )
+                        ],
+                        onSelected:(value) {customlaunch(value);},
+                      )
+                    ],
+                  ),
                 ),
               ],
               onSelected: (value) {
