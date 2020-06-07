@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class RoomService extends StatefulWidget {
 }
 
 List<Room> rooms = [];
-String userID = gSignIn.currentUser.email;
+String userID = (guest) ?'Guest' :gSignIn.currentUser.email;
 List<Machine> machines = [];
 List<dynamic> emailIds = [];
 
@@ -33,8 +34,10 @@ class _RoomServiceState extends State<RoomService> {
   void initState() {
     super.initState();
     rooms = [];
-    getRooms();
-    getMachines();
+    if (!guest) {
+      getRooms();
+      getMachines();
+    }
   }
 
   getRooms() async {
@@ -254,7 +257,7 @@ class _RoomServiceState extends State<RoomService> {
               context: context,
               builder: (_) => new AlertDialog(
                 content:
-                    Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
+                Text('Booked by: ${time.name}, Mobile no.: ${time.mobNo}'),
               ),
             );
           },
@@ -463,27 +466,27 @@ class _RoomServiceState extends State<RoomService> {
       padding: const EdgeInsets.all(8.0),
       child: Card(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                width: ScreenSize.size.width * 0.7,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'AB-${room.block.split(' ')[2]}/${room.roomNo}',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    (room.start.day == room.end.day)
-                        ? Text(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    width: ScreenSize.size.width * 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'AB-${room.block.split(' ')[2]}/${room.roomNo}',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        (room.start.day == room.end.day)
+                            ? Text(
                             '${room.start.hour.toString().padLeft(2, '0')}:${room.start.minute.toString().padLeft(2, '0')} to ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 12,
@@ -491,9 +494,9 @@ class _RoomServiceState extends State<RoomService> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black.withAlpha(150),
                             ))
-                        : Container(),
-                    (room.start.day == room.end.day)
-                        ? Text(
+                            : Container(),
+                        (room.start.day == room.end.day)
+                            ? Text(
                             '${room.start.day.toString().padLeft(2, '0')}/${room.start.month.toString().padLeft(2, '0')}/${room.end.year.toString()} ',
                             style: TextStyle(
                               fontSize: 12,
@@ -501,10 +504,10 @@ class _RoomServiceState extends State<RoomService> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black.withAlpha(150),
                             ))
-                        : Container(),
-                    (room.start.day == room.end.day)
-                        ? Container()
-                        : Text(
+                            : Container(),
+                        (room.start.day == room.end.day)
+                            ? Container()
+                            : Text(
                             '${room.end.day.toString().padLeft(2, '0')}/${room.end.month.toString().padLeft(2, '0')}  ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontSize: 12,
@@ -512,8 +515,8 @@ class _RoomServiceState extends State<RoomService> {
                               fontStyle: FontStyle.italic,
                               color: Colors.black.withAlpha(150),
                             )),
-                    (room.start.day != room.end.day)
-                        ? Text(
+                        (room.start.day != room.end.day)
+                            ? Text(
                             '${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')} (${room.end.day.toString().padLeft(2, '0')}/${room.end.month.toString().padLeft(2, '0')}) to ${room.end.hour.toString().padLeft(2, '0')}:${room.end.minute.toString().padLeft(2, '0')}(${room.start.day.toString().padLeft(2, '0')}/${room.start.month.toString().padLeft(2, '0')})',
                             style: TextStyle(
                               fontSize: 12,
@@ -521,50 +524,50 @@ class _RoomServiceState extends State<RoomService> {
                               fontStyle: FontStyle.italic,
                               color: Colors.black.withAlpha(150),
                             ))
-                        : Container(),
-                    Text('Purpose: ${room.purpose}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                          color: Colors.black.withAlpha(150),
-                        )),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) => new AlertDialog(
-                      actions: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            cancelRoom(room);
-                          },
-                          child: Text('Yes'),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('No'),
-                        ),
+                            : Container(),
+                        Text('Purpose: ${room.purpose}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black.withAlpha(150),
+                            )),
                       ],
-                      content: Text('Do you want to cancel this booking?'),
                     ),
-                  );
-                },
-                icon: Icon(
-                  Icons.delete,
-                ),
-              )
-            ],
-          ),
-        ),
-      )),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => new AlertDialog(
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () {
+                                cancelRoom(room);
+                              },
+                              child: Text('Yes'),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('No'),
+                            ),
+                          ],
+                          content: Text('Do you want to cancel this booking?'),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )),
     );
   }
 
@@ -578,16 +581,16 @@ class _RoomServiceState extends State<RoomService> {
               height: 60,
             ),
             Image.asset(
-              'assets/images/addnew.png'
+                'assets/images/addnew.png'
             ),
             SizedBox(
               height: 40,
             ),
             Text('Book a room by pressing the + button!',
-            style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 18,
-                  ),),
+              style: TextStyle(
+                color: Colors.black38,
+                fontSize: 18,
+              ),),
           ],
         ),
       );
@@ -648,8 +651,8 @@ class _RoomServiceState extends State<RoomService> {
             backgroundColor: primaryColor,
             onPressed: () {
               Navigator.pushNamed(context, '/selecttime').then((value) => setState((){rooms = [];
-    getRooms();
-    }));
+              getRooms();
+              }));
             },
             tooltip: 'Book a room',
             child: Icon(Icons.add, color: Colors.white),
@@ -714,7 +717,29 @@ class _RoomServiceState extends State<RoomService> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: (loading == true && loadingMachines == true)
+        body: (guest)
+            ? Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                height: 60,
+              ),
+              Image.asset(
+                  'assets/images/signin.png'
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Text('Please Signin to view this page',
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 18,
+                ),),
+            ],
+          ),
+        )
+            : (loading == true && loadingMachines == true)
             ? Center(child: CircularProgressIndicator())
             : homeScreen());
   }
