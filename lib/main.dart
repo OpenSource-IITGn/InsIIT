@@ -27,7 +27,6 @@ import 'package:instiapp/utilities/constants.dart';
 
 void main() => runApp(MyApp());
 
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,11 @@ class MyApp extends StatelessWidget {
         '/availablerooms' : (context) => AvailableRooms(),
         '/eventdetail' : (context) => EventDetail(),
         '/editevent' : (context) => EditEvent(),
-        // '/map' : (context) => MapPage(),
+        '/map' : (context) => MapPage(),
+        '/firstPage': (context) => FirstPage(),
+        '/secondPage': (context) => SecondPage(),
+        '/thirdPage': (context) => ThirdPage(),
+        '/fourthPage': (context) => FourthPage(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.deepOrange, fontFamily: 'OpenSans'),
