@@ -457,7 +457,7 @@ class _FourthPageState extends State<FourthPage> {
                         startDate.day, startTime.hour, startTime.minute);
                     DateTime end = DateTime(endDate.year, endDate.month,
                         endDate.day, endTime.hour, endTime.minute);
-                    bookMachine(
+                    checkCorrectTime(
                         MachineTime(
                             userId: userID,
                             name: gSignIn.currentUser.displayName,
