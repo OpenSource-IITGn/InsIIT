@@ -22,6 +22,7 @@ import 'package:instiapp/screens/schedule/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/screens/onboarding.dart';
+import 'package:instiapp/screens/misc.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/bookingform': (context) => BookingForm(),
         '/selecttime' : (context) => SelectTime(),
         '/RoomBooking' : (context) => RoomService(),
+        '/misc' : (context) => MiscPage(),
         '/availablerooms' : (context) => AvailableRooms(),
         '/eventdetail' : (context) => EventDetail(),
         '/editevent' : (context) => EditEvent(),

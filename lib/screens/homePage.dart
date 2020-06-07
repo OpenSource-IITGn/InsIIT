@@ -20,6 +20,7 @@ import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:avataaar_image/avataaar_image.dart';
+import 'package:instiapp/screens/misc.dart';
 import 'feed/feedPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -522,7 +523,7 @@ class _HomePageState extends State<HomePage>
   var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = false;
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "Campus Map", "Facility Booking"];
+  List<String> titles = ["", "News", "Buses", "", "More"];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
@@ -566,8 +567,8 @@ class _HomePageState extends State<HomePage>
             inactiveColor: Colors.grey,
           ),
           BottomNavyBarItem(
-            icon: Icon(Icons.add_alert),
-            title: Text('Booking'),
+            icon: Icon(Icons.menu),
+            title: Text('More'),
             textAlign: TextAlign.center,
             activeColor: primaryColor,
             inactiveColor: Colors.grey,
@@ -1020,7 +1021,7 @@ class _HomePageState extends State<HomePage>
           FeedPage(),
           Shuttle(),
           MapPage(),
-          RoomService(),
+          MiscPage(),
         ],
       ),
     );
