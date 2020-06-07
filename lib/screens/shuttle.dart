@@ -328,25 +328,25 @@ class _ShuttleState extends State<Shuttle>
                 ),
                 ColumnBuilder(
                   itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      onTap: () {
-                        destinationSelected = true;
-                        destination = places[index];
-                        setState(() {});
-                        initialize();
-                      },
-                      child: Container(
-                        width: ScreenSize.size.width,
-                        child: Card(
-                            child: Padding(
+                    return Container(
+                      width: ScreenSize.size.width,
+                      child: Card(
+                          child: InkWell(
+                        onTap: () {
+                          destinationSelected = true;
+                          destination = places[index];
+                          setState(() {});
+                          initialize();
+                        },
+                        child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Text(places[index],
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                               )),
-                        )),
-                      ),
+                        ),
+                      )),
                     );
                   },
                   itemCount: places.length,

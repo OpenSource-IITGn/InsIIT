@@ -523,7 +523,7 @@ class _HomePageState extends State<HomePage>
   var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = false;
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "", "More"];
+  List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),

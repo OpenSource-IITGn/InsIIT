@@ -3,6 +3,7 @@ import 'package:instiapp/screens/TLForms/firstPage.dart';
 import 'package:instiapp/screens/TLForms/fourthPage.dart';
 import 'package:instiapp/screens/TLForms/secondPage.dart';
 import 'package:instiapp/screens/TLForms/thirdPage.dart';
+import 'package:instiapp/screens/developers.dart';
 import 'package:instiapp/screens/email.dart';
 import 'package:instiapp/screens/eventscalendar.dart';
 import 'package:instiapp/screens/eventpage.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/misc' : (context) => MiscPage(),
         '/availablerooms' : (context) => AvailableRooms(),
         '/eventdetail' : (context) => EventDetail(),
+        '/developers' : (context) => DevelopersPage(),
         '/editevent' : (context) => EditEvent(),
         '/map' : (context) => MapPage(),
         '/firstPage': (context) => FirstPage(),
