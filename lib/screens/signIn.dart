@@ -177,8 +177,9 @@ class _SignInPageState extends State<SignInPage> {
         idToken: googleAuth.idToken,
       );
 
-      final FirebaseUser user =
+      firebaseUser =
           (await firebaseauth.signInWithCredential(credential)).user;
+          
       sheet.writeData([
         [
           DateTime.now().toString(),
