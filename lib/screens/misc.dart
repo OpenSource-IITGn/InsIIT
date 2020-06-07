@@ -19,7 +19,7 @@ class _MiscPageState extends State<MiscPage> {
               height: 300,
               child: Image.asset('assets/images/slide_7.png'),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             Container(
               margin: EdgeInsets.only(top: 20, bottom: 20, left: 60, right: 60),
               // height: 200,
