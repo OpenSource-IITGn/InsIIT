@@ -44,6 +44,46 @@ class _FourthPageState extends State<FourthPage> {
     endTime = TimeOfDay.fromDateTime(_currentTime.add(new Duration(hours: 1)));
   }
 
+  checkCorrectTime (MachineTime time, Machine machine) {
+    if (time.end.isAfter(time.start)) {
+      checkTimeClash(time, machine);
+    } else {
+      setState(() {
+        this.purpose = purpose;
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            content: Text("Please Enter Appropriate Time and Date!"),
+          ),
+        );
+      });
+    }
+  }
+
+  checkTimeClash (MachineTime time, Machine machine) {
+    bool clash = false;
+    machine.bookedSlotsWithFiles.forEach((MachineTime machineTime) {
+      if (clash == false) {
+        if (timeClashMachine(time, machineTime)) {
+          clash = true;
+        }
+      }
+    });
+    if (clash) {
+      setState(() {
+        this.purpose = purpose;
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            content: Text("Please Enter Appropriate Time and Date!"),
+          ),
+        );
+      });
+    } else {
+      bookMachine(time, machine);
+    }
+  }
+
   bookMachine(MachineTime time, Machine machine) async{
 
     var queryParameters = {
@@ -60,10 +100,6 @@ class _FourthPageState extends State<FourthPage> {
       '/addBooking',
       queryParameters,
     );
-    List<String> fileNames = [];
-    files.forEach((String type, File file) {
-      fileNames.add(machine.machineId + '&' + time.start.millisecondsSinceEpoch.toString() + '_' + time.end.millisecondsSinceEpoch.toString() + '.' + type);
-    });
     print('Booking ' + machine.model + ': ' + uri1.toString());
     var jsonBody = jsonEncode({
       "booked_by": {
@@ -76,7 +112,7 @@ class _FourthPageState extends State<FourthPage> {
       "purpose": time.purpose,
       "start": time.start.millisecondsSinceEpoch,
       "end": time.end.millisecondsSinceEpoch,
-      "url_of_uploaded_files": fileNames,
+      "url_of_uploaded_files": time.urlOfUploadedFiles,
     });
     print(jsonBody);
     setState(() {
@@ -289,7 +325,7 @@ class _FourthPageState extends State<FourthPage> {
                 } else {
                   DateTime start = DateTime(startDate.year, startDate.month, startDate.day, startTime.hour, startTime.minute);
                   DateTime end = DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute);
-                  bookMachine(MachineTime(userId: userID, name: gSignIn.currentUser.displayName, mobNo: userMobileNumber, bio: userBio, start: start, end: end, purpose: purpose, url: gSignIn.currentUser.photoUrl, urlOfUploadedFiles: ['gcodefile', 'stlfile', 'imgfile']), machine);
+                  checkCorrectTime(MachineTime(userId: userID, name: gSignIn.currentUser.displayName, mobNo: userMobileNumber, bio: userBio, start: start, end: end, purpose: purpose, url: gSignIn.currentUser.photoUrl, urlOfUploadedFiles: ['gcodefile', 'stlfile', 'imgfile']), machine);
                 }
               },
               child: Text(

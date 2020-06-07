@@ -30,6 +30,13 @@ class _FirstPageState extends State<FirstPage> {
   }
 
   Widget timeBody (List<RoomTime> times) {
+    if (times.length == 0) {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text("Machine"
+            " is free!"),
+      );
+    }
     return Column(
       children: times.map<Widget>((time) {
         return FlatButton.icon(
@@ -81,23 +88,13 @@ class _FirstPageState extends State<FirstPage> {
         child: ListView.builder(
           itemCount: machines.length,
           itemBuilder: (BuildContext context, int index) {
-            return ExpansionPanelList(
-              expansionCallback: (int item, bool status) {
-                setState(() {
-                  machineModels[index].isExpanded = !machineModels[index].isExpanded;
-                });
-              },
-              animationDuration: Duration(seconds: 1),
-              children: [
-                ExpansionPanel(
-                  body: Container(
-                    padding: EdgeInsets.all(15.0),
-                    child: timeBody(machineModels[index].bodyModel),
-                  ),
-                  headerBuilder: (BuildContext context, bool isExpanded) {
-                    return machineHead(machineModels[index].header);
-                  },
-                  isExpanded: machineModels[index].isExpanded,
+            return ExpansionTile(
+              title: machineHead(machineModels[index].header),
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(15.0),
+                  child: timeBody(
+                      machineModels[index].bodyModel),
                 ),
               ],
             );

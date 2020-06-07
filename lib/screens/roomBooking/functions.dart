@@ -1,4 +1,3 @@
-
 class Room{
   String roomId;
   String block;
@@ -111,9 +110,17 @@ bool timeClash(RoomTime userTime, RoomTime roomTime) {
   } else{
     return true;
   }
-
 }
 
+bool timeClashMachine(MachineTime userTime, MachineTime machineTime) {
+  if (userTime.end.isBefore(machineTime.start)){
+    return false;
+  } else if(userTime.start.isAfter(machineTime.end)){
+    return false;
+  } else{
+    return true;
+  }
+}
 
 
 List<RoomTime> searchForCurrentBookedRoomTimes (List<RoomTime> roomTimes) {
