@@ -33,16 +33,16 @@ class _EmailState extends State<Email> {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        title: Text('Quick Links', style: TextStyle(color: Colors.black)),
+        title: Text('Quick Links'),
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.indigo,
       ),
 
       body : SingleChildScrollView(
-              child: Column(
+            child: Column(
           // children: {template(emails[0])}.toList(),
+
           children : emails.map( (currentobject) => Template(obj: currentobject)).toList(),
 
           //.toList across the whole emails.map(), since the children of coloumn need to be in list 
@@ -98,17 +98,17 @@ class Template extends StatelessWidget {
               padding: const EdgeInsets.all(25.0),
               child: Column(
 
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                
-                children: <Widget>[
-                  Text(
-                    
-                    obj.name,
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.grey[800],
-                      ),
-                  ),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          
+          children: <Widget>[
+            Text(
+              
+              obj.email,
+              style: TextStyle(
+                fontSize: 28,
+                color: Colors.indigo,
+                ),
+            ),
 
                   SizedBox(height: 6.0,),
 
