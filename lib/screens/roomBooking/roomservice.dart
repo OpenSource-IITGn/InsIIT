@@ -693,7 +693,7 @@ class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClien
               SizedBox(
                 height: 40,
               ),
-              Text('Please Signin to view this page',
+              Text('Please sign in to view this page',
                 style: TextStyle(
                   color: Colors.black38,
                   fontSize: 18,
