@@ -23,8 +23,8 @@ class ContactCard {
   Widget contactLink(contact) {
     return AutolinkText(
       text: contact,
-      textStyle: TextStyle(color: Colors.black),
-      linkStyle: TextStyle(color: Colors.blue),
+      textStyle: TextStyle(color: Colors.grey[800], fontSize: 16.0,),
+      linkStyle: TextStyle(color: Colors.blue[600], fontSize: 16.0,),
       onPhoneTap: (link) => customLaunch('tel:$link'),
       onWebLinkTap: (link) => customLaunch('http:$link'),
       humanize: true,
@@ -33,8 +33,10 @@ class ContactCard {
 
   Widget contactCard() {
     return Card(
+      margin : EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -42,7 +44,8 @@ class ContactCard {
               name,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 20.0,
+                color: Colors.grey[800],
+                fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -55,8 +58,9 @@ class ContactCard {
             ),
             SizedBox(height: 5.0,),
             Text(
-              'Contact:',
+              'Contact',
               style: TextStyle(
+                color: Colors.grey[800],
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -68,8 +72,9 @@ class ContactCard {
             ),
             SizedBox(height: 5.0,),
             Text(
-              'Emails:',
+              'Emails',
               style: TextStyle(
+                color: Colors.grey[800],
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -81,8 +86,9 @@ class ContactCard {
             ),
             SizedBox(height: 5.0,),
             Text(
-              'Websites:',
+              'Websites',
               style: TextStyle(
+                color: Colors.grey[800],
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),

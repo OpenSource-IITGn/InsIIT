@@ -66,7 +66,7 @@ class _MessMenuState extends State<MessMenu> {
                         Transform.rotate(
                           angle: 180 * math.pi / 180,
                           child: IconButton(
-                            icon: Icon(Icons.details),
+                            icon: Icon(Icons.arrow_downward),
                             iconSize: 20,
                             color: Colors.black45,
                             onPressed: () {
@@ -82,7 +82,7 @@ class _MessMenuState extends State<MessMenu> {
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.details),
+                          icon: Icon(Icons.arrow_downward),
                           iconSize: 20,
                           color: Colors.black45,
                           onPressed: () {

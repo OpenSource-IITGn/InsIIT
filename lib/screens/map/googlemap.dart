@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
-import 'package:instiapp/utilities/constants.dart';
+
 
 class MapInfoWindow {
    String imagePath;
@@ -49,10 +47,11 @@ class _MapPageState extends State<MapPage> {
 
   static const LatLng _center = const LatLng(23.212838, 72.684738);
 
+  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
 
   Set<Marker> _markers = {};
 
-  List<BitmapDescriptor> customIcons = List<BitmapDescriptor>(13);
+  BitmapDescriptor customIcon;
 
   double mapInfoWindowPosition = -370;
 
@@ -71,8 +70,8 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    setCustomIcons();
-    rootBundle.loadString('assets/map/mapstyle.txt').then((string) {
+    setCustomIcon();
+    rootBundle.loadString('assets/mapstyle.txt').then((string) {
     _mapStyle = string;
     });
   }
@@ -85,19 +84,18 @@ class _MapPageState extends State<MapPage> {
           position: latlng,
           rotation: newLocalData.heading,
           draggable: false,
-          zIndex: 10,
+          zIndex: 2,
           flat: true,
           anchor: Offset(0.5, 0.5),
-          icon: getIcon('user'));
+          icon: customIcon);
       _markers.add(marker);
       circle = Circle(
           circleId: CircleId("Accuracy"),
           radius: newLocalData.accuracy,
           zIndex: 1,
-          strokeColor: primaryColor.withAlpha(80),
-          strokeWidth: 1,
+          strokeColor: Colors.blue,
           center: latlng,
-          fillColor: primaryColor.withAlpha(40));
+          fillColor: Colors.blue.withAlpha(70));
     });
   }
 
@@ -124,17 +122,6 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
-  void _goToUserLocation() async{
-    var location = await _locationTracker.getLocation();
-
-    moveCamera(CameraPosition(
-      target: LatLng(location.latitude, location.longitude),
-      zoom: 17.2,
-      tilt: 30.0,
-      bearing: location.heading,
-    ));
-  }
-
   @override
   void dispose() {
     if (_locationSubscription != null) {
@@ -143,111 +130,15 @@ class _MapPageState extends State<MapPage> {
     super.dispose();
   }
 
-  void setCustomIcons() async {
-    customIcons[0] = await BitmapDescriptor.fromAssetImage(
+  void setCustomIcon() async {
+   customIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/general.png');
-
-    customIcons[1] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/academic.png');
-
-    customIcons[2] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/hostel.png');
-
-    customIcons[3] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/cafe.png');
-
-    customIcons[4] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/canteen.png');
-
-    customIcons[5] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/grocery.png');
-
-    customIcons[6] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/sports.png');
-
-    customIcons[7] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/landscape.png');
-
-    customIcons[8] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/medical.png');
-    
-    customIcons[9] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/mess.png');
-
-    customIcons[10] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/parking.png');
-
-    customIcons[11] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/housing.png');
-    
-    customIcons[12] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/user.png');
-
-  }
-
-  BitmapDescriptor getIcon(String category) {
-    if(category=='general'){
-      return customIcons[0];
-    }
-    else if(category=='academic'){
-      return customIcons[1];
-    }
-    else if(category=='hostel'){
-      return customIcons[2];
-    }
-    else if(category=='cafe'){
-      return customIcons[3];
-    }
-    else if(category=='canteen'){
-      return customIcons[4];
-    }
-    else if(category=='grocery'){
-      return customIcons[5];
-    }
-    else if(category=='sports'){
-      return customIcons[6];
-    }
-    else if(category=='landscape'){
-      return customIcons[7];
-    }
-    else if(category=='medical'){
-      return customIcons[8];
-    }
-    else if(category=='mess'){
-      return customIcons[9];
-    }
-    else if(category=='parking'){
-      return customIcons[10];
-    }
-    else if(category=='housing'){
-      return customIcons[11];
-    }
-    else if(category=='user'){
-      return customIcons[12];
-    }
-    else{
-      return customIcons[0];
-    }
+      'assets/mark.png');
   }
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
-    setState(() {
-      _markerSet();
-    });
+    _markerSet();
     getCurrentLocation();
     controller.setMapStyle(_mapStyle);
   }
@@ -293,10 +184,9 @@ class _MapPageState extends State<MapPage> {
                 mapInfoWindowPosition = -170;
               });
           },
-          icon: getIcon(location[2]),
+          icon: customIcon,
         ));
        });
-       setState((){});
     });
     return _markers;
   }
@@ -322,43 +212,48 @@ class _MapPageState extends State<MapPage> {
   }
 
   void navigateTo(){
-    Navigator.pushNamed(context, '/Quicklinks');
+    Navigator.pushNamed(context, '/importantcontacts');
   }
   
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Campus Map'),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearch(),
+              ).then((value) => setState((){
+                  currentWindow = mapInfoWindowList[int.parse(value)];
+                  mapInfoWindowPosition = -170;
+                }));
+            },
+          )
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           GoogleMap(
               mapType: _currentMapType,
-              padding: EdgeInsets.only(top: 75.0),
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
               compassEnabled: true,
-              myLocationEnabled: false,
+              myLocationEnabled: true,
               tiltGesturesEnabled: false,
-              scrollGesturesEnabled: true,
-              rotateGesturesEnabled: true,
               myLocationButtonEnabled: true,
               onMapCreated: _onMapCreated,
-              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-                  new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
-              ].toSet(),
               initialCameraPosition: CameraPosition(
                 target: _center,
                 zoom: 17.2,
                 tilt: 30.0,
                 bearing: 180.0,
               ),
-              cameraTargetBounds: CameraTargetBounds(
-                new LatLngBounds(
-                  northeast: LatLng(23.221005, 72.701542),
-                  southwest: LatLng(23.201905, 72.678445),
-                ),
-              ),
-              minMaxZoomPreference: MinMaxZoomPreference(12, 20),
               markers: _markers,
               circles: Set.of((circle != null) ? [circle] : []),
               onTap: (LatLng location) {
@@ -382,34 +277,18 @@ class _MapPageState extends State<MapPage> {
                         ).then((value) => setState((){
                             currentWindow = mapInfoWindowList[int.parse(value)];
                             mapInfoWindowPosition = -170;
-                            moveCamera(CameraPosition(
-                                        target: currentWindow.location,
-                                        zoom: 17.2,
-                                        tilt: 30.0,
-                                        bearing: 180.0,
-                            ));
                           }));
                       },
                       heroTag: "btn1",
-                      backgroundColor: primaryColor,
-                      tooltip: 'Search',
-                      child: Icon(Icons.search, color: Colors.white),
+                      tooltip: 'Navigate',
+                      child: Icon(Icons.navigation),
                     ),
                     SizedBox(height: 16.0),
                     FloatingActionButton(
                       onPressed: _onMapTypeButtonPressed,
                       heroTag: "btn2",
-                      backgroundColor: Colors.white,
                       tooltip: 'Layers',
-                      child: Icon(Icons.layers, color: Colors.black45),
-                    ),
-                    SizedBox(height: 16.0),
-                    FloatingActionButton(
-                      onPressed: navigateTo,
-                      heroTag: "btn9",
-                      backgroundColor: Colors.white,
-                      tooltip: 'Layers',
-                      child: Icon(Icons.link, color: Colors.black45),
+                      child: Icon(Icons.layers),
                     ),
                   ],
                 ),
@@ -427,17 +306,7 @@ class _MapPageState extends State<MapPage> {
                       setState(() {
                           mapInfoWindowPosition = 0;
                         });
-                    }, 
-                    onVerticalDragDown: (details) {
-                      setState(() {
-                          mapInfoWindowPosition = 0;
-                        });
                     },   
-                    onDoubleTap: (){
-                      setState(() {
-                          mapInfoWindowPosition = -170;
-                        });
-                    },
                     child: Container(
                         margin: EdgeInsets.all(15),
                         height: 350,
@@ -503,19 +372,22 @@ class _MapPageState extends State<MapPage> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.all(22),
-                                        child: CircleAvatar(
-                                          radius: 33,
-                                          backgroundColor: primaryColor,
-                                          foregroundColor: Colors.white,
-                                          child: IconButton(
-                                            onPressed: () {
-                                              launchMap(currentWindow.location.latitude, currentWindow.location.longitude);
-                                            },
-                                            tooltip: 'Directions',
-                                            icon: Icon(Icons.directions),
-                                          ),
-                                        ), 
+                                        padding: EdgeInsets.all(25),
+                                        child: Material(
+                                                 color: Colors.deepOrangeAccent,
+                                                 child: InkWell(
+                                                    customBorder: new CircleBorder(),
+                                                    onTap: () {
+                                                      setState(() {
+                                                          launchMap(currentWindow.location.latitude, currentWindow.location.longitude);
+                                                        });
+                                                    },
+                                                    child: Icon(Icons.directions,
+                                                        color: Colors.white,
+                                                        size : 40,
+                                                      ),
+                                                  ),
+                                        ),
                                       ),
                                     ],
                                   ),                        
@@ -523,9 +395,8 @@ class _MapPageState extends State<MapPage> {
                             Container(
                               height: 150,
                               child: ListView(
-                                padding: EdgeInsets.zero,
                                 children: <Widget>[
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 5),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -588,39 +459,6 @@ class _MapPageState extends State<MapPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right:16.0, top: 75.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    FloatingActionButton(
-                      onPressed: _goToUserLocation,
-                      heroTag: "btn3",
-                      backgroundColor: Colors.white,
-                      tooltip: 'Your location',
-                      child: Icon(Icons.my_location, color: Colors.black45),
-                    ),
-                    SizedBox(height:16),
-                    FloatingActionButton(
-                      onPressed: () {
-                        moveCamera(CameraPosition(
-                          target: _center,
-                          zoom: 17.2,
-                          tilt: 30.0,
-                          bearing: 180.0,
-                        ));
-                      },
-                      heroTag: "btn4",
-                      backgroundColor: Colors.white,
-                      tooltip: 'IITGN',
-                      child: Icon(Icons.home, color: Colors.black45),
-                    ),
-                  ],
-                ),
-              ),
-            ),
         ],
       ),
     );
@@ -629,23 +467,23 @@ class _MapPageState extends State<MapPage> {
 
 class CustomSearch extends SearchDelegate<String>{
 
-  // @override
-  // ThemeData appBarTheme(BuildContext context) {
-  //   assert(context != null);
-  //   final ThemeData theme = Theme.of(context);
-  //   assert(theme != null);
-  //   return theme.copyWith(
-  //     inputDecorationTheme: InputDecorationTheme(
-  //           hintStyle: TextStyle(color: theme.primaryTextTheme.headline6.color.withOpacity(0.6))),
-  //       primaryColor: theme.primaryColor,
-  //       primaryIconTheme: theme.primaryIconTheme,
-  //       primaryColorBrightness: theme.primaryColorBrightness,
-  //       primaryTextTheme: theme.primaryTextTheme,
-  //       textTheme: theme.textTheme.copyWith(
-  //           headline6: theme.textTheme.headline6
-  //               .copyWith(color: theme.primaryTextTheme.headline6.color))
-  //   );
-  // }
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    assert(context != null);
+    final ThemeData theme = Theme.of(context);
+    assert(theme != null);
+    return theme.copyWith(
+      inputDecorationTheme: InputDecorationTheme(
+            hintStyle: TextStyle(color: theme.primaryTextTheme.headline6.color.withOpacity(0.6))),
+        primaryColor: theme.primaryColor,
+        primaryIconTheme: theme.primaryIconTheme,
+        primaryColorBrightness: theme.primaryColorBrightness,
+        primaryTextTheme: theme.primaryTextTheme,
+        textTheme: theme.textTheme.copyWith(
+            headline6: theme.textTheme.headline6
+                .copyWith(color: theme.primaryTextTheme.headline6.color))
+    );
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -674,56 +512,22 @@ class CustomSearch extends SearchDelegate<String>{
 
   @override
   Widget buildResults(BuildContext context) {
-    //@CHRIS
+    
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty){
-      return Container(
-        margin: EdgeInsets.all(15),
-        height: 425,
-        decoration: BoxDecoration(
-            color: Colors.white10,
+    final suggestions = locationList.where((p) => keywordList[locationList.indexOf(p)].toLowerCase().contains(query.toLowerCase())).toList();
+    return ListView.builder(
+      itemBuilder: (context, index) =>ListTile(
+        onTap: (){
+          close(context, locationList.indexOf(suggestions[index]).toString());
+        },
+        leading: Icon(Icons.location_city),
+        title: Text(suggestions[index]),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Column(
-            children: <Widget>[
-              Image(
-                image: AssetImage('assets/images/map_search.png'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(17.0),
-                child: Text(
-                  "This location search is powered by a comprehensive list of keywords. For example, if you search 'library', Academic Block-3 will come up as that's where our library is.",
-                  style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
+      itemCount: suggestions.length,
       );
-    }
-    else{
-      final suggestions = locationList.where((p) => keywordList[locationList.indexOf(p)].toLowerCase().contains(query.toLowerCase())).toList();
-      print(locationList);
-      return ListView.builder(
-        itemBuilder: (context, index) =>ListTile(
-          onTap: (){
-            close(context, locationList.indexOf(suggestions[index]).toString());
-          },
-          leading: Icon(Icons.location_city),
-          title: Text(suggestions[index]),
-          ),
-        itemCount: suggestions.length,
-        );
-    }
-    
   }
 
 }
