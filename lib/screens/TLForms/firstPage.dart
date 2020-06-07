@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class FirstPage extends StatefulWidget {
   @override
@@ -110,6 +111,7 @@ class _FirstPageState extends State<FirstPage> {
             'machines': machines,
           });
         },
+        backgroundColor: primaryColor,
         child: Icon(
           Icons.add,
         ),

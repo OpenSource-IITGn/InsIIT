@@ -661,9 +661,9 @@ class _RoomServiceState extends State<RoomService> {
               children: <Widget>[
                 TabBar(
                   isScrollable: true,
-                  labelColor: Colors.black,
+                  labelColor: primaryColor,
                   unselectedLabelColor: Colors.black.withOpacity(0.3),
-                  indicatorColor: Colors.black,
+                  indicatorColor: primaryColor,
                   tabs: <Widget>[
                     Tab(text: 'Your Rooms'),
                     Tab(text: 'Occupied Rooms'),
