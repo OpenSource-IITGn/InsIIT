@@ -18,7 +18,7 @@ String userID = (guest) ?'Guest' :gSignIn.currentUser.email;
 List<Machine> machines = [];
 List<dynamic> emailIds = [];
 
-class _RoomServiceState extends State<RoomService> {
+class _RoomServiceState extends State<RoomService>  with AutomaticKeepAliveClientMixin<RoomService> {
   bool loading = true;
   bool loadingMachines = true;
   List<ItemModelComplex> blocks = [];
@@ -705,4 +705,8 @@ class _RoomServiceState extends State<RoomService> {
             ? Center(child: CircularProgressIndicator())
             : homeScreen());
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
