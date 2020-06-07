@@ -829,7 +829,7 @@ class _RoomServiceState extends State<RoomService>
                 Tab(text: 'Your Rooms'),
                 Tab(text: 'Occupied Rooms'),
                 Tab(
-                  text: 'Tinkerers Lab',
+                  text: "Tinkerers' Lab",
                 )
               ],
             ),

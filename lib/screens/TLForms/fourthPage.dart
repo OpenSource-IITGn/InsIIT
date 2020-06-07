@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:instiapp/screens/TLForms/secondPage.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
@@ -535,16 +536,34 @@ class _FourthPageState extends State<FourthPage> {
   Widget loadScreen() {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 20,
+            height: 60,
           ),
-          Text('Your Files are being uploaded'),
-          Text('Please wait a few minutes.....'),
+          Image.asset('assets/images/loading.png'),
           SizedBox(
-            height: 5,
+            height: 40,
           ),
-          CircularProgressIndicator(),
+          Column(
+            children: <Widget>[
+              Text(
+                'Your files are being Uploaded',
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 18,
+                ),
+              ),
+              SizedBox(height: 8,),
+              Text(
+                'Please wait for a few minutes....',
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
