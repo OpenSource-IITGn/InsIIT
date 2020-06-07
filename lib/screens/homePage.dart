@@ -22,6 +22,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:avataaar_image/avataaar_image.dart';
 import 'package:instiapp/screens/misc.dart';
+import 'package:instiapp/classes/tlclass.dart';
 import 'feed/feedPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,6 +41,8 @@ List<MyCourse> myCourses;
 List<EventModel> removedEvents;
 List<EventModel> examCourses;
 List<EventModel> eventsList;
+List<Tinkerer> tlDataList;
+List<Tinkerer> machinesTL;
 
 bool mainPageLoading = true;
 int selectedIndex = 0;
@@ -75,6 +78,7 @@ class _HomePageState extends State<HomePage>
     loadRemovedCoursesData();
     loadExamTimeTableData();
     loadCertificateData();
+    loadTlData();
   }
 
   loadCertificateData() async {
@@ -86,7 +90,31 @@ class _HomePageState extends State<HomePage>
       });
     });
   }
-
+  
+  loadTlData() async{
+    sheet.getData('TLContacts!A:D').listen((data) {
+      var tlData= data;
+      tlDataList=[];
+      tlData.removeAt(0);
+      tlData.forEach((detail) {
+        tlDataList.add(Tinkerer(
+          name: detail[0],
+          mobNo: detail[1],
+          machine: detail[2],
+          job: detail[3].split('+'),
+        ));
+      });
+    });
+    makeMachines(tlDataList);
+  }
+  makeMachines(List<Tinkerer> tlDataList){
+    machinesTL =[];
+    tlDataList.forEach((Tinkerer person) {
+      if(person.machine != '_'){
+        machinesTL.add(person);
+      }
+    });
+  }
   prepareEventsList() {
     List<calendar.Event> todayEvents;
     List<EventModel> currentDayCourses;

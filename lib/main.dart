@@ -25,6 +25,7 @@ import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/screens/onboarding.dart';
 import 'package:instiapp/screens/misc.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/screens/TLForms/TLContactPage.dart';
 
 
 void main() => runApp(MyApp());
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         '/secondPage': (context) => SecondPage(),
         '/thirdPage': (context) => ThirdPage(),
         '/fourthPage': (context) => FourthPage(),
+        '/tlcontacts': (context) => TinkererContact(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.deepOrange, fontFamily: 'OpenSans'),
