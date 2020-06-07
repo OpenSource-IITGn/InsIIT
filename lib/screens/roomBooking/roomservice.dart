@@ -619,7 +619,7 @@ class _RoomServiceState extends State<RoomService> {
               },
               icon: Icon(
                 Icons.menu,
-                color: Colors.black,
+                color: Colors.black45,
                 // size: 38,
               ),
             ),
@@ -627,13 +627,14 @@ class _RoomServiceState extends State<RoomService> {
           SizedBox(height: 10),
           FloatingActionButton(
             heroTag: "fab2rs",
-            backgroundColor: Colors.white,
+            backgroundColor: primaryColor,
             onPressed: () {
               Navigator.pushNamed(context, '/selecttime').then((value) => setState((){rooms = [];
     getRooms();
     }));
             },
-            child: Icon(Icons.add, color: Colors.black),
+            tooltip: 'Book a room',
+            child: Icon(Icons.add, color: Colors.white),
           ),
         ],
       ),

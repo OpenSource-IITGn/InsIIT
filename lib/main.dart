@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         '/fourthPage': (context) => FourthPage(),
       },
       title: 'Instiapp',
-      theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
+      theme: ThemeData(primarySwatch: Colors.deepOrange, fontFamily: 'OpenSans'),
     );
   }
 }
