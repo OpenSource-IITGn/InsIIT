@@ -97,8 +97,14 @@ class _TinkererContactState extends State<TinkererContact> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('TL Contacts'),
+        title: Text('TL Contacts',
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.transparent,
       ),
       body: Center(
         child: ListView.builder(itemCount: 4,

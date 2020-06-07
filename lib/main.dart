@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
         '/tlcontacts': (context) => TinkererContact(),
       },
       title: 'Instiapp',
-      theme: ThemeData(primarySwatch: Colors.deepOrange, fontFamily: 'OpenSans'),
+      theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
     );
   }
 }
