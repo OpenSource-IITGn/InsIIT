@@ -690,7 +690,7 @@ class CustomSearch extends SearchDelegate<String>{
               Padding(
                 padding: const EdgeInsets.all(17.0),
                 child: Text(
-                  "This location search is powered by a comprehensive list of keywords. For example, if you search 'library', Academic Block-3 will come up as that's where our library is.",
+                  "This location search is powered by a comprehensive list of keywords. For example, if you search 'food', the dining hall and canteens will come up as suggestions.",
                   style: TextStyle(
                     color: Colors.black38,
                     fontSize: 18,
