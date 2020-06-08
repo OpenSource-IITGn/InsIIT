@@ -42,7 +42,184 @@ class SignInPage extends StatefulWidget {
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-// final GoogleSignIn gSig = GoogleSignIn();
+Future getEventsCached() async {
+  var file = await _localFile('events');
+  bool exists = await file.exists();
+  if (exists) {
+    print("EVENTS CACHED PREVIOUSLY");
+    await file.open();
+    String events = await file.readAsString();
+    List<calendar.Event> eventsList = [];
+    var json = jsonDecode(events);
+    json['key'].forEach((eventJson) {
+      calendar.Event x = calendar.Event.fromJson(eventJson);
+      eventsList.add(x);
+    });
+    return eventsList;
+  } else {
+    print("EVENTS NOT CACHED PREVIOUSLY");
+  }
+
+  return false;
+}
+
+logoutUser() async {
+  gSignIn.signOut();
+  FirebaseAuth.instance.signOut();
+  var file = await _localFile('events');
+  bool exists = await file.exists();
+  if (exists) {
+    await file.delete();
+  }
+  file = await _localFile('courses');
+  exists = await file.exists();
+  if (exists) {
+    await file.delete();
+  }
+}
+
+Future storeEventsCached() async {
+  var file = await _localFile('events');
+  bool exists = await file.exists();
+  if (exists) {
+    await file.delete();
+  }
+  await file.create();
+  await file.open();
+  List<Map<String, dynamic>> eventList = [];
+  events.forEach((element) {
+    eventList.add(element.toJson());
+  });
+  Map<String, dynamic> list = {'key': eventList};
+  await file.writeAsString(jsonEncode(list));
+  print("WROTE EVENTS TO CACHE");
+  return true;
+}
+
+Future getEventsOnline(httpClient) async {
+  var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
+  events = [];
+  events.addAll(eventData.items);
+  eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+}
+
+Future getCoursesCached() async {
+  var file = await _localFile('courses');
+  bool exists = await file.exists();
+  if (exists) {
+    print("Courses CACHED PREVIOUSLY");
+    await file.open();
+    String events = await file.readAsString();
+    List<Course> coursesList = [];
+    var json = jsonDecode(events);
+    json['key'].forEach((eventJson) {
+      Course x = Course.fromJson(eventJson);
+      coursesList.add(x);
+    });
+    return coursesList;
+  } else {
+    print("Courses NOT CACHED PREVIOUSLY");
+  }
+
+  return false;
+}
+
+Future storeCoursesCached() async {
+  var file = await _localFile('courses');
+  bool exists = await file.exists();
+  if (exists) {
+    await file.delete();
+  }
+  await file.create();
+  await file.open();
+  List<Map<String, dynamic>> courseList = [];
+  courses.forEach((element) {
+    courseList.add(element.toJson());
+  });
+  Map<String, dynamic> list = {'key': courseList};
+  await file.writeAsString(jsonEncode(list));
+  print("WROTE Courses TO CACHE");
+  return true;
+}
+
+Future getCoursesOnline(httpClient) async {
+  courses = [];
+  var courseData = await ClassroomApi(httpClient).courses.list();
+  courses.addAll(courseData.courses);
+  coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
+}
+
+Future<File> _localFile(String range) async {
+  Directory tempDir = await getTemporaryDirectory();
+  String tempPath = tempDir.path;
+  String filename = tempPath + range + '.csv';
+  return File(filename);
+}
+
+Future reloadEventsAndCourses() async {
+  final authHeaders = await gSignIn.currentUser.authHeaders;
+  final httpClient = GoogleHttpClient(authHeaders);
+  await getEventsCached().then((values) async {
+    if (values != false) {
+      events = values;
+      eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+    } else {
+      await getEventsOnline(httpClient).then((value) {
+        storeEventsCached();
+      });
+    }
+  });
+  getEventsOnline(httpClient).then((value) {
+    storeEventsCached();
+  });
+
+  await getCoursesCached().then((values) async {
+    if (values != false) {
+      courses = values;
+      coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
+    } else {
+      await getCoursesOnline(httpClient).then((value) {
+        storeCoursesCached();
+      });
+    }
+  });
+  getCoursesOnline(httpClient).then((value) {
+    storeCoursesCached();
+  });
+}
+
+List listWithoutRepetitionCourse(List<Course> courses) {
+  List<Course> withoutRepeat = [];
+  courses.forEach((Course course) {
+    bool notHave = true;
+    withoutRepeat.forEach((Course _course) {
+      if (_course.id == course.id) {
+        notHave = false;
+      }
+    });
+    if (notHave) {
+      withoutRepeat.add(course);
+    }
+  });
+  return withoutRepeat;
+}
+
+List listWithoutRepetitionEvent(List<calendar.Event> events) {
+  List<calendar.Event> withoutRepeat = [];
+  events.forEach((calendar.Event event) {
+    bool notHave = true;
+    withoutRepeat.forEach((calendar.Event _event) {
+      if (_event.id == event.id) {
+        notHave = false;
+      }
+    });
+    if (notHave) {
+      withoutRepeat.add(event);
+    }
+  });
+  return withoutRepeat;
+}
+
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
   bool isSignedIn = false;
@@ -94,10 +271,6 @@ class _SignInPageState extends State<SignInPage> {
       } catch (e) {
         print('Error:' + e);
       }
-      if (value != null) {
-        // Navigator.pop(key.currentContext);
-        // Navigator.pushNamed(context, '/menuBarBase');
-      }
     });
 
     // signInWithGoogle().then((value) => print(value));
@@ -143,133 +316,6 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  Future getEventsCached() async {
-    var file = await _localFile('events');
-    bool exists = await file.exists();
-    if (exists) {
-      print("EVENTS CACHED PREVIOUSLY");
-      await file.open();
-      String events = await file.readAsString();
-      List<calendar.Event> eventsList = [];
-      var json = jsonDecode(events);
-      json['key'].forEach((eventJson) {
-        calendar.Event x = calendar.Event.fromJson(eventJson);
-        eventsList.add(x);
-      });
-      return eventsList;
-    } else {
-      print("EVENTS NOT CACHED PREVIOUSLY");
-    }
-
-    return false;
-  }
-
-  Future storeEventsCached() async {
-    var file = await _localFile('events');
-    bool exists = await file.exists();
-    if (exists) {
-      await file.delete();
-    }
-    await file.create();
-    await file.open();
-    List<Map<String, dynamic>> eventList = [];
-    events.forEach((element) {
-      eventList.add(element.toJson());
-    });
-    Map<String, dynamic> list = {'key': eventList};
-    await file.writeAsString(jsonEncode(list));
-    print("WROTE EVENTS TO CACHE");
-    return true;
-  }
-
-  Future getEventsOnline(httpClient) async {
-    var eventData =
-        await calendar.CalendarApi(httpClient).events.list('primary');
-    events = [];
-    events.addAll(eventData.items);
-    eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-  }
-
-  Future getCoursesCached() async {
-    var file = await _localFile('courses');
-    bool exists = await file.exists();
-    if (exists) {
-      print("Courses CACHED PREVIOUSLY");
-      await file.open();
-      String events = await file.readAsString();
-      List<Course> coursesList = [];
-      var json = jsonDecode(events);
-      json['key'].forEach((eventJson) {
-        Course x = Course.fromJson(eventJson);
-        coursesList.add(x);
-      });
-      return coursesList;
-    } else {
-      print("Courses NOT CACHED PREVIOUSLY");
-    }
-
-    return false;
-  }
-
-  Future storeCoursesCached() async {
-    var file = await _localFile('courses');
-    bool exists = await file.exists();
-    if (exists) {
-      await file.delete();
-    }
-    await file.create();
-    await file.open();
-    List<Map<String, dynamic>> courseList = [];
-    courses.forEach((element) {
-      courseList.add(element.toJson());
-    });
-    Map<String, dynamic> list = {'key': courseList};
-    await file.writeAsString(jsonEncode(list));
-    print("WROTE Courses TO CACHE");
-    return true;
-  }
-
-  Future getCoursesOnline(httpClient) async {
-    courses = [];
-    var courseData = await ClassroomApi(httpClient).courses.list();
-    courses.addAll(courseData.courses);
-    coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-  }
-
-  Future<File> _localFile(String range) async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + range + '.csv';
-    return File(filename);
-  }
-
-  Future handleCacheStuff(httpClient) async {
-    await getEventsCached().then((values) {
-      if (values != false) {
-        // values.forEach((event) {});
-        events = values;
-        // print(values);
-
-        eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-      }
-    });
-    getEventsOnline(httpClient).then((value) {
-      storeEventsCached();
-    });
-
-    await getCoursesCached().then((values) {
-      if (values != false) {
-        // values.forEach((event) {});
-        courses = values;
-        // print(values);
-        coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-      }
-    });
-    getCoursesOnline(httpClient).then((value) {
-      storeCoursesCached();
-    });
-  }
-
   void authorize(asGuest) async {
     // Navigator.pop(context);
     if (asGuest) {
@@ -285,9 +331,8 @@ class _SignInPageState extends State<SignInPage> {
       print("Awaiting gsignin sign in");
       await gSignIn.signIn();
       print(" gsignin signed in");
-      final authHeaders = await gSignIn.currentUser.authHeaders;
-      final httpClient = GoogleHttpClient(authHeaders);
-      handleCacheStuff(httpClient).then((s) {});
+
+      await reloadEventsAndCourses().then((s) {});
 
       try {
         final GoogleSignInAuthentication googleAuth =
@@ -312,38 +357,6 @@ class _SignInPageState extends State<SignInPage> {
     }
     Navigator.pop(key.currentContext);
     Navigator.pushNamed(context, '/menuBarBase');
-  }
-
-  List listWithoutRepetitionCourse(List<Course> courses) {
-    List<Course> withoutRepeat = [];
-    courses.forEach((Course course) {
-      bool notHave = true;
-      withoutRepeat.forEach((Course _course) {
-        if (_course.id == course.id) {
-          notHave = false;
-        }
-      });
-      if (notHave) {
-        withoutRepeat.add(course);
-      }
-    });
-    return withoutRepeat;
-  }
-
-  List listWithoutRepetitionEvent(List<calendar.Event> events) {
-    List<calendar.Event> withoutRepeat = [];
-    events.forEach((calendar.Event event) {
-      bool notHave = true;
-      withoutRepeat.forEach((calendar.Event _event) {
-        if (_event.id == event.id) {
-          notHave = false;
-        }
-      });
-      if (notHave) {
-        withoutRepeat.add(event);
-      }
-    });
-    return withoutRepeat;
   }
 
   var key = new GlobalKey<ScaffoldState>();
@@ -434,9 +447,4 @@ class _SignInPageState extends State<SignInPage> {
       ),
     );
   }
-}
-
-logoutUser() {
-  gSignIn.signOut();
-  FirebaseAuth.instance.signOut();
 }

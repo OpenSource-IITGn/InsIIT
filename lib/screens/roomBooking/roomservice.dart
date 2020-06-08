@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,6 @@ import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/screens/homePage.dart';
-
 
 class RoomService extends StatefulWidget {
   @override
@@ -42,8 +42,6 @@ class _RoomServiceState extends State<RoomService>
       getMachines();
     }
   }
-
-
 
   getRooms() async {
     allBlocks = {};
@@ -321,9 +319,9 @@ class _RoomServiceState extends State<RoomService>
           'type': type,
           'machines': machines,
         }).then((value) => setState(() {
-          machines = [];
-          getMachines();
-        }));
+              machines = [];
+              getMachines();
+            }));
       },
       child: Card(
         child: Container(
@@ -338,8 +336,8 @@ class _RoomServiceState extends State<RoomService>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Image.network(
-                    machines[0].machineImgUrl,
+                  CachedNetworkImage(
+                    imageUrl: machines[0].machineImgUrl,
                     width: ScreenSize.size.width * 0.25,
                     fit: BoxFit.cover,
                   ),
@@ -792,18 +790,22 @@ class _RoomServiceState extends State<RoomService>
         children: <Widget>[
           FloatingActionButton(
             heroTag: "fab1rs",
-            onPressed: (){Navigator.pushNamed(context, '/tlcontacts');},
+            onPressed: () {
+              Navigator.pushNamed(context, '/tlcontacts');
+            },
             backgroundColor: Colors.white,
+            child: Icon(Icons.more_horiz, color:Colors.black),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
             heroTag: "fab2rs",
             backgroundColor: primaryColor,
             onPressed: () {
-              Navigator.pushNamed(context, '/selecttime').then((value) => setState(() {
-                rooms = [];
-                getRooms();
-              }));
+              Navigator.pushNamed(context, '/selecttime')
+                  .then((value) => setState(() {
+                        rooms = [];
+                        getRooms();
+                      }));
             },
             tooltip: 'Book a room',
             child: Icon(Icons.add, color: Colors.white),
@@ -847,16 +849,24 @@ class _RoomServiceState extends State<RoomService>
                     color: Colors.black, fontWeight: FontWeight.bold)),
           ),
           backgroundColor: Colors.white,
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TabBarView(
-              children: <Widget>[
-                yourRooms(),
-                occupiedRooms(),
-                SingleChildScrollView(child: tinkerersLab()),
-              ],
-            ),
-          ),
+          body: (loading == true || loadingMachines == true)
+              ? Center(child: CircularProgressIndicator())
+              : TabBarView(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: yourRooms(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: occupiedRooms(),
+                  ),
+                  SingleChildScrollView(child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: tinkerersLab(),
+                  )),
+                ],
+              ),
         ),
       ),
     );
@@ -888,9 +898,7 @@ class _RoomServiceState extends State<RoomService>
                   ],
                 ),
               )
-            : (loading == true || loadingMachines == true)
-                ? Center(child: CircularProgressIndicator())
-                : homeScreen());
+            : homeScreen());
   }
 
   @override
