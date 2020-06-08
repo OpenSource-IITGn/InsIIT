@@ -810,10 +810,11 @@ class _RoomServiceState extends State<RoomService>
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FloatingActionButton(
-            heroTag: "fab1rs",
+            heroTag: "fab1rs", 
             onPressed: (){},
             backgroundColor: Colors.white,
             child: PopupMenuButton<Map<String, List<Tinkerer>>>(
+              icon: Icon(Icons.menu, color: Colors.black),
               itemBuilder: (context)=>[
                 PopupMenuItem(
                   value: {'Machines' : machinesTL},
