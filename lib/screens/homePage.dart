@@ -39,6 +39,7 @@ List<Data> emails;
 List<TodayCourse> todayCourses;
 List<MyCourse> myCourses;
 List<EventModel> removedEvents;
+List<EventModel> userAddedCourses;
 List<EventModel> examCourses;
 List<EventModel> eventsList;
 List<Tinkerer> tlDataList;
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage>
     loadShuttleData();
     loadCourseData();
     loadRemovedCoursesData();
+    loadUserAddedCoursesData();
     loadExamTimeTableData();
     loadCertificateData();
     loadTlData();
@@ -127,6 +129,15 @@ class _HomePageState extends State<HomePage>
     List<EventModel> mergedCourses;
 
     eventsList = [];
+    if (userAddedCourses != null) {
+      userAddedCourses.forEach((EventModel event) {
+        if (event.day == DateTime
+            .now()
+            .weekday) {
+          eventsList.add(event);
+        }
+      });
+    }
     currentDayExamCourses = todayExamCourses(examCourses);
     currentDayExamCourses.forEach((EventModel model) {
       bool shouldContain = true;
@@ -365,7 +376,63 @@ class _HomePageState extends State<HomePage>
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-          CsvToListConverter().convert(values);
+      CsvToListConverter().convert(values);
+      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+
+      yield rowsAsListOfValues;
+    } else {
+      yield [];
+    }
+  }
+
+  loadUserAddedCoursesData () async {
+    getUserAddedCoursesData().listen((data) {
+      userAddedCourses = makeUserAddedCoursesList(data);
+    });
+  }
+
+  List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
+    List<EventModel> _userAddedCourses = [];
+
+    if (userAddedCoursesDataList != null &&
+        userAddedCoursesDataList.length != 0) {
+      userAddedCoursesDataList.forEach((var lc) {
+        print(lc);
+        _userAddedCourses.add(EventModel(
+          isCourse: true,
+          isExam: false,
+          courseId: lc[0],
+          courseName: lc[1],
+          location: lc[2],
+          credits: lc[3],
+          preRequisite: lc[4],
+          start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[5].split(':')[0]), int.parse(lc[5].split(':')[1])),
+          end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[6].split(':')[0]), int.parse(lc[6].split(':')[1])),
+          eventType: 'Course',
+          day: lc[7],
+          attendanceManager: attendanceData
+        ));
+      });
+    }
+
+    return _userAddedCourses;
+  }
+
+  Future<File> _localFileForUserAddedCourses() async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + 'userAddedCourses' + '.csv';
+    return File(filename);
+  }
+
+  Stream<List<List<dynamic>>> getUserAddedCoursesData() async* {
+    var file = await _localFileForUserAddedCourses();
+    bool exists = await file.exists();
+    if (exists) {
+      await file.open();
+      String values = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues =
+      CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;

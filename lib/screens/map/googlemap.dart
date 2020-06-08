@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MapInfoWindow {
    String imagePath;
@@ -454,8 +455,9 @@ class _MapPageState extends State<MapPage> {
                                   topLeft: Radius.circular(10),
                                   topRight: Radius.circular(10)
                                 ),
-                                child: Image(
-                                  image: NetworkImage(currentWindow.imagePath),
+                                child: CachedNetworkImage(
+                                  imageUrl: currentWindow.imagePath,
+                                  fadeInDuration: Duration(milliseconds: 300),
                                   height: 100,
                                   width: 1040,
                                   fit: BoxFit.cover,
