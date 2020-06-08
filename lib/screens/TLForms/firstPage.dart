@@ -109,7 +109,6 @@ class _FirstPageState extends State<FirstPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            selectedIndex = 4;
             Navigator.pop(context);
           },
         ),

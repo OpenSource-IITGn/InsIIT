@@ -113,7 +113,6 @@ class _SecondPageState extends State<SecondPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            selectedIndex = 4;
             Navigator.pop(context);
           },
         ),

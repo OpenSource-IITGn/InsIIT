@@ -596,7 +596,6 @@ class _FourthPageState extends State<FourthPage> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
-              selectedIndex = 4;
               Navigator.pop(context);
             },
           ),

@@ -73,7 +73,6 @@ class _ThirdPageState extends State<ThirdPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            selectedIndex = 4;
             Navigator.pop(context);
           },
         ),

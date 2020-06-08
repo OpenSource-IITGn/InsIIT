@@ -10,6 +10,7 @@ import 'package:instiapp/screens/eventpage.dart';
 import 'package:instiapp/screens/feed/feedPage.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/importantContacts.dart';
+import 'package:instiapp/screens/schedule/addCourse.dart';
 import 'package:instiapp/screens/schedule/eventDetail.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/messMenu/messfeedback.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         '/thirdPage': (context) => ThirdPage(),
         '/fourthPage': (context) => FourthPage(),
         '/tlcontacts': (context) => TinkererContact(),
+        '/addcourse': (context) => AddCourse(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),

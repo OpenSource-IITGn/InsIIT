@@ -220,12 +220,27 @@ class _EditEventState extends State<EditEvent> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _openGoogleCalendar();
-        },
-        backgroundColor: Colors.white,
-        child: Icon(Icons.add, color: Colors.black),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FloatingActionButton(
+            heroTag: "fab1rs",
+            onPressed: () {
+              Navigator.pushNamed(context, '/addcourse');
+            },
+            backgroundColor: Colors.white,
+            child: Icon(Icons.more_horiz, color:Colors.black),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            heroTag: "fab2rs",
+            onPressed: () {
+              _openGoogleCalendar();
+            },
+            backgroundColor: Colors.white,
+            child: Icon(Icons.add, color: Colors.black),
+          ),
+        ],
       ),
     );
   }
