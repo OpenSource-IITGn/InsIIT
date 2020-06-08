@@ -118,7 +118,7 @@ class EventModel {
               ),
               Row(
                 children: <Widget>[
-                  Text(this.eventType,
+                  Text((this.eventType == null) ? 'Course' : this.eventType,
                       style: TextStyle(
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,

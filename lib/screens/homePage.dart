@@ -130,11 +130,19 @@ class _HomePageState extends State<HomePage>
 
     eventsList = [];
     if (userAddedCourses != null) {
-      userAddedCourses.forEach((EventModel event) {
-        if (event.day == DateTime
+      userAddedCourses.forEach((EventModel model) {
+        bool shouldContain = true;
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.courseId == model.courseId &&
+              removedEvent.courseName == model.courseName &&
+              removedEvent.eventType == model.eventType) {
+            shouldContain = false;
+          }
+        });
+        if (model.day == DateTime
             .now()
-            .weekday) {
-          eventsList.add(event);
+            .weekday && shouldContain) {
+          eventsList.add(model);
         }
       });
     }
@@ -320,6 +328,7 @@ class _HomePageState extends State<HomePage>
 
   loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
+      print(data);
       removedEvents = makeRemovedEventsList(data);
     });
   }
@@ -404,7 +413,7 @@ class _HomePageState extends State<HomePage>
           courseId: lc[0],
           courseName: lc[1],
           location: lc[2],
-          credits: lc[3],
+          credits: lc[3].toString(),
           preRequisite: lc[4],
           start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[5].split(':')[0]), int.parse(lc[5].split(':')[1])),
           end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[6].split(':')[0]), int.parse(lc[6].split(':')[1])),
@@ -1310,7 +1319,7 @@ class _HomePageState extends State<HomePage>
               ),
               Row(
                 children: <Widget>[
-                  Text(event.eventType,
+                  Text((event.eventType == null) ? 'Course' : event.eventType,
                       style: TextStyle(
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,
