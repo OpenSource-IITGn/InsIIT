@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -7,6 +10,7 @@ import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<Course> courses = [];
@@ -68,33 +72,31 @@ class _SignInPageState extends State<SignInPage> {
         Navigator.pushNamed(context, '/onboarding');
       }
     });
-    checkSignIn().then((value) {
-      print(value);
-      if (value == null) {
-        try {
-          print("Sign in silent");
-          gSignIn.signInSilently().then((gSignInAccount) {
-            print('Sign in successful');
-            controlSignIn(gSignInAccount);
-          }).catchError((gError) {
-            print("Error message :" + gError);
-          });
-        } catch (e) {
-          print('Error:' + e);
-        }
-        try {
-          print("on current user changed");
-          gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
-            controlSignIn(gSigninAccount);
-          }, onError: (gError) {
-            print("Error message :" + gError);
-          });
-        } catch (e) {
-          print('Error:' + e);
-        }
-      } else {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, '/menuBarBase');
+    checkSignIn().then((value) async {
+      try {
+        print("Sign in silent");
+        await gSignIn.signInSilently().then((gSignInAccount) {
+          print('Sign in successful');
+          controlSignIn(gSignInAccount);
+        }).catchError((gError) {
+          print("Error message :" + gError);
+        });
+      } catch (e) {
+        print('Error:' + e);
+      }
+      try {
+        print("on current user changed");
+        gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
+          controlSignIn(gSigninAccount);
+        }, onError: (gError) {
+          print("Error message :" + gError);
+        });
+      } catch (e) {
+        print('Error:' + e);
+      }
+      if (value != null) {
+        // Navigator.pop(key.currentContext);
+        // Navigator.pushNamed(context, '/menuBarBase');
       }
     });
 
@@ -141,7 +143,132 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  
+  Future getEventsCached() async {
+    var file = await _localFile('events');
+    bool exists = await file.exists();
+    if (exists) {
+      print("EVENTS CACHED PREVIOUSLY");
+      await file.open();
+      String events = await file.readAsString();
+      List<calendar.Event> eventsList = [];
+      var json = jsonDecode(events);
+      json['key'].forEach((eventJson) {
+        calendar.Event x = calendar.Event.fromJson(eventJson);
+        eventsList.add(x);
+      });
+      return eventsList;
+    } else {
+      print("EVENTS NOT CACHED PREVIOUSLY");
+    }
+
+    return false;
+  }
+
+  Future storeEventsCached() async {
+    var file = await _localFile('events');
+    bool exists = await file.exists();
+    if (exists) {
+      await file.delete();
+    }
+    await file.create();
+    await file.open();
+    List<Map<String, dynamic>> eventList = [];
+    events.forEach((element) {
+      eventList.add(element.toJson());
+    });
+    Map<String, dynamic> list = {'key': eventList};
+    await file.writeAsString(jsonEncode(list));
+    print("WROTE EVENTS TO CACHE");
+    return true;
+  }
+
+  Future getEventsOnline(httpClient) async {
+    var eventData =
+        await calendar.CalendarApi(httpClient).events.list('primary');
+    events = [];
+    events.addAll(eventData.items);
+    eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+  }
+
+  Future getCoursesCached() async {
+    var file = await _localFile('courses');
+    bool exists = await file.exists();
+    if (exists) {
+      print("Courses CACHED PREVIOUSLY");
+      await file.open();
+      String events = await file.readAsString();
+      List<Course> coursesList = [];
+      var json = jsonDecode(events);
+      json['key'].forEach((eventJson) {
+        Course x = Course.fromJson(eventJson);
+        coursesList.add(x);
+      });
+      return coursesList;
+    } else {
+      print("Courses NOT CACHED PREVIOUSLY");
+    }
+
+    return false;
+  }
+
+  Future storeCoursesCached() async {
+    var file = await _localFile('courses');
+    bool exists = await file.exists();
+    if (exists) {
+      await file.delete();
+    }
+    await file.create();
+    await file.open();
+    List<Map<String, dynamic>> courseList = [];
+    courses.forEach((element) {
+      courseList.add(element.toJson());
+    });
+    Map<String, dynamic> list = {'key': courseList};
+    await file.writeAsString(jsonEncode(list));
+    print("WROTE Courses TO CACHE");
+    return true;
+  }
+
+  Future getCoursesOnline(httpClient) async {
+    courses = [];
+    var courseData = await ClassroomApi(httpClient).courses.list();
+    courses.addAll(courseData.courses);
+    coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
+  }
+
+  Future<File> _localFile(String range) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + range + '.csv';
+    return File(filename);
+  }
+
+  Future handleCacheStuff(httpClient) async {
+    await getEventsCached().then((values) {
+      if (values != false) {
+        // values.forEach((event) {});
+        events = values;
+        // print(values);
+
+        eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+      }
+    });
+    getEventsOnline(httpClient).then((value) {
+      storeEventsCached();
+    });
+
+    await getCoursesCached().then((values) {
+      if (values != false) {
+        // values.forEach((event) {});
+        courses = values;
+        // print(values);
+        coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
+      }
+    });
+    getCoursesOnline(httpClient).then((value) {
+      storeCoursesCached();
+    });
+  }
 
   void authorize(asGuest) async {
     // Navigator.pop(context);
@@ -157,38 +284,33 @@ class _SignInPageState extends State<SignInPage> {
     } else {
       print("Awaiting gsignin sign in");
       await gSignIn.signIn();
-
+      print(" gsignin signed in");
       final authHeaders = await gSignIn.currentUser.authHeaders;
       final httpClient = GoogleHttpClient(authHeaders);
+      handleCacheStuff(httpClient).then((s) {});
 
-      var courseData = await ClassroomApi(httpClient).courses.list();
-      courses.addAll(courseData.courses);
-      coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-      var eventData =
-          await calendar.CalendarApi(httpClient).events.list('primary');
-      events.addAll(eventData.items);
-      eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+      try {
+        final GoogleSignInAuthentication googleAuth =
+            await gSignIn.currentUser.authentication;
 
-      final GoogleSignInAuthentication googleAuth =
-          await gSignIn.currentUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.getCredential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+        firebaseUser =
+            (await firebaseauth.signInWithCredential(credential)).user;
+      } catch (e) {}
 
-      firebaseUser =
-          (await firebaseauth.signInWithCredential(credential)).user;
-          
-      sheet.writeData([
-        [
-          DateTime.now().toString(),
-          gSignIn.currentUser.displayName,
-          gSignIn.currentUser.email,
-        ]
-      ], 'logins!A:C');
+      // sheet.writeData([
+      //   [
+      //     DateTime.now().toString(),
+      //     gSignIn.currentUser.displayName,
+      //     gSignIn.currentUser.email,
+      //   ]
+      // ], 'logins!A:C');
     }
-    Navigator.pop(context);
+    Navigator.pop(key.currentContext);
     Navigator.pushNamed(context, '/menuBarBase');
   }
 
@@ -313,7 +435,8 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 }
+
 logoutUser() {
-    gSignIn.signOut();
-    FirebaseAuth.instance.signOut();
-  }
+  gSignIn.signOut();
+  FirebaseAuth.instance.signOut();
+}

@@ -67,6 +67,8 @@ class _HomePageState extends State<HomePage>
   }
 
   void reloadData() {
+  
+
     loadMessData();
     loadlinks();
     loadImportantContactData();
@@ -75,6 +77,7 @@ class _HomePageState extends State<HomePage>
     loadRemovedCoursesData();
     loadExamTimeTableData();
     loadCertificateData();
+ 
   }
 
   loadCertificateData() async {
@@ -522,7 +525,7 @@ class _HomePageState extends State<HomePage>
   }
 
   var avatar = Avataaar.random(style: Style.circle);
-  bool prevConnected = false;
+  bool prevConnected = true;
   PageController _pageController;
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc."];
   Widget homeScreen() {

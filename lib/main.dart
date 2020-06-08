@@ -30,10 +30,12 @@ import 'package:instiapp/utilities/constants.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/signin',
+      key: navigatorKey,
       debugShowCheckedModeBanner: false,
       routes: {
         // '/announcements': (context) => Announcements(),
