@@ -6,17 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 
 Map tlMemberData = {};
-class model{
-  String title;
-  List<Tinkerer> person;
-
-  model({this.title, this.person});
-}
-
-
-
-List<model> tlList= [model(title:'Lab Access', person: labAccess),model(title:'Inventory Access',person: inventory),
-  model(title: 'Machines', person: machinesTL),model(title: 'Course Access', person: courseAccess)];
+String type;
+List<Tinkerer> persons;
 
 void customLaunch(command) async {
   if (await canLaunch(command)) {
@@ -25,8 +16,6 @@ void customLaunch(command) async {
     throw 'Could not launch $command';
   }
 }
-
-
 
 class TinkererContact extends StatefulWidget {
   @override
@@ -37,16 +26,9 @@ class _TinkererContactState extends State<TinkererContact> {
   @override
   void initState() {
     super.initState();
-
   }
 
-
-
-
   Widget tlShowWidget(Tinkerer person){
-    print(labAccess);
-    print(inventory);
-    print(courseAccess);
     return GestureDetector(onTap: (){customLaunch('tel:'+person.mobNo);},
     child: Card(
       margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
@@ -56,7 +38,7 @@ class _TinkererContactState extends State<TinkererContact> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Text(
-              (person.isMachine)?person.name+'      '+person.machine:person.name,
+              (type == 'Machines') ?person.name+ '      ' +person.machine :person.name,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -72,7 +54,11 @@ class _TinkererContactState extends State<TinkererContact> {
 
   Widget build(BuildContext context) {
     tlMemberData = ModalRoute.of(context).settings.arguments;
-    List<Tinkerer> data = tlMemberData['dataList'];
+    Map<String, List<Tinkerer>> data = tlMemberData['dataList'];
+    data.forEach((String _type, List<Tinkerer> _persons) {
+      type = _type;
+      persons = _persons;
+    });
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -88,7 +74,7 @@ class _TinkererContactState extends State<TinkererContact> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0,0,0,16),
           child: Column(
-            children: data.map((Tinkerer person) => tlShowWidget(person)).toList())
+            children: persons.map((Tinkerer person) => tlShowWidget(person)).toList())
           ),
         ),
       );
