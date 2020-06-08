@@ -143,7 +143,7 @@ class _SelectTimeState extends State<SelectTime> {
               ),
               Center(
                 child: RaisedButton.icon(
-                  color: Colors.black,
+                  color: primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),

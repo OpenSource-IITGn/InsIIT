@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class AvailableRooms extends StatefulWidget {
   @override
@@ -88,7 +89,7 @@ class _AvailableRoomsState extends State<AvailableRooms> {
                           '_id': room.roomId,
                         });
                   },
-                  icon: Icon(Icons.add_box),
+                  icon: Icon(Icons.add_box, color: Colors.black,),
                   label: Text('Book'),
                 ),
               ],

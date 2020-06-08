@@ -4,6 +4,7 @@ import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key key}) : super(key: key);

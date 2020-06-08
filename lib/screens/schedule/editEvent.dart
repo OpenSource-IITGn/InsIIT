@@ -68,7 +68,7 @@ class _EditEventState extends State<EditEvent> {
                   ),
                 ),
                 IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: Colors.black,),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -234,8 +234,8 @@ class _EditEventState extends State<EditEvent> {
             onPressed: () {
               Navigator.pushNamed(context, '/addcourse');
             },
-            backgroundColor: Colors.white,
-            child: Icon(Icons.more_horiz, color:Colors.black),
+            backgroundColor: primaryColor,
+            child: Icon(Icons.more_horiz, color:Colors.white),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
@@ -243,8 +243,8 @@ class _EditEventState extends State<EditEvent> {
             onPressed: () {
               _openGoogleCalendar();
             },
-            backgroundColor: Colors.white,
-            child: Icon(Icons.add, color: Colors.black),
+            backgroundColor: primaryColor,
+            child: Icon(Icons.add, color: Colors.white),
           ),
         ],
       ),

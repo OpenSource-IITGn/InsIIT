@@ -223,7 +223,7 @@ class _FourthPageState extends State<FourthPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   onPressed: _pickStartDate,
-                  icon: Icon(Icons.calendar_today, color: Colors.black),
+                  icon: Icon(Icons.calendar_today, color: primaryColor),
                   label: Text(
                     "${startDate.day.toString().padLeft(2, '0')} / ${startDate.month.toString().padLeft(2, '0')} / ${startDate.year}",
                     style: TextStyle(color: Colors.black),
@@ -235,7 +235,7 @@ class _FourthPageState extends State<FourthPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   onPressed: _pickStartTime,
-                  icon: Icon(Icons.access_time, color: Colors.black),
+                  icon: Icon(Icons.access_time, color: primaryColor),
                   label: Text(
                     "${startTime.hour.toString().padLeft(2, '0')} : ${startTime.minute.toString().padLeft(2, '0')}",
                     style: TextStyle(color: Colors.black),
@@ -260,7 +260,7 @@ class _FourthPageState extends State<FourthPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   onPressed: _pickEndDate,
-                  icon: Icon(Icons.calendar_today, color: Colors.black),
+                  icon: Icon(Icons.calendar_today, color: primaryColor),
                   label: Text(
                     "${endDate.day.toString().padLeft(2, '0')} / ${endDate.month.toString().padLeft(2, '0')} / ${endDate.year.toString().padLeft(2, '0')}",
                     style: TextStyle(color: Colors.black),
@@ -272,7 +272,7 @@ class _FourthPageState extends State<FourthPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   onPressed: _pickEndTime,
-                  icon: Icon(Icons.access_time, color: Colors.black),
+                  icon: Icon(Icons.access_time, color: primaryColor),
                   label: Text(
                     "${endTime.hour.toString().padLeft(2, '0')} : ${endTime.minute.toString().padLeft(2, '0')}",
                     style: TextStyle(color: Colors.black),
@@ -450,7 +450,7 @@ class _FourthPageState extends State<FourthPage> {
             ),
             Center(
               child: FlatButton.icon(
-                color: Colors.black,
+                color: primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),
