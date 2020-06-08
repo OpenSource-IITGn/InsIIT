@@ -5,12 +5,15 @@ import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 
+Map tlMemberData = {};
 class model{
   String title;
   List<Tinkerer> person;
 
   model({this.title,this.person});
 }
+
+
 
 List<model> tlList= [model(title:'Lab Access', person: labAccess),model(title:'Inventory Access',person: inventory),
   model(title: 'Machines', person: machinesTL),model(title: 'Course Access', person: courseAccess)];
@@ -23,9 +26,7 @@ void customLaunch(command) async{
   }
 }
 
-List<Tinkerer> inventory = [];
-List<Tinkerer> labAccess = [];
-List<Tinkerer> courseAccess = [];
+
 
 
 class TinkererContact extends StatefulWidget {
@@ -39,63 +40,43 @@ class _TinkererContactState extends State<TinkererContact> {
   @override
   void initState(){
     super.initState();
-    makeTLDataList();
+
   }
 
-  void makeTLDataList(){
-    tlDataList.forEach((Tinkerer time) {
-      time.job.forEach((i) {
-        if(i == 'Lab Access'){
-          labAccess.add(time);
-        }
-        else if(i == 'Inventory Access'){
-          inventory.add(time);
-        }
-        else if(i == 'Course Access'){
-          courseAccess.add(time);
-        }
-      });
-    });
-  }
-  Widget machineTLhead(name){
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Text(
-        name,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 18.0,
-          fontWeight: FontWeight.bold
-        )
+
+
+
+  Widget tlShowWidget(Tinkerer person){
+    print(labAccess);
+    print(inventory);
+    print(courseAccess);
+    return GestureDetector(onTap: (){customLaunch('tel:'+person.mobNo);},
+    child: Card(
+      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+      child: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              (person.isMachine)?person.name+'      '+person.machine:person.name,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+          ],
+        ),
       ),
-    )
-    ;
+    ));
   }
 
-  Widget body (List<Tinkerer> persons, String title) {
-    if (title == 'Machines') {
-      return ListView(
-        children: persons.map((Tinkerer person) {
-          return ListTile(
-            title: Text(person.name),
-            trailing: Text(person.machine),
-             onTap: (){customLaunch('tel:' + person.mobNo);},
-          );
-        }).toList(),
-      );
-    } else {
-      return ListView(
-        children: persons.map((Tinkerer person) {
-          return ListTile(
-            title: Text(person.name),
-             onTap: (){customLaunch('tel:' + person.mobNo);},
-          );
-        }).toList(),
-      );
-    }
-  }
 
   Widget build(BuildContext context) {
+    tlMemberData = ModalRoute.of(context).settings.arguments;
+    List<Tinkerer> data = tlMemberData['dataList'];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -106,17 +87,14 @@ class _TinkererContactState extends State<TinkererContact> {
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
       ),
-      body: Center(
-        child: ListView.builder(itemCount: 4,
-            itemBuilder: (BuildContext context, int index){
-           return ExpansionTile(
-             title: machineTLhead(tlList[index].title),
-             children: <Widget>[
-               body(tlList[index].person,tlList[index].title)
-             ],
-           );
-            } ),
-      ),
-    );
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0,0,0,16),
+          child: Column(
+            children: data.map((Tinkerer person) => tlShowWidget(person)).toList())
+          ),
+        ),
+      );
+
   }
 }
