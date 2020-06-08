@@ -5,7 +5,7 @@ import 'package:instiapp/utilities/constants.dart';
 import 'dart:math' as math;
 
 Widget loadScreen() {
-  Color color = primaryColor;
+  Color color = secondaryColor;
   return Scaffold(
     body: AnimatedContainer(
       duration: Duration(milliseconds: 500),
@@ -16,7 +16,7 @@ Widget loadScreen() {
       height: ScreenSize.size.height,
       width: ScreenSize.size.width,
       color: color,
-      child: Center(child: Text("Please wait...",style: TextStyle(color:Colors.white),)),
+      child: Center(child: Text("Please wait...",style: TextStyle(color:Colors.white, fontSize: 20),)),
     ),
   );
 }

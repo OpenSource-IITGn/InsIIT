@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
-Color secondaryColor = Color.fromRGBO(252, 155, 144,1);
-Color primaryColor = Color.fromRGBO(228, 110, 96, 1);
+Color secondaryColor = Color.fromRGBO(63, 99, 247, 0.7);
+Color primaryColor = Color.fromRGBO(63, 99, 247, 1);
 Color secondaryTextColor = Colors.black.withAlpha(150);
 final dateFormat = new DateFormat('dd-MM-yyyy hh:mm');
 String baseUrl = "serene-reaches-30469.herokuapp.com";

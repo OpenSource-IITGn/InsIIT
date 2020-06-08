@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:instiapp/screens/TLForms/secondPage.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
@@ -54,7 +55,18 @@ class _FourthPageState extends State<FourthPage> {
 
   checkCorrectTime(MachineTime time, Machine machine) {
     if (time.end.isAfter(time.start)) {
-      checkTimeClash(time, machine);
+      if (time.end.difference(time.start).inHours <= 2) {
+        checkTimeClash(time, machine, 'approved');
+      } else if (time.end.difference(time.start).inHours <= 6) {
+        checkTimeClash(time, machine, 'pending');
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+            content: Text("Sorry you can not book a machine for more than 6 hours!"),
+          ),
+        );
+      }
     } else {
       setState(() {
         this.purpose = purpose;
@@ -68,7 +80,7 @@ class _FourthPageState extends State<FourthPage> {
     }
   }
 
-  checkTimeClash(MachineTime time, Machine machine) {
+  checkTimeClash(MachineTime time, Machine machine, String status) {
     bool clash = false;
     machine.bookedSlotsWithFiles.forEach((MachineTime machineTime) {
       if (clash == false) {
@@ -88,11 +100,11 @@ class _FourthPageState extends State<FourthPage> {
         );
       });
     } else {
-      bookMachine(time, machine);
+      bookMachine(time, machine, status);
     }
   }
 
-  bookMachine(MachineTime time, Machine machine) async{
+  bookMachine(MachineTime time, Machine machine, String status) async{
 
     var queryParameters = {
       'api_key': 'GULLU',
@@ -131,6 +143,7 @@ class _FourthPageState extends State<FourthPage> {
       "start": time.start.millisecondsSinceEpoch,
       "end": time.end.millisecondsSinceEpoch,
       "url_of_uploaded_files": time.urlOfUploadedFiles,
+      "status": status
     });
     print(jsonBody);
     setState(() {
@@ -159,9 +172,8 @@ class _FourthPageState extends State<FourthPage> {
       if (count == files.length + 1) {
         uploading = false;
         //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-        selectedIndex = 4;
         // Navigator.pushReplacementNamed(context, '/menuBarBase');
-        Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+        Navigator.popUntil(context, ModalRoute.withName('/RoomBooking'));
       }
     });
     print(response.statusCode);
@@ -178,8 +190,7 @@ class _FourthPageState extends State<FourthPage> {
       if (count == files.length + 1) {
         uploading = false;
         //print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
-        selectedIndex = 4;
-       Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+       Navigator.popUntil(context, ModalRoute.withName('/RoomBooking'));
       }
     });
     print(response.statusCode);
@@ -537,16 +548,34 @@ class _FourthPageState extends State<FourthPage> {
   Widget loadScreen() {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 20,
+            height: 60,
           ),
-          Text('Your Files are being uploaded'),
-          Text('Please wait a few minutes.....'),
+          Image.asset('assets/images/loading.png'),
           SizedBox(
-            height: 5,
+            height: 40,
           ),
-          CircularProgressIndicator(),
+          Column(
+            children: <Widget>[
+              Text(
+                'Your files are being Uploaded',
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 18,
+                ),
+              ),
+              SizedBox(height: 8,),
+              Text(
+                'Please wait for a few minutes....',
+                style: TextStyle(
+                  color: Colors.black38,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
