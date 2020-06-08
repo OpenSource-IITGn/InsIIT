@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage>
       tlData.forEach((detail) {
         tlDataList.add(Tinkerer(
           name: detail[0],
-          mobNo: detail[1],
+          mobNo: detail[1].toString(),
           machine: detail[2],
           job: detail[3].split('+'),
         ));
@@ -244,6 +244,7 @@ class _HomePageState extends State<HomePage>
                       caseSensitive: false)) ||
                   compareStrings(course.name, lc[3])) {
                 List<DateTime> time = getTime(baseLc);
+                lc.addAll(['null','null','null','null','null']);
                 myExamCourses.add(EventModel(
                   isCourse: false,
                   isExam: true,

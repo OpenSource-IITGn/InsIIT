@@ -8,11 +8,10 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
-
   Map eventModelData = {};
   List<Widget> attendance;
 
-  List<Widget> attendanceManager (Map<DateTime, String> attendanceManager) {
+  List<Widget> attendanceManager(Map<DateTime, String> attendanceManager) {
     List<Widget> listTiles = [];
     attendanceManager.forEach((DateTime time, String attendance) {
       listTiles.add(ListTile(
@@ -30,6 +29,7 @@ class _EventDetailState extends State<EventDetail> {
       return text;
     }
   }
+
   String twoDigitTime(String text) {
     if (text.length == 1) {
       String _text = '0' + text;
@@ -39,113 +39,130 @@ class _EventDetailState extends State<EventDetail> {
     }
   }
 
-  String time (DateTime time) {
+  String time(DateTime time) {
     if (time == null) {
       return "Whole Day";
-    }
-    else {
-      return twoDigitTime(time.hour.toString()) + ':' + twoDigitTime(time.minute.toString());
+    } else {
+      return twoDigitTime(time.hour.toString()) +
+          ':' +
+          twoDigitTime(time.minute.toString());
     }
   }
 
-  Widget body (EventModel event) {
+  Widget body(EventModel event) {
     if (event.isCourse) {
       return Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 10,),
-            Text(
-                'ID: ${event.courseId}',
+            Text(event.courseName,
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
-            SizedBox(height: 10,),
-            Text(
-                'Course: ${event.courseName}',
+                    fontSize: 16)),
+            Text(event.courseId,
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: Colors.black.withAlpha(150),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
-            SizedBox(height: 10,),
-            Text(
-                'ClassRoom: ${event.location}',
+                    fontSize: 14)),
+            Text(event.eventType,
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                  color: Colors.black.withAlpha(255),
+                  fontStyle: FontStyle.italic,
+                )),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Time: ' + time(event.start) + ' to ' + time(event.end),
-                style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
+            RichText(
+              text: TextSpan(
+                style: TextStyle(color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Happens at ',
+                  ),
+                  TextSpan(
+                    text: event.location,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Type: ${event.eventType}',
-                style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Remarks: ${event.remarks}',
-                style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
+            RichText(
+              text: TextSpan(
+                style: TextStyle(color: Colors.black),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Between ',
+                  ),
+                  TextSpan(
+                    text: time(event.start),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: ' and ',
+                  ),
+                  TextSpan(
+                    text: time(event.end),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            (event.remarks == null)
+                ? Container()
+                : Text('Remarks: ${event.remarks}',
+                    style: TextStyle(
+                        color: Colors.black.withAlpha(255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
             SizedBox(
               height: 8,
             ),
-            Text(
-                'Instructors: ',
+            Text('Instructors: ',
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
+                    fontSize: 16)),
             SizedBox(
               height: 8,
             ),
             Column(
               children: event.instructors.map<Widget>((String instructor) {
-                return Text(
-                    instructor,
-                    style: TextStyle(
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(instructor,
+                      style: TextStyle(
                         color: Colors.black.withAlpha(255),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)
+                        // fontWeight: FontWeight.bold,
+                      )),
                 );
               }).toList(),
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Credits: ${event.credits}',
-                style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Pre-requisite: ${event.preRequisite}',
+            Text('${event.credits} credits',
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
+                  color: Colors.black.withAlpha(255),
+                  fontWeight: FontWeight.bold,
+                )),
+            (event.preRequisite == '-')
+                ? Container()
+                : Text('Pre-requisite: ${event.preRequisite}',
+                    style: TextStyle(
+                        color: Colors.black.withAlpha(255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
             ExpansionTile(
               key: GlobalKey(),
-              title: Text('Attendance Manager'),
+              title: Text('View Attendance'),
               children: attendance,
             )
           ],
@@ -157,54 +174,48 @@ class _EventDetailState extends State<EventDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 10,),
-            Text(
-                'ID: ${event.courseId}',
+            SizedBox(
+              height: 10,
+            ),
+            Text(event.courseName,
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
-            SizedBox(height: 10,),
-            Text(
-                'Course: ${event.courseName}',
+                    fontSize: 16)),
+            Text(event.courseId,
+                style: TextStyle(
+                    color: Colors.black.withAlpha(150),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14)),
+            Text('ClassRoom: ${event.location}',
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'ClassRoom: ${event.location}',
+            Text('Roll Numbers: ${event.rollNumbers}',
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Roll Numbers: ${event.rollNumbers}',
+            Text('Time: ' + time(event.start) + ' to ' + time(event.end),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Time: ' + time(event.start) + ' to ' + time(event.end),
+            Text('Type: ${event.eventType}',
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
-            SizedBox(height: 10,),
-            Text(
-                'Type: ${event.eventType}',
-                style: TextStyle(
-                    color: Colors.black.withAlpha(255),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)
-            ),
+                    fontSize: 16)),
           ],
         ),
       );
@@ -214,47 +225,49 @@ class _EventDetailState extends State<EventDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(height: 10,),
-            Text(
-                'Event: ' + stringReturn(event.summary),
+            SizedBox(
+              height: 10,
+            ),
+            Text('Event: ' + stringReturn(event.summary),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Invited by: ' + stringReturn(event.creator),
+            Text('Invited by: ' + stringReturn(event.creator),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Description: ' + stringReturn(event.description),
+            Text('Description: ' + stringReturn(event.description),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Time: ' + time(event.start) + ' To ' + time(event.end),
+            Text('Time: ' + time(event.start) + ' To ' + time(event.end),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
-            Text(
-                'Location: ' + stringReturn(event.location),
+            Text('Location: ' + stringReturn(event.location),
                 style: TextStyle(
                     color: Colors.black.withAlpha(255),
                     fontWeight: FontWeight.bold,
-                    fontSize: 16)
+                    fontSize: 16)),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 10,),
           ],
         ),
       );
@@ -263,7 +276,6 @@ class _EventDetailState extends State<EventDetail> {
 
   @override
   Widget build(BuildContext context) {
-
     eventModelData = ModalRoute.of(context).settings.arguments;
     EventModel event = eventModelData['eventModel'];
     if (event.isCourse) {

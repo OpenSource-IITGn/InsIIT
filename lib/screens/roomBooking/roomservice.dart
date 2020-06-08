@@ -814,6 +814,7 @@ class _RoomServiceState extends State<RoomService>
             onPressed: (){},
             backgroundColor: Colors.white,
             child: PopupMenuButton<Map<String, List<Tinkerer>>>(
+              icon: Icon(Icons.menu, color: Colors.black),
               itemBuilder: (context)=>[
                 PopupMenuItem(
                   value: {'Machines' : machinesTL},
