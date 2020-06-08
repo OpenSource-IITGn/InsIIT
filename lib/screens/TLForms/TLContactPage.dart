@@ -10,7 +10,7 @@ class model{
   String title;
   List<Tinkerer> person;
 
-  TLModel({this.title, this.person});
+  model({this.title, this.person});
 }
 
 
