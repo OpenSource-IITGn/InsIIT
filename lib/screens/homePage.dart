@@ -105,14 +105,18 @@ class _HomePageState extends State<HomePage>
           job: detail[3].split('+'),
         ));
       });
+      print('tl');
+     makeMachines(tlDataList);
     });
-    makeMachines(tlDataList);
+
+
   }
 
   makeMachines(List<Tinkerer> tlDataList) {
     machinesTL = [];
     tlDataList.forEach((Tinkerer person) {
-      if (person.machine != '_') {
+      if(person.machine != '-'){
+        person.isMachine = true;
         machinesTL.add(person);
       }
     });

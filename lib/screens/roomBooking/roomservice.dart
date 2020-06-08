@@ -8,6 +8,8 @@ import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'package:http/http.dart' as http;
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/screens/TLForms/TLContactPage.dart';
+import 'package:instiapp/classes/tlclass.dart';
 
 class RoomService extends StatefulWidget {
   @override
@@ -18,7 +20,9 @@ List<Room> rooms = [];
 String userID = (guest) ? 'Guest' : firebaseUser.email;
 List<Machine> machines = [];
 List<dynamic> emailIds = [];
-
+List<Tinkerer> inventory = [] ;
+List<Tinkerer> labAccess = [];
+List<Tinkerer> courseAccess = [];
 class _RoomServiceState extends State<RoomService>
     with AutomaticKeepAliveClientMixin<RoomService> {
   String bookingTitle = 'Rooms';
@@ -40,7 +44,26 @@ class _RoomServiceState extends State<RoomService>
     if (!guest) {
       getRooms();
       getMachines();
+      makeTLDataList();
     }
+  }
+  void makeTLDataList(){
+    tlDataList.forEach((Tinkerer time) {
+      time.job.forEach((i) {
+        if(time.job[i] == 'Lab Access'){
+          labAccess.add(time);
+        }
+        else if(time.job[i] == 'Inventory Access'){
+          inventory.add(time);
+        }
+        else if(time.job[i] == 'Course Access'){
+          courseAccess.add(time);
+        }
+        print('tl');
+        print(i);
+      });
+
+    });
   }
 
   getRooms() async {
@@ -790,11 +813,29 @@ class _RoomServiceState extends State<RoomService>
         children: <Widget>[
           FloatingActionButton(
             heroTag: "fab1rs",
-            onPressed: () {
-              Navigator.pushNamed(context, '/tlcontacts');
-            },
+            onPressed: (){},
             backgroundColor: Colors.white,
-            child: Icon(Icons.more_horiz, color:Colors.black),
+            child: PopupMenuButton<List<Tinkerer>>(
+              itemBuilder: (context)=>[
+                PopupMenuItem(
+                  value: machinesTL,
+                  child: Text('Machine Contacts'),
+                ),
+                PopupMenuItem(
+                  value: labAccess,
+                  child: Text('Lab Access for Workshop'),
+                ),
+                PopupMenuItem(
+                  value: inventory,
+                  child: Text('Inventory Access'),
+                ),
+                PopupMenuItem(
+                  value: courseAccess,
+                  child: Text('Course Access Request'),
+                ),
+              ],
+              onSelected: (value){Navigator.pushNamed(context, '/tlcontacts',arguments: {'dataList':value});},
+            ),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
