@@ -78,6 +78,7 @@ class _HomePageState extends State<HomePage>
     loadRemovedCoursesData();
     loadExamTimeTableData();
     loadCertificateData();
+
     loadTlData();
   }
 
@@ -90,11 +91,11 @@ class _HomePageState extends State<HomePage>
       });
     });
   }
-  
-  loadTlData() async{
+
+  loadTlData() async {
     sheet.getData('TLContacts!A:D').listen((data) {
-      var tlData= data;
-      tlDataList=[];
+      var tlData = data;
+      tlDataList = [];
       tlData.removeAt(0);
       tlData.forEach((detail) {
         tlDataList.add(Tinkerer(
@@ -110,8 +111,9 @@ class _HomePageState extends State<HomePage>
 
 
   }
-  makeMachines(List<Tinkerer> tlDataList){
-    machinesTL =[];
+
+  makeMachines(List<Tinkerer> tlDataList) {
+    machinesTL = [];
     tlDataList.forEach((Tinkerer person) {
       if(person.machine != '-'){
         person.isMachine = true;
@@ -119,6 +121,7 @@ class _HomePageState extends State<HomePage>
       }
     });
   }
+
   prepareEventsList() {
     List<calendar.Event> todayEvents;
     List<EventModel> currentDayCourses;
@@ -554,7 +557,7 @@ class _HomePageState extends State<HomePage>
   }
 
   var avatar = Avataaar.random(style: Style.circle);
-  bool prevConnected = false;
+  bool prevConnected = true;
   PageController _pageController;
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc."];
   Widget homeScreen() {

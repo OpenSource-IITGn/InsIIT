@@ -10,7 +10,7 @@ class model{
   String title;
   List<Tinkerer> person;
 
-  model({this.title,this.person});
+  TLModel({this.title, this.person});
 }
 
 
@@ -18,14 +18,13 @@ class model{
 List<model> tlList= [model(title:'Lab Access', person: labAccess),model(title:'Inventory Access',person: inventory),
   model(title: 'Machines', person: machinesTL),model(title: 'Course Access', person: courseAccess)];
 
-void customLaunch(command) async{
-  if (await canLaunch(command)){
+void customLaunch(command) async {
+  if (await canLaunch(command)) {
     await launch(command);
-  }else{
+  } else {
     throw 'Could not launch $command';
   }
 }
-
 
 
 
@@ -35,10 +34,8 @@ class TinkererContact extends StatefulWidget {
 }
 
 class _TinkererContactState extends State<TinkererContact> {
-
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
   }
@@ -81,7 +78,7 @@ class _TinkererContactState extends State<TinkererContact> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('TL Contacts',
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         elevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: Colors.black),

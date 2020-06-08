@@ -73,6 +73,7 @@ class GSheet {
     var file = await _localFile(range);
     bool exists = await file.exists();
     if (exists) {
+      print('FILE EXISTS at ' + range);
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
