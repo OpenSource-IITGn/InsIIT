@@ -50,17 +50,15 @@ class _RoomServiceState extends State<RoomService>
   void makeTLDataList(){
     tlDataList.forEach((Tinkerer time) {
       time.job.forEach((i) {
-        if(time.job[i] == 'Lab Access'){
+        if(i == 'Lab Access'){
           labAccess.add(time);
         }
-        else if(time.job[i] == 'Inventory Access'){
+        else if(i == 'Inventory Access'){
           inventory.add(time);
         }
-        else if(time.job[i] == 'Course Access'){
+        else if(i == 'Course Access'){
           courseAccess.add(time);
         }
-        print('tl');
-        print(i);
       });
 
     });
@@ -815,22 +813,22 @@ class _RoomServiceState extends State<RoomService>
             heroTag: "fab1rs",
             onPressed: (){},
             backgroundColor: Colors.white,
-            child: PopupMenuButton<List<Tinkerer>>(
+            child: PopupMenuButton<Map<String, List<Tinkerer>>>(
               itemBuilder: (context)=>[
                 PopupMenuItem(
-                  value: machinesTL,
+                  value: {'Machines' : machinesTL},
                   child: Text('Machine Contacts'),
                 ),
                 PopupMenuItem(
-                  value: labAccess,
+                  value: {'Lab' : labAccess},
                   child: Text('Lab Access for Workshop'),
                 ),
                 PopupMenuItem(
-                  value: inventory,
+                  value: {'Inventory' : inventory},
                   child: Text('Inventory Access'),
                 ),
                 PopupMenuItem(
-                  value: courseAccess,
+                  value: {'Course' : courseAccess},
                   child: Text('Course Access Request'),
                 ),
               ],

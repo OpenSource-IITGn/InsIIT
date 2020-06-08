@@ -78,7 +78,6 @@ class _HomePageState extends State<HomePage>
     loadRemovedCoursesData();
     loadExamTimeTableData();
     loadCertificateData();
-
     loadTlData();
   }
 
@@ -105,7 +104,6 @@ class _HomePageState extends State<HomePage>
           job: detail[3].split('+'),
         ));
       });
-      print('tl');
      makeMachines(tlDataList);
     });
 
