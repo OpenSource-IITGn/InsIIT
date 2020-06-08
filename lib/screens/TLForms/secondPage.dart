@@ -28,6 +28,32 @@ class _SecondPageState extends State<SecondPage> {
     _bioController = TextEditingController();
   }
 
+  getTime (File file) async {
+    var content = '';
+    try {
+      content = await file.readAsString();
+    } catch(e) {
+      print(e);
+    }
+    var newContent = content.split(';');
+    var timeContent = '';
+    newContent.forEach((var text) {
+      if (text.replaceAll(' ', '').contains(new RegExp('buildtime', caseSensitive: false))) {
+        timeContent = text;
+      }
+    });
+    var time = timeContent.split(':')[1];
+    int hour = int.parse(time.split('hours')[0]);
+    int minutes = int.parse(time.split('hours')[1].split('minutes')[0]);
+    double printTime = hour + minutes/60;
+    showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+        content: Text('Estimated Print Time: ' + printTime.toString() + 'h'),
+      ),
+    );
+  }
+
   void dispose() {
     _mobileNoController.dispose();
     _bioController.dispose();
@@ -64,6 +90,9 @@ class _SecondPageState extends State<SecondPage> {
               );
               if (file != null) {
                 files.putIfAbsent(extension, () => file);
+                if (file.path.split('/').last.split('.').last == 'gcode') {
+                  getTime(file);
+                }
               }
             },
             child: Text('Choose ' + text + ' file'),
