@@ -581,7 +581,12 @@ class _HomePageState extends State<HomePage>
 
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
-      makeMessList(data);
+      int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
+      int num2 = (data[0][1] is int) ? data[0][1] : int.parse(data[0][1]);
+      int num3 = (data[0][2] is int) ? data[0][2] : int.parse(data[0][2]);
+      int num4 = (data[0][3] is int) ? data[0][3] : int.parse(data[0][3]);
+      data.removeAt(0);
+      makeMessList(data, num1, num2, num3, num4);
       foodCards = [
         FoodCard(
             day: 'Monday',
@@ -1146,9 +1151,8 @@ class _HomePageState extends State<HomePage>
   var friday = [];
   var saturday = [];
   var sunday = [];
-//TODO make mess list dynamic. Dont pass numbers as arguments. Add a separator cell in the sheet.
   makeMessList(var messDataList,
-      {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
+      int num1, int num2, int num3, int num4) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
     monday = [];
     tuesday = [];
