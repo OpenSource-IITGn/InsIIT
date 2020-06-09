@@ -132,13 +132,15 @@ class _HomePageState extends State<HomePage>
     if (userAddedCourses != null) {
       userAddedCourses.forEach((EventModel model) {
         bool shouldContain = true;
-        removedEvents.forEach((EventModel removedEvent) {
-          if (removedEvent.courseId == model.courseId &&
-              removedEvent.courseName == model.courseName &&
-              removedEvent.eventType == model.eventType) {
-            shouldContain = false;
-          }
-        });
+        if (removedEvents != null) {
+          removedEvents.forEach((EventModel removedEvent) {
+            if (removedEvent.courseId == model.courseId &&
+                removedEvent.courseName == model.courseName &&
+                removedEvent.eventType == model.eventType) {
+              shouldContain = false;
+            }
+          });
+        }
         if (model.day == DateTime
             .now()
             .weekday && shouldContain) {
@@ -149,14 +151,16 @@ class _HomePageState extends State<HomePage>
     currentDayExamCourses = todayExamCourses(examCourses);
     currentDayExamCourses.forEach((EventModel model) {
       bool shouldContain = true;
-      removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isExam) {
-          if (removedEvent.courseId == model.courseId &&
-              removedEvent.courseName == model.courseName) {
-            shouldContain = false;
+      if (removedEvents != null) {
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.isExam) {
+            if (removedEvent.courseId == model.courseId &&
+                removedEvent.courseName == model.courseName) {
+              shouldContain = false;
+            }
           }
-        }
-      });
+        });
+      }
       if (shouldContain) {
         eventsList.add(model);
       }
@@ -165,15 +169,17 @@ class _HomePageState extends State<HomePage>
     mergedCourses = mergeSameCourses(currentDayCourses);
     mergedCourses.forEach((EventModel model) {
       bool shouldContain = true;
-      removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isCourse) {
-          if (removedEvent.courseId == model.courseId &&
-              removedEvent.courseName == model.courseName &&
-              removedEvent.eventType == model.eventType) {
-            shouldContain = false;
+      if (removedEvents != null) {
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.isCourse) {
+            if (removedEvent.courseId == model.courseId &&
+                removedEvent.courseName == model.courseName &&
+                removedEvent.eventType == model.eventType) {
+              shouldContain = false;
+            }
           }
-        }
-      });
+        });
+      }
       if (shouldContain) {
         eventsList.add(model);
       }
@@ -181,17 +187,19 @@ class _HomePageState extends State<HomePage>
     todayEvents = todayEventsList(eventsWithoutRepetition);
     todayEvents.forEach((calendar.Event event) {
       bool shouldContain = true;
-      removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isCourse == false && removedEvent.isExam == false) {
-          if (removedEvent.description == event.description &&
-              removedEvent.summary == event.summary &&
-              removedEvent.location == event.location &&
-              removedEvent.creator == event.creator.displayName &&
-              removedEvent.remarks == event.status) {
-            shouldContain = false;
+      if (removedEvents != null) {
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.isCourse == false && removedEvent.isExam == false) {
+            if (removedEvent.description == event.description &&
+                removedEvent.summary == event.summary &&
+                removedEvent.location == event.location &&
+                removedEvent.creator == event.creator.displayName &&
+                removedEvent.remarks == event.status) {
+              shouldContain = false;
+            }
           }
-        }
-      });
+        });
+      }
       if (shouldContain) {
         eventsList.add(EventModel(
             start: event.start.dateTime.toLocal(),

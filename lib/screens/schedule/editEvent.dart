@@ -246,6 +246,25 @@ class _EditEventState extends State<EditEvent> {
             backgroundColor: primaryColor,
             child: Icon(Icons.add, color: Colors.white),
           ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            heroTag: "fab3rs",
+            onPressed: () {
+              List<EventModel> _coursesList = [];
+              if (eventsList != null) {
+                eventsList.forEach((EventModel model) {
+                  if (model.isCourse || model.isExam) {
+                    _coursesList.add(model);
+                  }
+                });
+              }
+              Navigator.pushNamed(context, '/exportIcsFile', arguments: {
+                'coursesList': _coursesList,
+              });
+            },
+            backgroundColor: primaryColor,
+            child: Icon(Icons.file_download, color:Colors.white),
+          ),
         ],
       ),
     );

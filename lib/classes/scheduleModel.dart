@@ -35,6 +35,7 @@ class EventModel {
   String preRequisite;
   Map<DateTime, String> attendanceManager;
   int day;
+  bool repeatWeekly;
   EventModel(
       {this.start,
         this.end,
@@ -54,7 +55,8 @@ class EventModel {
         this.credits,
         this.preRequisite,
         this.attendanceManager,
-        this.day});
+        this.day,
+        this.repeatWeekly: false});
 
   Widget time (DateTime time) {
     if (time == null) {
