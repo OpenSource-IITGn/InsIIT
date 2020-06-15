@@ -37,41 +37,41 @@ class EventModel {
   int day;
   EventModel(
       {this.start,
-        this.end,
-        this.isCourse,
-        this.isExam,
-        this.currentlyRunning: false,
-        this.rollNumbers,
-        this.courseName,
-        this.courseId,
-        this.description,
-        this.summary,
-        this.eventType,
-        this.remarks,
-        this.location,
-        this.creator,
-        this.instructors,
-        this.credits,
-        this.preRequisite,
-        this.attendanceManager,
-        this.day});
+      this.end,
+      this.isCourse,
+      this.isExam,
+      this.currentlyRunning: false,
+      this.rollNumbers,
+      this.courseName,
+      this.courseId,
+      this.description,
+      this.summary,
+      this.eventType,
+      this.remarks,
+      this.location,
+      this.creator,
+      this.instructors,
+      this.credits,
+      this.preRequisite,
+      this.attendanceManager,
+      this.day});
 
-  Widget time (DateTime time) {
+  Widget time(DateTime time) {
     if (time == null) {
       return Flexible(
         child: Text("Whole Day",
-            style: TextStyle(
-                color: Colors.black.withAlpha(200), fontSize: 17)),
+            style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 17)),
       );
-    }
-    else {
-      return Text(twoDigitTime(time.hour.toString()) + ':' + twoDigitTime(time.minute.toString()),
-          style: TextStyle(
-              color: Colors.black.withAlpha(200), fontSize: 17));
+    } else {
+      return Text(
+          twoDigitTime(time.hour.toString()) +
+              ':' +
+              twoDigitTime(time.minute.toString()),
+          style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 17));
     }
   }
 
-  int totalAttendance (Map<DateTime, String> attendanceManager) {
+  int totalAttendance(Map<DateTime, String> attendanceManager) {
     int count = 0;
     attendanceManager.forEach((DateTime time, String attendance) {
       if (attendance == 'P') {
@@ -90,9 +90,7 @@ class EventModel {
     }
   }
 
-
-
-  Widget descriptionWidget () {
+  Widget descriptionWidget() {
     if (this.isCourse) {
       return Container(
         width: ScreenSize.size.width * 0.55,
@@ -123,7 +121,9 @@ class EventModel {
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Flexible(
                     child: Text('Room: ${this.location}',
                         style: TextStyle(
@@ -136,7 +136,9 @@ class EventModel {
               SizedBox(
                 height: 8,
               ),
-              Text('Your attendance: ' + totalAttendance(this.attendanceManager).toString(),
+              Text(
+                  'Your attendance: ' +
+                      totalAttendance(this.attendanceManager).toString(),
                   style: TextStyle(
                       color: Colors.black.withAlpha(255),
                       fontWeight: FontWeight.bold,
@@ -187,7 +189,9 @@ class EventModel {
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Flexible(
                     child: Text('Roll Numbers: ',
                         style: TextStyle(
@@ -209,7 +213,9 @@ class EventModel {
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(
+                    width: 8,
+                  ),
                   Flexible(
                     child: Text(this.rollNumbers,
                         style: TextStyle(
@@ -244,7 +250,11 @@ class EventModel {
               SizedBox(
                 height: 8,
               ),
-              Text(stringReturn(this.eventType) + ' (' + stringReturn(this.remarks) + ')',
+              Text(
+                  stringReturn(this.eventType) +
+                      ' (' +
+                      stringReturn(this.remarks) +
+                      ')',
                   style: TextStyle(
                       color: Colors.black.withAlpha(200),
                       fontStyle: FontStyle.italic,
@@ -254,7 +264,7 @@ class EventModel {
     }
   }
 
-  Widget current () {
+  Widget current() {
     if (this.currentlyRunning) {
       return Icon(
         Icons.adjust,
@@ -266,15 +276,15 @@ class EventModel {
   }
 
   Widget buildCard(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/eventdetail', arguments: {
-          'eventModel': this,
-        });
-      },
-      child: Card(
-        child: Container(
-          width: ScreenSize.size.width,
+    return Card(
+      child: Container(
+        width: ScreenSize.size.width,
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/eventdetail', arguments: {
+              'eventModel': this,
+            });
+          },
           child: Padding(
               padding: EdgeInsets.all(16),
               child: Row(
@@ -310,7 +320,7 @@ class TodayCourse {
   DateTime end;
   String course;
 
-  TodayCourse({this.start, this.end , this.course});
+  TodayCourse({this.start, this.end, this.course});
 }
 
 class MyCourse {
@@ -350,7 +360,7 @@ class MyCourse {
 }
 
 verticalDivider({double height}) {
-  if(height == null){
+  if (height == null) {
     height = 50.0;
   }
   return Row(
@@ -369,5 +379,3 @@ verticalDivider({double height}) {
     ],
   );
 }
-
-
