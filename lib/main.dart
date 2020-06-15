@@ -20,6 +20,7 @@ import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/form3.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:instiapp/screens/schedule/editEvent.dart';
+import 'package:instiapp/screens/schedule/exportIcsFile.dart';
 import 'package:instiapp/screens/schedule/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
         '/fourthPage': (context) => FourthPage(),
         '/tlcontacts': (context) => TinkererContact(),
         '/addcourse': (context) => AddCourse(),
+        '/exportIcsFile': (context) => ExportIcsFile(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),

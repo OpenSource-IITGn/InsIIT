@@ -35,26 +35,30 @@ class EventModel {
   String preRequisite;
   Map<DateTime, String> attendanceManager;
   int day;
+  bool repeatWeekly;
   EventModel(
       {this.start,
-      this.end,
-      this.isCourse,
-      this.isExam,
-      this.currentlyRunning: false,
-      this.rollNumbers,
-      this.courseName,
-      this.courseId,
-      this.description,
-      this.summary,
-      this.eventType,
-      this.remarks,
-      this.location,
-      this.creator,
-      this.instructors,
-      this.credits,
-      this.preRequisite,
-      this.attendanceManager,
-      this.day});
+
+        this.end,
+        this.isCourse,
+        this.isExam,
+        this.currentlyRunning: false,
+        this.rollNumbers,
+        this.courseName,
+        this.courseId,
+        this.description,
+        this.summary,
+        this.eventType,
+        this.remarks,
+        this.location,
+        this.creator,
+        this.instructors,
+        this.credits,
+        this.preRequisite,
+        this.attendanceManager,
+        this.day,
+        this.repeatWeekly: false});
+
 
   Widget time(DateTime time) {
     if (time == null) {
@@ -116,7 +120,7 @@ class EventModel {
               ),
               Row(
                 children: <Widget>[
-                  Text(this.eventType,
+                  Text((this.eventType == null) ? 'Course' : this.eventType,
                       style: TextStyle(
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,

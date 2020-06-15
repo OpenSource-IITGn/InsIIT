@@ -181,7 +181,7 @@ class _BookingFormState extends State<BookingForm> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0),
                       ),
-                      color: Colors.black,
+                      color: primaryColor,
                       onPressed: () {
                         if (_mobileNoController.text == '' ||
                             _purposeController.text == '' ||

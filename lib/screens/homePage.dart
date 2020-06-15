@@ -130,25 +130,37 @@ class _HomePageState extends State<HomePage>
 
     eventsList = [];
     if (userAddedCourses != null) {
-      userAddedCourses.forEach((EventModel event) {
-        if (event.day == DateTime
+      userAddedCourses.forEach((EventModel model) {
+        bool shouldContain = true;
+        if (removedEvents != null) {
+          removedEvents.forEach((EventModel removedEvent) {
+            if (removedEvent.courseId == model.courseId &&
+                removedEvent.courseName == model.courseName &&
+                removedEvent.eventType == model.eventType) {
+              shouldContain = false;
+            }
+          });
+        }
+        if (model.day == DateTime
             .now()
-            .weekday) {
-          eventsList.add(event);
+            .weekday && shouldContain) {
+          eventsList.add(model);
         }
       });
     }
     currentDayExamCourses = todayExamCourses(examCourses);
     currentDayExamCourses.forEach((EventModel model) {
       bool shouldContain = true;
-      removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isExam) {
-          if (removedEvent.courseId == model.courseId &&
-              removedEvent.courseName == model.courseName) {
-            shouldContain = false;
+      if (removedEvents != null) {
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.isExam) {
+            if (removedEvent.courseId == model.courseId &&
+                removedEvent.courseName == model.courseName) {
+              shouldContain = false;
+            }
           }
-        }
-      });
+        });
+      }
       if (shouldContain) {
         eventsList.add(model);
       }
@@ -157,15 +169,17 @@ class _HomePageState extends State<HomePage>
     mergedCourses = mergeSameCourses(currentDayCourses);
     mergedCourses.forEach((EventModel model) {
       bool shouldContain = true;
-      removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isCourse) {
-          if (removedEvent.courseId == model.courseId &&
-              removedEvent.courseName == model.courseName &&
-              removedEvent.eventType == model.eventType) {
-            shouldContain = false;
+      if (removedEvents != null) {
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.isCourse) {
+            if (removedEvent.courseId == model.courseId &&
+                removedEvent.courseName == model.courseName &&
+                removedEvent.eventType == model.eventType) {
+              shouldContain = false;
+            }
           }
-        }
-      });
+        });
+      }
       if (shouldContain) {
         eventsList.add(model);
       }
@@ -173,17 +187,19 @@ class _HomePageState extends State<HomePage>
     todayEvents = todayEventsList(eventsWithoutRepetition);
     todayEvents.forEach((calendar.Event event) {
       bool shouldContain = true;
-      removedEvents.forEach((EventModel removedEvent) {
-        if (removedEvent.isCourse == false && removedEvent.isExam == false) {
-          if (removedEvent.description == event.description &&
-              removedEvent.summary == event.summary &&
-              removedEvent.location == event.location &&
-              removedEvent.creator == event.creator.displayName &&
-              removedEvent.remarks == event.status) {
-            shouldContain = false;
+      if (removedEvents != null) {
+        removedEvents.forEach((EventModel removedEvent) {
+          if (removedEvent.isCourse == false && removedEvent.isExam == false) {
+            if (removedEvent.description == event.description &&
+                removedEvent.summary == event.summary &&
+                removedEvent.location == event.location &&
+                removedEvent.creator == event.creator.displayName &&
+                removedEvent.remarks == event.status) {
+              shouldContain = false;
+            }
           }
-        }
-      });
+        });
+      }
       if (shouldContain) {
         eventsList.add(EventModel(
             start: event.start.dateTime.toLocal(),
@@ -320,6 +336,7 @@ class _HomePageState extends State<HomePage>
 
   loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
+      print(data);
       removedEvents = makeRemovedEventsList(data);
     });
   }
@@ -404,7 +421,7 @@ class _HomePageState extends State<HomePage>
           courseId: lc[0],
           courseName: lc[1],
           location: lc[2],
-          credits: lc[3],
+          credits: lc[3].toString(),
           preRequisite: lc[4],
           start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[5].split(':')[0]), int.parse(lc[5].split(':')[1])),
           end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[6].split(':')[0]), int.parse(lc[6].split(':')[1])),
@@ -572,7 +589,12 @@ class _HomePageState extends State<HomePage>
 
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
-      makeMessList(data);
+      int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
+      int num2 = (data[0][1] is int) ? data[0][1] : int.parse(data[0][1]);
+      int num3 = (data[0][2] is int) ? data[0][2] : int.parse(data[0][2]);
+      int num4 = (data[0][3] is int) ? data[0][3] : int.parse(data[0][3]);
+      data.removeAt(0);
+      makeMessList(data, num1, num2, num3, num4);
       foodCards = [
         FoodCard(
             day: 'Monday',
@@ -1137,9 +1159,8 @@ class _HomePageState extends State<HomePage>
   var friday = [];
   var saturday = [];
   var sunday = [];
-//TODO make mess list dynamic. Dont pass numbers as arguments. Add a separator cell in the sheet.
   makeMessList(var messDataList,
-      {int num1 = 9, int num2 = 8, int num3 = 5, int num4 = 8}) {
+      int num1, int num2, int num3, int num4) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
     monday = [];
     tuesday = [];
@@ -1310,7 +1331,7 @@ class _HomePageState extends State<HomePage>
               ),
               Row(
                 children: <Widget>[
-                  Text(event.eventType,
+                  Text((event.eventType == null) ? 'Course' : event.eventType,
                       style: TextStyle(
                           color: Colors.black.withAlpha(200),
                           fontStyle: FontStyle.italic,

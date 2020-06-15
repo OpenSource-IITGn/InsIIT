@@ -134,7 +134,7 @@ class _EventDetailState extends State<EventDetail> {
               height: 8,
             ),
             Column(
-              children: event.instructors.map<Widget>((String instructor) {
+              children: (event.instructors == null) ? [Container()] :event.instructors.map<Widget>((String instructor) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(instructor,

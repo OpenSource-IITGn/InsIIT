@@ -581,6 +581,7 @@ class _RoomServiceState extends State<RoomService>
                 },
                 icon: Icon(
                   Icons.delete,
+                  color: Colors.black,
                 ),
               )
             ],

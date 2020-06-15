@@ -15,6 +15,7 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+  bool loading = false;
   Widget eventCard(EventModel model) {
     return GestureDetector(
       onTap: () {
@@ -67,7 +68,7 @@ class _EditEventState extends State<EditEvent> {
                   ),
                 ),
                 IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: Colors.black,),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -103,6 +104,8 @@ class _EditEventState extends State<EditEvent> {
                                   ));
                                 }
                                 Navigator.pop(context);
+                                loading = true;
+                                setState(() {});
                                 var file = await _localFileForRemovedEvents();
                                 bool exists = await file.exists();
                                 if (exists) {
@@ -115,6 +118,7 @@ class _EditEventState extends State<EditEvent> {
                                 await file.writeAsString(
                                     ListToCsvConverter().convert(removedList));
                                 print('DATA OF REMOVED EVENT STORED IN FILE');
+                                Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
                               },
                               child: Text('Yes'),
                             ),
@@ -210,7 +214,9 @@ class _EditEventState extends State<EditEvent> {
         title: Text('Edit Schedule',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
-      body: SingleChildScrollView(
+      body: (loading)
+          ? Center(child: CircularProgressIndicator(),)
+          :SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -228,8 +234,8 @@ class _EditEventState extends State<EditEvent> {
             onPressed: () {
               Navigator.pushNamed(context, '/addcourse');
             },
-            backgroundColor: Colors.white,
-            child: Icon(Icons.more_horiz, color:Colors.black),
+            backgroundColor: primaryColor,
+            child: Icon(Icons.more_horiz, color:Colors.white),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
@@ -237,8 +243,27 @@ class _EditEventState extends State<EditEvent> {
             onPressed: () {
               _openGoogleCalendar();
             },
-            backgroundColor: Colors.white,
-            child: Icon(Icons.add, color: Colors.black),
+            backgroundColor: primaryColor,
+            child: Icon(Icons.add, color: Colors.white),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            heroTag: "fab3rs",
+            onPressed: () {
+              List<EventModel> _coursesList = [];
+              if (eventsList != null) {
+                eventsList.forEach((EventModel model) {
+                  if (model.isCourse || model.isExam) {
+                    _coursesList.add(model);
+                  }
+                });
+              }
+              Navigator.pushNamed(context, '/exportIcsFile', arguments: {
+                'coursesList': _coursesList,
+              });
+            },
+            backgroundColor: primaryColor,
+            child: Icon(Icons.file_download, color:Colors.white),
           ),
         ],
       ),

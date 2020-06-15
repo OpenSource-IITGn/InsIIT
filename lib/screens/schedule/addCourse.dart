@@ -4,6 +4,7 @@ import 'package:instiapp/screens/homePage.dart';
 import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
 
@@ -189,7 +190,7 @@ class _AddCourseState extends State<AddCourse> {
                 height: 20.0,
               ),
               FlatButton.icon(
-                color: Colors.black,
+                color: primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16.0),
                 ),

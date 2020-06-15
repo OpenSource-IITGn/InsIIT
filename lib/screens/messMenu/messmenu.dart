@@ -153,7 +153,7 @@ class _MessMenuState extends State<MessMenu> {
         timeString: '8:00 am to 10:00 am',
         bodyModel: foodCards[2].breakfast),
     ItemModel(
-        header: 'Snack',
+        header: 'Lunch',
         timeString: '12:15 pm to 2:15 pm',
         bodyModel: foodCards[2].lunch),
     ItemModel(
@@ -172,7 +172,7 @@ class _MessMenuState extends State<MessMenu> {
         timeString: '8:00 am to 10:00 am',
         bodyModel: foodCards[3].breakfast),
     ItemModel(
-        header: 'Snack',
+        header: 'Lunch',
         timeString: '12:15 pm to 2:15 pm',
         bodyModel: foodCards[3].lunch),
     ItemModel(
@@ -210,12 +210,12 @@ class _MessMenuState extends State<MessMenu> {
         timeString: '8:00 am to 10:00 am',
         bodyModel: foodCards[5].breakfast),
     ItemModel(
-        header: 'Snack',
+        header: 'Lunch',
         timeString: '12:15 pm to 2:15 pm',
         bodyModel: foodCards[5].lunch),
     ItemModel(
         header: 'Snack',
-        timeString: '8:00 am to 10:00 am',
+        timeString: '4:30 pm to 6:00pm',
         bodyModel: foodCards[5].snacks),
     ItemModel(
         header: 'Dinner',
@@ -229,12 +229,12 @@ class _MessMenuState extends State<MessMenu> {
         timeString: '8:00 am to 10:00 am',
         bodyModel: foodCards[6].breakfast),
     ItemModel(
-        header: 'Snack',
+        header: 'Lunch',
         timeString: '12:15 pm to 2:15 pm',
         bodyModel: foodCards[6].lunch),
     ItemModel(
         header: 'Snack',
-        timeString: '8:00 am to 10:00 am',
+        timeString: '4:30 pm to 6:00pm',
         bodyModel: foodCards[6].snacks),
     ItemModel(
         header: 'Dinner',

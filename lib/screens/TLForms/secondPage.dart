@@ -203,7 +203,7 @@ class _SecondPageState extends State<SecondPage> {
                     );
                   }
                 },
-                color: Colors.black,
+                color: primaryColor,
               ),
             ],
           ),
