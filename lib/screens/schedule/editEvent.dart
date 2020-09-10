@@ -1,4 +1,4 @@
-import 'dart:io';
+/*(beta)import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -269,4 +269,4 @@ class _EditEventState extends State<EditEvent> {
       ),
     );
   }
-}
+}*/

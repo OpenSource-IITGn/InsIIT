@@ -1,4 +1,4 @@
-class Tinkerer{
+/*(beta)class Tinkerer{
   String name;
   String mobNo;
   String machine;
@@ -6,4 +6,4 @@ class Tinkerer{
   bool isMachine;
 
   Tinkerer({this.name, this.mobNo, this.machine,this.job,this.isMachine: false});
-}
+}*/

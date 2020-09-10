@@ -1,6 +1,6 @@
-import 'dart:io';
+//(beta)import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:csv/csv.dart';
+//(beta)import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
@@ -14,16 +14,16 @@ import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'email.dart';
-import 'package:instiapp/classes/scheduleModel.dart';
-import 'package:googleapis/classroom/v1.dart';
-import 'package:googleapis/calendar/v3.dart' as calendar;
+//(beta)import 'package:instiapp/classes/scheduleModel.dart';
+//(beta)import 'package:googleapis/classroom/v1.dart';
+//(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:instiapp/screens/roomBooking/roomservice.dart';
+//(beta)import 'package:path_provider/path_provider.dart';
+//(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:avataaar_image/avataaar_image.dart';
 import 'package:instiapp/screens/misc.dart';
-import 'package:instiapp/classes/tlclass.dart';
-import 'feed/feedPage.dart';
+//(beta)import 'package:instiapp/classes/tlclass.dart';
+//(beta)import 'feed/feedPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -36,22 +36,23 @@ List<FoodCard> foodCards;
 List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
-List<TodayCourse> todayCourses;
-List<MyCourse> myCourses;
-List<EventModel> removedEvents;
-List<EventModel> userAddedCourses;
-List<EventModel> examCourses;
-List<EventModel> eventsList;
-List<Tinkerer> tlDataList;
-List<Tinkerer> machinesTL;
+//(beta)List<TodayCourse> todayCourses;
+//(beta)List<MyCourse> myCourses;
+//(beta)List<EventModel> removedEvents;
+//(beta)List<EventModel> userAddedCourses;
+//(beta)List<EventModel> examCourses;
+//(beta)List<EventModel> eventsList;
+//(beta)List<Tinkerer> tlDataList;
+//(beta)List<Tinkerer> machinesTL;
 
 bool mainPageLoading = true;
 int selectedIndex = 0;
+List<int> prevIndexes = [];
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin<HomePage> {
   var startpos, endpos;
-  List<EventModel> twoEvents;
+  //(beta)List<EventModel> twoEvents;
   @override
   void initState() {
     super.initState();
@@ -75,15 +76,15 @@ class _HomePageState extends State<HomePage>
     loadlinks();
     loadImportantContactData();
     loadShuttleData();
-    loadCourseData();
-    loadRemovedCoursesData();
-    loadUserAddedCoursesData();
-    loadExamTimeTableData();
-    loadCertificateData();
-    loadTlData();
+    //(beta)loadCourseData();
+    //(beta)loadRemovedCoursesData();
+    //(beta)loadUserAddedCoursesData();
+    //(beta)loadExamTimeTableData();
+    //(beta)loadCertificateData();
+    //(beta)loadTlData();
   }
 
-  loadCertificateData() async {
+  /*(beta)loadCertificateData() async {
     emailIds = [];
     sheetTL.getData('CertificateList!A:E').listen((data) {
       var certificateData = (data);
@@ -91,9 +92,9 @@ class _HomePageState extends State<HomePage>
         emailIds.add(data[1]);
       });
     });
-  }
+  }*/
 
-  loadTlData() async {
+  /*(beta)loadTlData() async {
     sheet.getData('TLContacts!A:D').listen((data) {
       var tlData = data;
       tlDataList = [];
@@ -110,9 +111,9 @@ class _HomePageState extends State<HomePage>
     });
 
 
-  }
+  }*/
 
-  makeMachines(List<Tinkerer> tlDataList) {
+  /*(beta)makeMachines(List<Tinkerer> tlDataList) {
     machinesTL = [];
     tlDataList.forEach((Tinkerer person) {
       if(person.machine != '-'){
@@ -120,9 +121,9 @@ class _HomePageState extends State<HomePage>
         machinesTL.add(person);
       }
     });
-  }
+  }*/
 
-  prepareEventsList() {
+  /*(beta)prepareEventsList() {
     List<calendar.Event> todayEvents;
     List<EventModel> currentDayCourses;
     List<EventModel> currentDayExamCourses;
@@ -217,7 +218,7 @@ class _HomePageState extends State<HomePage>
     if (eventsList != null && eventsList.length != 0) {
       quickSort(eventsList, 0, eventsList.length - 1);
     }
-  }
+  }*/
 
   loadShuttleData() async {
     sheet.getData('BusRoutes!A:H').listen((data) {
@@ -237,13 +238,13 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  loadExamTimeTableData() async {
+  /*(beta)loadExamTimeTableData() async {
     sheet.getData('ExamTimeTable!A:H').listen((data) {
       examCourses = makeMyExamCoursesList(data, coursesWithoutRepetition);
     });
-  }
+  }*/
 
-  List<EventModel> makeMyExamCoursesList(List data, List<Course> _courses) {
+  /*(beta)List<EventModel> makeMyExamCoursesList(List data, List<Course> _courses) {
     List<EventModel> myExamCourses = [];
 
     if (_courses != null) {
@@ -292,7 +293,7 @@ class _HomePageState extends State<HomePage>
     }
 
     return myExamCourses;
-  }
+  }*/
 
   Map<String, int> monthData = {
     'January': 1,
@@ -334,14 +335,14 @@ class _HomePageState extends State<HomePage>
     return time;
   }
 
-  loadRemovedCoursesData() async {
+  /*(beta)loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
       print(data);
       removedEvents = makeRemovedEventsList(data);
     });
-  }
+  }*/
 
-  List<EventModel> makeRemovedEventsList(var removedEventsDataList) {
+  /*(beta)List<EventModel> makeRemovedEventsList(var removedEventsDataList) {
     List<EventModel> _removedEvents = [];
 
     if (removedEventsDataList != null && removedEventsDataList.length != 0) {
@@ -377,16 +378,16 @@ class _HomePageState extends State<HomePage>
     }
 
     return _removedEvents;
-  }
+  }*/
 
-  Future<File> _localFileForRemovedEvents() async {
+  /*(beta)Future<File> _localFileForRemovedEvents() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     String filename = tempPath + 'removedCourses' + '.csv';
     return File(filename);
-  }
+  }*/
 
-  Stream<List<List<dynamic>>> getRemovedEventsData() async* {
+  /*(beta)Stream<List<List<dynamic>>> getRemovedEventsData() async* {
     var file = await _localFileForRemovedEvents();
     bool exists = await file.exists();
     if (exists) {
@@ -400,15 +401,15 @@ class _HomePageState extends State<HomePage>
     } else {
       yield [];
     }
-  }
+  }*/
 
-  loadUserAddedCoursesData () async {
+  /*(beta)loadUserAddedCoursesData () async {
     getUserAddedCoursesData().listen((data) {
       userAddedCourses = makeUserAddedCoursesList(data);
     });
-  }
+  }*/
 
-  List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
+  /*(beta)List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
     List<EventModel> _userAddedCourses = [];
 
     if (userAddedCoursesDataList != null &&
@@ -433,16 +434,16 @@ class _HomePageState extends State<HomePage>
     }
 
     return _userAddedCourses;
-  }
+  }*/
 
-  Future<File> _localFileForUserAddedCourses() async {
+  /*(beta)Future<File> _localFileForUserAddedCourses() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     String filename = tempPath + 'userAddedCourses' + '.csv';
     return File(filename);
-  }
+  }*/
 
-  Stream<List<List<dynamic>>> getUserAddedCoursesData() async* {
+  /*(beta)Stream<List<List<dynamic>>> getUserAddedCoursesData() async* {
     var file = await _localFileForUserAddedCourses();
     bool exists = await file.exists();
     if (exists) {
@@ -456,9 +457,9 @@ class _HomePageState extends State<HomePage>
     } else {
       yield [];
     }
-  }
+  }*/
 
-  loadCourseData() async {
+  /*(beta)loadCourseData() async {
     sheet.getData('slots!A:F').listen((data) {
       todayCourses = makeTodayTimeSlotList(data);
     });
@@ -466,7 +467,7 @@ class _HomePageState extends State<HomePage>
     sheet.getData('timetable!A:Q').listen((data) {
       myCourses = makeMyCourseList(data, coursesWithoutRepetition);
     });
-  }
+  }*/
 
   bool compareStrings(String str1, String str2) {
     if (str1.compareTo(str2) == 0) {
@@ -476,7 +477,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
+  /*(beta)List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
     List<MyCourse> _myCourses = [];
 
     if (_courses != null) {
@@ -529,7 +530,7 @@ class _HomePageState extends State<HomePage>
     }
 
     return _myCourses;
-  }
+  }*/
 
   String returnLocation(var text) {
     if (text.split('(').length == 1) {
@@ -539,7 +540,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
+  /*(beta)List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
     int day = DateTime.now().weekday;
     List<TodayCourse> courses = [];
     if (day != 6 && day != 7) {
@@ -552,7 +553,7 @@ class _HomePageState extends State<HomePage>
       });
     }
     return courses;
-  }
+  }*/
 
   List<DateTime> returnTime(String time) {
     List<DateTime> seTime = [];
@@ -647,7 +648,7 @@ class _HomePageState extends State<HomePage>
   var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = true;
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "Campus Map", "Misc."];
+  List<String> titles = ["", /*(beta)"News",*/ "Buses", "Campus Map", "Misc."];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
@@ -657,6 +658,7 @@ class _HomePageState extends State<HomePage>
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         onItemSelected: (index) {
+          prevIndexes.add(selectedIndex);
           selectedIndex = index;
           _pageController.jumpToPage(index);
           setState(() {});
@@ -669,13 +671,13 @@ class _HomePageState extends State<HomePage>
             inactiveColor: Colors.grey,
             textAlign: TextAlign.center,
           ),
-          BottomNavyBarItem(
+          /*(beta)BottomNavyBarItem(
             icon: Icon(Icons.rss_feed),
             title: Text('Feed'),
             activeColor: primaryColor,
             inactiveColor: Colors.grey,
             textAlign: TextAlign.center,
-          ),
+          ),*/
           BottomNavyBarItem(
             icon: Icon(Icons.airport_shuttle),
             title: Text('Shuttle'),
@@ -913,7 +915,7 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                       ),
-                      (twoEvents.length == 0)
+                      /*(beta)(twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(
                               onTap: () {
@@ -962,8 +964,8 @@ class _HomePageState extends State<HomePage>
                                   ],
                                 ),
                               ),
-                            ),
-                      GestureDetector(
+                            ),*/
+                      /*(beta)GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
                         },
@@ -1128,7 +1130,7 @@ class _HomePageState extends State<HomePage>
                             ],
                           ),
                         ),
-                      ),
+                      ),*/
 
                       // RaisedButton(
                       //   child: Text("Feed"),
@@ -1143,7 +1145,7 @@ class _HomePageState extends State<HomePage>
             },
             child: Container(),
           ),
-          FeedPage(),
+          //(beta)FeedPage(),
           Shuttle(),
           MapPage(),
           MiscPage(),
@@ -1231,7 +1233,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<EventModel> makeListOfTwoEvents() {
+  /*(beta)List<EventModel> makeListOfTwoEvents() {
     List<EventModel> currentEvents = [];
     DateTime currentTime = DateTime.now();
     if (eventsList != null) {
@@ -1246,9 +1248,9 @@ class _HomePageState extends State<HomePage>
     }
 
     return currentEvents;
-  }
+  }*/
 
-  Widget scheduleCard(EventModel event) {
+  /*(beta)Widget scheduleCard(EventModel event) {
     return Card(
       child: Container(
         child: Padding(
@@ -1283,9 +1285,9 @@ class _HomePageState extends State<HomePage>
             )),
       ),
     );
-  }
+  }*/
 
-  Widget descriptionWidget(EventModel event) {
+  /*(beta)Widget descriptionWidget(EventModel event) {
     // if (event.isCourse || event.isExam) {
     //   return Flexible(
     //     child: Text(event.courseId,
@@ -1468,7 +1470,7 @@ class _HomePageState extends State<HomePage>
             ]),
       );
     }
-  }
+  }*/
 
   Widget time(DateTime time) {
     return Text(
@@ -1493,8 +1495,8 @@ class _HomePageState extends State<HomePage>
     if (mainPageLoading == true) {
       return loadScreen();
     } else {
-      prepareEventsList();
-      twoEvents = makeListOfTwoEvents();
+      //(beta)prepareEventsList();
+      //(beta)twoEvents = makeListOfTwoEvents();
       return homeScreen();
     }
   }
@@ -1514,7 +1516,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<EventModel> todayExamCourses(List<EventModel> examCourses) {
+  /*(beta)List<EventModel> todayExamCourses(List<EventModel> examCourses) {
     List<EventModel> todayExamCourses = [];
     DateTime today = DateTime.now();
     if (examCourses != null) {
@@ -1527,9 +1529,9 @@ class _HomePageState extends State<HomePage>
       });
     }
     return todayExamCourses;
-  }
+  }*/
 
-  List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
+  /*(beta)List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
     List<EventModel> _mergedCourses = [];
     bool notHave;
 
@@ -1564,7 +1566,7 @@ class _HomePageState extends State<HomePage>
     }
 
     return _mergedCourses;
-  }
+  }*/
 
   String returnText(String text) {
     if (text.length > 2) {
@@ -1574,7 +1576,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<EventModel> makeCourseEventModel(
+  /*(beta)List<EventModel> makeCourseEventModel(
       List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
     List<EventModel> coursesEventModelList = [];
 
@@ -1696,9 +1698,9 @@ class _HomePageState extends State<HomePage>
     }
 
     return coursesEventModelList;
-  }
+  }*/
 
-  List todayEventsList(List<calendar.Event> _events) {
+  /*(beta)List todayEventsList(List<calendar.Event> _events) {
     List<calendar.Event> todayEvents = [];
     if (_events != null) {
       _events.forEach((calendar.Event _event) {
@@ -1731,9 +1733,9 @@ class _HomePageState extends State<HomePage>
       });
     }
     return todayEvents;
-  }
+  }*/
 
-  int partition(List<EventModel> list, int low, int high) {
+  /*(beta)int partition(List<EventModel> list, int low, int high) {
     if (list == null || list.length == 0) return 0;
     DateTime pivot = list[high].start;
     int i = low - 1;
@@ -1761,7 +1763,7 @@ class _HomePageState extends State<HomePage>
       quickSort(list, low, pi - 1);
       quickSort(list, pi + 1, high);
     }
-  }
+  }*/
 
   @override
   bool get wantKeepAlive => true;

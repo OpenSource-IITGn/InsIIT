@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+/*(beta)import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
@@ -110,4 +110,4 @@ class _SchedulePageState extends State<SchedulePage> {
       body: body(context),
     );
   }
-}
+}*/

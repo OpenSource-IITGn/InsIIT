@@ -674,31 +674,33 @@ class CustomSearch extends SearchDelegate<String>{
   @override
   Widget buildSuggestions(BuildContext context) {
     if (query.isEmpty){
-      return Container(
-        margin: EdgeInsets.all(15),
-        height: 425,
-        decoration: BoxDecoration(
-            color: Colors.white10,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Column(
-            children: <Widget>[
-              Image(
-                image: AssetImage('assets/images/map_search.png'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(17.0),
-                child: Text(
-                  "This location search is powered by a comprehensive list of keywords. For example, if you search 'food', the dining hall and canteens will come up as suggestions.",
-                  style: TextStyle(
-                    color: Colors.black38,
-                    fontSize: 18,
-                  ),
-                  textAlign: TextAlign.center,
+      return SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(15),
+          height: 425,
+          decoration: BoxDecoration(
+              color: Colors.white10,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Column(
+              children: <Widget>[
+                Image(
+                  image: AssetImage('assets/images/map_search.png'),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(17.0),
+                  child: Text(
+                    "This location search is powered by a comprehensive list of keywords. For example, if you search 'food', the dining hall and canteens will come up as suggestions.",
+                    style: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );

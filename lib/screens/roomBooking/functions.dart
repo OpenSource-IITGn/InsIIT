@@ -1,4 +1,4 @@
-class Room{
+/*(beta)class Room{
   String roomId;
   String block;
   String roomno;
@@ -234,6 +234,6 @@ class YourBookedMachine {
   String bookingId;
 
   YourBookedMachine({this.userId, this.machineId, this.type, this.model, this.tier, this.start, this.end, this.purpose, this.bookingId});
-}
+}*/
 
 

@@ -26,7 +26,7 @@ class _MiscPageState extends State<MiscPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
+                  /*(beta)Container(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: FlatButton(
                       onPressed: () =>
@@ -48,7 +48,7 @@ class _MiscPageState extends State<MiscPage> {
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
                   SizedBox(
                     height: 22,
                   ),

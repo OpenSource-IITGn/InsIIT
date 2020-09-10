@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*(beta)import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/postModel.dart';
@@ -107,4 +107,4 @@ class _FeedPageState extends State<FeedPage>
 
   @override
   bool get wantKeepAlive => true;
-}
+}*/

@@ -1,5 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
+//(beta)import 'dart:convert';
+//(beta)import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,15 +8,15 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
-import 'package:googleapis/classroom/v1.dart';
-import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:path_provider/path_provider.dart';
+//(beta)import 'package:googleapis/classroom/v1.dart';
+//(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
+//(beta)import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-List<Course> courses = [];
-List<Course> coursesWithoutRepetition;
-List<calendar.Event> events = [];
-List<calendar.Event> eventsWithoutRepetition;
+//(beta)List<Course> courses = [];
+//(beta)List<Course> coursesWithoutRepetition;
+//(beta)List<calendar.Event> events = [];
+//(beta)List<calendar.Event> eventsWithoutRepetition;
 bool guest = false;
 
 class GoogleHttpClient extends IOClient {
@@ -42,7 +42,7 @@ class SignInPage extends StatefulWidget {
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-Future getEventsCached() async {
+/*(beta)Future getEventsCached() async {
   var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
@@ -61,12 +61,12 @@ Future getEventsCached() async {
   }
 
   return false;
-}
+}*/
 
 logoutUser() async {
   gSignIn.signOut();
   FirebaseAuth.instance.signOut();
-  var file = await _localFile('events');
+  /*(beta)var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
     await file.delete();
@@ -75,10 +75,10 @@ logoutUser() async {
   exists = await file.exists();
   if (exists) {
     await file.delete();
-  }
+  }*/
 }
 
-Future storeEventsCached() async {
+/*(beta)Future storeEventsCached() async {
   var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
@@ -94,16 +94,16 @@ Future storeEventsCached() async {
   await file.writeAsString(jsonEncode(list));
   print("WROTE EVENTS TO CACHE");
   return true;
-}
+}*/
 
-Future getEventsOnline(httpClient) async {
+/*(beta)Future getEventsOnline(httpClient) async {
   var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
   events = [];
   events.addAll(eventData.items);
   eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-}
+}*/
 
-Future getCoursesCached() async {
+/*(beta)Future getCoursesCached() async {
   var file = await _localFile('courses');
   bool exists = await file.exists();
   if (exists) {
@@ -122,9 +122,9 @@ Future getCoursesCached() async {
   }
 
   return false;
-}
+}*/
 
-Future storeCoursesCached() async {
+/*(beta)Future storeCoursesCached() async {
   var file = await _localFile('courses');
   bool exists = await file.exists();
   if (exists) {
@@ -140,9 +140,9 @@ Future storeCoursesCached() async {
   await file.writeAsString(jsonEncode(list));
   print("WROTE Courses TO CACHE");
   return true;
-}
+}*/
 
-Future getCoursesOnline(httpClient) async {
+/*(beta)Future getCoursesOnline(httpClient) async {
   courses = [];
   var courseData = await ClassroomApi(httpClient).courses.list();
   courses.addAll(courseData.courses);
@@ -154,9 +154,9 @@ Future<File> _localFile(String range) async {
   String tempPath = tempDir.path;
   String filename = tempPath + range + '.csv';
   return File(filename);
-}
+}*/
 
-Future reloadEventsAndCourses() async {
+/*(beta)Future reloadEventsAndCourses() async {
   final authHeaders = await gSignIn.currentUser.authHeaders;
   final httpClient = GoogleHttpClient(authHeaders);
   await getEventsCached().then((values) async {
@@ -186,9 +186,9 @@ Future reloadEventsAndCourses() async {
   getCoursesOnline(httpClient).then((value) {
     storeCoursesCached();
   });
-}
+}*/
 
-List listWithoutRepetitionCourse(List<Course> courses) {
+/*(beta)List listWithoutRepetitionCourse(List<Course> courses) {
   List<Course> withoutRepeat = [];
   courses.forEach((Course course) {
     bool notHave = true;
@@ -202,9 +202,9 @@ List listWithoutRepetitionCourse(List<Course> courses) {
     }
   });
   return withoutRepeat;
-}
+}*/
 
-List listWithoutRepetitionEvent(List<calendar.Event> events) {
+/*(beta)List listWithoutRepetitionEvent(List<calendar.Event> events) {
   List<calendar.Event> withoutRepeat = [];
   events.forEach((calendar.Event event) {
     bool notHave = true;
@@ -218,7 +218,7 @@ List listWithoutRepetitionEvent(List<calendar.Event> events) {
     }
   });
   return withoutRepeat;
-}
+}*/
 
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
@@ -332,7 +332,7 @@ class _SignInPageState extends State<SignInPage> {
       await gSignIn.signIn();
       print(" gsignin signed in");
 
-      await reloadEventsAndCourses().then((s) {});
+      //(beta)await reloadEventsAndCourses().then((s) {});
 
       try {
         final GoogleSignInAuthentication googleAuth =

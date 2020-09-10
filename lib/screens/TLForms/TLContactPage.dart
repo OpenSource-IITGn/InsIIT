@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*(beta)import 'package:flutter/material.dart';
 import 'package:instiapp/classes/tlclass.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/roomBooking/roomservice.dart';
@@ -80,4 +80,4 @@ class _TinkererContactState extends State<TinkererContact> {
       );
 
   }
-}
+}*/

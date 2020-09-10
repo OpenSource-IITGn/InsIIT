@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+/*(beta)import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/roomBooking/Selecttime.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
@@ -126,4 +126,4 @@ class _AvailableRoomsState extends State<AvailableRooms> {
       ),
     );
   }
-}
+}*/

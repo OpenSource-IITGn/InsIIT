@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*(beta)import 'package:flutter/material.dart';
 
 class EventPage extends StatefulWidget {
   @override
@@ -43,4 +43,4 @@ class _EventPageState extends State<EventPage> {
       ),
     );
   }
-}
+}*/

@@ -25,3 +25,25 @@ final FirebaseAuth firebaseauth = FirebaseAuth.instance ;
 class ScreenSize {
   static Size size;
 }
+
+verticalDivider({double height}) {
+  if (height == null) {
+    height = 50.0;
+  }
+  return Row(
+    children: <Widget>[
+      SizedBox(
+        width: 16,
+      ),
+      Container(
+        height: height,
+        width: 1,
+        color: Colors.grey,
+      ),
+      SizedBox(
+        width: 16,
+      ),
+    ],
+  );
+}
+

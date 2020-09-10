@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/TLForms/firstPage.dart';
-import 'package:instiapp/screens/TLForms/fourthPage.dart';
-import 'package:instiapp/screens/TLForms/secondPage.dart';
-import 'package:instiapp/screens/TLForms/thirdPage.dart';
+//(beta)import 'package:instiapp/screens/TLForms/firstPage.dart';
+//(beta)import 'package:instiapp/screens/TLForms/fourthPage.dart';
+//(beta)import 'package:instiapp/screens/TLForms/secondPage.dart';
+//(beta)import 'package:instiapp/screens/TLForms/thirdPage.dart';
 import 'package:instiapp/screens/developers.dart';
 import 'package:instiapp/screens/email.dart';
-import 'package:instiapp/screens/eventscalendar.dart';
-import 'package:instiapp/screens/eventpage.dart';
-import 'package:instiapp/screens/feed/feedPage.dart';
+//(beta)import 'package:instiapp/screens/eventscalendar.dart';
+//(beta)import 'package:instiapp/screens/eventpage.dart';
+//(beta)import 'package:instiapp/screens/feed/feedPage.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/importantContacts.dart';
-import 'package:instiapp/screens/schedule/addCourse.dart';
-import 'package:instiapp/screens/schedule/eventDetail.dart';
+//(beta)import 'package:instiapp/screens/schedule/addCourse.dart';
+//(beta)import 'package:instiapp/screens/schedule/eventDetail.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/messMenu/messfeedback.dart';
 import 'package:instiapp/screens/messMenu/messmenu.dart';
-import 'package:instiapp/screens/roomBooking/AvailableRooms.dart';
-import 'package:instiapp/screens/roomBooking/Selecttime.dart';
-import 'package:instiapp/screens/roomBooking/form3.dart';
-import 'package:instiapp/screens/roomBooking/roomservice.dart';
-import 'package:instiapp/screens/schedule/editEvent.dart';
-import 'package:instiapp/screens/schedule/exportIcsFile.dart';
-import 'package:instiapp/screens/schedule/schedulePage.dart';
+//(beta)import 'package:instiapp/screens/roomBooking/AvailableRooms.dart';
+//(beta)import 'package:instiapp/screens/roomBooking/Selecttime.dart';
+//(beta)import 'package:instiapp/screens/roomBooking/form3.dart';
+//(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
+//(beta)import 'package:instiapp/screens/schedule/editEvent.dart';
+//(beta)import 'package:instiapp/screens/schedule/exportIcsFile.dart';
+//(beta)import 'package:instiapp/screens/schedule/schedulePage.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/screens/onboarding.dart';
 import 'package:instiapp/screens/misc.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/screens/TLForms/TLContactPage.dart';
+//(beta)import 'package:instiapp/screens/TLForms/TLContactPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -43,10 +43,10 @@ class MyApp extends StatelessWidget {
         // '/announcements': (context) => Announcements(),
         // '/articles': (context) => Articles(),
         '/onboarding': (context) => OnboardingPage(),
-        '/eventscalendar': (context) => EventsCalendar(),
-        '/eventpage': (context) => EventPage(),
-        '/schedule': (context) => SchedulePage(),
-        '/feed': (context) => FeedPage(),
+        //(beta)'/eventscalendar': (context) => EventsCalendar(),
+        //(beta)'/eventpage': (context) => EventPage(),
+        //(beta)/schedule': (context) => SchedulePage(),
+        //(beta)'/feed': (context) => FeedPage(),
         // '/academiccalendar': (context) => AcademicCalendar(),
         '/importantcontacts': (context) => ImportantContacts(),
         // '/complaints': (context) => Complains(),
@@ -57,22 +57,22 @@ class MyApp extends StatelessWidget {
         '/messfeedback': (context) => MessFeedBack(),
         '/signin': (context) => SignInPage(),
         '/menuBarBase': (context) => HomeWrapper(),
-        '/bookingform': (context) => BookingForm(),
-        '/selecttime': (context) => SelectTime(),
-        '/RoomBooking': (context) => RoomService(),
+        //(beta)'/bookingform': (context) => BookingForm(),
+        //(beta)'/selecttime': (context) => SelectTime(),
+        //(beta)'/RoomBooking': (context) => RoomService(),
         '/misc': (context) => MiscPage(),
-        '/availablerooms': (context) => AvailableRooms(),
-        '/eventdetail': (context) => EventDetail(),
+        //(beta)'/availablerooms': (context) => AvailableRooms(),
+        //(beta)'/eventdetail': (context) => EventDetail(),
         '/developers': (context) => DevelopersPage(),
-        '/editevent': (context) => EditEvent(),
+        //(beta)'/editevent': (context) => EditEvent(),
         '/map': (context) => MapPage(),
-        '/firstPage': (context) => FirstPage(),
-        '/secondPage': (context) => SecondPage(),
-        '/thirdPage': (context) => ThirdPage(),
-        '/fourthPage': (context) => FourthPage(),
-        '/tlcontacts': (context) => TinkererContact(),
-        '/addcourse': (context) => AddCourse(),
-        '/exportIcsFile': (context) => ExportIcsFile(),
+        //(beta)'/firstPage': (context) => FirstPage(),
+        //(beta)'/secondPage': (context) => SecondPage(),
+        //(beta)'/thirdPage': (context) => ThirdPage(),
+        //(beta)'/fourthPage': (context) => FourthPage(),
+        //(beta)'/tlcontacts': (context) => TinkererContact(),
+        //(beta)'/addcourse': (context) => AddCourse(),
+        //(beta)'/exportIcsFile': (context) => ExportIcsFile(),
       },
       title: 'Instiapp',
       theme: ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*(beta)import 'package:flutter/material.dart';
 import 'package:instiapp/classes/textcard.dart';
 
 class Announcements extends StatefulWidget {
@@ -101,4 +101,4 @@ class _AnnouncementsState extends State<Announcements> {
       ),
     );
   }
-}
+}*/

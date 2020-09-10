@@ -90,7 +90,7 @@ class Template extends StatelessWidget {
         }
       },
       child: Card(
-        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+        margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 1.0),
         child: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(

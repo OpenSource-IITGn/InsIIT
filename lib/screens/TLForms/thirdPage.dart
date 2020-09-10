@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*(beta)import 'package:flutter/material.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/roomBooking/functions.dart';
 import 'dart:io';
@@ -94,4 +94,4 @@ class _ThirdPageState extends State<ThirdPage> {
       ),
     );
   }
-}
+}*/

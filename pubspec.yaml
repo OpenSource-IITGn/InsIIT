@@ -30,15 +30,15 @@ dependencies:
   flare_splash_screen: ^3.0.1
   googleapis_auth: ^0.2.11+1
   progressive_image: ^1.0.1
-  flutter_spinkit: ^4.1.2+1 
-  table_calendar: ^2.2.3
+  #(beta)flutter_spinkit: ^4.1.2+1
+  #(beta)table_calendar: ^2.2.3
   intl: ^0.16.1
-  device_apps: ^1.0.9
+  #(beta)device_apps: ^1.0.9
   google_maps_flutter: ^0.5.27+3
   location: ^3.0.2
-  file_picker: ^1.9.0+1
+  #(beta)file_picker: ^1.9.0+1
   cached_network_image: ^2.2.0+1
-  downloads_path_provider: ^0.1.0
+  #(beta)downloads_path_provider: ^0.1.0
   permission_handler: ^5.0.1
 
   firebase_core: ^0.4.0+9
@@ -61,7 +61,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.7.5
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "stuff/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,4 +1,4 @@
-import 'package:instiapp/utilities/constants.dart';
+/*(beta)import 'package:instiapp/utilities/constants.dart';
 
 class CommentModel {
   Person poster;
@@ -50,4 +50,4 @@ class Person {
     Map<String, dynamic> ret = {'full_name': name, "image_link": imageUrl, "user_id": uid};
     return ret;
   }
-}
+}*/

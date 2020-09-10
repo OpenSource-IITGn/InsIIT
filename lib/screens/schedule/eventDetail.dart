@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+/*(beta)import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 
@@ -300,4 +300,4 @@ class _EventDetailState extends State<EventDetail> {
       ),
     );
   }
-}
+}*/

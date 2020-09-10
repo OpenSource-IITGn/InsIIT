@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*(beta)import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
@@ -184,4 +184,4 @@ Widget buildComment(CommentModel comment) {
       ),
     ),
   );
-}
+}*/
