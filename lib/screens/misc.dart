@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MiscPage extends StatefulWidget {
   @override
@@ -48,10 +49,10 @@ class _MiscPageState extends State<MiscPage> {
                         ),
                       ),
                     ),
-                  ),*/
+                  ),
                   SizedBox(
                     height: 22,
-                  ),
+                  ),*/
                   Container(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: FlatButton(
@@ -119,6 +120,39 @@ class _MiscPageState extends State<MiscPage> {
                         child: Container(
                           child: Text(
                             "Developers",
+                            style: TextStyle(
+                              color: Colors.black45,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: FlatButton(
+                      onPressed: () async {
+                        var url = "https://forms.gle/hHQgPFnkM6qT5kAj7";
+
+                        if (await canLaunch(url)) {
+                          await launch(url, forceSafariVC: false);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(40.0),
+                          side: BorderSide(
+                            color: Colors.black12,
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          child: Text(
+                            "Report Bug",
                             style: TextStyle(
                               color: Colors.black45,
                             ),
