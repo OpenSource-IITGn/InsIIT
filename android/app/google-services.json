@@ -8,12 +8,64 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1036842973746:android:0079235aa76a14e9d01a2b",
+        "android_client_info": {
+          "package_name": "com.commonsware.android.signin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8MrJ5hB7SuOzpkCQf22L-fTOEOVXi0Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1036842973746-jsq3mkver6j9npbp84hhnf38kqkp01qp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "instiapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1036842973746:android:d553f47f74e20043d01a2b",
         "android_client_info": {
           "package_name": "com.example.instiapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1036842973746-kr0fqn4p5i6r57se4oea6b5cs8smgtmq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instiapp",
+            "certificate_hash": "6a6586b853ea7f4e2e3c3679b6cdc114ed19ed65"
+          }
+        },
+        {
+          "client_id": "1036842973746-90cbfvvh6of0ml2ahpms6sdc2kmdvbru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instiapp",
+            "certificate_hash": "0d9b8040de585285f3cc88b8ab09a86f44d64bd6"
+          }
+        },
         {
           "client_id": "1036842973746-o1p3kbkq0mac7ncdgjqmgrda12lptidk.apps.googleusercontent.com",
           "client_type": 1,
@@ -70,10 +122,50 @@
       "client_info": {
         "mobilesdk_app_id": "1:1036842973746:android:d6ad77e2397f196cd01a2b",
         "android_client_info": {
-          "package_name": "com.iitgn.instiapp"
+          "package_name": "com.commonsware.android.signin"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1036842973746-g631ern5vloc16ik6q10n9prjjqq9gs6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.commonsware.android.signin",
+            "certificate_hash": "6a6586b853ea7f4e2e3c3679b6cdc114ed19ed65"
+          }
+        },
+        {
+          "client_id": "1036842973746-at0g46ti77nvqctvs8rivgavs9ks27pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.commonsware.android.signin",
+            "certificate_hash": "0d9b8040de585285f3cc88b8ab09a86f44d64bd6"
+          }
+        },
+        {
+          "client_id": "1036842973746-4rofa3695rapnn20k0m8scgj8rer8tel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.commonsware.android.signin",
+            "certificate_hash": "5a7d88ae13c87e55939e8021da46b7f8973b7b8c"
+          }
+        },
+        {
+          "client_id": "1036842973746-70kh8jdf89s5htvpl1463uim4nnuejhr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.commonsware.android.signin",
+            "certificate_hash": "37b0fc58f76832b21acc077c1451fb52d4be0d87"
+          }
+        },
+        {
+          "client_id": "1036842973746-mib3n1a8caealg3qq2tmgm5vidn9d6bd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.commonsware.android.signin",
+            "certificate_hash": "b4033c1b78ed6107af830e8e052d22672030efc0"
+          }
+        },
         {
           "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
           "client_type": 3
@@ -110,6 +202,46 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1036842973746-77h73tb3drudrrlaegbc3taq9fvkioa0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instiapp.login",
+            "certificate_hash": "6a6586b853ea7f4e2e3c3679b6cdc114ed19ed65"
+          }
+        },
+        {
+          "client_id": "1036842973746-jjbqcm5cgp6qf647cisbjglajgqg6v3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instiapp.login",
+            "certificate_hash": "0d9b8040de585285f3cc88b8ab09a86f44d64bd6"
+          }
+        },
+        {
+          "client_id": "1036842973746-lv8nb5f7idfj1d2p6fj0c8uurafcm87e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instiapp.login",
+            "certificate_hash": "37b0fc58f76832b21acc077c1451fb52d4be0d87"
+          }
+        },
+        {
+          "client_id": "1036842973746-ld2gnmb4acj1pba9l1p845usgr5vl8pa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instiapp.login",
+            "certificate_hash": "b4033c1b78ed6107af830e8e052d22672030efc0"
+          }
+        },
+        {
+          "client_id": "1036842973746-efvp4pkl8s4cr76hfbqatqartfoahod1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instiapp.login",
+            "certificate_hash": "5a7d88ae13c87e55939e8021da46b7f8973b7b8c"
+          }
+        },
         {
           "client_id": "1036842973746-pc9h0arb7q415qkhkfknvq8rs5d7b75a.apps.googleusercontent.com",
           "client_type": 3

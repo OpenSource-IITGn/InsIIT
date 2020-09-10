@@ -1,4 +1,4 @@
-package com.iitgn.instiapp
+package com.commonsware.android.signin
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
