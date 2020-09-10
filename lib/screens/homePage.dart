@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 //(beta)import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/shuttle.dart';
@@ -658,7 +659,6 @@ class _HomePageState extends State<HomePage>
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         onItemSelected: (index) {
-          prevIndexes.add(selectedIndex);
           selectedIndex = index;
           _pageController.jumpToPage(index);
           setState(() {});
@@ -1497,7 +1497,18 @@ class _HomePageState extends State<HomePage>
     } else {
       //(beta)prepareEventsList();
       //(beta)twoEvents = makeListOfTwoEvents();
-      return homeScreen();
+      return WillPopScope(
+          onWillPop: _onBackPressed,
+          child: homeScreen()
+      );
+    }
+  }
+
+  Future<bool> _onBackPressed() {
+    if (selectedIndex != 0) {
+      _pageController.jumpToPage(0);
+    } else {
+      SystemNavigator.pop();
     }
   }
 
