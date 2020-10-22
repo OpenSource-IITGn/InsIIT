@@ -1,6 +1,7 @@
-//(beta)import 'dart:io';
+import 'dart:io';
+//(beta)import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
-//(beta)import 'package:csv/csv.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instiapp/screens/loading.dart';
@@ -19,7 +20,7 @@ import 'email.dart';
 //(beta)import 'package:googleapis/classroom/v1.dart';
 //(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
-//(beta)import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart';
 //(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
 import 'package:avataaar_image/avataaar_image.dart';
 import 'package:instiapp/screens/misc.dart';
@@ -37,6 +38,7 @@ List<FoodCard> foodCards;
 List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
+List<List<String>> foodVotes;
 //(beta)List<TodayCourse> todayCourses;
 //(beta)List<MyCourse> myCourses;
 //(beta)List<EventModel> removedEvents;
@@ -77,6 +79,7 @@ class _HomePageState extends State<HomePage>
     loadlinks();
     loadImportantContactData();
     loadShuttleData();
+    loadFoodVotesData();
     //(beta)loadCourseData();
     //(beta)loadRemovedCoursesData();
     //(beta)loadUserAddedCoursesData();
@@ -588,6 +591,53 @@ class _HomePageState extends State<HomePage>
       });
     });
   }
+
+  loadFoodVotesData () async {
+    getFoodVotesData().listen((data) {
+      foodVotes = makeFoodVotesList(data);
+    });
+  }
+
+  List<List<String>> makeFoodVotesList(var foodVotesList) {
+    List<List<String>> _foodVotes = [];
+
+    if (foodVotesList != null &&
+        foodVotesList.length != 0) {
+      foodVotesList.forEach((var lc) {
+        print(lc);
+        _foodVotes.add([
+          lc[0],
+          lc[1].toString()
+        ]);
+      });
+    }
+
+    return _foodVotes;
+  }
+
+  Stream<List<List<dynamic>>> getFoodVotesData() async* {
+    var file = await _localFile('foodVotes');
+    bool exists = await file.exists();
+    if (exists) {
+      await file.open();
+      String values = await file.readAsString();
+      List<List<dynamic>> rowsAsListOfValues =
+      CsvToListConverter().convert(values);
+      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+
+      yield rowsAsListOfValues;
+    } else {
+      yield [];
+    }
+  }
+
+  Future<File> _localFile(String range) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + range + '.csv';
+    return File(filename);
+  }
+
 
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {

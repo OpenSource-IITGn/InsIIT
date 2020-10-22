@@ -147,13 +147,6 @@ logoutUser() async {
   var courseData = await ClassroomApi(httpClient).courses.list();
   courses.addAll(courseData.courses);
   coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-}
-
-Future<File> _localFile(String range) async {
-  Directory tempDir = await getTemporaryDirectory();
-  String tempPath = tempDir.path;
-  String filename = tempPath + range + '.csv';
-  return File(filename);
 }*/
 
 /*(beta)Future reloadEventsAndCourses() async {

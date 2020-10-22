@@ -1,3 +1,7 @@
+//(beta)import 'dart:convert';
+import 'package:csv/csv.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
@@ -68,32 +72,86 @@ class _MessMenuState extends State<MessMenu> {
                           child: IconButton(
                             icon: Icon(Icons.details),
                             iconSize: 20,
-                            color: Colors.black45,
-                            onPressed: () {
-                              sheet.writeData([
-                                [
-                                  DateTime.now().toString(),
-                                  DateTime.now().weekday,
-                                  food,
-                                  '1'
-                                ]
-                              ], 'messFeedbackItems!A:D');
+                            color: returnColorUpVote(food),
+                            onPressed: () async {
+                              setState(() {
+                                bool hasAlreadyVoted = false;
+                                foodVotes.forEach((List<String> ls) {
+                                  if (ls[0] == food) {
+                                    if (ls[1] == '-1' || ls[1] == '0') {
+                                      ls[1] = '1';
+                                    } else {
+                                      ls[1] = '0';
+                                    }
+                                    hasAlreadyVoted = true;
+                                  }
+                                });
+
+                                if (!hasAlreadyVoted) {
+                                  foodVotes.add([food, '1']);
+                                }
+                                sheet.writeData([
+                                  [
+                                    DateTime.now().toString(),
+                                    DateTime.now().weekday,
+                                    food,
+                                    '1'
+                                  ]
+                                ], 'messFeedbackItems!A:D');
+                              });
+                              var file = await _localFile('foodVotes');
+                              bool exists = await file.exists();
+                              if (exists) {
+                                await file.delete();
+                              }
+                              await file.create();
+                              await file.open();
+                              await file.writeAsString(
+                                  ListToCsvConverter().convert(foodVotes));
+                              print('DATA SAVED IN CACHE');
                             },
                           ),
                         ),
                         IconButton(
                           icon: Icon(Icons.details),
                           iconSize: 20,
-                          color: Colors.black45,
-                          onPressed: () {
-                            sheet.writeData([
-                              [
-                                DateTime.now().toString(),
-                                DateTime.now().weekday,
-                                food,
-                                '-1'
-                              ]
-                            ], 'messFeedbackItems!A:D');
+                          color: returnColorDownVote(food),
+                          onPressed: () async {
+                            setState(() {
+                              bool hasAlreadyVoted = false;
+                              foodVotes.forEach((List<String> ls) {
+                                if (ls[0] == food) {
+                                  if (ls[1] == '1' || ls[1] == '0') {
+                                    ls[1] = '-1';
+                                  } else {
+                                    ls[1] = '0';
+                                  }
+                                  hasAlreadyVoted = true;
+                                }
+                              });
+
+                              if (!hasAlreadyVoted) {
+                                foodVotes.add([food, '-1']);
+                              }
+                              sheet.writeData([
+                                [
+                                  DateTime.now().toString(),
+                                  DateTime.now().weekday,
+                                  food,
+                                  '-1'
+                                ]
+                              ], 'messFeedbackItems!A:D');
+                            });
+                            var file = await _localFile('foodVotes');
+                            bool exists = await file.exists();
+                            if (exists) {
+                              await file.delete();
+                            }
+                            await file.create();
+                            await file.open();
+                            await file.writeAsString(
+                                ListToCsvConverter().convert(foodVotes));
+                            print('DATA SAVED IN CACHE');
                           },
                         )
                       ],
@@ -250,6 +308,46 @@ class _MessMenuState extends State<MessMenu> {
     saturday,
     sunday
   ];
+
+  Color returnColorUpVote(String food) {
+    String vote = '0';
+    if (foodVotes != null) {
+      foodVotes.forEach((List<String> ls) {
+        if (ls[0] == food) {
+          vote = ls[1];
+        }
+      });
+    }
+    if (vote == '1') {
+      return Colors.green;
+    } else {
+      return Colors.black45;
+    }
+  }
+
+  Color returnColorDownVote(String food) {
+    String vote = '0';
+    if (foodVotes != null) {
+      foodVotes.forEach((List<String> ls) {
+        if (ls[0] == food) {
+          vote = ls[1];
+        }
+      });
+    }
+    if (vote == '-1') {
+      return Colors.green;
+    } else {
+      return Colors.black45;
+    }
+  }
+
+  Future<File> _localFile(String range) async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + range + '.csv';
+    return File(filename);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -352,3 +450,4 @@ class _MessMenuState extends State<MessMenu> {
     );
   }
 }
+
