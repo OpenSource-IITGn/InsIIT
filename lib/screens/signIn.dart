@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
@@ -343,9 +344,10 @@ class _SignInPageState extends State<SignInPage> {
           idToken: googleAuth.idToken,
         );
 
-        firebaseUser =
-            (await firebaseauth.signInWithCredential(credential)).user;
-      } catch (e) {}
+        firebaseUser =  (await firebaseauth.signInWithCredential(credential)).user;
+      } catch (e) {
+          print(e); 
+      }
 
       // sheet.writeData([
       //   [
@@ -362,7 +364,7 @@ class _SignInPageState extends State<SignInPage> {
   var key = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return loading ? loadScreen() : WillPopScope(
       onWillPop: () {
         return Future.value(false);
       },

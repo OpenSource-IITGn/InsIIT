@@ -9,6 +9,7 @@ Widget loadScreen() {
   return Scaffold(
     body: AnimatedContainer(
       duration: Duration(milliseconds: 500),
+      // transform: Matrix4.translationValues(0, 0, 0),
       onEnd: () {
         color = Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
             .withOpacity(1.0);
@@ -16,7 +17,11 @@ Widget loadScreen() {
       height: ScreenSize.size.height,
       width: ScreenSize.size.width,
       color: color,
-      child: Center(child: Text("Please wait...",style: TextStyle(color:Colors.white, fontSize: 20),)),
+      child: Center(
+          child: Text(
+        "Please wait ... ",
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      )),
     ),
   );
 }
