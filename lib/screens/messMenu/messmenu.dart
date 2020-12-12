@@ -386,13 +386,6 @@ class _MessMenuState extends State<MessMenu> {
                 Tab(
                   text: 'Sunday',
                 ),
-                // WeekDayCard(day: 'Monday').dayBar(),
-                // WeekDayCard(day: 'Tueday').dayBar(),
-                // WeekDayCard(day: 'Wednesday').dayBar(),
-                // WeekDayCard(day: 'Thursday').dayBar(),
-                // WeekDayCard(day: 'Friday').dayBar(),
-                // WeekDayCard(day: 'Saturday').dayBar(),
-                // WeekDayCard(day: 'Sunday').dayBar(),
               ],
             ),
             preferredSize: Size.fromHeight(50.0),

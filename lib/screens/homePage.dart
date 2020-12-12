@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 //(beta)import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -695,7 +696,7 @@ class _HomePageState extends State<HomePage>
   var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = true;
   PageController _pageController;
-  List<String> titles = ["", /*(beta)"News",*/ "Buses", "Campus Map", "Misc."];
+  List<String> titles = ["", /*(beta)"News",*/ "Buses", "Campus Map", "Misc"];
   Widget homeScreen() {
     return Scaffold(
       backgroundColor: Colors.white.withAlpha(252),
@@ -740,7 +741,7 @@ class _HomePageState extends State<HomePage>
           ),
           BottomNavyBarItem(
             icon: Icon(Icons.menu),
-            title: Text('Misc.'),
+            title: Text('Misc'),
             textAlign: TextAlign.center,
             activeColor: primaryColor,
             inactiveColor: Colors.grey,
@@ -1277,7 +1278,7 @@ class _HomePageState extends State<HomePage>
       contactCards.add(ContactCard(
           name: lc[0],
           description: lc[1],
-          contacts: lc[2].split(','),
+          contacts: jsonDecode(lc[2]),
           emails: lc[3].split(','),
           websites: lc[4].split(',')));
     }
