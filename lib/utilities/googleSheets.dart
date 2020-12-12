@@ -27,8 +27,8 @@ class GSheet {
   final scopes = [sheets.SheetsApi.SpreadsheetsScope];
   String spreadSheetID;
   GSheet(
-      String id,
-      ) {
+    String id,
+  ) {
     this.spreadSheetID = id;
   }
 
@@ -40,7 +40,7 @@ class GSheet {
         .then((client) {
       auth
           .obtainAccessCredentialsViaServiceAccount(
-          _credentials, this.scopes, client)
+              _credentials, this.scopes, client)
           .then((auth.AccessCredentials cred) {
         SheetsApi api = new SheetsApi(client);
         ValueRange vr = new sheets.ValueRange.fromJson({
@@ -48,7 +48,7 @@ class GSheet {
         });
         api.spreadsheets.values
             .append(vr, this.spreadSheetID, range,
-            valueInputOption: 'USER_ENTERED')
+                valueInputOption: 'USER_ENTERED')
             .then((AppendValuesResponse r) {
           print("SENT DATA TO SHEETS");
           client.close();
@@ -73,11 +73,11 @@ class GSheet {
     var file = await _localFile(range);
     bool exists = await file.exists();
     if (exists) {
-      print('FILE EXISTS at ' + range);
+      // print('FILE EXISTS at ' + range);
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -88,7 +88,7 @@ class GSheet {
         .then((client) async {
       await auth
           .obtainAccessCredentialsViaServiceAccount(
-          _credentials, this.scopes, client)
+              _credentials, this.scopes, client)
           .then((auth.AccessCredentials cred) async {
         SheetsApi api = new SheetsApi(client);
         await api.spreadsheets.values.get(this.spreadSheetID, range).then((qs) {
@@ -113,7 +113,7 @@ class GSheet {
         .then((client) async {
       await auth
           .obtainAccessCredentialsViaServiceAccount(
-          _credentials, this.scopes, client)
+              _credentials, this.scopes, client)
           .then((auth.AccessCredentials cred) async {
         SheetsApi api = new SheetsApi(client);
         await api.spreadsheets.values.get(this.spreadSheetID, range).then((qs) {
@@ -133,14 +133,15 @@ class GSheet {
         .then((client) {
       auth
           .obtainAccessCredentialsViaServiceAccount(
-          _credentials, this.scopes, client)
+              _credentials, this.scopes, client)
           .then((auth.AccessCredentials cred) {
         SheetsApi api = new SheetsApi(client);
 
-        ValueRange vr = new sheets.ValueRange.fromJson({
-          "values": data
-        });
-        api.spreadsheets.values.update(vr, this.spreadSheetID, range, valueInputOption: 'USER_ENTERED').then((UpdateValuesResponse r) {
+        ValueRange vr = new sheets.ValueRange.fromJson({"values": data});
+        api.spreadsheets.values
+            .update(vr, this.spreadSheetID, range,
+                valueInputOption: 'USER_ENTERED')
+            .then((UpdateValuesResponse r) {
           print('DATA UPDATED');
           client.close();
         });
@@ -148,5 +149,3 @@ class GSheet {
     });
   }
 }
-
-

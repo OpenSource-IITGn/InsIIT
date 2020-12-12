@@ -593,7 +593,7 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  loadFoodVotesData () async {
+  loadFoodVotesData() async {
     getFoodVotesData().listen((data) {
       foodVotes = makeFoodVotesList(data);
     });
@@ -602,14 +602,10 @@ class _HomePageState extends State<HomePage>
   List<List<String>> makeFoodVotesList(var foodVotesList) {
     List<List<String>> _foodVotes = [];
 
-    if (foodVotesList != null &&
-        foodVotesList.length != 0) {
+    if (foodVotesList != null && foodVotesList.length != 0) {
       foodVotesList.forEach((var lc) {
         print(lc);
-        _foodVotes.add([
-          lc[0],
-          lc[1].toString()
-        ]);
+        _foodVotes.add([lc[0], lc[1].toString()]);
       });
     }
 
@@ -623,7 +619,7 @@ class _HomePageState extends State<HomePage>
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -638,7 +634,6 @@ class _HomePageState extends State<HomePage>
     String filename = tempPath + range + '.csv';
     return File(filename);
   }
-
 
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
@@ -860,7 +855,7 @@ class _HomePageState extends State<HomePage>
                                       placeholder: (context, url) =>
                                           CircularProgressIndicator(),
                                       height: 90.0,
-                                      imageUrl: firebaseUser.photoUrl,
+                                      imageUrl: firebaseUser['picture'],
                                     )),
                                   ),
                             Column(
@@ -870,7 +865,7 @@ class _HomePageState extends State<HomePage>
                                     (firebaseUser == null)
                                         ? "Hey John Doe!"
                                         : "Hey " +
-                                            firebaseUser.displayName
+                                            firebaseUser['given_name']
                                                 .split(' ')[0] +
                                             '!',
                                     style: TextStyle(

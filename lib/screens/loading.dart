@@ -13,10 +13,14 @@ Widget loadScreen() {
         color = Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
             .withOpacity(1.0);
       },
-      height: ScreenSize.size.height,
-      width: ScreenSize.size.width,
+      // height: ScreenSize.size.height,
+      // width: ScreenSize.size.width,
       color: color,
-      child: Center(child: Text("Please wait...",style: TextStyle(color:Colors.white, fontSize: 20),)),
+      child: Center(
+          child: Text(
+        "Please wait...",
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      )),
     ),
   );
 }

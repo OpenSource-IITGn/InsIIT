@@ -51,7 +51,6 @@ class _MessFeedBackState extends State<MessFeedBack> {
                     maxLines: 10,
                     onChanged: (v) {
                       review = v;
-                     
                     },
                     decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -63,12 +62,11 @@ class _MessFeedBackState extends State<MessFeedBack> {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     onPressed: () {
-                     
                       sheet.writeData([
                         [
                           DateTime.now().toString(),
-                          firebaseUser.displayName,
-                          firebaseUser.email,
+                          firebaseUser['given_name'],
+                          firebaseUser['email'],
                           review
                         ]
                       ], 'messFeedbackText!A:D');

@@ -64,8 +64,10 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 }*/
 
 logoutUser() async {
-  gSignIn.signOut();
-  FirebaseAuth.instance.signOut();
+  // gSignIn.signOut();
+  await GoogleSignIn().signOut();
+  await FirebaseAuth.instance.signOut();
+
   /*(beta)var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
@@ -236,9 +238,27 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  Future checkSignIn() async {
-    firebaseUser = await _auth.currentUser();
-    return firebaseUser;
+  // Future checkSignIn() async {
+  //   firebaseUser = _auth.currentUser();
+  //   return firebaseUser;
+  // }
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   @override
@@ -249,71 +269,7 @@ class _SignInPageState extends State<SignInPage> {
         Navigator.pushNamed(context, '/onboarding');
       }
     });
-    checkSignIn().then((value) async {
-      try {
-        print("Sign in silent");
-        await gSignIn.signInSilently().then((gSignInAccount) {
-          print('Sign in successful');
-          controlSignIn(gSignInAccount);
-        }).catchError((gError) {
-          print("Error message :" + gError);
-        });
-      } catch (e) {
-        print('Error:' + e);
-      }
-      try {
-        print("on current user changed");
-        gSignIn.onCurrentUserChanged.listen((gSigninAccount) {
-          controlSignIn(gSigninAccount);
-        }, onError: (gError) {
-          print("Error message :" + gError);
-        });
-      } catch (e) {
-        print('Error:' + e);
-      }
-    });
-
-    // signInWithGoogle().then((value) => print(value));
-  }
-
-  // Future<String> signInWithGoogle() async {
-  //   final GoogleSignInAccount googleSignInAccount = await gSignIn.signIn();
-  //   final GoogleSignInAuthentication googleSignInAuthentication =
-  //       await googleSignInAccount.authentication;
-  //   final AuthCredential credential = GoogleAuthProvider.getCredential(
-  //     accessToken: googleSignInAuthentication.accessToken,
-  //     idToken: googleSignInAuthentication.idToken,
-  //   );
-  //   final AuthResult authResult = await _auth.signInWithCredential(credential);
-  //   final FirebaseUser user = authResult.user;
-  //   assert(!user.isAnonymous);
-  //   assert(await user.getIdToken() != null);
-  //   final FirebaseUser currentUser = await _auth.currentUser();
-  //   assert(user.uid == currentUser.uid);
-  //   return 'signInWithGoogle succeeded: $user';
-  // }
-
-  controlSignIn(GoogleSignInAccount signInAccount) async {
-    print('Checking for correct account');
-    print(signInAccount);
-    if (signInAccount != null) {
-      print('actually signed in');
-      if (gSignIn.currentUser.email.split('@')[1] != 'iitgn.ac.in') {
-        await logoutUser();
-        key.currentState.hideCurrentSnackBar();
-        key.currentState.showSnackBar(
-            SnackBar(content: Text("Please sign in with your IITGN account!")));
-      } else {
-        authorize(false);
-        setState(() {
-          isSignedIn = true;
-        });
-      }
-    } else {
-      setState(() {
-        isSignedIn = false;
-      });
-    }
+    authorize(false);
   }
 
   void authorize(asGuest) async {
@@ -327,36 +283,34 @@ class _SignInPageState extends State<SignInPage> {
           "anonymous",
         ]
       ], 'logins!A:C');
+      firebaseUser = null;
+      Navigator.pop(key.currentContext);
+      Navigator.pushNamed(context, '/menuBarBase');
     } else {
       print("Awaiting gsignin sign in");
-      await gSignIn.signIn();
+      // await gSignIn.signIn();
+      await signInWithGoogle().then((user) {
+        if (user != null) {
+          firebaseUser = user.additionalUserInfo.profile;
+          print("EMAIL ");
+          print(firebaseUser);
+          if (firebaseUser['email'].split('@')[1] != 'iitgn.ac.in') {
+            print("NOT IITGN, LOGGING OUT");
+            // key.currentContext.showSnackBar()
+            key.currentState.showSnackBar(new SnackBar(
+                content: new Text('Please sign in with your IITGN ID')));
+            logoutUser();
+          } else {
+            Navigator.pop(key.currentContext);
+            Navigator.pushNamed(context, '/menuBarBase');
+          }
+        }
+      });
       print(" gsignin signed in");
 
       //(beta)await reloadEventsAndCourses().then((s) {});
 
-      try {
-        final GoogleSignInAuthentication googleAuth =
-            await gSignIn.currentUser.authentication;
-
-        final AuthCredential credential = GoogleAuthProvider.getCredential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-
-        firebaseUser =
-            (await firebaseauth.signInWithCredential(credential)).user;
-      } catch (e) {}
-
-      // sheet.writeData([
-      //   [
-      //     DateTime.now().toString(),
-      //     gSignIn.currentUser.displayName,
-      //     gSignIn.currentUser.email,
-      //   ]
-      // ], 'logins!A:C');
     }
-    Navigator.pop(key.currentContext);
-    Navigator.pushNamed(context, '/menuBarBase');
   }
 
   var key = new GlobalKey<ScaffoldState>();

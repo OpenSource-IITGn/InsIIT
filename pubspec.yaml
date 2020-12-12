@@ -32,6 +32,7 @@ dependencies:
   progressive_image: ^1.0.1 
   #(beta)flutter_spinkit: ^4.1.2+1
   #(beta)table_calendar: ^2.2.3
+  
   intl: ^0.16.1
   #(beta)device_apps: ^1.0.9
   google_maps_flutter: ^0.5.27+3
@@ -41,13 +42,15 @@ dependencies:
   #(beta)downloads_path_provider: ^0.1.0
   permission_handler: ^5.0.1
 
-  firebase_core: ^0.4.0+9
+  firebase_core: ^0.5.3
   firebase_analytics: ^5.0.2
-  # cloud_firestore: ^0.8.2+3
-  firebase_auth: ^0.14.0+5
+  firebase_auth: ^0.18.4+1
+  firebase_crashlytics: ^0.2.4
+  google_sign_in: "^4.5.1"
+
+
   path_provider: ^1.6.9
   flutter_offline: ^0.3.0
-  google_sign_in: ^4.4.4
   csv: ^4.0.3
   rxdart: ^0.23.1
   avataaar_image: ^1.0.8
