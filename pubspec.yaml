@@ -27,9 +27,9 @@ dependencies:
   animator: ^1.0.0+5
   photo_view: ^0.9.2
   googleapis: ^0.55.0
-  flare_splash_screen: ^3.0.1
+  flutter_svg: ^0.19.0
   googleapis_auth: ^0.2.11+1
-  progressive_image: ^1.0.1
+  progressive_image: ^1.0.1 
   #(beta)flutter_spinkit: ^4.1.2+1
   #(beta)table_calendar: ^2.2.3
   intl: ^0.16.1

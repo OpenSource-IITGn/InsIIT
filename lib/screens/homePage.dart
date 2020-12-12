@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 //(beta)import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:instiapp/messMenu/base.dart';
 import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/shuttle.dart';
@@ -911,10 +912,14 @@ class _HomePageState extends State<HomePage>
                                   );
                                 }).toList(),
                               ),
+                              SizedBox(
+                                height: 20,
+                              ),
                             ],
                           ),
                         ),
                       ),
+                      MessMenuBaseDrawer(),
                       /*(beta)(twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(
@@ -1161,8 +1166,7 @@ class _HomePageState extends State<HomePage>
   var friday = [];
   var saturday = [];
   var sunday = [];
-  makeMessList(var messDataList,
-      int num1, int num2, int num3, int num4) {
+  makeMessList(var messDataList, int num1, int num2, int num3, int num4) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
     monday = [];
     tuesday = [];
@@ -1497,10 +1501,7 @@ class _HomePageState extends State<HomePage>
     } else {
       //(beta)prepareEventsList();
       //(beta)twoEvents = makeListOfTwoEvents();
-      return WillPopScope(
-          onWillPop: _onBackPressed,
-          child: homeScreen()
-      );
+      return WillPopScope(onWillPop: _onBackPressed, child: homeScreen());
     }
   }
 
