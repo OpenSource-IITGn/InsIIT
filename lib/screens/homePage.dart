@@ -1276,11 +1276,7 @@ class _HomePageState extends State<HomePage>
     contactCards = [];
     for (List lc in importantContactDataList) {
       contactCards.add(ContactCard(
-          name: lc[0],
-          description: lc[1],
-          contacts: jsonDecode(lc[2]),
-          emails: lc[3].split(','),
-          websites: lc[4].split(',')));
+          name: lc[0], description: lc[1], contacts: jsonDecode(lc[2])));
     }
   }
 

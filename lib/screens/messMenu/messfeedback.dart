@@ -40,11 +40,11 @@ class _MessFeedBackState extends State<MessFeedBack> {
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
                   Text(
-                      "Unhappy with the food? Found anything unusual? Send your review/feedback here.",
+                      "Loved something? Unhappy with the food? Send your feedback here.",
                       style: TextStyle(
                           color: Colors.black.withAlpha(150),
                           fontWeight: FontWeight.bold)),
-                  SizedBox(height: 8),
+                  SizedBox(height: 10),
                   TextField(
                     minLines: 5,
                     maxLines: 10,
