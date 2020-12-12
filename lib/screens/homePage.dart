@@ -778,8 +778,9 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              logoutUser();
-              Navigator.pushReplacementNamed(context, '/signin');
+              logoutUser().then((value) {
+                Navigator.pushReplacementNamed(context, '/signin');
+              });
             },
           )
         ],
@@ -839,7 +840,7 @@ class _HomePageState extends State<HomePage>
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            (firebaseUser == null)
+                            (currentUser == null)
                                 ? Image.asset(
                                     'assets/images/avatar.png',
                                     fit: BoxFit.cover,
@@ -855,17 +856,17 @@ class _HomePageState extends State<HomePage>
                                       placeholder: (context, url) =>
                                           CircularProgressIndicator(),
                                       height: 90.0,
-                                      imageUrl: firebaseUser['picture'],
+                                      imageUrl: currentUser['picture'],
                                     )),
                                   ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    (firebaseUser == null)
+                                    (currentUser == null)
                                         ? "Hey John Doe!"
                                         : "Hey " +
-                                            firebaseUser['given_name']
+                                            currentUser['given_name']
                                                 .split(' ')[0] +
                                             '!',
                                     style: TextStyle(

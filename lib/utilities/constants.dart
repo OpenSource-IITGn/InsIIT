@@ -21,7 +21,7 @@ String baseUrlTL = "tranquil-shore-67034.herokuapp.com";
 //   ],
 // );
 // FirebaseUser firebaseUser;
-var firebaseUser;
+var currentUser;
 final FirebaseAuth firebaseauth = FirebaseAuth.instance;
 
 class ScreenSize {

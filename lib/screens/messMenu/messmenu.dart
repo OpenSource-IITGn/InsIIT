@@ -67,53 +67,50 @@ class _MessMenuState extends State<MessMenu> {
                     ),
                     Row(
                       children: <Widget>[
-                        Transform.rotate(
-                          angle: 180 * math.pi / 180,
-                          child: IconButton(
-                            icon: Icon(Icons.details),
-                            iconSize: 20,
-                            color: returnColorUpVote(food),
-                            onPressed: () async {
-                              setState(() {
-                                bool hasAlreadyVoted = false;
-                                foodVotes.forEach((List<String> ls) {
-                                  if (ls[0] == food) {
-                                    if (ls[1] == '-1' || ls[1] == '0') {
-                                      ls[1] = '1';
-                                    } else {
-                                      ls[1] = '0';
-                                    }
-                                    hasAlreadyVoted = true;
+                        IconButton(
+                          icon: Icon(Icons.thumb_down_alt),
+                          iconSize: 20,
+                          color: returnColorUpVote(food),
+                          onPressed: () async {
+                            setState(() {
+                              bool hasAlreadyVoted = false;
+                              foodVotes.forEach((List<String> ls) {
+                                if (ls[0] == food) {
+                                  if (ls[1] == '-1' || ls[1] == '0') {
+                                    ls[1] = '1';
+                                  } else {
+                                    ls[1] = '0';
                                   }
-                                });
-
-                                if (!hasAlreadyVoted) {
-                                  foodVotes.add([food, '1']);
+                                  hasAlreadyVoted = true;
                                 }
-                                sheet.writeData([
-                                  [
-                                    DateTime.now().toString(),
-                                    DateTime.now().weekday,
-                                    food,
-                                    '1'
-                                  ]
-                                ], 'messFeedbackItems!A:D');
                               });
-                              var file = await _localFile('foodVotes');
-                              bool exists = await file.exists();
-                              if (exists) {
-                                await file.delete();
+
+                              if (!hasAlreadyVoted) {
+                                foodVotes.add([food, '1']);
                               }
-                              await file.create();
-                              await file.open();
-                              await file.writeAsString(
-                                  ListToCsvConverter().convert(foodVotes));
-                              print('DATA SAVED IN CACHE');
-                            },
-                          ),
+                              sheet.writeData([
+                                [
+                                  DateTime.now().toString(),
+                                  DateTime.now().weekday,
+                                  food,
+                                  '1'
+                                ]
+                              ], 'messFeedbackItems!A:D');
+                            });
+                            var file = await _localFile('foodVotes');
+                            bool exists = await file.exists();
+                            if (exists) {
+                              await file.delete();
+                            }
+                            await file.create();
+                            await file.open();
+                            await file.writeAsString(
+                                ListToCsvConverter().convert(foodVotes));
+                            print('DATA SAVED IN CACHE');
+                          },
                         ),
                         IconButton(
-                          icon: Icon(Icons.details),
+                          icon: Icon(Icons.thumb_up_alt),
                           iconSize: 20,
                           color: returnColorDownVote(food),
                           onPressed: () async {
@@ -319,9 +316,9 @@ class _MessMenuState extends State<MessMenu> {
       });
     }
     if (vote == '1') {
-      return Colors.green;
+      return Colors.red;
     } else {
-      return Colors.black45;
+      return Colors.black45.withAlpha(50);
     }
   }
 
@@ -337,7 +334,7 @@ class _MessMenuState extends State<MessMenu> {
     if (vote == '-1') {
       return Colors.green;
     } else {
-      return Colors.black45;
+      return Colors.black45.withAlpha(50);
     }
   }
 
@@ -450,4 +447,3 @@ class _MessMenuState extends State<MessMenu> {
     );
   }
 }
-

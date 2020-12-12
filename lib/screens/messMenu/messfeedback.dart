@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 
-//TODO implement upvote downvote on each menu item
 class MessFeedBack extends StatefulWidget {
   @override
   _MessFeedBackState createState() => _MessFeedBackState();
@@ -65,8 +64,8 @@ class _MessFeedBackState extends State<MessFeedBack> {
                       sheet.writeData([
                         [
                           DateTime.now().toString(),
-                          firebaseUser['given_name'],
-                          firebaseUser['email'],
+                          currentUser['given_name'],
+                          currentUser['email'],
                           review
                         ]
                       ], 'messFeedbackText!A:D');

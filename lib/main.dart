@@ -8,23 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/screens/developers.dart';
 import 'package:instiapp/screens/email.dart';
 
-//(beta)import 'package:instiapp/screens/eventscalendar.dart';
-//(beta)import 'package:instiapp/screens/eventpage.dart';
-//(beta)import 'package:instiapp/screens/feed/feedPage.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/screens/importantContacts.dart';
-//(beta)import 'package:instiapp/screens/schedule/addCourse.dart';
-//(beta)import 'package:instiapp/screens/schedule/eventDetail.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/messMenu/messfeedback.dart';
 import 'package:instiapp/screens/messMenu/messmenu.dart';
-//(beta)import 'package:instiapp/screens/roomBooking/AvailableRooms.dart';
-//(beta)import 'package:instiapp/screens/roomBooking/Selecttime.dart';
-//(beta)import 'package:instiapp/screens/roomBooking/form3.dart';
-//(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
-//(beta)import 'package:instiapp/screens/schedule/editEvent.dart';
-//(beta)import 'package:instiapp/screens/schedule/exportIcsFile.dart';
-//(beta)import 'package:instiapp/screens/schedule/schedulePage.dart';
+
 import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
@@ -33,8 +22,6 @@ import 'package:instiapp/screens/misc.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;
-
-//(beta)import 'package:instiapp/screens/TLForms/TLContactPage.dart';
 
 void main() async {
   runApp(MyApp());
@@ -51,16 +38,11 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (k == 0) {
-            if (!kDebugMode) {
-              // Force disable Crashlytics collection while doing every day development.
-              // Temporarily toggle this to true if you want to test crash reporting in your app.
+            if (kDebugMode) {
               print("Enabled Crashlytics");
               FirebaseCrashlytics.instance
                   .setCrashlyticsCollectionEnabled(false);
-            } else {
-              // Handle Crashlytics enabled status when not in Debug,
-              // e.g. allow your users to opt-in to crash reporting.
-            }
+            } else {}
             k = 1;
           }
           return MaterialApp(

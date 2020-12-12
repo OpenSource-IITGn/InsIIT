@@ -224,7 +224,8 @@ Future<File> _localFile(String range) async {
 
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
-  bool isSignedIn = false;
+  ValueNotifier<bool> isSignedIn = ValueNotifier(false);
+  var user = null;
   // AuthService _auth = AuthService();
 
   Future checkWelcome() async {
@@ -264,12 +265,27 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
+    user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      print("USER FOUND");
+      currentUser = {
+        "given_name": user.displayName,
+        "email": user.email,
+        "picture": user.photoURL
+      };
+      Future.delayed(const Duration(milliseconds: 50)).then((value) {
+        Navigator.pushReplacementNamed(context, '/menuBarBase');
+      });
+    } else {
+      print("USER NOT FOUND");
+    }
+
     checkWelcome().then((val) {
       if (val == true) {
         Navigator.pushNamed(context, '/onboarding');
       }
     });
-    authorize(false);
   }
 
   void authorize(asGuest) async {
@@ -283,7 +299,8 @@ class _SignInPageState extends State<SignInPage> {
           "anonymous",
         ]
       ], 'logins!A:C');
-      firebaseUser = null;
+      currentUser = null;
+      FirebaseAuth.instance.signInAnonymously();
       Navigator.pop(key.currentContext);
       Navigator.pushNamed(context, '/menuBarBase');
     } else {
@@ -291,10 +308,10 @@ class _SignInPageState extends State<SignInPage> {
       // await gSignIn.signIn();
       await signInWithGoogle().then((user) {
         if (user != null) {
-          firebaseUser = user.additionalUserInfo.profile;
+          currentUser = user.additionalUserInfo.profile;
           print("EMAIL ");
-          print(firebaseUser);
-          if (firebaseUser['email'].split('@')[1] != 'iitgn.ac.in') {
+          print(currentUser);
+          if (currentUser['email'].split('@')[1] != 'iitgn.ac.in') {
             print("NOT IITGN, LOGGING OUT");
             // key.currentContext.showSnackBar()
             key.currentState.showSnackBar(new SnackBar(
@@ -342,7 +359,6 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(height: 100),
                 AnimatedContainer(
                   duration: Duration(seconds: 1),
-                  // height: MediaQuery.of(context).size.height*0.07,
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: FlatButton(
                     onPressed: () => authorize(false),
