@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/messMenu/messConstants.dart';
 
 class LabelBorder extends ShapeBorder {
   final double arrowWidth;
@@ -38,4 +39,25 @@ class LabelBorder extends ShapeBorder {
 
   @override
   ShapeBorder scale(double t) => this;
+}
+
+Widget label(String text, visible) {
+  return Center(
+    child: AnimatedOpacity(
+      opacity: visible ? 1.0 : 0.0,
+      duration: Duration(milliseconds: 1000),
+      child: Container(
+        decoration: ShapeDecoration(
+          color: popupColor.withAlpha(200),
+          shape: LabelBorder(arrowArc: 0.1),
+        ),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Text(text,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 10, color: Colors.white)),
+        ),
+      ),
+    ),
+  );
 }

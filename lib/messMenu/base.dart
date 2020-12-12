@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:instiapp/messMenu/labelDrawer.dart';
 import 'package:instiapp/messMenu/plateDraw.dart';
@@ -13,67 +15,82 @@ class MessMenuBaseDrawer extends StatefulWidget {
 }
 
 class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
-  Widget label(String text) {
-    return Center(
-      child: Container(
-        decoration: ShapeDecoration(
-          color: popupColor,
-          shape: LabelBorder(arrowArc: 0.1),
-        ),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-          child: Text(text, style: TextStyle(color: Colors.white)),
-        ),
-      ),
-    );
+  final String rawSvg = '''<svg viewBox="...">...</svg>''';
+  List visible = [false, false, false, false, false, false, false];
+  Timer timer;
+  int location = 0;
+  void handleTimer(timer) {
+    print('TIMER');
+    print(location);
+    visible[location] = true;
+    location += 1;
+    if (location == visible.length - 1) {
+      timer.cancel();
+    }
   }
 
-  final String rawSvg = '''<svg viewBox="...">...</svg>''';
+  @override
+  void initState() {
+    super.initState();
+    location = 0;
+    timer = Timer.periodic(Duration(milliseconds: 500), handleTimer);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
         // width: ScreenSize.size.width,
+        // color: Colors.blue.withAlpha(50),
         // decoration: BoxDecoration(
         //     color: Colors.grey,
         //     border: Border.all(),
         //     borderRadius: BorderRadius.all(Radius.circular(20))),
-        // child: SvgPicture.asset(
-        //   'assets/images/plate.svg',
-        // ),
-        child: CustomPaint(
-            size: Size(50, 50), //2
-            // painter: ProfileCardPainter(color: profileColor), //3
-            painter: PlatePainter()),
-        // child: Table(
-        //   columnWidths: {
-        //     0: FlexColumnWidth(1),
-        //     1: FlexColumnWidth(1),
-        //   },
-        //   children: [
-        //     TableRow(children: [
-        //       TableCell(
-        //           child: Center(
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: Container(
-        //               height: ScreenSize.size.height * 0.25 / 3,
-        //               width: ScreenSize.size.height / 6,
-        //               decoration: BoxDecoration(
-        //                   color: Colors.white,
-        //                   border: Border.all(),
-        //                   borderRadius: BorderRadius.all(Radius.circular(20))),
-        //               child: label('Curd')),
-        //         ),
-        //       )),
-        //       TableCell(child: label('Egg Bhurji')),
-        //     ]),
-        //     TableRow(children: [
-        //       TableCell(child: label('Bread')),
-        //       TableCell(child: label('Panneer Paratha')),
-        //     ]),
-        //   ],
-        // ),
-        height: ScreenSize.size.height * 0.25);
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SvgPicture.asset(
+                'assets/images/plate.svg',
+              ),
+            ),
+            Positioned(
+              top: 0,
+              child: Container(
+                // color: Colors.indigo.withAlpha(100),
+                width: ScreenSize.size.width - 32,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          label('Chinese Salad', visible[0]),
+                          label('Hakka Noodles', visible[1]),
+                          label('Hakka Noodles', visible[2]),
+                        ]),
+                    SizedBox(height: 50),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          label('Mango', visible[3]),
+                          label('Dry Manchurian', visible[4]),
+                          label('Hakka Noodles', visible[5]),
+                        ]),
+                  ],
+                ),
+              ),
+            ),
+            // Positioned(
+            //     left: ScreenSize.size.width / 5,
+            //     child: ),
+            // Positioned(left: 120, child: label('Dry\nManchurian')),
+            // Positioned(
+            //   right: 43,
+            //   child: label('Chinese\nSalad'),
+            // ),
+          ],
+        ),
+        height: ScreenSize.size.height * 0.3);
   }
 }
