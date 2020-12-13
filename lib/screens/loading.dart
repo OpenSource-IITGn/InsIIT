@@ -1,4 +1,4 @@
-//TODO: ADD FLARE SPLASH SCREEN BETWEEN LOGIN AND HOMEPAGE.s
+//TODO: ADD FLARE SPLASH SCREEN BETWEEN LOGIN AND HOMEPAGE
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';

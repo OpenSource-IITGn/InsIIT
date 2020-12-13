@@ -913,12 +913,9 @@ class _HomePageState extends State<HomePage>
                                         ),
                                       ),
                                       Text(
-                                        "Here's what's in the mess",
+                                        "Here's what's for ${selectMeal(foodCards)['meal']}",
                                         style: TextStyle(
-                                            color: Colors.black.withAlpha(150)
-                                            // fontSize: 18.0,
-                                            // fontWeight: FontWeight.bold,
-                                            ),
+                                            color: Colors.black.withAlpha(150)),
                                       ),
                                     ],
                                   ),
@@ -926,45 +923,45 @@ class _HomePageState extends State<HomePage>
                                 ],
                               ),
                               SizedBox(height: 10),
-                              CarouselSlider(
-                                height: 100.0,
-                                viewportFraction: 0.3,
-                                enlargeCenterPage: false,
-                                autoPlay: true,
-                                items: selectMeal(foodCards)['list']
-                                    .map<Widget>((i) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        width: 250.0,
-                                        height: 120.0,
-                                        child: Card(
-                                          // color: primaryColor,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Center(
-                                              child: Text(
-                                                i,
-                                                style: TextStyle(
-                                                    // fontSize: 20.0,
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }).toList(),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
+                              // CarouselSlider(
+                              //   height: 100.0,
+                              //   viewportFraction: 0.3,
+                              //   enlargeCenterPage: false,
+                              //   autoPlay: true,
+                              //   items: selectMeal(foodCards)['list']
+                              //       .map<Widget>((i) {
+                              //     return Builder(
+                              //       builder: (BuildContext context) {
+                              //         return Container(
+                              //           width: 250.0,
+                              //           height: 120.0,
+                              //           child: Card(
+                              //             // color: primaryColor,
+                              //             child: Padding(
+                              //               padding: const EdgeInsets.all(15.0),
+                              //               child: Center(
+                              //                 child: Text(
+                              //                   i,
+                              //                   style: TextStyle(
+                              //                       // fontSize: 20.0,
+                              //                       ),
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         );
+                              //       },
+                              //     );
+                              //   }).toList(),
+                              // ),
+                              // SizedBox(
+                              //   height: 20,
+                              // ),
                             ],
                           ),
                         ),
                       ),
-                      MessMenuBaseDrawer(),
+                      MessMenuBaseDrawer(selectMeal(foodCards)),
                       /*(beta)(twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(

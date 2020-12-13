@@ -93,7 +93,8 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  '1'
+                                  currentUser['email'],
+                                  '-1'
                                 ]
                               ], 'messFeedbackItems!A:D');
                             });
@@ -135,7 +136,8 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  '-1'
+                                  currentUser['email'],
+                                  '1'
                                 ]
                               ], 'messFeedbackItems!A:D');
                             });
