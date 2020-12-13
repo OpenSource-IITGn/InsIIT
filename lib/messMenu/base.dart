@@ -8,8 +8,10 @@ import 'package:instiapp/utilities/measureSize.dart';
 
 class MessMenuBaseDrawer extends StatefulWidget {
   var foodItems;
-  MessMenuBaseDrawer(meal) {
+  var illustrations;
+  MessMenuBaseDrawer(meal, illustrations) {
     this.foodItems = meal;
+    this.illustrations = illustrations;
   }
   @override
   _MessMenuBaseDrawerState createState() => _MessMenuBaseDrawerState();
@@ -35,7 +37,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
   void initState() {
     super.initState();
     location = 0;
-
+    //print(widget.illustrations);
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
       visible.add(false);
       sizes.add(Size(0, 0));
@@ -78,9 +80,9 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
             onChange: (Size size) {
               imageSizes[i] = size;
             },
-            child: Image.asset(
-              'assets/images/avatar.png',
-              scale: 10,
+            child: Image.network(
+              (widget.illustrations.containsKey(widget.foodItems['list'][i]))?widget.illustrations[widget.foodItems['list'][i]]:'https://drive.google.com/uc?export=view&id=1Dgm6bIcoeZA2u5JNozcD64QpX81Y8unZ',
+              scale: 20,
             ),
           ),
         ),

@@ -36,6 +36,7 @@ class HomePage extends StatefulWidget {
 }
 
 List<FoodCard> foodCards;
+Map<String, String> foodIllustration = {};
 List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
@@ -77,6 +78,7 @@ class _HomePageState extends State<HomePage>
 
   void reloadData() {
     loadMessData();
+    loadFoodIllustrationData();
     loadlinks();
     loadImportantContactData();
     loadShuttleData();
@@ -634,6 +636,19 @@ class _HomePageState extends State<HomePage>
     return File(filename);
   }
 
+  loadFoodIllustrationData() async {
+    sheet.getData('FoodItems!A:B').listen((data) {
+      data.removeAt(0);
+      for (var lst in data) {
+        //print(lst);
+        print(lst[0]);
+        print(lst[1]);
+        foodIllustration.putIfAbsent(lst[0], () => lst[1]);
+      }
+      print(foodIllustration);
+    });
+  }
+
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
       int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
@@ -960,7 +975,7 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                       ),
-                      MessMenuBaseDrawer(selectMeal(foodCards)),
+                      MessMenuBaseDrawer(selectMeal(foodCards), foodIllustration),
                       /*(beta)(twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(
