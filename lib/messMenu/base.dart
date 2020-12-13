@@ -19,6 +19,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
   List visible = [];
   Size imageSize = Size(0, 0);
   List sizes = [];
+  List imageSizes = [];
   Timer timer;
   int location = 0;
   void handleTimer(timer) {
@@ -38,72 +39,79 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
       visible.add(false);
       sizes.add(Size(0, 0));
+      imageSizes.add(Size(0, 0));
     }
     timer = Timer.periodic(Duration(milliseconds: 100), handleTimer);
   }
 
-  List<Widget> buildTray() {
+  Widget buildTray() {
     List<Widget> ret = [];
-    ret.add(MeasureSize(
-      onChange: (Size size) {
-        imageSize = size;
-        print("SVG = $imageSize");
-      },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-        child: SvgPicture.asset(
-          'assets/images/plate.svg',
-        ),
-      ),
-    ));
+    double prevLeftPadding = 0;
+    double prevTopPadding = 0;
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
-      // Positioned(
-      //   top: 0,
-      //   left: imageSize.width / 6 - (sizes[0].width / 2),
-      //   child: label('Chinese Salad', visible[0], (size) {
-      //     sizes[0] = size;
-      //   }),
-      // ),
-      // Positioned(
-      //   top: 0,
-      //   left: imageSize.width / 2 - (sizes[1].width / 2),
-      //   child: label('White Matar Masala', visible[1], (size) {
-      //     sizes[1] = size;
-      //   }),
-      // ),
-      // Positioned(
-      //   top: 0,
-      //   right: imageSize.width / 6 - (sizes[0].width / 2),
-      //   child: label('Mangosteen', visible[2], (size) {
-      //     sizes[2] = size;
-      //   }),
-      // ),
+      ret.add(Positioned(
+        left: prevLeftPadding,
+        top: prevTopPadding,
+        child: MeasureSize(
+          onChange: (Size size) {
+            imageSize = size;
+            print("SVG = $imageSize");
+          },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+            child: Image.asset(
+              'assets/images/plate.png',
+              scale: 6,
+            ),
+          ),
+        ),
+      ));
       ret.add(
         Positioned(
-          top: imageSize.height * (1 / 3 + 1 / 12),
-          right: imageSize.width / 6 - (sizes[i].width / 2) + 30 * i,
+          left: prevLeftPadding + imageSize.width / 2 - imageSizes[i].width / 2,
+          top: prevTopPadding + imageSize.height / 2 - imageSizes[i].height / 2,
+          child: MeasureSize(
+            onChange: (Size size) {
+              imageSizes[i] = size;
+            },
+            child: Image.asset(
+              'assets/images/avatar.png',
+              scale: 10,
+            ),
+          ),
+        ),
+      );
+      ret.add(
+        Positioned(
+          top: prevTopPadding,
+          left: prevLeftPadding + imageSize.width / 2 - sizes[i].width / 2,
           child: label(widget.foodItems['list'][i], visible[i], (size) {
-            sizes[3] = size;
+            sizes[i] = size;
           }),
         ),
       );
+      print("${widget.foodItems['list'][i]} = $prevTopPadding");
+      prevLeftPadding += imageSize.width + 20;
+      if (prevLeftPadding >= ScreenSize.size.width * 9 / 10) {
+        prevLeftPadding = 0;
+        prevTopPadding += imageSize.height + 20;
+      }
     }
-    return ret;
+
+    return Stack(children: ret);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: ScreenSize.size.width,
-      color: Colors.blue.withAlpha(50),
-      height: ScreenSize.size.height * 0.3,
-      // decoration: BoxDecoration(
-      //     color: Colors.grey,
-      //     border: Border.all(),
-      //     borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Stack(
-        children: buildTray(),
-      ),
-    );
+        // width: ScreenSize.size.width,
+        // color: Colors.blue.withAlpha(50),
+        height: ScreenSize.size.height * 0.3,
+        width: ScreenSize.size.width,
+        // decoration: BoxDecoration(
+        //     color: Colors.grey,
+        //     border: Border.all(),
+        //     borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: buildTray());
   }
 }
