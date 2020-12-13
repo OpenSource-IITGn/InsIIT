@@ -319,7 +319,7 @@ class _SignInPageState extends State<SignInPage> {
           }
         }
       });
-      print(" gsignin signed in");
+      print("gsignin signed in");
 
       //(beta)await reloadEventsAndCourses().then((s) {});
 

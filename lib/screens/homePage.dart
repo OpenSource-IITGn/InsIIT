@@ -24,7 +24,7 @@ import 'email.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 //(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
-import 'package:avataaar_image/avataaar_image.dart';
+
 import 'package:instiapp/screens/misc.dart';
 //(beta)import 'package:instiapp/classes/tlclass.dart';
 //(beta)import 'feed/feedPage.dart';
@@ -692,7 +692,6 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  var avatar = Avataaar.random(style: Style.circle);
   bool prevConnected = true;
   PageController _pageController;
   List<String> titles = ["", /*(beta)"News",*/ "Buses", "Campus Map", "Misc"];

@@ -90,6 +90,14 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
               sizes[2] = size;
             }),
           ),
+          Positioned(
+            top: imageSize.height * (1 / 3 + 1 / 12),
+            right: imageSize.width / 6 - (sizes[3].width / 2),
+            child: label('Maggi', visible[3], (size) {
+              sizes[3] = size;
+            }),
+          ),
+
           // Positioned(
           //     left: ScreenSize.size.width / 5,
           //     child: ),

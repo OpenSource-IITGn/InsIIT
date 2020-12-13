@@ -112,7 +112,10 @@ class Template extends StatelessWidget {
                 height: 6.0,
               ),
               Text(obj.descp,
-                  style: TextStyle(fontSize: 14.0, color: Colors.grey, fontStyle: FontStyle.italic))
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.grey,
+                      fontStyle: FontStyle.italic))
             ],
           ),
         ),
