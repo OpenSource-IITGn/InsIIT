@@ -268,7 +268,6 @@ class _SignInPageState extends State<SignInPage> {
     user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      print("USER FOUND");
       currentUser = {
         "given_name": user.displayName,
         "email": user.email,
@@ -277,10 +276,7 @@ class _SignInPageState extends State<SignInPage> {
       Future.delayed(const Duration(milliseconds: 50)).then((value) {
         Navigator.pushReplacementNamed(context, '/menuBarBase');
       });
-    } else {
-      print("USER NOT FOUND");
     }
-
     checkWelcome().then((val) {
       if (val == true) {
         Navigator.pushNamed(context, '/onboarding');

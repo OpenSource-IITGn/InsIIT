@@ -605,7 +605,6 @@ class _HomePageState extends State<HomePage>
 
     if (foodVotesList != null && foodVotesList.length != 0) {
       foodVotesList.forEach((var lc) {
-        print(lc);
         _foodVotes.add([lc[0], lc[1].toString()]);
       });
     }
