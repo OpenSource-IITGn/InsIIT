@@ -13,15 +13,15 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MapInfoWindow {
-   String imagePath;
-   LatLng location;
-   String locationName;
-   String timing;
-   String descriptionOne;
-   String descriptionTwo;
+  String imagePath;
+  LatLng location;
+  String locationName;
+  String timing;
+  String descriptionOne;
+  String descriptionTwo;
 
-   MapInfoWindow({
-      this.imagePath,
+  MapInfoWindow(
+      {this.imagePath,
       this.location,
       this.locationName,
       this.timing,
@@ -50,7 +50,6 @@ class _MapPageState extends State<MapPage> {
 
   static const LatLng _center = const LatLng(23.212838, 72.684738);
 
-
   Set<Marker> _markers = {};
 
   List<BitmapDescriptor> customIcons = List<BitmapDescriptor>(13);
@@ -58,12 +57,12 @@ class _MapPageState extends State<MapPage> {
   double mapInfoWindowPosition = -370;
 
   MapInfoWindow currentWindow = MapInfoWindow(
-    imagePath: '',
-    location: LatLng(0,0),
-    locationName: '',
-    timing: '',
-    descriptionOne: '',
-    descriptionTwo: '');
+      imagePath: '',
+      location: LatLng(0, 0),
+      locationName: '',
+      timing: '',
+      descriptionOne: '',
+      descriptionTwo: '');
 
   var mapInfoWindowList = [];
 
@@ -74,7 +73,7 @@ class _MapPageState extends State<MapPage> {
     super.initState();
     setCustomIcons();
     rootBundle.loadString('assets/map/mapstyle.txt').then((string) {
-    _mapStyle = string;
+      _mapStyle = string;
     });
   }
 
@@ -104,7 +103,6 @@ class _MapPageState extends State<MapPage> {
 
   void getCurrentLocation() async {
     try {
-
       var location = await _locationTracker.getLocation();
 
       updateMarkerAndCircle(location);
@@ -113,11 +111,10 @@ class _MapPageState extends State<MapPage> {
         _locationSubscription.cancel();
       }
 
-
-      _locationSubscription = _locationTracker.onLocationChanged.listen((LocationData newLocalData) {
-          updateMarkerAndCircle(newLocalData);
+      _locationSubscription = _locationTracker.onLocationChanged
+          .listen((LocationData newLocalData) {
+        updateMarkerAndCircle(newLocalData);
       });
-
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         debugPrint("Permission Denied");
@@ -125,7 +122,7 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
-  void _goToUserLocation() async{
+  void _goToUserLocation() async {
     var location = await _locationTracker.getLocation();
 
     moveCamera(CameraPosition(
@@ -146,100 +143,73 @@ class _MapPageState extends State<MapPage> {
 
   void setCustomIcons() async {
     customIcons[0] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/general.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/general.png');
 
     customIcons[1] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/academic.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/academic.png');
 
     customIcons[2] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/hostel.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/hostel.png');
 
     customIcons[3] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/cafe.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/cafe.png');
 
     customIcons[4] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/canteen.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/canteen.png');
 
     customIcons[5] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/grocery.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/grocery.png');
 
     customIcons[6] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/sports.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/sports.png');
 
     customIcons[7] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/landscape.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/landscape.png');
 
     customIcons[8] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/medical.png');
-    
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/medical.png');
+
     customIcons[9] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/mess.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/mess.png');
 
     customIcons[10] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/parking.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/parking.png');
 
     customIcons[11] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/housing.png');
-    
-    customIcons[12] = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/map/user.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/housing.png');
 
+    customIcons[12] = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/map/user.png');
   }
 
   BitmapDescriptor getIcon(String category) {
-    if(category=='general'){
+    if (category == 'general') {
       return customIcons[0];
-    }
-    else if(category=='academic'){
+    } else if (category == 'academic') {
       return customIcons[1];
-    }
-    else if(category=='hostel'){
+    } else if (category == 'hostel') {
       return customIcons[2];
-    }
-    else if(category=='cafe'){
+    } else if (category == 'cafe') {
       return customIcons[3];
-    }
-    else if(category=='canteen'){
+    } else if (category == 'canteen') {
       return customIcons[4];
-    }
-    else if(category=='grocery'){
+    } else if (category == 'grocery') {
       return customIcons[5];
-    }
-    else if(category=='sports'){
+    } else if (category == 'sports') {
       return customIcons[6];
-    }
-    else if(category=='landscape'){
+    } else if (category == 'landscape') {
       return customIcons[7];
-    }
-    else if(category=='medical'){
+    } else if (category == 'medical') {
       return customIcons[8];
-    }
-    else if(category=='mess'){
+    } else if (category == 'mess') {
       return customIcons[9];
-    }
-    else if(category=='parking'){
+    } else if (category == 'parking') {
       return customIcons[10];
-    }
-    else if(category=='housing'){
+    } else if (category == 'housing') {
       return customIcons[11];
-    }
-    else if(category=='user'){
+    } else if (category == 'user') {
       return customIcons[12];
-    }
-    else{
+    } else {
       return customIcons[0];
     }
   }
@@ -257,14 +227,13 @@ class _MapPageState extends State<MapPage> {
 
   void _onMapTypeButtonPressed() {
     setState(() {
-      _currentMapType = _currentMapType == MapType.normal
-          ? MapType.hybrid
-          : MapType.normal;
+      _currentMapType =
+          _currentMapType == MapType.normal ? MapType.hybrid : MapType.normal;
     });
   }
 
-  _markerSet() async{
-    sheet.getData('map!A:J').listen((data){
+  _markerSet() async {
+    sheet.getData('map!A:J').listen((data) {
       var mapData = data;
       mapInfoWindowList = [];
       locationList = [];
@@ -275,7 +244,8 @@ class _MapPageState extends State<MapPage> {
         keywordList.add(location[1] + location[8]);
         mapInfoWindowList.add(MapInfoWindow(
           locationName: location[1],
-          location: LatLng(double.parse(location[3]), double.parse(location[4])),
+          location:
+              LatLng(double.parse(location[3]), double.parse(location[4])),
           imagePath: location[9],
           timing: location[5],
           descriptionOne: location[6],
@@ -283,346 +253,346 @@ class _MapPageState extends State<MapPage> {
         ));
         _markers.add(Marker(
           markerId: MarkerId(location[1]),
-          position: LatLng(double.parse(location[3]), double.parse(location[4])),
+          position:
+              LatLng(double.parse(location[3]), double.parse(location[4])),
           infoWindow: InfoWindow(
             title: location[1],
             snippet: location[5],
           ),
           onTap: () {
-              setState(() {
-                currentWindow = mapInfoWindowList[int.parse(location[0])];
-                mapInfoWindowPosition = -170;
-              });
+            setState(() {
+              currentWindow = mapInfoWindowList[int.parse(location[0])];
+              mapInfoWindowPosition = -170;
+            });
           },
           icon: getIcon(location[2]),
         ));
-       });
-       setState((){});
+      });
+      setState(() {});
     });
     return _markers;
   }
 
-  moveCamera(CameraPosition position) async{
+  moveCamera(CameraPosition position) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(position));
   }
 
-  void launchMap(double lat, double long) async{
-      String url = "https://www.google.com/maps/search/?api=1&query=$lat,$long";
-      if (await canLaunch(url)) {
-        print("Can launch");
-        void initState(){
-          canLaunch( url);
-        }
+  void launchMap(double lat, double long) async {
+    String url = "https://www.google.com/maps/search/?api=1&query=$lat,$long";
+    if (await canLaunch(url)) {
+      print("Can launch");
 
-        await launch(url);
-      } else {
-        print("Could not launch");
-        throw 'Could not launch Maps';
-      }
+      await launch(url);
+    } else {
+      print("Could not launch");
+      throw 'Could not launch Maps';
+    }
   }
 
-  void navigateTo(){
+  void navigateTo() {
     Navigator.pushNamed(context, '/tlcontacts');
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Stack(
         children: <Widget>[
           GoogleMap(
-              mapType: _currentMapType,
-              padding: EdgeInsets.only(top: 75.0),
-              zoomControlsEnabled: false,
-              mapToolbarEnabled: false,
-              compassEnabled: true,
-              myLocationEnabled: false,
-              tiltGesturesEnabled: false,
-              scrollGesturesEnabled: true,
-              rotateGesturesEnabled: true,
-              myLocationButtonEnabled: true,
-              onMapCreated: _onMapCreated,
-              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-                  new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer(),),
-              ].toSet(),
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 17.2,
-                tilt: 30.0,
-                bearing: 180.0,
+            mapType: _currentMapType,
+            padding: EdgeInsets.only(top: 75.0),
+            zoomControlsEnabled: false,
+            mapToolbarEnabled: false,
+            compassEnabled: true,
+            myLocationEnabled: false,
+            tiltGesturesEnabled: false,
+            scrollGesturesEnabled: true,
+            rotateGesturesEnabled: true,
+            myLocationButtonEnabled: true,
+            onMapCreated: _onMapCreated,
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+              new Factory<OneSequenceGestureRecognizer>(
+                () => new EagerGestureRecognizer(),
               ),
-              cameraTargetBounds: CameraTargetBounds(
-                new LatLngBounds(
-                  northeast: LatLng(23.221005, 72.701542),
-                  southwest: LatLng(23.201905, 72.678445),
-                ),
-              ),
-              minMaxZoomPreference: MinMaxZoomPreference(12, 20),
-              markers: _markers,
-              circles: Set.of((circle != null) ? [circle] : []),
-              onTap: (LatLng location) {
-                  setState(() {
-                  mapInfoWindowPosition = -370;
-               });
-              },
+            ].toSet(),
+            initialCameraPosition: CameraPosition(
+              target: _center,
+              zoom: 17.2,
+              tilt: 30.0,
+              bearing: 180.0,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    FloatingActionButton(
-                      onPressed: () {
-                        showSearch(
-                          context: context,
-                          delegate: CustomSearch(),
-                        ).then((value) => setState((){
+            cameraTargetBounds: CameraTargetBounds(
+              new LatLngBounds(
+                northeast: LatLng(23.221005, 72.701542),
+                southwest: LatLng(23.201905, 72.678445),
+              ),
+            ),
+            minMaxZoomPreference: MinMaxZoomPreference(12, 20),
+            markers: _markers,
+            circles: Set.of((circle != null) ? [circle] : []),
+            onTap: (LatLng location) {
+              setState(() {
+                mapInfoWindowPosition = -370;
+              });
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  FloatingActionButton(
+                    onPressed: () {
+                      showSearch(
+                        context: context,
+                        delegate: CustomSearch(),
+                      ).then((value) => setState(() {
                             currentWindow = mapInfoWindowList[int.parse(value)];
                             mapInfoWindowPosition = -170;
                             moveCamera(CameraPosition(
-                                        target: currentWindow.location,
-                                        zoom: 17.2,
-                                        tilt: 30.0,
-                                        bearing: 180.0,
+                              target: currentWindow.location,
+                              zoom: 17.2,
+                              tilt: 30.0,
+                              bearing: 180.0,
                             ));
                           }));
-                      },
-                      heroTag: "btn1",
-                      backgroundColor: primaryColor,
-                      tooltip: 'Search',
-                      child: Icon(Icons.search, color: Colors.white),
-                    ),
-                    SizedBox(height: 16.0),
-                    FloatingActionButton(
-                      onPressed: _onMapTypeButtonPressed,
-                      heroTag: "btn2",
-                      backgroundColor: Colors.white,
-                      tooltip: 'Layers',
-                      child: Icon(Icons.layers, color: Colors.black45),
-                    ),
-                  ],
-                ),
+                    },
+                    heroTag: "btn1",
+                    backgroundColor: primaryColor,
+                    tooltip: 'Search',
+                    child: Icon(Icons.search, color: Colors.white),
+                  ),
+                  SizedBox(height: 16.0),
+                  FloatingActionButton(
+                    onPressed: _onMapTypeButtonPressed,
+                    heroTag: "btn2",
+                    backgroundColor: Colors.white,
+                    tooltip: 'Layers',
+                    child: Icon(Icons.layers, color: Colors.black45),
+                  ),
+                ],
               ),
             ),
-            AnimatedPositioned(
-              bottom: mapInfoWindowPosition,
-              left: 0,
-              right: 0,
-              duration: Duration(milliseconds: 200),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                          mapInfoWindowPosition = 0;
-                        });
-                    }, 
-                    onVerticalDragDown: (details) {
-                      setState(() {
-                          mapInfoWindowPosition = 0;
-                        });
-                    },   
-                    onDoubleTap: (){
-                      setState(() {
-                          mapInfoWindowPosition = -170;
-                        });
-                    },
-                    child: Container(
-                        margin: EdgeInsets.all(15),
-                        height: 350,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                  blurRadius: 15,
-                                  offset: Offset.zero,
-                                  color: Colors.black.withOpacity(0.4)
-                            )]
+          ),
+          AnimatedPositioned(
+            bottom: mapInfoWindowPosition,
+            left: 0,
+            right: 0,
+            duration: Duration(milliseconds: 200),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    mapInfoWindowPosition = 0;
+                  });
+                },
+                onVerticalDragDown: (details) {
+                  setState(() {
+                    mapInfoWindowPosition = 0;
+                  });
+                },
+                onDoubleTap: () {
+                  setState(() {
+                    mapInfoWindowPosition = -170;
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.all(15),
+                  height: 350,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            blurRadius: 15,
+                            offset: Offset.zero,
+                            color: Colors.black.withOpacity(0.4))
+                      ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 100,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10)),
+                          child: CachedNetworkImage(
+                            imageUrl: currentWindow.imagePath,
+                            fadeInDuration: Duration(milliseconds: 300),
+                            height: 100,
+                            width: 1040,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        child: Column(
+                      ),
+                      Container(
+                        height: 100,
+                        margin: EdgeInsets.only(top: 0),
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Container(
-                              height: 100,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10)
-                                ),
-                                child: CachedNetworkImage(
-                                  imageUrl: currentWindow.imagePath,
-                                  fadeInDuration: Duration(milliseconds: 300),
-                                  height: 100,
-                                  width: 1040,
-                                  fit: BoxFit.cover,
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      currentWindow.locationName,
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    Text(
+                                      currentWindow.timing,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                            Container(
-                              height: 100,
-                              margin: EdgeInsets.only(top: 0),
-                              child: 
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(left: 20),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                currentWindow.locationName,
-                                                style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontSize: 25,
-                                                ),
-                                              ),
-                                              Text(
-                                                currentWindow.timing,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ), 
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.all(22),
-                                        child: CircleAvatar(
-                                          radius: 33,
-                                          backgroundColor: primaryColor,
-                                          foregroundColor: Colors.white,
-                                          child: IconButton(
-                                            onPressed: () {
-                                              launchMap(currentWindow.location.latitude, currentWindow.location.longitude);
-                                            },
-                                            tooltip: 'Directions',
-                                            icon: Icon(Icons.directions),
-                                          ),
-                                        ), 
-                                      ),
-                                    ],
-                                  ),                        
-                            ),
-                            Container(
-                              height: 150,
-                              child: ListView(
-                                padding: EdgeInsets.zero,
-                                children: <Widget>[
-                                  SizedBox(height: 10),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(left: 20, right: 20),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                currentWindow.descriptionOne,
-                                                style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ), 
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Divider(
-                                    height: 40.0,
-                                    thickness: 0.9,
-                                    indent: 20,
-                                    endIndent: 20,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.only(left: 20, right: 20),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                currentWindow.descriptionTwo,
-                                                style: TextStyle(
-                                                  color: Colors.black87,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ), 
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                ],
+                            Padding(
+                              padding: EdgeInsets.all(22),
+                              child: CircleAvatar(
+                                radius: 33,
+                                backgroundColor: primaryColor,
+                                foregroundColor: Colors.white,
+                                child: IconButton(
+                                  onPressed: () {
+                                    launchMap(currentWindow.location.latitude,
+                                        currentWindow.location.longitude);
+                                  },
+                                  tooltip: 'Directions',
+                                  icon: Icon(Icons.directions),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
+                      Container(
+                        height: 150,
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          children: <Widget>[
+                            SizedBox(height: 10),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.only(left: 20, right: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          currentWindow.descriptionOne,
+                                          style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              height: 40.0,
+                              thickness: 0.9,
+                              indent: 20,
+                              endIndent: 20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.only(left: 20, right: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          currentWindow.descriptionTwo,
+                                          style: TextStyle(
+                                            color: Colors.black87,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right:16.0, top: 75.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    FloatingActionButton(
-                      onPressed: _goToUserLocation,
-                      heroTag: "btn3",
-                      backgroundColor: Colors.white,
-                      tooltip: 'Your location',
-                      child: Icon(Icons.my_location, color: Colors.black45),
-                    ),
-                    SizedBox(height:16),
-                    FloatingActionButton(
-                      onPressed: () {
-                        moveCamera(CameraPosition(
-                          target: _center,
-                          zoom: 17.2,
-                          tilt: 30.0,
-                          bearing: 180.0,
-                        ));
-                      },
-                      heroTag: "btn4",
-                      backgroundColor: Colors.white,
-                      tooltip: 'IITGN',
-                      child: Icon(Icons.home, color: Colors.black45),
-                    ),
-                  ],
-                ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0, top: 75.0),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  FloatingActionButton(
+                    onPressed: _goToUserLocation,
+                    heroTag: "btn3",
+                    backgroundColor: Colors.white,
+                    tooltip: 'Your location',
+                    child: Icon(Icons.my_location, color: Colors.black45),
+                  ),
+                  SizedBox(height: 16),
+                  FloatingActionButton(
+                    onPressed: () {
+                      moveCamera(CameraPosition(
+                        target: _center,
+                        zoom: 17.2,
+                        tilt: 30.0,
+                        bearing: 180.0,
+                      ));
+                    },
+                    heroTag: "btn4",
+                    backgroundColor: Colors.white,
+                    tooltip: 'IITGN',
+                    child: Icon(Icons.home, color: Colors.black45),
+                  ),
+                ],
               ),
             ),
+          ),
         ],
       ),
     );
   }
 }
 
-class CustomSearch extends SearchDelegate<String>{
-
+class CustomSearch extends SearchDelegate<String> {
   // @override
   // ThemeData appBarTheme(BuildContext context) {
   //   assert(context != null);
@@ -658,9 +628,9 @@ class CustomSearch extends SearchDelegate<String>{
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,        
-        ),
-      onPressed: (){
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
         close(context, null);
       },
     );
@@ -668,18 +638,18 @@ class CustomSearch extends SearchDelegate<String>{
 
   @override
   Widget buildResults(BuildContext context) {
-    //@CHRIS
+    //DONT REMOVE
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty){
+    if (query.isEmpty) {
       return SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(15),
           height: 425,
           decoration: BoxDecoration(
-              color: Colors.white10,
+            color: Colors.white10,
           ),
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
@@ -704,22 +674,23 @@ class CustomSearch extends SearchDelegate<String>{
           ),
         ),
       );
-    }
-    else{
-      final suggestions = locationList.where((p) => keywordList[locationList.indexOf(p)].toLowerCase().contains(query.toLowerCase())).toList();
+    } else {
+      final suggestions = locationList
+          .where((p) => keywordList[locationList.indexOf(p)]
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
       print(locationList);
       return ListView.builder(
-        itemBuilder: (context, index) =>ListTile(
-          onTap: (){
+        itemBuilder: (context, index) => ListTile(
+          onTap: () {
             close(context, locationList.indexOf(suggestions[index]).toString());
           },
           leading: Icon(Icons.location_city),
           title: Text(suggestions[index]),
-          ),
+        ),
         itemCount: suggestions.length,
-        );
+      );
     }
-    
   }
-
 }

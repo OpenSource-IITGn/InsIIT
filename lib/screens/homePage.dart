@@ -10,7 +10,6 @@ import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/utilities/bottomNavBar.dart';
-import 'package:instiapp/utilities/carouselSlider.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/classes/weekdaycard.dart';

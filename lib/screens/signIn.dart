@@ -40,8 +40,6 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
 /*(beta)Future getEventsCached() async {
   var file = await _localFile('events');
   bool exists = await file.exists();
@@ -225,7 +223,7 @@ Future<File> _localFile(String range) async {
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
   ValueNotifier<bool> isSignedIn = ValueNotifier(false);
-  var user = null;
+  var user;
   // AuthService _auth = AuthService();
 
   Future checkWelcome() async {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transformer_page_view/transformer_page_view.dart';
 
-
 class OnboardingPage extends StatefulWidget {
   @override
   OnboardingPageState createState() {
@@ -11,7 +10,7 @@ class OnboardingPage extends StatefulWidget {
 
 class OnboardingPageState extends State<OnboardingPage> {
   int _slideIndex = 0;
-  final GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
   final List<String> images = [
     //(beta)"assets/images/slide_1.png",
     "assets/images/slide_2.png",
@@ -24,7 +23,6 @@ class OnboardingPageState extends State<OnboardingPage> {
     "assets/images/slide_9.png",
     ""
   ];
-
 
   final List<String> text0 = [
     //(beta)"Feed",
@@ -52,14 +50,13 @@ class OnboardingPageState extends State<OnboardingPage> {
     ""
   ];
 
-
   final IndexController controller = IndexController();
   @override
   Widget build(BuildContext context) {
     TransformerPageView transformerPageView = TransformerPageView(
         pageSnapping: true,
         onPageChanged: (index) {
-          if(this._slideIndex == 4/*(beta)8*/){
+          if (this._slideIndex == 4 /*(beta)8*/) {
             Navigator.pop(context);
           }
           setState(() {
@@ -88,8 +85,9 @@ class OnboardingPageState extends State<OnboardingPage> {
                       child: new Text(
                         text0[info.index],
                         style: new TextStyle(
-                            color: Colors.indigoAccent,
-                            fontSize: 34.0,),
+                          color: Colors.indigoAccent,
+                          fontSize: 34.0,
+                        ),
                       ),
                       position: info.position,
                       opacityFactor: .8,
@@ -115,8 +113,9 @@ class OnboardingPageState extends State<OnboardingPage> {
                         text1[info.index],
                         textAlign: TextAlign.center,
                         style: new TextStyle(
-                            color: Colors.indigo,
-                            fontSize: 28.0,),
+                          color: Colors.indigo,
+                          fontSize: 28.0,
+                        ),
                       ),
                       position: info.position,
                       translationFactor: 300.0,
@@ -139,7 +138,7 @@ class OnboardingPageState extends State<OnboardingPage> {
             ),
           );
         }),
-        itemCount: 6/*(beta)10*/);
+        itemCount: 6 /*(beta)10*/);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -147,8 +146,8 @@ class OnboardingPageState extends State<OnboardingPage> {
     );
   }
 }
-class Dots extends StatelessWidget {
 
+class Dots extends StatelessWidget {
   final IndexController controller;
   final int slideIndex;
   final int numberOfDots;

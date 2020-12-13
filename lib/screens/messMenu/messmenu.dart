@@ -7,8 +7,6 @@ import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
-import 'dart:math' as math;
-//TODO : State for upvote and downvote
 
 class MessMenu extends StatefulWidget {
   @override
@@ -110,6 +108,7 @@ class _MessMenuState extends State<MessMenu> {
                             print('DATA SAVED IN CACHE');
                           },
                         ),
+                        //TODO: THERE IS SOME ERROR With SENDING DATA TO SHEETS
                         IconButton(
                           icon: Icon(Icons.thumb_up_alt),
                           iconSize: 20,

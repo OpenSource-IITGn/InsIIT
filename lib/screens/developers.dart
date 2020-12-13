@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:url_launcher/url_launcher.dart';

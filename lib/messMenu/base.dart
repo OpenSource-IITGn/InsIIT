@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/messMenu/labelDrawer.dart';
-import 'package:instiapp/messMenu/plateDraw.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instiapp/utilities/measureSize.dart';
-import 'messConstants.dart';
 
 class MessMenuBaseDrawer extends StatefulWidget {
   var foodItems;

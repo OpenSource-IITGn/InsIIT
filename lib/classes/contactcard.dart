@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_autolink_text/flutter_autolink_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactCard {
