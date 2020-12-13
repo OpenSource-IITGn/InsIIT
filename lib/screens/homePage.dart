@@ -912,7 +912,7 @@ class _HomePageState extends State<HomePage>
                                         ),
                                       ),
                                       Text(
-                                        "Here's what's for ${selectMeal(foodCards)['meal']}",
+                                        "Here's what's for ${selectMeal(foodCards)['meal'].toLowerCase()}",
                                         style: TextStyle(
                                             color: Colors.black.withAlpha(150)),
                                       ),
@@ -1553,7 +1553,6 @@ class _HomePageState extends State<HomePage>
   Map selectMeal(List foodList) {
     int day = DateTime.now().weekday - 1;
     int hour = DateTime.now().hour;
-    return {'meal': 'Dinner', 'list': foodList[day].dinner};
     if (hour >= 4 && hour <= 10) {
       return {'meal': 'Breakfast', 'list': foodList[day].breakfast};
     } else if (hour > 10 && hour <= 15) {
