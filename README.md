@@ -1,16 +1,7 @@
-# instiapp
+# insIIT - Official Students App of IIT Gandhinagar
 
-A new Flutter project.
+Hello! You've _stumbled_ across the official code base for the students app @ IITGN.
 
-## Getting Started
+This is still in its infant stages, and any contribution is welcome!
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Simply open a pull request, and create a new issue tracking the new feature that you have added, and we will we more than happy to accept it!
