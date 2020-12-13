@@ -8,6 +8,7 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
+import 'package:instiapp/utilities/measureSize.dart';
 //(beta)import 'package:googleapis/classroom/v1.dart';
 //(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
 //(beta)import 'package:path_provider/path_provider.dart';
@@ -224,6 +225,7 @@ class _SignInPageState extends State<SignInPage> {
   bool loading = false;
   ValueNotifier<bool> isSignedIn = ValueNotifier(false);
   var user;
+  Size buttonSize = Size(200, 0);
   // AuthService _auth = AuthService();
 
   Future checkWelcome() async {
@@ -332,79 +334,108 @@ class _SignInPageState extends State<SignInPage> {
         return Future.value(false);
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         key: key,
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Image.asset('assets/images/homepageGif.gif'),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text("All things IITGN",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 50)),
-                ),
-                SizedBox(height: 100),
-                AnimatedContainer(
-                  duration: Duration(seconds: 1),
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: FlatButton(
-                    onPressed: () => authorize(false),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(40.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                        child: Text(
-                          "Login with IITGN ID(Google)",
-                          style: TextStyle(
-                            color: Colors.white.withAlpha(230),
+        body: SafeArea(
+          child: Container(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: Image.asset('assets/images/homepageGif.gif')),
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: Text("InsIIT",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 50)),
                           ),
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                            child: Text("All things IITGN",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Colors.black.withAlpha(150),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 80),
+                    Column(children: [
+                      MeasureSize(
+                        onChange: (Size size) {
+                          buttonSize = size;
+                          setState(() {});
+                        },
+                        child: FlatButton(
+                          onPressed: () => authorize(false),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(40.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Container(
+                              child: Text(
+                                "Login with IITGN ID (Google)",
+                                style: TextStyle(
+                                  color: Colors.white.withAlpha(230),
+                                ),
+                              ),
+                            ),
+                          ),
+                          color: Color.fromRGBO(228, 110, 96, 1),
+                        ),
                       ),
-                    ),
-                    color: Color.fromRGBO(228, 110, 96, 1),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 8, 16, 8),
-                  child: Text(
-                    "or",
-                    style: TextStyle(
-                      color: Colors.grey.withAlpha(230),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: FlatButton(
-                    onPressed: () => authorize(true),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(40.0),
-                        side: BorderSide(
-                          color: Colors.grey.withAlpha(50),
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 16),
-                      child: Container(
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16.0, 8, 16, 8),
                         child: Text(
-                          "Login as Guest",
+                          "or",
                           style: TextStyle(
                             color: Colors.grey.withAlpha(230),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                      Container(
+                        width: buttonSize.width,
+                        child: FlatButton(
+                          onPressed: () => authorize(true),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(40.0),
+                              side: BorderSide(
+                                color: Colors.grey.withAlpha(50),
+                              )),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(16.0, 16, 16, 16),
+                            child: Container(
+                              child: Text(
+                                "Login as Guest",
+                                style: TextStyle(
+                                  color: Colors.grey.withAlpha(230),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
