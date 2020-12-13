@@ -640,9 +640,6 @@ class _HomePageState extends State<HomePage>
     sheet.getData('FoodItems!A:B').listen((data) {
       data.removeAt(0);
       for (var lst in data) {
-        //print(lst);
-        print(lst[0]);
-        print(lst[1]);
         foodIllustration.putIfAbsent(lst[0], () => lst[1]);
       }
       print(foodIllustration);

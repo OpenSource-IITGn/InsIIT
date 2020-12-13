@@ -37,7 +37,6 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
   void initState() {
     super.initState();
     location = 0;
-    //print(widget.illustrations);
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
       visible.add(false);
       sizes.add(Size(0, 0));
