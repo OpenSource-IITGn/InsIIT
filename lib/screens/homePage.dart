@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-//(beta)import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +15,12 @@ import 'package:instiapp/classes/weekdaycard.dart';
 import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:instiapp/utilities/signInMethods.dart';
 import 'email.dart';
-//(beta)import 'package:instiapp/classes/scheduleModel.dart';
-//(beta)import 'package:googleapis/classroom/v1.dart';
-//(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
-//(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
 
 import 'package:instiapp/screens/misc.dart';
-//(beta)import 'package:instiapp/classes/tlclass.dart';
-//(beta)import 'feed/feedPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -41,14 +35,6 @@ List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
 List<List<String>> foodVotes;
-//(beta)List<TodayCourse> todayCourses;
-//(beta)List<MyCourse> myCourses;
-//(beta)List<EventModel> removedEvents;
-//(beta)List<EventModel> userAddedCourses;
-//(beta)List<EventModel> examCourses;
-//(beta)List<EventModel> eventsList;
-//(beta)List<Tinkerer> tlDataList;
-//(beta)List<Tinkerer> machinesTL;
 
 bool mainPageLoading = true;
 int selectedIndex = 0;
@@ -83,149 +69,7 @@ class _HomePageState extends State<HomePage>
     loadImportantContactData();
     loadShuttleData();
     loadFoodVotesData();
-    //(beta)loadCourseData();
-    //(beta)loadRemovedCoursesData();
-    //(beta)loadUserAddedCoursesData();
-    //(beta)loadExamTimeTableData();
-    //(beta)loadCertificateData();
-    //(beta)loadTlData();
   }
-
-  /*(beta)loadCertificateData() async {
-    emailIds = [];
-    sheetTL.getData('CertificateList!A:E').listen((data) {
-      var certificateData = (data);
-      certificateData.forEach((i) {
-        emailIds.add(data[1]);
-      });
-    });
-  }*/
-
-  /*(beta)loadTlData() async {
-    sheet.getData('TLContacts!A:D').listen((data) {
-      var tlData = data;
-      tlDataList = [];
-      tlData.removeAt(0);
-      tlData.forEach((detail) {
-        tlDataList.add(Tinkerer(
-          name: detail[0],
-          mobNo: detail[1].toString(),
-          machine: detail[2],
-          job: detail[3].split('+'),
-        ));
-      });
-     makeMachines(tlDataList);
-    });
-
-
-  }*/
-
-  /*(beta)makeMachines(List<Tinkerer> tlDataList) {
-    machinesTL = [];
-    tlDataList.forEach((Tinkerer person) {
-      if(person.machine != '-'){
-        person.isMachine = true;
-        machinesTL.add(person);
-      }
-    });
-  }*/
-
-  /*(beta)prepareEventsList() {
-    List<calendar.Event> todayEvents;
-    List<EventModel> currentDayCourses;
-    List<EventModel> currentDayExamCourses;
-    List<EventModel> mergedCourses;
-
-    eventsList = [];
-    if (userAddedCourses != null) {
-      userAddedCourses.forEach((EventModel model) {
-        bool shouldContain = true;
-        if (removedEvents != null) {
-          removedEvents.forEach((EventModel removedEvent) {
-            if (removedEvent.courseId == model.courseId &&
-                removedEvent.courseName == model.courseName &&
-                removedEvent.eventType == model.eventType) {
-              shouldContain = false;
-            }
-          });
-        }
-        if (model.day == DateTime
-            .now()
-            .weekday && shouldContain) {
-          eventsList.add(model);
-        }
-      });
-    }
-    currentDayExamCourses = todayExamCourses(examCourses);
-    currentDayExamCourses.forEach((EventModel model) {
-      bool shouldContain = true;
-      if (removedEvents != null) {
-        removedEvents.forEach((EventModel removedEvent) {
-          if (removedEvent.isExam) {
-            if (removedEvent.courseId == model.courseId &&
-                removedEvent.courseName == model.courseName) {
-              shouldContain = false;
-            }
-          }
-        });
-      }
-      if (shouldContain) {
-        eventsList.add(model);
-      }
-    });
-    currentDayCourses = makeCourseEventModel(todayCourses, myCourses);
-    mergedCourses = mergeSameCourses(currentDayCourses);
-    mergedCourses.forEach((EventModel model) {
-      bool shouldContain = true;
-      if (removedEvents != null) {
-        removedEvents.forEach((EventModel removedEvent) {
-          if (removedEvent.isCourse) {
-            if (removedEvent.courseId == model.courseId &&
-                removedEvent.courseName == model.courseName &&
-                removedEvent.eventType == model.eventType) {
-              shouldContain = false;
-            }
-          }
-        });
-      }
-      if (shouldContain) {
-        eventsList.add(model);
-      }
-    });
-    todayEvents = todayEventsList(eventsWithoutRepetition);
-    todayEvents.forEach((calendar.Event event) {
-      bool shouldContain = true;
-      if (removedEvents != null) {
-        removedEvents.forEach((EventModel removedEvent) {
-          if (removedEvent.isCourse == false && removedEvent.isExam == false) {
-            if (removedEvent.description == event.description &&
-                removedEvent.summary == event.summary &&
-                removedEvent.location == event.location &&
-                removedEvent.creator == event.creator.displayName &&
-                removedEvent.remarks == event.status) {
-              shouldContain = false;
-            }
-          }
-        });
-      }
-      if (shouldContain) {
-        eventsList.add(EventModel(
-            start: event.start.dateTime.toLocal(),
-            end: event.end.dateTime.toLocal(),
-            isCourse: false,
-            isExam: false,
-            courseName: null,
-            description: event.description,
-            summary: event.summary,
-            location: event.location,
-            creator: event.creator.displayName,
-            remarks: event.status));
-      }
-    });
-    if (eventsList != null && eventsList.length != 0) {
-      quickSort(eventsList, 0, eventsList.length - 1);
-    }
-  }*/
 
   loadShuttleData() async {
     sheet.getData('BusRoutes!A:H').listen((data) {
@@ -760,7 +604,6 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-
         leading: Icon(
           Icons.menu,
           color: Colors.transparent,
@@ -794,12 +637,6 @@ class _HomePageState extends State<HomePage>
             },
           )
         ],
-        // title: Text('Institute App',
-        //     style: TextStyle(
-        //       fontFamily: 'OpenSans',
-        //       // color: Colors.black,
-        //       fontSize: 22,
-        //     )),
         centerTitle: true,
       ),
       body: PageView(
@@ -972,7 +809,8 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                       ),
-                      MessMenuBaseDrawer(selectMeal(foodCards), foodIllustration),
+                      MessMenuBaseDrawer(
+                          selectMeal(foodCards), foodIllustration),
                       /*(beta)(twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(

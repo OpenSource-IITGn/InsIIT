@@ -1,37 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:http/io_client.dart';
-import 'package:http/http.dart';
 import 'package:instiapp/utilities/measureSize.dart';
+import 'package:instiapp/utilities/signInMethods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class GoogleHttpClient extends IOClient {
-  Map<String, String> _headers;
-
-  GoogleHttpClient(this._headers) : super();
-
-  @override
-  Future<StreamedResponse> send(BaseRequest request) =>
-      super.send(request..headers.addAll(_headers));
-
-  @override
-  Future<Response> head(Object url, {Map<String, String> headers}) =>
-      super.head(url, headers: headers..addAll(_headers));
-}
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
 
   @override
   _SignInPageState createState() => _SignInPageState();
-}
-
-logoutUser() async {
-  await GoogleSignIn().signOut();
-  await FirebaseAuth.instance.signOut();
 }
 
 class _SignInPageState extends State<SignInPage> {
@@ -51,29 +29,22 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser =
-        await GoogleSignIn(hostedDomain: 'iitgn.ac.in').signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
   @override
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
-
+    print(user);
     if (user != null) {
-      currentUser = {
-        "given_name": user.displayName,
-        "email": user.email,
-        "picture": user.photoURL
-      };
+      if (user.displayName == null) {
+        currentUser = null;
+      } else {
+        currentUser = {
+          "given_name": user.displayName,
+          "email": user.email,
+          "picture": user.photoURL
+        };
+      }
+
       Future.delayed(const Duration(milliseconds: 50)).then((value) {
         Navigator.pushReplacementNamed(context, '/menuBarBase');
       });
@@ -89,19 +60,17 @@ class _SignInPageState extends State<SignInPage> {
     if (asGuest) {
       currentUser = null;
       FirebaseAuth.instance.signInAnonymously();
-      Navigator.pop(key.currentContext);
-      Navigator.pushNamed(context, '/menuBarBase');
+      print("Logging in as guest");
+      Navigator.pushReplacementNamed(context, '/menuBarBase');
     } else {
-      print("Waiting for GSIGN IN");
+      print("Started GSIGN IN Method");
       await signInWithGoogle().then((user) {
         if (user != null) {
           currentUser = user.additionalUserInfo.profile;
-
-          Navigator.pop(key.currentContext);
-          Navigator.pushNamed(context, '/menuBarBase');
+          Navigator.pushReplacementNamed(context, '/menuBarBase');
         }
       });
-      print("Successfully AUTHORIZED");
+      print("AUTHORIZED");
     }
   }
 
