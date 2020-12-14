@@ -1,10 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-//(beta)import 'package:instiapp/screens/TLForms/firstPage.dart';
-//(beta)import 'package:instiapp/screens/TLForms/fourthPage.dart';
-//(beta)import 'package:instiapp/screens/TLForms/secondPage.dart';
-//(beta)import 'package:instiapp/screens/TLForms/thirdPage.dart';
 import 'package:instiapp/screens/developers.dart';
 import 'package:instiapp/screens/email.dart';
 
@@ -49,39 +45,17 @@ class MyApp extends StatelessWidget {
             key: navigatorKey,
             debugShowCheckedModeBanner: false,
             routes: {
-              // '/announcements': (context) => Announcements(),
-              // '/articles': (context) => Articles(),
               '/onboarding': (context) => OnboardingPage(),
-              //(beta)'/eventscalendar': (context) => EventsCalendar(),
-              //(beta)'/eventpage': (context) => EventPage(),
-              //(beta)/schedule': (context) => SchedulePage(),
-              //(beta)'/feed': (context) => FeedPage(),
-              // '/academiccalendar': (context) => AcademicCalendar(),
               '/importantcontacts': (context) => ImportantContacts(),
-              // '/complaints': (context) => Complains(),
               '/shuttle': (context) => Shuttle(),
-              // '/addtext': (context) => AddText(),
               '/Quicklinks': (context) => Email(),
               '/messmenu': (context) => MessMenu(),
               '/messfeedback': (context) => MessFeedBack(),
               '/signin': (context) => SignInPage(),
               '/menuBarBase': (context) => HomeWrapper(),
-              //(beta)'/bookingform': (context) => BookingForm(),
-              //(beta)'/selecttime': (context) => SelectTime(),
-              //(beta)'/RoomBooking': (context) => RoomService(),
               '/misc': (context) => MiscPage(),
-              //(beta)'/availablerooms': (context) => AvailableRooms(),
-              //(beta)'/eventdetail': (context) => EventDetail(),
               '/developers': (context) => DevelopersPage(),
-              //(beta)'/editevent': (context) => EditEvent(),
               '/map': (context) => MapPage(),
-              //(beta)'/firstPage': (context) => FirstPage(),
-              //(beta)'/secondPage': (context) => SecondPage(),
-              //(beta)'/thirdPage': (context) => ThirdPage(),
-              //(beta)'/fourthPage': (context) => FourthPage(),
-              //(beta)'/tlcontacts': (context) => TinkererContact(),
-              //(beta)'/addcourse': (context) => AddCourse(),
-              //(beta)'/exportIcsFile': (context) => ExportIcsFile(),
             },
             title: 'Instiapp',
             theme:
