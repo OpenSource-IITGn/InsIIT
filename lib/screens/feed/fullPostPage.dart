@@ -1,4 +1,4 @@
-/*(beta)import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
@@ -24,9 +24,9 @@ class _FullPostPageState extends State<FullPostPage> {
   void postComment(String commentText) async {
     var commentObj = CommentModel(
         poster: Person(
-            name: firebaseUser.displayName,
-            imageUrl: firebaseUser.photoUrl,
-            uid: firebaseUser.uid),
+            name: currentUser['given_name'],
+            imageUrl: currentUser['picture'],
+            uid: currentUser['uid']),
         text: commentText,
         timestamp: dateFormat.format(DateTime.now()),
         timeText: 'now');
@@ -94,10 +94,6 @@ class _FullPostPageState extends State<FullPostPage> {
                       border: new OutlineInputBorder(
                           borderSide: new BorderSide(color: Colors.teal)),
                       hintText: 'Comment...',
-                      // prefixIcon: const Icon(
-                      //   Icons.comment,
-                      // ),
-
                       suffixIcon: IconButton(
                         icon: Icon(Icons.send),
                         onPressed: () {
@@ -184,4 +180,4 @@ Widget buildComment(CommentModel comment) {
       ),
     ),
   );
-}*/
+}

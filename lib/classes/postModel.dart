@@ -1,4 +1,4 @@
-/*(beta)import 'dart:convert';
+import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/commentModel.dart';
@@ -115,19 +115,15 @@ class _PostWidgetState extends State<PostWidget> {
       baseUrl,
       '/feedReactionUpdate',
       queryParameters,
-      
     );
     print('Sending like/unlike: ' + uri.toString());
     int change = (widget.post.isLike == true) ? 1 : -1;
     var jsonbody = jsonEncode({"where": "like", "change": change});
     print(jsonbody);
-    var response = await http.post(
-      uri,
-      body: jsonbody.toString(),
-      headers: <String, String>{
+    var response = await http
+        .post(uri, body: jsonbody.toString(), headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-    }
-    );
+    });
     print("SUCCESS: " + jsonDecode(response.body)['success'].toString());
     print(jsonDecode(response.body)['results'][0]['reactions']);
 
@@ -239,29 +235,17 @@ class _PostWidgetState extends State<PostWidget> {
                             imageUrls: widget.post.imageUrls,
                             imageBorderRadius: BorderRadius.circular(8.0),
                           ),
-                    // (widget.post.imageUrl == null)
-                    //     ? Container()
-                    //     : Container(
-                    //         color: Colors.grey.withAlpha(50),
-                    //         alignment: Alignment.center,
-                    //         height: ScreenSize.size.height * 0.4,
-                    //         child: Image.network(widget.post.imageUrl),
-                    //       ),
-
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FlatButton(
                             child: Row(
                               children: <Widget>[
-                                Transform.rotate(
-                                  angle: 180 * math.pi / 180,
-                                  child: Icon(
-                                    Icons.details,
-                                    color: (widget.post.isLike == true)
-                                        ? primaryColor
-                                        : secondaryTextColor,
-                                  ),
+                                Icon(
+                                  Icons.thumb_up,
+                                  color: (widget.post.isLike == true)
+                                      ? primaryColor
+                                      : secondaryTextColor,
                                 ),
                                 SizedBox(width: 10),
                                 Text("${widget.post.reactions['like']}"),
@@ -274,24 +258,15 @@ class _PostWidgetState extends State<PostWidget> {
                             },
                           ),
                           FlatButton(
-                              child: Row(
-                                children: <Widget>[
-                                  Icon(Icons.comment,
-                                      color: secondaryTextColor),
-                                  SizedBox(width: 10),
-                                  Text("${widget.post.comments.length}"),
-                                ],
-                              ),
-                              onPressed: null,
-                              // onPressed: () {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             FullPostPage(post: widget.post)),
-                              //   );
-                              // }
-                              ),
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.comment, color: secondaryTextColor),
+                                SizedBox(width: 10),
+                                Text("${widget.post.comments.length}"),
+                              ],
+                            ),
+                            onPressed: null,
+                          )
                         ]),
                   ],
                 ),
@@ -300,4 +275,4 @@ class _PostWidgetState extends State<PostWidget> {
       ),
     );
   }
-}*/
+}

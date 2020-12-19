@@ -52,7 +52,7 @@ class DevelopersPage extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: Text('Developers',
+        title: Text('Team InsIIT',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(

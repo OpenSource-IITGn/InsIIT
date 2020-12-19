@@ -119,7 +119,7 @@ class _MiscPageState extends State<MiscPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
                           child: Text(
-                            "Developers",
+                            "Team InsIIT",
                             style: TextStyle(
                               color: Colors.black45,
                             ),

@@ -1,4 +1,4 @@
-/*(beta)import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/postModel.dart';
@@ -31,7 +31,6 @@ class _FeedPageState extends State<FeedPage>
   }
 
   void getPosts() async {
-    
     var queryParameters = {
       'api_key': 'NIKS',
       'start_from': offset.toString(),
@@ -76,7 +75,7 @@ class _FeedPageState extends State<FeedPage>
   Widget build(BuildContext context) {
     super.build(context);
     return SafeArea(
-          child: Scaffold(
+      child: Scaffold(
         backgroundColor: Colors.white,
         body: (loading == true)
             ? Center(child: CircularProgressIndicator())
@@ -91,7 +90,8 @@ class _FeedPageState extends State<FeedPage>
                     if (reloading == true && index == posts.length) {
                       return Center(
                           child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
                         child: CircularProgressIndicator(),
                       ));
                     }
@@ -107,4 +107,4 @@ class _FeedPageState extends State<FeedPage>
 
   @override
   bool get wantKeepAlive => true;
-}*/
+}

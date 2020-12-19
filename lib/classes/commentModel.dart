@@ -1,4 +1,4 @@
-/*(beta)import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class CommentModel {
   Person poster;
@@ -47,7 +47,11 @@ class Person {
   String uid;
   Person({this.name, this.imageUrl, this.uid});
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> ret = {'full_name': name, "image_link": imageUrl, "user_id": uid};
+    Map<String, dynamic> ret = {
+      'full_name': name,
+      "image_link": imageUrl,
+      "user_id": uid
+    };
     return ret;
   }
-}*/
+}

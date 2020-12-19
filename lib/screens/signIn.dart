@@ -35,19 +35,19 @@ class _SignInPageState extends State<SignInPage> {
     user = FirebaseAuth.instance.currentUser;
     print(user);
     if (user != null) {
-      if (user.displayName == null) {
+      if (user.displayName == null || user.displayName.length == 0) {
         currentUser = null;
       } else {
         currentUser = {
           "given_name": user.displayName,
           "email": user.email,
-          "picture": user.photoURL
+          "picture": user.photoURL,
+          'uid': user.uid
         };
+        Future.delayed(const Duration(milliseconds: 50)).then((value) {
+          Navigator.pushReplacementNamed(context, '/menuBarBase');
+        });
       }
-
-      Future.delayed(const Duration(milliseconds: 50)).then((value) {
-        Navigator.pushReplacementNamed(context, '/menuBarBase');
-      });
     }
     checkWelcome().then((val) {
       if (val == true) {
