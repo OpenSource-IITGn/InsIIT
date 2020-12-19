@@ -1,5 +1,5 @@
-//(beta)import 'dart:convert';
-//(beta)import 'dart:io';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +9,15 @@ import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'package:instiapp/utilities/measureSize.dart';
-//(beta)import 'package:googleapis/classroom/v1.dart';
-//(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
-//(beta)import 'package:path_provider/path_provider.dart';
+import 'package:googleapis/classroom/v1.dart';
+import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-//(beta)List<Course> courses = [];
-//(beta)List<Course> coursesWithoutRepetition;
-//(beta)List<calendar.Event> events = [];
-//(beta)List<calendar.Event> eventsWithoutRepetition;
+List<Course> courses = [];
+List<Course> coursesWithoutRepetition;
+List<calendar.Event> events = [];
+List<calendar.Event> eventsWithoutRepetition;
 bool guest = false;
 
 class GoogleHttpClient extends IOClient {
@@ -41,7 +41,7 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-/*(beta)Future getEventsCached() async {
+Future getEventsCached() async {
   var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
@@ -60,14 +60,14 @@ class SignInPage extends StatefulWidget {
   }
 
   return false;
-}*/
+}
 
 logoutUser() async {
   // gSignIn.signOut();
-  await GoogleSignIn().signOut();
+  await gSignIn.signOut();
   await FirebaseAuth.instance.signOut();
 
-  /*(beta)var file = await _localFile('events');
+  var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
     await file.delete();
@@ -76,10 +76,10 @@ logoutUser() async {
   exists = await file.exists();
   if (exists) {
     await file.delete();
-  }*/
+  }
 }
 
-/*(beta)Future storeEventsCached() async {
+Future storeEventsCached() async {
   var file = await _localFile('events');
   bool exists = await file.exists();
   if (exists) {
@@ -95,16 +95,16 @@ logoutUser() async {
   await file.writeAsString(jsonEncode(list));
   print("WROTE EVENTS TO CACHE");
   return true;
-}*/
+}
 
-/*(beta)Future getEventsOnline(httpClient) async {
+Future getEventsOnline(httpClient) async {
   var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
   events = [];
   events.addAll(eventData.items);
   eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-}*/
+}
 
-/*(beta)Future getCoursesCached() async {
+Future getCoursesCached() async {
   var file = await _localFile('courses');
   bool exists = await file.exists();
   if (exists) {
@@ -123,9 +123,9 @@ logoutUser() async {
   }
 
   return false;
-}*/
+}
 
-/*(beta)Future storeCoursesCached() async {
+Future storeCoursesCached() async {
   var file = await _localFile('courses');
   bool exists = await file.exists();
   if (exists) {
@@ -141,9 +141,9 @@ logoutUser() async {
   await file.writeAsString(jsonEncode(list));
   print("WROTE Courses TO CACHE");
   return true;
-}*/
+}
 
-/*(beta)Future getCoursesOnline(httpClient) async {
+Future getCoursesOnline(httpClient) async {
   courses = [];
   var courseData = await ClassroomApi(httpClient).courses.list();
   courses.addAll(courseData.courses);
@@ -155,16 +155,18 @@ Future<File> _localFile(String range) async {
   String tempPath = tempDir.path;
   String filename = tempPath + range + '.csv';
   return File(filename);
-  }*/
+  }
 
-/*(beta)Future reloadEventsAndCourses() async {
+Future reloadEventsAndCourses() async {
   final authHeaders = await gSignIn.currentUser.authHeaders;
   final httpClient = GoogleHttpClient(authHeaders);
   await getEventsCached().then((values) async {
     if (values != false) {
+      print("Cached Events");
       events = values;
       eventsWithoutRepetition = listWithoutRepetitionEvent(events);
     } else {
+      print("Not cached events");
       await getEventsOnline(httpClient).then((value) {
         storeEventsCached();
       });
@@ -187,9 +189,9 @@ Future<File> _localFile(String range) async {
   getCoursesOnline(httpClient).then((value) {
     storeCoursesCached();
   });
-}*/
+}
 
-/*(beta)List listWithoutRepetitionCourse(List<Course> courses) {
+List listWithoutRepetitionCourse(List<Course> courses) {
   List<Course> withoutRepeat = [];
   courses.forEach((Course course) {
     bool notHave = true;
@@ -203,9 +205,9 @@ Future<File> _localFile(String range) async {
     }
   });
   return withoutRepeat;
-}*/
+}
 
-/*(beta)List listWithoutRepetitionEvent(List<calendar.Event> events) {
+List listWithoutRepetitionEvent(List<calendar.Event> events) {
   List<calendar.Event> withoutRepeat = [];
   events.forEach((calendar.Event event) {
     bool notHave = true;
@@ -219,7 +221,7 @@ Future<File> _localFile(String range) async {
     }
   });
   return withoutRepeat;
-}*/
+}
 
 class _SignInPageState extends State<SignInPage> {
   bool loading = false;
@@ -246,7 +248,7 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount googleUser = await gSignIn.signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
@@ -300,6 +302,7 @@ class _SignInPageState extends State<SignInPage> {
       Navigator.pop(key.currentContext);
       Navigator.pushNamed(context, '/menuBarBase');
     } else {
+      bool iitGnUser = false;
       print("Awaiting gsignin sign in");
       // await gSignIn.signIn();
       await signInWithGoogle().then((user) {
@@ -314,15 +317,16 @@ class _SignInPageState extends State<SignInPage> {
                 content: new Text('Please sign in with your IITGN ID')));
             logoutUser();
           } else {
-            Navigator.pop(key.currentContext);
-            Navigator.pushNamed(context, '/menuBarBase');
+            iitGnUser = true;
           }
         }
       });
       print("gsignin signed in");
-
-      //(beta)await reloadEventsAndCourses().then((s) {});
-
+      if (iitGnUser) {
+        await reloadEventsAndCourses().then((s) {});
+        Navigator.pop(key.currentContext);
+        Navigator.pushNamed(context, '/menuBarBase');
+      }
     }
   }
 

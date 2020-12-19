@@ -50,6 +50,10 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
     double pad = 0;
     double spacing = 30;
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
+
+      String tempURL = 'https://drive.google.com/uc?export=view&id=1Dgm6bIcoeZA2u5JNozcD64QpX81Y8unZ';
+      String url = widget.illustrations.containsKey(widget.foodItems['list'][i])?widget.illustrations[widget.foodItems['list'][i]]:tempURL;
+      
       if (widget.foodItems['list'][i].trim() == '-') {
         continue;
       }
@@ -59,7 +63,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
           child: MeasureSize(
             onChange: (Size size) {
               imageSize = size;
-              print("SVG = $imageSize");
+              //print("SVG = $imageSize");
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -80,7 +84,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
               imageSizes[i] = size;
             },
             child: Image.network(
-              (widget.illustrations.containsKey(widget.foodItems['list'][i]))?widget.illustrations[widget.foodItems['list'][i]]:'https://drive.google.com/uc?export=view&id=1Dgm6bIcoeZA2u5JNozcD64QpX81Y8unZ',
+              url,
               scale: 20,
             ),
           ),

@@ -1,4 +1,4 @@
-/*(beta)import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'dart:io';
@@ -215,6 +215,7 @@ class _AddCourseState extends State<AddCourse> {
                       start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, startTime.hour, startTime.minute),
                       end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, endTime.hour, endTime.minute),
                       day: dayData[selectedDay],
+                      attendanceManager: attendanceData
                     ));
                     loading = true;
                     setState(() {});
@@ -282,4 +283,4 @@ class _AddCourseState extends State<AddCourse> {
         endTime = t;
       });
   }
-}*/
+}

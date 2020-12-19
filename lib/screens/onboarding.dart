@@ -16,8 +16,8 @@ class OnboardingPageState extends State<OnboardingPage> {
     "assets/images/slide_2.png",
     "assets/images/slide_3.png",
     "assets/images/slide_4.png",
-    //(beta)"assets/images/slide_5.png",
-    //(beta)"assets/images/slide_6.png",
+    "assets/images/slide_5.png",
+    "assets/images/slide_6.png",
     //(beta)"assets/images/slide_7.png",
     "assets/images/slide_8.png",
     "assets/images/slide_9.png",
@@ -29,8 +29,8 @@ class OnboardingPageState extends State<OnboardingPage> {
     "Mess Menu",
     "Campus Map",
     "Shuttle Timings",
-    //(beta)"Schedule",
-    //(beta)"Calendar",
+    "Schedule",
+    "Calendar",
     //(beta)"Booking",
     "Contacts",
     "Quick Links",
@@ -42,8 +42,8 @@ class OnboardingPageState extends State<OnboardingPage> {
     "Know what's in the mess and give feedback",
     "Search for places and get directions",
     "Know timings and set reminders",
-    //(beta)"Know what's on your day",
-    //(beta)"All events in one place",
+    "Know what's on your day",
+    "All events in one place",
     //(beta)"Book rooms, 3D printers and more",
     "Important campus contacts",
     "A collection of IITGN links",
@@ -56,7 +56,7 @@ class OnboardingPageState extends State<OnboardingPage> {
     TransformerPageView transformerPageView = TransformerPageView(
         pageSnapping: true,
         onPageChanged: (index) {
-          if (this._slideIndex == 4 /*(beta)8*/) {
+          if (this._slideIndex == 6 /*(beta)8*/) {
             Navigator.pop(context);
           }
           setState(() {
@@ -138,7 +138,7 @@ class OnboardingPageState extends State<OnboardingPage> {
             ),
           );
         }),
-        itemCount: 6 /*(beta)10*/);
+        itemCount: 8 /*(beta)10*/);
 
     return Scaffold(
       backgroundColor: Colors.white,

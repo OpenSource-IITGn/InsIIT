@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-//(beta)import 'dart:convert';
+import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +17,16 @@ import 'package:instiapp/classes/contactcard.dart';
 import 'package:instiapp/classes/buses.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'email.dart';
-//(beta)import 'package:instiapp/classes/scheduleModel.dart';
-//(beta)import 'package:googleapis/classroom/v1.dart';
-//(beta)import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:googleapis/classroom/v1.dart';
+import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 //(beta)import 'package:instiapp/screens/roomBooking/roomservice.dart';
 
 import 'package:instiapp/screens/misc.dart';
 //(beta)import 'package:instiapp/classes/tlclass.dart';
-//(beta)import 'feed/feedPage.dart';
+import 'feed/feedPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -41,12 +41,12 @@ List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
 List<List<String>> foodVotes;
-//(beta)List<TodayCourse> todayCourses;
-//(beta)List<MyCourse> myCourses;
-//(beta)List<EventModel> removedEvents;
-//(beta)List<EventModel> userAddedCourses;
-//(beta)List<EventModel> examCourses;
-//(beta)List<EventModel> eventsList;
+List<TodayCourse> todayCourses;
+List<MyCourse> myCourses;
+List<EventModel> removedEvents;
+List<EventModel> userAddedCourses;
+List<EventModel> examCourses;
+List<EventModel> eventsList;
 //(beta)List<Tinkerer> tlDataList;
 //(beta)List<Tinkerer> machinesTL;
 
@@ -57,7 +57,7 @@ List<int> prevIndexes = [];
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin<HomePage> {
   var startpos, endpos;
-  //(beta)List<EventModel> twoEvents;
+  List<EventModel> twoEvents;
   @override
   void initState() {
     super.initState();
@@ -83,10 +83,10 @@ class _HomePageState extends State<HomePage>
     loadImportantContactData();
     loadShuttleData();
     loadFoodVotesData();
-    //(beta)loadCourseData();
-    //(beta)loadRemovedCoursesData();
-    //(beta)loadUserAddedCoursesData();
-    //(beta)loadExamTimeTableData();
+    loadCourseData();
+    loadRemovedCoursesData();
+    loadUserAddedCoursesData();
+    loadExamTimeTableData();
     //(beta)loadCertificateData();
     //(beta)loadTlData();
   }
@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage>
     });
   }*/
 
-  /*(beta)prepareEventsList() {
+  prepareEventsList() {
     List<calendar.Event> todayEvents;
     List<EventModel> currentDayCourses;
     List<EventModel> currentDayExamCourses;
@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage>
     if (eventsList != null && eventsList.length != 0) {
       quickSort(eventsList, 0, eventsList.length - 1);
     }
-  }*/
+  }
 
   loadShuttleData() async {
     sheet.getData('BusRoutes!A:H').listen((data) {
@@ -245,13 +245,13 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  /*(beta)loadExamTimeTableData() async {
+  loadExamTimeTableData() async {
     sheet.getData('ExamTimeTable!A:H').listen((data) {
       examCourses = makeMyExamCoursesList(data, coursesWithoutRepetition);
     });
-  }*/
+  }
 
-  /*(beta)List<EventModel> makeMyExamCoursesList(List data, List<Course> _courses) {
+  List<EventModel> makeMyExamCoursesList(List data, List<Course> _courses) {
     List<EventModel> myExamCourses = [];
 
     if (_courses != null) {
@@ -300,7 +300,7 @@ class _HomePageState extends State<HomePage>
     }
 
     return myExamCourses;
-  }*/
+  }
 
   Map<String, int> monthData = {
     'January': 1,
@@ -342,14 +342,14 @@ class _HomePageState extends State<HomePage>
     return time;
   }
 
-  /*(beta)loadRemovedCoursesData() async {
+  loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
       print(data);
       removedEvents = makeRemovedEventsList(data);
     });
-  }*/
+  }
 
-  /*(beta)List<EventModel> makeRemovedEventsList(var removedEventsDataList) {
+  List<EventModel> makeRemovedEventsList(var removedEventsDataList) {
     List<EventModel> _removedEvents = [];
 
     if (removedEventsDataList != null && removedEventsDataList.length != 0) {
@@ -385,16 +385,16 @@ class _HomePageState extends State<HomePage>
     }
 
     return _removedEvents;
-  }*/
+  }
 
-  /*(beta)Future<File> _localFileForRemovedEvents() async {
+  Future<File> _localFileForRemovedEvents() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     String filename = tempPath + 'removedCourses' + '.csv';
     return File(filename);
-  }*/
+  }
 
-  /*(beta)Stream<List<List<dynamic>>> getRemovedEventsData() async* {
+  Stream<List<List<dynamic>>> getRemovedEventsData() async* {
     var file = await _localFileForRemovedEvents();
     bool exists = await file.exists();
     if (exists) {
@@ -408,15 +408,15 @@ class _HomePageState extends State<HomePage>
     } else {
       yield [];
     }
-  }*/
+  }
 
-  /*(beta)loadUserAddedCoursesData () async {
+  loadUserAddedCoursesData () async {
     getUserAddedCoursesData().listen((data) {
       userAddedCourses = makeUserAddedCoursesList(data);
     });
-  }*/
+  }
 
-  /*(beta)List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
+  List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
     List<EventModel> _userAddedCourses = [];
 
     if (userAddedCoursesDataList != null &&
@@ -441,16 +441,16 @@ class _HomePageState extends State<HomePage>
     }
 
     return _userAddedCourses;
-  }*/
+  }
 
-  /*(beta)Future<File> _localFileForUserAddedCourses() async {
+  Future<File> _localFileForUserAddedCourses() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
     String filename = tempPath + 'userAddedCourses' + '.csv';
     return File(filename);
-  }*/
+  }
 
-  /*(beta)Stream<List<List<dynamic>>> getUserAddedCoursesData() async* {
+  Stream<List<List<dynamic>>> getUserAddedCoursesData() async* {
     var file = await _localFileForUserAddedCourses();
     bool exists = await file.exists();
     if (exists) {
@@ -464,9 +464,9 @@ class _HomePageState extends State<HomePage>
     } else {
       yield [];
     }
-  }*/
+  }
 
-  /*(beta)loadCourseData() async {
+  loadCourseData() async {
     sheet.getData('slots!A:F').listen((data) {
       todayCourses = makeTodayTimeSlotList(data);
     });
@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage>
     sheet.getData('timetable!A:Q').listen((data) {
       myCourses = makeMyCourseList(data, coursesWithoutRepetition);
     });
-  }*/
+  }
 
   bool compareStrings(String str1, String str2) {
     if (str1.compareTo(str2) == 0) {
@@ -484,7 +484,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  /*(beta)List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
+  List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
     List<MyCourse> _myCourses = [];
 
     if (_courses != null) {
@@ -537,7 +537,7 @@ class _HomePageState extends State<HomePage>
     }
 
     return _myCourses;
-  }*/
+  }
 
   String returnLocation(var text) {
     if (text.split('(').length == 1) {
@@ -547,7 +547,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  /*(beta)List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
+  List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
     int day = DateTime.now().weekday;
     List<TodayCourse> courses = [];
     if (day != 6 && day != 7) {
@@ -560,7 +560,7 @@ class _HomePageState extends State<HomePage>
       });
     }
     return courses;
-  }*/
+  }
 
   List<DateTime> returnTime(String time) {
     List<DateTime> seTime = [];
@@ -973,7 +973,7 @@ class _HomePageState extends State<HomePage>
                         ),
                       ),
                       MessMenuBaseDrawer(selectMeal(foodCards), foodIllustration),
-                      /*(beta)(twoEvents.length == 0)
+                      (twoEvents.length == 0)
                           ? Container()
                           : GestureDetector(
                               onTap: () {
@@ -1022,7 +1022,7 @@ class _HomePageState extends State<HomePage>
                                   ],
                                 ),
                               ),
-                            ),*/
+                            ),
                       /*(beta)GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
@@ -1286,11 +1286,12 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  /*(beta)List<EventModel> makeListOfTwoEvents() {
+  List<EventModel> makeListOfTwoEvents() {
     List<EventModel> currentEvents = [];
     DateTime currentTime = DateTime.now();
     if (eventsList != null) {
       eventsList.forEach((EventModel event) {
+        print("Event" + event.start.toString());
         if (currentEvents.length < 2) {
           if (event.end.isAfter(currentTime) ||
               event.start.isAfter(currentTime)) {
@@ -1301,9 +1302,9 @@ class _HomePageState extends State<HomePage>
     }
 
     return currentEvents;
-  }*/
+  }
 
-  /*(beta)Widget scheduleCard(EventModel event) {
+  Widget scheduleCard(EventModel event) {
     return Card(
       child: Container(
         child: Padding(
@@ -1338,9 +1339,9 @@ class _HomePageState extends State<HomePage>
             )),
       ),
     );
-  }*/
+  }
 
-  /*(beta)Widget descriptionWidget(EventModel event) {
+  Widget descriptionWidget(EventModel event) {
     // if (event.isCourse || event.isExam) {
     //   return Flexible(
     //     child: Text(event.courseId,
@@ -1523,7 +1524,7 @@ class _HomePageState extends State<HomePage>
             ]),
       );
     }
-  }*/
+  }
 
   Widget time(DateTime time) {
     return Text(
@@ -1548,8 +1549,8 @@ class _HomePageState extends State<HomePage>
     if (mainPageLoading == true) {
       return loadScreen();
     } else {
-      //(beta)prepareEventsList();
-      //(beta)twoEvents = makeListOfTwoEvents();
+      prepareEventsList();
+      twoEvents = makeListOfTwoEvents();
       return WillPopScope(onWillPop: _onBackPressed, child: homeScreen());
     }
   }
@@ -1576,7 +1577,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  /*(beta)List<EventModel> todayExamCourses(List<EventModel> examCourses) {
+  List<EventModel> todayExamCourses(List<EventModel> examCourses) {
     List<EventModel> todayExamCourses = [];
     DateTime today = DateTime.now();
     if (examCourses != null) {
@@ -1589,9 +1590,9 @@ class _HomePageState extends State<HomePage>
       });
     }
     return todayExamCourses;
-  }*/
+  }
 
-  /*(beta)List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
+  List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
     List<EventModel> _mergedCourses = [];
     bool notHave;
 
@@ -1626,7 +1627,7 @@ class _HomePageState extends State<HomePage>
     }
 
     return _mergedCourses;
-  }*/
+  }
 
   String returnText(String text) {
     if (text.length > 2) {
@@ -1636,7 +1637,7 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  /*(beta)List<EventModel> makeCourseEventModel(
+  List<EventModel> makeCourseEventModel(
       List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
     List<EventModel> coursesEventModelList = [];
 
@@ -1758,9 +1759,9 @@ class _HomePageState extends State<HomePage>
     }
 
     return coursesEventModelList;
-  }*/
+  }
 
-  /*(beta)List todayEventsList(List<calendar.Event> _events) {
+  List todayEventsList(List<calendar.Event> _events) {
     List<calendar.Event> todayEvents = [];
     if (_events != null) {
       _events.forEach((calendar.Event _event) {
@@ -1793,9 +1794,9 @@ class _HomePageState extends State<HomePage>
       });
     }
     return todayEvents;
-  }*/
+  }
 
-  /*(beta)int partition(List<EventModel> list, int low, int high) {
+  int partition(List<EventModel> list, int low, int high) {
     if (list == null || list.length == 0) return 0;
     DateTime pivot = list[high].start;
     int i = low - 1;
@@ -1823,7 +1824,7 @@ class _HomePageState extends State<HomePage>
       quickSort(list, low, pi - 1);
       quickSort(list, pi + 1, high);
     }
-  }*/
+  }
 
   @override
   bool get wantKeepAlive => true;
