@@ -14,7 +14,7 @@ import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/screens/onboarding.dart';
-import 'package:instiapp/screens/misc.dart';
+import 'package:instiapp/screens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;

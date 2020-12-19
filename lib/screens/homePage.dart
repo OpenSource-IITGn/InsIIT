@@ -22,7 +22,7 @@ import 'email.dart';
 import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:instiapp/screens/misc.dart';
+import 'package:instiapp/screens/miscPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -647,7 +647,6 @@ class _HomePageState extends State<HomePage>
           setState(() => selectedIndex = index);
         },
         children: <Widget>[
-          //HOMEPAGE
           MainHomePage(reloadData),
           FeedPage(),
           Shuttle(),

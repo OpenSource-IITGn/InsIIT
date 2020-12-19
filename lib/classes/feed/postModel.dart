@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/commentModel.dart';
+import 'package:instiapp/classes/feed/commentModel.dart';
 import 'package:instiapp/screens/feed/fullPostPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/slider.dart';

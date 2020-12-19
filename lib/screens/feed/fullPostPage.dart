@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/commentModel.dart';
-import 'package:instiapp/classes/postModel.dart';
+import 'package:instiapp/classes/feed/commentModel.dart';
+import 'package:instiapp/classes/feed/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:http/http.dart' as http;
