@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../classes/scheduleModel.dart';
+
 
 class AddCourse extends StatefulWidget {
   @override
@@ -215,6 +217,7 @@ class _AddCourseState extends State<AddCourse> {
                       start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, startTime.hour, startTime.minute),
                       end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, endTime.hour, endTime.minute),
                       day: dayData[selectedDay],
+                      attendanceManager: attendanceData,
                     ));
                     loading = true;
                     setState(() {});
