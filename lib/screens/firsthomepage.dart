@@ -8,9 +8,10 @@ import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 
 class MainHomePage extends StatefulWidget {
-  var reload;
-  MainHomePage(Function f) {
+  var reload, readyEvents;
+  MainHomePage(Function f, Function e) {
     this.reload = f;
+    this.readyEvents = e;
   }
 
   @override
@@ -279,6 +280,7 @@ class _MainHomePageState extends State<MainHomePage> {
         bool connected = connectivity != ConnectivityResult.none;
         if (connected != prevConnected) {
           widget.reload();
+          widget.readyEvents();
           print("reloading");
           prevConnected = connected;
         }

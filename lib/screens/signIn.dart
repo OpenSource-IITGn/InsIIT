@@ -40,6 +40,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  bool eventsReady = false;
   bool loading = false;
   ValueNotifier<bool> isSignedIn = ValueNotifier(false);
   var user;
@@ -187,6 +188,8 @@ class _SignInPageState extends State<SignInPage> {
     getCoursesOnline(httpClient).then((value) {
       storeCoursesCached();
     });
+
+    eventsReady = true;
   }
 
   List listWithoutRepetitionCourse(List<Course> courses) {
@@ -236,8 +239,13 @@ class _SignInPageState extends State<SignInPage> {
           "picture": user.photoURL,
           'uid': user.uid
         };
-        Future.delayed(const Duration(milliseconds: 50)).then((value) {
-          Navigator.pushReplacementNamed(context, '/menuBarBase');
+        Future.delayed(const Duration(milliseconds: 50)).then((value) async {
+          if (eventsReady) {
+            Navigator.pushReplacementNamed(context, '/menuBarBase');
+          } else {
+            await reloadEventsAndCourses().then((s) {});
+            Navigator.pushReplacementNamed(context, '/menuBarBase');
+          }
         });
       }
     }
@@ -249,6 +257,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void authorize(asGuest) async {
+    bool load = false;
     if (asGuest) {
       currentUser = null;
       FirebaseAuth.instance.signInAnonymously();
@@ -256,14 +265,15 @@ class _SignInPageState extends State<SignInPage> {
       Navigator.pushReplacementNamed(context, '/menuBarBase');
     } else {
       print("Started GSIGN IN Method");
-      await signInWithGoogle().then((user) async {
+      await signInWithGoogle().then((user) {
         if (user != null) {
           currentUser = user.additionalUserInfo.profile;
-          await reloadEventsAndCourses().then((s) {});
-          Navigator.pushReplacementNamed(context, '/menuBarBase');
+          load = true;
         }
       });
       print("AUTHORIZED");
+      await reloadEventsAndCourses().then((s) {});
+      Navigator.pushReplacementNamed(context, '/menuBarBase');
     }
   }
 

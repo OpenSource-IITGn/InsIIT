@@ -640,6 +640,7 @@ class _HomePageState extends State<HomePage>
             icon: Icon(Icons.refresh, color: Colors.grey.withAlpha(100)),
             onPressed: () {
               reloadData();
+              readyEvents();
             },
           ),
           IconButton(
@@ -660,7 +661,7 @@ class _HomePageState extends State<HomePage>
           setState(() => selectedIndex = index);
         },
         children: <Widget>[
-          MainHomePage(reloadData),
+          MainHomePage(reloadData, readyEvents),
           FeedPage(),
           Shuttle(),
           MapPage(),
@@ -858,14 +859,18 @@ class _HomePageState extends State<HomePage>
     }
   }
 
+  readyEvents () {
+    prepareEventsList();
+    twoEvents = makeListOfTwoEvents();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     if (mainPageLoading == true) {
       return loadScreen();
     } else {
-      prepareEventsList();
-      twoEvents = makeListOfTwoEvents();
+      readyEvents();
       return WillPopScope(onWillPop: _onBackPressed, child: homeScreen());
     }
   }
