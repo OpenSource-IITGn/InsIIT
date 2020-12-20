@@ -10,6 +10,12 @@ import 'package:instiapp/screens/map/googlemap.dart';
 import 'package:instiapp/screens/messMenu/messfeedback.dart';
 import 'package:instiapp/screens/messMenu/messmenu.dart';
 
+import 'package:instiapp/screens/schedule/addCourse.dart';
+import 'package:instiapp/screens/schedule/editEvent.dart';
+import 'package:instiapp/screens/schedule/eventDetail.dart';
+import 'package:instiapp/screens/schedule/exportIcsFile.dart';
+import 'package:instiapp/screens/schedule/schedulePage.dart';
+
 import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/shuttle.dart';
 import 'package:instiapp/screens/signIn.dart';
@@ -56,6 +62,11 @@ class MyApp extends StatelessWidget {
               '/misc': (context) => MiscPage(),
               '/developers': (context) => DevelopersPage(),
               '/map': (context) => MapPage(),
+              '/schedule': (context) => SchedulePage(),
+              '/eventdetail': (context) => EventDetail(),
+              '/editevent': (context) => EditEvent(),
+              '/addcourse': (context) => AddCourse(),
+              '/exportIcsFile': (context) => ExportIcsFile(),
             },
             title: 'Instiapp',
             theme:
