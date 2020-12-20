@@ -1,4 +1,4 @@
-/*(beta)import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'dart:io';
@@ -282,4 +282,4 @@ class _AddCourseState extends State<AddCourse> {
         endTime = t;
       });
   }
-}*/
+}

@@ -4,6 +4,8 @@ import 'package:flutter_offline/flutter_offline.dart';
 import 'package:instiapp/messMenu/base.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 
 class MainHomePage extends StatefulWidget {
   var reload;
@@ -28,6 +30,245 @@ class _MainHomePageState extends State<MainHomePage> {
       return {'meal': 'Snacks', 'list': foodList[day].snacks};
     } else {
       return {'meal': 'Dinner', 'list': foodList[day].dinner};
+    }
+  }
+
+  Widget scheduleCard(EventModel event) {
+    return Card(
+      child: Container(
+        child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                    time(event.start),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text("to",
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(120), fontSize: 14)),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    time(event.end),
+                  ]),
+                ),
+                verticalDivider(),
+                Expanded(
+                  flex: 3,
+                  child: descriptionWidget(event),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  Widget descriptionWidget(EventModel event) {
+    // if (event.isCourse || event.isExam) {
+    //   return Flexible(
+    //     child: Text(event.courseId,
+    //         style: TextStyle(
+    //             color: Colors.black.withAlpha(120),
+    //             fontWeight: FontWeight.bold,
+    //             fontSize: 14)),
+    //   );
+    // } else {
+    //   return Flexible(
+    //     child: Text(event.description,
+    //         style: TextStyle(
+    //             color: Colors.black.withAlpha(120),
+    //             fontWeight: FontWeight.bold,
+    //             fontSize: 14)),
+    //   );
+    // }
+    if (event.isCourse) {
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.courseId,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Flexible(
+                fit: FlexFit.loose,
+                child: Text(event.courseName,
+                    style: TextStyle(
+                        color: Colors.black.withAlpha(255),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Text((event.eventType == null) ? 'Course' : event.eventType,
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(200),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14)),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Text('Room: ${event.location}',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+            ]),
+      );
+    } else if (event.isExam) {
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(event.courseId,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(event.courseName,
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Text(event.eventType,
+                      style: TextStyle(
+                          color: Colors.black.withAlpha(200),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14)),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text('Room: ',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Flexible(
+                    child: Text('Roll Numbers: ',
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: <Widget>[
+                  Flexible(
+                    child: Text(event.location,
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Flexible(
+                    child: Text(event.rollNumbers,
+                        style: TextStyle(
+                            color: Colors.black.withAlpha(200),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14)),
+                  ),
+                ],
+              ),
+            ]),
+      );
+    } else {
+      return Container(
+        width: ScreenSize.size.width * 0.55,
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(stringReturn(event.description),
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(120),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(stringReturn(event.summary),
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(255),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                  stringReturn(event.eventType) +
+                      ' (' +
+                      stringReturn(event.remarks) +
+                      ')',
+                  style: TextStyle(
+                      color: Colors.black.withAlpha(200),
+                      fontStyle: FontStyle.italic,
+                      fontSize: 14)),
+            ]),
+      );
+    }
+  }
+
+  Widget time(DateTime time) {
+    return Text(
+        twoDigitTime(time.hour.toString()) +
+            ':' +
+            twoDigitTime(time.minute.toString()),
+        style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 14));
+  }
+
+  String twoDigitTime(String text) {
+    if (text.length == 1) {
+      String _text = '0' + text;
+      return _text;
+    } else {
+      return text;
     }
   }
 
@@ -193,8 +434,48 @@ class _MainHomePageState extends State<MainHomePage> {
                   ),
                 ),
                 MessMenuBaseDrawer(selectMeal(foodCards), foodIllustration),
-                /*(beta)(twoEvents.length == 0)
-                          ? Container()
+                (twoEvents.length == 0)
+                          ? GestureDetector(
+                            onTap: () {
+                              return Navigator.pushNamed(
+                                  context, '/schedule');
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            "Wondering what's next?",
+                                            style: TextStyle(
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Here's your schedule",
+                                            style: TextStyle(
+                                                color: Colors.black
+                                                    .withAlpha(150)),
+                                          ),
+                                        ],
+                                      ),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            ),
+                          )
                           : GestureDetector(
                               onTap: () {
                                 return Navigator.pushNamed(
@@ -242,7 +523,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                   ],
                                 ),
                               ),
-                            ),*/
+                            ),
                 /*(beta)GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
