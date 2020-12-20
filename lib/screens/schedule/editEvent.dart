@@ -6,7 +6,7 @@ import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:instiapp/screens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:device_apps/device_apps.dart';
+//import 'package:device_apps/device_apps.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EditEvent extends StatefulWidget {
@@ -184,18 +184,18 @@ class _EditEventState extends State<EditEvent> {
   }
 
   _openGoogleCalendar() async {
-    bool isInstalled =
-        await DeviceApps.isAppInstalled('com.google.android.calendar');
-    if (isInstalled) {
-      DeviceApps.openApp('com.google.android.calendar');
-    } else {
+//    bool isInstalled =
+//        await DeviceApps.isAppInstalled('com.google.android.calendar');
+//    if (isInstalled) {
+//      DeviceApps.openApp('com.google.android.calendar');
+//    } else {
       String url = 'https://calendar.google.com';
       if (await canLaunch(url)) {
         await launch(url);
       } else {
         throw 'Could not launch $url';
       }
-    }
+    //}
   }
 
   @override
