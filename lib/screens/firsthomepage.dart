@@ -45,7 +45,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 Expanded(
                   flex: 1,
                   child:
-                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                     time(event.start),
                     SizedBox(
                       height: 8,
@@ -435,95 +435,91 @@ class _MainHomePageState extends State<MainHomePage> {
                 ),
                 MessMenuBaseDrawer(selectMeal(foodCards), foodIllustration),
                 (twoEvents.length == 0)
-                          ? GestureDetector(
-                            onTap: () {
-                              return Navigator.pushNamed(
-                                  context, '/schedule');
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
+                    ? GestureDetector(
+                        onTap: () {
+                          return Navigator.pushNamed(context, '/schedule');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Column(
-                                        crossAxisAlignment:
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            "Wondering what's next?",
-                                            style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            "Here's your schedule",
-                                            style: TextStyle(
-                                                color: Colors.black
-                                                    .withAlpha(150)),
-                                          ),
-                                        ],
+                                    children: <Widget>[
+                                      Text(
+                                        "Wondering what's next?",
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                      Icon(Icons.arrow_forward),
+                                      Text(
+                                        "Enjoy your free time :)",
+                                        style: TextStyle(
+                                            color: Colors.black.withAlpha(150)),
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(height: 10),
+                                  Icon(Icons.arrow_forward,
+                                      color: Colors.black.withAlpha(75)),
                                 ],
                               ),
-                            ),
-                          )
-                          : GestureDetector(
-                              onTap: () {
-                                return Navigator.pushNamed(
-                                    context, '/schedule');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Wondering what's next?",
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Here's your schedule",
-                                              style: TextStyle(
-                                                  color: Colors.black
-                                                      .withAlpha(150)),
-                                            ),
-                                          ],
+                              SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          return Navigator.pushNamed(context, '/schedule');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "Wondering what's next?",
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Icon(Icons.arrow_forward),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children:
-                                          twoEvents.map((EventModel event) {
-                                        return scheduleCard(event);
-                                      }).toList(),
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                      Text(
+                                        "Here's your schedule",
+                                        style: TextStyle(
+                                            color: Colors.black.withAlpha(150)),
+                                      ),
+                                    ],
+                                  ),
+                                  Icon(Icons.arrow_forward),
+                                ],
                               ),
-                            ),
+                              SizedBox(height: 10),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: twoEvents.map((EventModel event) {
+                                  return scheduleCard(event);
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                 /*(beta)GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
