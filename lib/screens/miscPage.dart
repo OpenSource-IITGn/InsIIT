@@ -134,6 +134,32 @@ class _MiscPageState extends State<MiscPage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: FlatButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/representativePage'),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(40.0),
+                          side: BorderSide(
+                            color: Colors.black12,
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          child: Text(
+                            "Know Your Representatives",
+                            style: TextStyle(
+                              color: Colors.black45,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: FlatButton(
                       onPressed: () async {
                         var url = "https://forms.gle/hHQgPFnkM6qT5kAj7";
 

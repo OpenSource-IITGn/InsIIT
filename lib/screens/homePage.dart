@@ -26,6 +26,7 @@ import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:instiapp/screens/miscPage.dart';
+import 'package:instiapp/classes/representatives.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -46,6 +47,7 @@ List<EventModel> removedEvents;
 List<EventModel> userAddedCourses;
 List<EventModel> examCourses;
 List<EventModel> eventsList;
+List<Representative> representatives;
 
 bool mainPageLoading = true;
 int selectedIndex = 0;
@@ -84,6 +86,7 @@ class _HomePageState extends State<HomePage>
     loadRemovedCoursesData();
     loadUserAddedCoursesData();
     loadExamTimeTableData();
+    loadRepresentativesData();
   }
 
   loadShuttleData() async {
@@ -334,7 +337,11 @@ class _HomePageState extends State<HomePage>
       myCourses = makeMyCourseList(data, coursesWithoutRepetition);
     });
   }
-
+  loadRepresentativesData() async {
+    sheet.getData('Representatives!A:C').listen((data){
+      makeRepresentativeList(data);
+    });
+  }
   bool compareStrings(String str1, String str2) {
     if (str1.compareTo(str2) == 0) {
       return true;
@@ -741,6 +748,14 @@ class _HomePageState extends State<HomePage>
     for (List lc in importantContactDataList) {
       contactCards.add(ContactCard(
           name: lc[0], description: lc[1], contacts: jsonDecode(lc[2])));
+    }
+  }
+  makeRepresentativeList(List representativeDataList) {
+    representativeDataList.removeAt(0);
+    representatives = [];
+    for (List lc in representativeDataList) {
+      representatives.add(Representative(
+          position: lc[0], description: lc[1], profiles: jsonDecode(lc[2])));
     }
   }
 
