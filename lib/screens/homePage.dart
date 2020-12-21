@@ -297,16 +297,17 @@ class _HomePageState extends State<HomePage>
             instructors: lc[5].split(','),
             preRequisite: lc[6],
             lectureCourse:
-            lc[7].split('(')[0].replaceAll(' ', '').split('+'),
+            lc[7].split('(')[0].replaceAll(' ', '').split(','),
             lectureLocation: returnLocation(lc[7]),
             tutorialCourse:
-            lc[8].split('(')[0].replaceAll(' ', '').split('+'),
+            lc[8].split('(')[0].replaceAll(' ', '').split(','),
             tutorialLocation: returnLocation(lc[8]),
             labCourse:
-            lc[9].split('(')[0].replaceAll(' ', '').split('+'),
+            lc[9].split('(')[0].replaceAll(' ', '').split(','),
             labLocation: returnLocation(lc[9]),
             remarks: lc[10],
-            courseBooks: lc[11]));
+            courseBooks: lc[11],
+            links: lc[12].replaceAll(' ', '').split(',')));
       });
     }
 
@@ -404,7 +405,8 @@ class _HomePageState extends State<HomePage>
       if (lc[0] != '-' &&
           lc[0] != '' &&
           lc[1] != '-' &&
-          lc[1] != '') {
+          lc[1] != '' &&
+          lc[0].toString().toLowerCase() != 'course code') {
           _allCourses.add(MyCourse(
               courseCode: lc[0],
               courseName: lc[1],
@@ -414,16 +416,17 @@ class _HomePageState extends State<HomePage>
               instructors: lc[6].split(','),
               preRequisite: lc[10],
               lectureCourse:
-                  lc[11].split('(')[0].replaceAll(' ', '').split('+'),
+                  lc[11].split('(')[0].replaceAll(' ', '').split(','),
               lectureLocation: returnLocation(lc[11]),
               tutorialCourse:
-                  lc[12].split('(')[0].replaceAll(' ', '').split('+'),
+                  lc[12].split('(')[0].replaceAll(' ', '').split(','),
               tutorialLocation: returnLocation(lc[12]),
               labCourse:
-                  lc[13].split('(')[0].replaceAll(' ', '').split('+'),
+                  lc[13].split('(')[0].replaceAll(' ', '').split(','),
               labLocation: returnLocation(lc[13]),
               remarks: lc[14],
-              courseBooks: lc[15]));
+              courseBooks: lc[15],
+              links: lc[16].replaceAll(' ', '').split(',')));
       }
     });
 
@@ -1001,6 +1004,7 @@ class _HomePageState extends State<HomePage>
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
                       end: todayCourse.end,
+                      day: DateTime.now().weekday,
                       isCourse: true,
                       isExam: false,
                       courseId: myCourse.courseCode,
@@ -1010,11 +1014,13 @@ class _HomePageState extends State<HomePage>
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite,
+                      links: myCourse.links,
                       attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
                       end: todayCourse.end,
+                      day: DateTime.now().weekday,
                       isCourse: true,
                       isExam: false,
                       courseId: myCourse.courseCode,
@@ -1024,6 +1030,7 @@ class _HomePageState extends State<HomePage>
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite,
+                      links: myCourse.links,
                       attendanceManager: attendanceData));
                 }
               }
@@ -1037,6 +1044,7 @@ class _HomePageState extends State<HomePage>
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
                       end: todayCourse.end,
+                      day: DateTime.now().weekday,
                       isCourse: true,
                       isExam: false,
                       courseId: myCourse.courseCode,
@@ -1046,11 +1054,13 @@ class _HomePageState extends State<HomePage>
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite,
+                      links: myCourse.links,
                       attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
                       end: todayCourse.end,
+                      day: DateTime.now().weekday,
                       isCourse: true,
                       isExam: false,
                       courseId: myCourse.courseCode,
@@ -1060,6 +1070,7 @@ class _HomePageState extends State<HomePage>
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite,
+                      links: myCourse.links,
                       attendanceManager: attendanceData));
                 }
               }
@@ -1073,6 +1084,7 @@ class _HomePageState extends State<HomePage>
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
                       end: todayCourse.end,
+                      day: DateTime.now().weekday,
                       isCourse: true,
                       isExam: false,
                       courseId: myCourse.courseCode,
@@ -1082,11 +1094,13 @@ class _HomePageState extends State<HomePage>
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite,
+                      links: myCourse.links,
                       attendanceManager: attendanceData));
                 } else {
                   coursesEventModelList.add(EventModel(
                       start: todayCourse.start,
                       end: todayCourse.end,
+                      day: DateTime.now().weekday,
                       isCourse: true,
                       isExam: false,
                       courseId: myCourse.courseCode,
@@ -1096,6 +1110,7 @@ class _HomePageState extends State<HomePage>
                       instructors: myCourse.instructors,
                       credits: myCourse.credits,
                       preRequisite: myCourse.preRequisite,
+                      links: myCourse.links,
                       attendanceManager: attendanceData));
                 }
               }

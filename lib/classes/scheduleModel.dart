@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Map<DateTime, String> attendanceData = {
   DateTime(2020, 05, 30): 'P',
@@ -36,6 +37,7 @@ class EventModel {
   Map<DateTime, String> attendanceManager;
   int day;
   bool repeatWeekly;
+  List<String> links;
   EventModel(
       {this.start,
 
@@ -57,6 +59,7 @@ class EventModel {
         this.preRequisite,
         this.attendanceManager,
         this.day,
+        this.links,
         this.repeatWeekly: false});
 
 
@@ -118,6 +121,30 @@ class EventModel {
               SizedBox(
                 height: 8,
               ),
+              (this.links != null || this.links.length != 0)
+                  ?Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: this.links.map((link) {
+                  return GestureDetector(
+                    onTap: () async {
+                      if (await canLaunch(link)) {
+                      await launch(link, forceSafariVC: false);
+                      } else {
+                      throw 'Could not launch $link';
+                      }
+                    },
+                    child: Text(
+                      link,
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15
+                      ),
+                    ),
+                  );
+                }).toList(),
+              )
+                  :Container(),
               Row(
                 children: <Widget>[
                   Text((this.eventType == null) ? 'Course' : this.eventType,
@@ -343,6 +370,7 @@ class MyCourse {
   String labLocation;
   String remarks;
   String courseBooks;
+  List<String> links;
 
   MyCourse({
     this.courseCode,
@@ -360,6 +388,7 @@ class MyCourse {
     this.labLocation,
     this.remarks,
     this.courseBooks,
+    this.links
   });
 }
 

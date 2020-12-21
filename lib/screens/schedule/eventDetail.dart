@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDetail extends StatefulWidget {
   @override
@@ -74,6 +75,30 @@ class _EventDetailState extends State<EventDetail> {
             SizedBox(
               height: 10,
             ),
+            (event.links != null || event.links.length != 0)
+                ?Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: event.links.map((link) {
+                return GestureDetector(
+                  onTap: () async {
+                    if (await canLaunch(link)) {
+                      await launch(link, forceSafariVC: false);
+                    } else {
+                      throw 'Could not launch $link';
+                    }
+                  },
+                  child: Text(
+                    link,
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15
+                    ),
+                  ),
+                );
+              }).toList(),
+            )
+                :Container(),
             RichText(
               text: TextSpan(
                 style: TextStyle(color: Colors.black),

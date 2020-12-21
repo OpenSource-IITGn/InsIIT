@@ -115,11 +115,12 @@ class _AddCourseState extends State<AddCourse> {
             course.credits.toString(),
             course.instructors.join(','),
             course.preRequisite,
-            course.lectureCourse.join('+') + '(' + course.lectureLocation + ')',
-            course.tutorialCourse.join('+') + '(' + course.tutorialLocation + ')',
-            course.labCourse.join('+') + '(' + course.labLocation + ')',
+            course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
+            course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+            course.labCourse.join(',') + '(' + course.labLocation + ')',
             course.remarks,
-            course.courseBooks
+            course.courseBooks,
+            course.links.join(',')
       ]);
     });
 
