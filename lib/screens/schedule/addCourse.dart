@@ -99,6 +99,7 @@ class _AddCourseState extends State<AddCourse> {
     await file.writeAsString(
         ListToCsvConverter().convert(userAddedCoursesList));
     print('DATA OF ADDED EVENT STORED IN FILE');
+
     Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
   }
 

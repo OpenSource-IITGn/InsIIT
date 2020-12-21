@@ -15,6 +15,7 @@ class EditEvent extends StatefulWidget {
 }
 
 class _EditEventState extends State<EditEvent> {
+  bool updateUserAddedCourses = false;
   bool loading = false;
   Widget eventCard(EventModel model) {
     return GestureDetector(
@@ -77,13 +78,7 @@ class _EditEventState extends State<EditEvent> {
                             FlatButton(
                               onPressed: () async {
                                 if (model.isCourse) {
-                                  removedEvents.add(EventModel(
-                                    isCourse: true,
-                                    isExam: false,
-                                    courseId: model.courseId,
-                                    courseName: model.courseName,
-                                    eventType: model.eventType,
-                                  ));
+                                  updateUserAddedCourses = true;
                                 } else if (model.isExam) {
                                   removedEvents.add(EventModel(
                                     isCourse: false,
@@ -106,6 +101,20 @@ class _EditEventState extends State<EditEvent> {
                                 Navigator.pop(context);
                                 loading = true;
                                 setState(() {});
+                                if (updateUserAddedCourses) {
+                                  var file2 = await _localFileForUserAddedCourses();
+                                  bool exists2 = await file2.exists();
+                                  if (exists2) {
+                                    await file2.delete();
+                                  }
+                                  await file2.create();
+                                  await file2.open();
+                                  var userAddedCoursesList =
+                                  makeUpdatedUserAddedCoursesList(model);
+                                  await file2.writeAsString(
+                                      ListToCsvConverter().convert(userAddedCoursesList));
+                                  print('DATA OF ADDED EVENT STORED IN FILE');
+                                }
                                 var file = await _localFileForRemovedEvents();
                                 bool exists = await file.exists();
                                 if (exists) {
@@ -134,6 +143,35 @@ class _EditEventState extends State<EditEvent> {
         ),
       ),
     );
+  }
+
+  List<List<String>> makeUpdatedUserAddedCoursesList (EventModel _course) {
+    List<List<String>> updatedList = [];
+
+    if (userAddedCourses != null) {
+      userAddedCourses.forEach((MyCourse course) {
+        if (course.courseCode != _course.courseId ||
+        course.courseName != _course.courseName) {
+          updatedList.add([
+            course.courseCode,
+            course.courseName,
+            course.noOfLectures.toString(),
+            course.noOfTutorials.toString(),
+            course.credits.toString(),
+            course.instructors.join(','),
+            course.preRequisite,
+            course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
+            course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+            course.labCourse.join(',') + '(' + course.labLocation + ')',
+            course.remarks,
+            course.courseBooks,
+            course.links.join(',')
+          ]);
+        }
+        });
+    }
+
+    return updatedList;
   }
 
   String stringReturn(
@@ -174,6 +212,13 @@ class _EditEventState extends State<EditEvent> {
     });
 
     return removedEventsList;
+  }
+
+  Future<File> _localFileForUserAddedCourses() async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + 'userAddedCourses' + '.csv';
+    return File(filename);
   }
 
   Future<File> _localFileForRemovedEvents() async {
