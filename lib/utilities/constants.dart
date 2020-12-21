@@ -17,7 +17,7 @@ String baseUrlTL = "tranquil-shore-67034.herokuapp.com";
    hostedDomain: 'iitgn.ac.in',
    scopes: <String>[
      'email',
-     'https://www.googleapis.com/auth/classroom.courses.readonly',
+     //'https://www.googleapis.com/auth/classroom.courses.readonly',
      'https://www.googleapis.com/auth/calendar.events.readonly',
    ],
  );
