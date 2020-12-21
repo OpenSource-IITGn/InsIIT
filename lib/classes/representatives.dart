@@ -41,9 +41,10 @@ class Representative{
                         placeholder: (context, url) =>
                             CircularProgressIndicator(),
                         height: 90.0,
-                        imageUrl: contactJson['picture'],
+                        imageUrl: contactJson['image'],
                       )),
                 ),
+                SizedBox(height:3),
                 Text(
                   contactJson['name'],
                   style: TextStyle(
