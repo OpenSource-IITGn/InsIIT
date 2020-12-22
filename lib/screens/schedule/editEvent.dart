@@ -44,7 +44,7 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.courseName, model.summary),
                         style: TextStyle(
-                            color: Colors.black.withAlpha(255),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 15),
                       ),
@@ -54,7 +54,7 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.eventType, model.description),
                         style: TextStyle(
-                          color: Colors.black.withAlpha(150),
+                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -246,10 +246,11 @@ class _EditEventState extends State<EditEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -257,7 +258,7 @@ class _EditEventState extends State<EditEvent> {
           },
         ),
         title: Text('Edit Schedule',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
       ),
       body: (loading)
           ? Center(child: CircularProgressIndicator(),)

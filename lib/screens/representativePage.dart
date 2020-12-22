@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class RepresentativePage extends StatefulWidget {
   @override
@@ -10,13 +11,13 @@ class _RepresentativePageState extends State<RepresentativePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         elevation: 0,
         centerTitle: true,
         title: Text('Know Your Representatives',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(

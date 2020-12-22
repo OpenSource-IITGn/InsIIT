@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class Representative{
   String position;
@@ -48,13 +49,13 @@ class Representative{
                 Text(
                   contactJson['name'],
                   style: TextStyle(
-                      color: Colors.black.withAlpha(200),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic),
                 ),
                 Text(
                   contactJson['designation'],
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                  style: TextStyle(fontStyle: FontStyle.italic, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 ),
               ],
             ),
@@ -161,7 +162,7 @@ class Representative{
             Text(
               position,
               style: TextStyle(
-                color: Colors.black,
+                color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -172,7 +173,7 @@ class Representative{
               description,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.black.withAlpha(150),
+                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontWeight: FontWeight.bold,
               ),
             ),

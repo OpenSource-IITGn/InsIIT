@@ -565,9 +565,10 @@ class _HomePageState extends State<HomePage>
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
   Widget homeScreen() {
     return Scaffold(
-      backgroundColor: Colors.white.withAlpha(252),
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       extendBodyBehindAppBar: true,
       bottomNavigationBar: BottomNavyBar(
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         selectedIndex: selectedIndex,
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -615,11 +616,21 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         elevation: 0,
-        leading: Icon(
-          Icons.menu,
-          color: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(
+            (darkMode)?Icons.wb_sunny_outlined:Icons.wb_sunny,
+            color: (darkMode)?Colors.deepPurpleAccent:Colors.black,
+          ),
+          onPressed: () {
+            if (darkMode) {
+              darkMode = false;
+            } else {
+              darkMode = true;
+            }
+            setState(() {});
+          },
         ),
         title: Container(
             decoration: new BoxDecoration(
@@ -631,7 +642,7 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.all(8.0),
               child: Text(titles[selectedIndex],
                   style: TextStyle(
-                      color: Colors.black.withAlpha(250),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold)),
             )),
         actions: <Widget>[

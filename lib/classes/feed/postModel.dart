@@ -182,21 +182,21 @@ class _PostWidgetState extends State<PostWidget> {
                           children: <Widget>[
                             Text(
                               widget.post.postPerson,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.bold, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                             ),
                             Text(
                               widget.post.postPersonBio,
                               style: TextStyle(
-                                color: secondaryTextColor,
+                                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                                 fontSize: 12,
                               ),
                             ),
                             Text(
                               widget.post.timeElapsed,
                               style: TextStyle(
-                                  color: secondaryTextColor,
+                                  color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                                   fontSize: 12,
-                                  fontStyle: FontStyle.italic),
+                                  fontStyle: FontStyle.italic,),
                             ),
                           ],
                         ),
@@ -223,7 +223,7 @@ class _PostWidgetState extends State<PostWidget> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontStyle: FontStyle.italic,
-                                        color: secondaryTextColor)),
+                                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor)),
                               ],
                             ),
                           ),
@@ -244,8 +244,8 @@ class _PostWidgetState extends State<PostWidget> {
                                 Icon(
                                   Icons.thumb_up,
                                   color: (widget.post.isLike == true)
-                                      ? primaryColor
-                                      : secondaryTextColor,
+                                      ? (darkMode)?primaryTextColorDarkMode:primaryTextColor
+                                      : (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                                 ),
                                 SizedBox(width: 10),
                                 Text("${widget.post.reactions['like']}"),

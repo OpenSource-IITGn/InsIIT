@@ -37,7 +37,7 @@ dependencies:
   device_apps: ^1.0.9
   google_maps_flutter: ^0.5.27+3
   location: ^3.0.2
-  file_picker: ^1.9.0+1
+  #(beta)file_picker: ^1.9.0+1
   cached_network_image: ^2.2.0+1
   downloads_path_provider: ^0.1.0
   permission_handler: ^5.0.1

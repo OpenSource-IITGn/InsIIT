@@ -225,7 +225,7 @@ class _SignInPageState extends State<SignInPage> {
         return Future.value(false);
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         key: key,
         body: SafeArea(
           child: Container(

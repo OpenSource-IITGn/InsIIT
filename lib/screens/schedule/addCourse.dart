@@ -160,7 +160,7 @@ class _AddCourseState extends State<AddCourse> {
                   child: Text(
                     course.courseCode,
                     style: TextStyle(
-                        color: Colors.black.withAlpha(255),
+                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 15),
                   )
@@ -170,7 +170,7 @@ class _AddCourseState extends State<AddCourse> {
                     child: Text(
                       course.courseName,
                       style: TextStyle(
-                          color: Colors.black.withAlpha(255),
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     )
@@ -186,10 +186,11 @@ class _AddCourseState extends State<AddCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -197,7 +198,7 @@ class _AddCourseState extends State<AddCourse> {
           },
         ),
         title: Text('Add Course',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
       ),
       body: (loading)
           ? Center(child: CircularProgressIndicator(),)

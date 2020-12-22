@@ -31,7 +31,7 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
             Text('Take rest!',
               style: TextStyle(
-                color: Colors.black38,
+                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontSize: 18,
               ),),
             SizedBox(
@@ -39,7 +39,7 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
             Text('No classes or events to attend today.',
               style: TextStyle(
-                color: Colors.black38,
+                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontSize: 18,
               ),),
           ],
@@ -88,6 +88,7 @@ class _SchedulePageState extends State<SchedulePage> {
       initialIndex: DateTime.now().weekday - 1,
       length: 7,
       child: Scaffold(
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -96,11 +97,11 @@ class _SchedulePageState extends State<SchedulePage> {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: (darkMode)?navBarDarkMode:navBar,
           centerTitle: true,
           title: Text('Your Schedule',
               style:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+              TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
           actions: <Widget>[
             IconButton(
               onPressed: () {

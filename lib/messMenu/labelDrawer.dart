@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/messMenu/messConstants.dart';
 import 'package:instiapp/utilities/measureSize.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class LabelBorder extends ShapeBorder {
   final double arrowWidth;
@@ -54,14 +55,14 @@ Widget label(String text, visible, sizeCallback) {
         duration: Duration(milliseconds: 1000),
         child: Container(
           decoration: ShapeDecoration(
-            color: popupColor.withAlpha(200),
+            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
             shape: LabelBorder(arrowArc: 0.1),
           ),
           child: Padding(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(text,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10, color: Colors.white)),
+                style: TextStyle(fontSize: 10, color: (darkMode)?primaryTextColorReverseDarkMode:primaryTextColorReverse)),
           ),
         ),
       ),

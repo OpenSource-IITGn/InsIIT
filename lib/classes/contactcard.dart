@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class ContactCard {
   String name;
@@ -35,13 +36,13 @@ class ContactCard {
                 Text(
                   contactJson['name'],
                   style: TextStyle(
-                      color: Colors.black.withAlpha(200),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic),
                 ),
                 Text(
                   contactJson['designation'],
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                  style: TextStyle(fontStyle: FontStyle.italic, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 ),
               ],
             ),
@@ -82,7 +83,7 @@ class ContactCard {
                 : IconButton(
                     icon: Icon(
                       Icons.language,
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                     ),
                     onPressed: () {
                       launch(contactJson['website']);
@@ -119,7 +120,7 @@ class ContactCard {
             Text(
               name,
               style: TextStyle(
-                color: Colors.black,
+                color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -130,7 +131,7 @@ class ContactCard {
                     description,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black.withAlpha(150),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -76,7 +76,7 @@ class _FeedPageState extends State<FeedPage>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         body: (loading == true)
             ? Center(child: CircularProgressIndicator())
             : RefreshIndicator(

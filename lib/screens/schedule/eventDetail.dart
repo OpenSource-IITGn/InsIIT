@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/classes/scheduleModel.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class EventDetail extends StatefulWidget {
   @override
@@ -59,17 +60,17 @@ class _EventDetailState extends State<EventDetail> {
           children: <Widget>[
             Text(event.courseName,
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             Text(event.courseId,
                 style: TextStyle(
-                    color: Colors.black.withAlpha(150),
+                    color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             Text(event.eventType,
                 style: TextStyle(
-                  color: Colors.black.withAlpha(255),
+                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                   fontStyle: FontStyle.italic,
                 )),
             SizedBox(
@@ -101,7 +102,7 @@ class _EventDetailState extends State<EventDetail> {
                 :Container(),
             RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Happens at ',
@@ -118,7 +119,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Between ',
@@ -144,7 +145,7 @@ class _EventDetailState extends State<EventDetail> {
                 ? Container()
                 : Text('Remarks: ${event.remarks}',
                     style: TextStyle(
-                        color: Colors.black.withAlpha(255),
+                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16)),
             SizedBox(
@@ -152,7 +153,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Instructors: ',
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -164,7 +165,7 @@ class _EventDetailState extends State<EventDetail> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(instructor,
                       style: TextStyle(
-                        color: Colors.black.withAlpha(255),
+                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                         // fontWeight: FontWeight.bold,
                       )),
                 );
@@ -175,14 +176,14 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('${event.credits} credits',
                 style: TextStyle(
-                  color: Colors.black.withAlpha(255),
+                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                   fontWeight: FontWeight.bold,
                 )),
             (event.preRequisite == '-')
                 ? Container()
                 : Text('Pre-requisite: ${event.preRequisite}',
                     style: TextStyle(
-                        color: Colors.black.withAlpha(255),
+                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16)),
             ExpansionTile(
@@ -204,17 +205,17 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text(event.courseName,
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             Text(event.courseId,
                 style: TextStyle(
-                    color: Colors.black.withAlpha(150),
+                    color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
             Text('ClassRoom: ${event.location}',
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -222,7 +223,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Roll Numbers: ${event.rollNumbers}',
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -230,7 +231,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Time: ' + time(event.start) + ' to ' + time(event.end),
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -238,7 +239,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Type: ${event.eventType}',
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
           ],
@@ -255,7 +256,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Event: ' + stringReturn(event.summary),
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -263,7 +264,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Invited by: ' + stringReturn(event.creator),
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -271,7 +272,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Description: ' + stringReturn(event.description),
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -279,7 +280,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Time: ' + time(event.start) + ' To ' + time(event.end),
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -287,7 +288,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('Location: ' + stringReturn(event.location),
                 style: TextStyle(
-                    color: Colors.black.withAlpha(255),
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             SizedBox(
@@ -307,10 +308,11 @@ class _EventDetailState extends State<EventDetail> {
       attendance = attendanceManager(event.attendanceManager);
     }
     return Scaffold(
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -318,7 +320,7 @@ class _EventDetailState extends State<EventDetail> {
           },
         ),
         title: Text('Details',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: body(event),
