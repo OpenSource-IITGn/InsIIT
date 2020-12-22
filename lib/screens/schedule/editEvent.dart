@@ -265,7 +265,7 @@ class _EditEventState extends State<EditEvent> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: eventsList.map<Widget>((EventModel model) {
+            children: eventsList[DateTime.now().weekday - 1].map<Widget>((EventModel model) {
               return eventCard(model);
             }).toList(),
           ),
@@ -296,8 +296,8 @@ class _EditEventState extends State<EditEvent> {
             heroTag: "fab3rs",
             onPressed: () {
               List<EventModel> _coursesList = [];
-              if (eventsList != null) {
-                eventsList.forEach((EventModel model) {
+              if (eventsList != null && eventsList[DateTime.now().weekday - 1] != null) {
+                eventsList[DateTime.now().weekday - 1].forEach((EventModel model) {
                   if (model.isCourse || model.isExam) {
                     _coursesList.add(model);
                   }

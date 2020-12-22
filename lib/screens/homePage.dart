@@ -41,13 +41,13 @@ List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
 List<List<String>> foodVotes;
-List<TodayCourse> todayCourses;
+List<List<TodayCourse>> todayCourses;
 List<EventModel> removedEvents;
 List<MyCourse> userAddedCourses;
-List<EventModel> userCourses;
+List<List<EventModel>> userCourses;
 List<MyCourse> allCourses;
 List<EventModel> examCourses;
-List<EventModel> eventsList;
+List<List<EventModel>> eventsList;
 List<Representative> representatives;
 
 bool mainPageLoading = true;
@@ -441,18 +441,21 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
-    int day = DateTime.now().weekday;
-    List<TodayCourse> courses = [];
-    if (day != 6 && day != 7) {
-      courseSlotDataList.removeAt(0);
-      courseSlotDataList.removeAt(0);
+  List<List<TodayCourse>> makeTodayTimeSlotList(var courseSlotDataList) {
+    //int day = DateTime.now().weekday;
+    List<List<TodayCourse>> courses = [[],[],[],[],[],[],[]];
+    //if (day != 6 && day != 7) {
+    courseSlotDataList.removeAt(0);
+    courseSlotDataList.removeAt(0);
 
-      courseSlotDataList.forEach((var lc) {
-        List<DateTime> time = returnTime(lc[0]);
-        courses.add(TodayCourse(start: time[0], end: time[1], course: lc[day]));
-      });
-    }
+    courseSlotDataList.forEach((var lc) {
+      List<DateTime> time = returnTime(lc[0]);
+      for (var i = 0; i < 5; i++) {
+        courses[i].add(TodayCourse(start: time[0], end: time[1], course: lc[i+1]));
+      }
+      //courses.add(TodayCourse(start: time[0], end: time[1], course: lc[day]));
+    });
+    //}
     return courses;
   }
 
@@ -791,8 +794,9 @@ class _HomePageState extends State<HomePage>
   List<EventModel> makeListOfTwoEvents() {
     List<EventModel> currentEvents = [];
     DateTime currentTime = DateTime.now();
-    if (eventsList != null) {
-      eventsList.forEach((EventModel event) {
+    int day = DateTime.now().weekday;
+    if (eventsList != null && eventsList[day - 1] != null) {
+      eventsList[day - 1].forEach((EventModel event) {
         if (currentEvents.length < 2) {
           if (event.end.isAfter(currentTime) ||
               event.start.isAfter(currentTime)) {
@@ -812,26 +816,33 @@ class _HomePageState extends State<HomePage>
     //List<EventModel> mergedCourses;
 
     userCourses = makeCourseEventModel(todayCourses, userAddedCourses);
-    eventsList = [];
-    if (userCourses != null) {
-      userCourses.forEach((EventModel model) {
-        bool shouldContain = true;
-        if (removedEvents != null) {
-          removedEvents.forEach((EventModel removedEvent) {
-            if (removedEvent.courseId == model.courseId &&
-                removedEvent.courseName == model.courseName &&
-                removedEvent.eventType == model.eventType) {
-              shouldContain = false;
+    eventsList = [[],[],[],[],[],[],[]];
+    int index = DateTime.now().weekday - 1;
+
+    for (var i = 0; i < 5; i++) {
+      if (userCourses != null) {
+        if (userCourses[i] != null) {
+          userCourses[i].forEach((EventModel model) {
+            bool shouldContain = true;
+            if (removedEvents != null) {
+              removedEvents.forEach((EventModel removedEvent) {
+                if (removedEvent.courseId == model.courseId &&
+                    removedEvent.courseName == model.courseName &&
+                    removedEvent.eventType == model.eventType) {
+                  shouldContain = false;
+                }
+              });
+            }
+            if (model.day == DateTime
+                .now()
+                .weekday && shouldContain) {
+              eventsList[i].add(model);
             }
           });
         }
-        if (model.day == DateTime
-            .now()
-            .weekday && shouldContain) {
-          eventsList.add(model);
-        }
-      });
+      }
     }
+
     currentDayExamCourses = todayExamCourses(examCourses);
     currentDayExamCourses.forEach((EventModel model) {
       bool shouldContain = true;
@@ -846,7 +857,7 @@ class _HomePageState extends State<HomePage>
         });
       }
       if (shouldContain) {
-        eventsList.add(model);
+        eventsList[index].add(model);
       }
     });
 //    currentDayCourses = makeCourseEventModel(todayCourses, myCourses);
@@ -885,7 +896,7 @@ class _HomePageState extends State<HomePage>
         });
       }
       if (shouldContain) {
-        eventsList.add(EventModel(
+        eventsList[index].add(EventModel(
             start: event.start.dateTime.toLocal(),
             end: event.end.dateTime.toLocal(),
             isCourse: false,
@@ -898,9 +909,39 @@ class _HomePageState extends State<HomePage>
             remarks: event.status));
       }
     });
-    if (eventsList != null && eventsList.length != 0) {
-      quickSort(eventsList, 0, eventsList.length - 1);
+
+    List<EventModel> monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+    monday = (eventsList[0] != null)?eventsList[0]:[];
+    tuesday = (eventsList[1] != null)?eventsList[1]:[];
+    wednesday = (eventsList[2] != null)?eventsList[2]:[];
+    thursday = (eventsList[3] != null)?eventsList[3]:[];
+    friday = (eventsList[4] != null)?eventsList[4]:[];
+    saturday = (eventsList[5] != null)?eventsList[5]:[];
+    sunday = (eventsList[6] != null)?eventsList[6]:[];
+
+    if (monday != null && monday.length != 0) {
+      quickSort(monday, 0, monday.length - 1);
     }
+    if (tuesday != null && tuesday.length != 0) {
+      quickSort(tuesday, 0, tuesday.length - 1);
+    }
+    if (wednesday != null && wednesday.length != 0) {
+      quickSort(wednesday, 0, wednesday.length - 1);
+    }
+    if (thursday != null && thursday.length != 0) {
+      quickSort(thursday, 0, thursday.length - 1);
+    }
+    if (friday != null && friday.length != 0) {
+      quickSort(friday, 0, friday.length - 1);
+    }
+    if (saturday != null && saturday.length != 0) {
+      quickSort(saturday, 0, saturday.length - 1);
+    }
+    if (sunday != null && sunday.length != 0) {
+      quickSort(sunday, 0, sunday.length - 1);
+    }
+
+    eventsList = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
   }
 
   readyEvents () {
@@ -987,137 +1028,141 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<EventModel> makeCourseEventModel(
-      List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
-    List<EventModel> coursesEventModelList = [];
+  List<List<EventModel>> makeCourseEventModel(
+      List<List<TodayCourse>> todayCourses, List<MyCourse> myCourses) {
+    List<List<EventModel>> coursesEventModelList = [[],[],[],[],[],[],[]];
 
-    if (todayCourses != null && todayCourses.length != 0) {
-      todayCourses.forEach((TodayCourse todayCourse) {
-        if (myCourses != null) {
-          myCourses.forEach((MyCourse myCourse) {
-            myCourse.lectureCourse.forEach((String text) {
-              if (text == todayCourse.course ||
-                  text == todayCourse.course.substring(0, 1) ||
-                  returnText(text) == todayCourse.course ||
-                  returnText(text) == todayCourse.course.substring(0, 1)) {
-                if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      day: DateTime.now().weekday,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lecture ${text.substring(2, text.length)}',
-                      location: myCourse.lectureLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      links: myCourse.links,
-                      attendanceManager: attendanceData));
-                } else {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      day: DateTime.now().weekday,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lecture',
-                      location: myCourse.lectureLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      links: myCourse.links,
-                      attendanceManager: attendanceData));
-                }
-              }
-            });
-            myCourse.tutorialCourse.forEach((String text) {
-              if (text == todayCourse.course ||
-                  text == todayCourse.course.substring(0, 1) ||
-                  returnText(text) == todayCourse.course ||
-                  returnText(text) == todayCourse.course.substring(0, 1)) {
-                if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      day: DateTime.now().weekday,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Tutorial ${text.substring(2, text.length)}',
-                      location: myCourse.tutorialLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      links: myCourse.links,
-                      attendanceManager: attendanceData));
-                } else {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      day: DateTime.now().weekday,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Tutorial',
-                      location: myCourse.tutorialLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      links: myCourse.links,
-                      attendanceManager: attendanceData));
-                }
-              }
-            });
-            myCourse.labCourse.forEach((String text) {
-              if (text == todayCourse.course ||
-                  text == todayCourse.course.substring(0, 1) ||
-                  returnText(text) == todayCourse.course ||
-                  returnText(text) == todayCourse.course.substring(0, 1)) {
-                if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      day: DateTime.now().weekday,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lab ${text.substring(2, text.length)}',
-                      location: myCourse.labLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      links: myCourse.links,
-                      attendanceManager: attendanceData));
-                } else {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      day: DateTime.now().weekday,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lab',
-                      location: myCourse.labLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      links: myCourse.links,
-                      attendanceManager: attendanceData));
-                }
-              }
-            });
+    for (var i = 0; i < 5; i++) {
+      if (todayCourses != null && todayCourses.length != 0) {
+        if (todayCourses[i] != null && todayCourses[i].length != 0) {
+          todayCourses[i].forEach((TodayCourse todayCourse) {
+            if (myCourses != null) {
+              myCourses.forEach((MyCourse myCourse) {
+                myCourse.lectureCourse.forEach((String text) {
+                  if (text == todayCourse.course ||
+                      text == todayCourse.course.substring(0, 1) ||
+                      returnText(text) == todayCourse.course ||
+                      returnText(text) == todayCourse.course.substring(0, 1)) {
+                    if (text.length > 2) {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lecture ${text.substring(2, text.length)}',
+                          location: myCourse.lectureLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    } else {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lecture',
+                          location: myCourse.lectureLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    }
+                  }
+                });
+                myCourse.tutorialCourse.forEach((String text) {
+                  if (text == todayCourse.course ||
+                      text == todayCourse.course.substring(0, 1) ||
+                      returnText(text) == todayCourse.course ||
+                      returnText(text) == todayCourse.course.substring(0, 1)) {
+                    if (text.length > 2) {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Tutorial ${text.substring(2, text.length)}',
+                          location: myCourse.tutorialLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    } else {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Tutorial',
+                          location: myCourse.tutorialLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    }
+                  }
+                });
+                myCourse.labCourse.forEach((String text) {
+                  if (text == todayCourse.course ||
+                      text == todayCourse.course.substring(0, 1) ||
+                      returnText(text) == todayCourse.course ||
+                      returnText(text) == todayCourse.course.substring(0, 1)) {
+                    if (text.length > 2) {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lab ${text.substring(2, text.length)}',
+                          location: myCourse.labLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    } else {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lab',
+                          location: myCourse.labLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    }
+                  }
+                });
+              });
+            }
           });
         }
-      });
+      }
     }
 
     return coursesEventModelList;
