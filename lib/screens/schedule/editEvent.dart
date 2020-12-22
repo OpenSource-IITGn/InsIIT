@@ -280,7 +280,7 @@ class _EditEventState extends State<EditEvent> {
               Navigator.pushNamed(context, '/addcourse');
             },
             backgroundColor: primaryColor,
-            child: Icon(Icons.more_horiz, color:Colors.white),
+            child: Icon(Icons.add, color:Colors.white),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
@@ -289,7 +289,7 @@ class _EditEventState extends State<EditEvent> {
               _openGoogleCalendar();
             },
             backgroundColor: primaryColor,
-            child: Icon(Icons.add, color: Colors.white),
+            child: Icon(Icons.calendar_today, color: Colors.white),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
