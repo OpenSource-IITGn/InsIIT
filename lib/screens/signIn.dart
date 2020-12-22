@@ -103,52 +103,6 @@ class _SignInPageState extends State<SignInPage> {
     eventsWithoutRepetition = listWithoutRepetitionEvent(events);
   }
 
-//  Future getCoursesCached() async {
-//    var file = await _localFile('courses');
-//    bool exists = await file.exists();
-//    if (exists) {
-//      print("Courses CACHED PREVIOUSLY");
-//      await file.open();
-//      String events = await file.readAsString();
-//      List<Course> coursesList = [];
-//      var json = jsonDecode(events);
-//      json['key'].forEach((eventJson) {
-//        Course x = Course.fromJson(eventJson);
-//        coursesList.add(x);
-//      });
-//      return coursesList;
-//    } else {
-//      print("Courses NOT CACHED PREVIOUSLY");
-//    }
-//
-//    return false;
-//  }
-
-//  Future storeCoursesCached() async {
-//    var file = await _localFile('courses');
-//    bool exists = await file.exists();
-//    if (exists) {
-//      await file.delete();
-//    }
-//    await file.create();
-//    await file.open();
-//    List<Map<String, dynamic>> courseList = [];
-//    courses.forEach((element) {
-//      courseList.add(element.toJson());
-//    });
-//    Map<String, dynamic> list = {'key': courseList};
-//    await file.writeAsString(jsonEncode(list));
-//    print("WROTE Courses TO CACHE");
-//    return true;
-//  }
-
-//  Future getCoursesOnline(httpClient) async {
-//    courses = [];
-//    var courseData = await ClassroomApi(httpClient).courses.list();
-//    courses.addAll(courseData.courses);
-//    coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-//  }
-
   Future<File> _localFile(String range) async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
@@ -174,21 +128,6 @@ class _SignInPageState extends State<SignInPage> {
     getEventsOnline(httpClient).then((value) {
       storeEventsCached();
     });
-
-//    await getCoursesCached().then((values) async {
-//      if (values != false) {
-//        courses = values;
-//        coursesWithoutRepetition = listWithoutRepetitionCourse(courses);
-//      } else {
-//        await getCoursesOnline(httpClient).then((value) {
-//          storeCoursesCached();
-//        });
-//          print("No Events added");
-//      }
-//    });
-//    getCoursesOnline(httpClient).then((value) {
-//      storeCoursesCached();
-//    });
 
     eventsReady = true;
   }

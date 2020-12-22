@@ -314,33 +314,6 @@ class _HomePageState extends State<HomePage>
     return _userAddedCourses;
   }
 
-//  List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
-//    List<EventModel> _userAddedCourses = [];
-//
-//    if (userAddedCoursesDataList != null &&
-//        userAddedCoursesDataList.length != 0) {
-//      userAddedCoursesDataList.forEach((var lc) {
-//        print(lc);
-//        _userAddedCourses.add(EventModel(
-//          isCourse: true,
-//          isExam: false,
-//          courseId: lc[0],
-//          courseName: lc[1],
-//          location: lc[2],
-//          credits: lc[3].toString(),
-//          preRequisite: lc[4],
-//          start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[5].split(':')[0]), int.parse(lc[5].split(':')[1])),
-//          end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[6].split(':')[0]), int.parse(lc[6].split(':')[1])),
-//          eventType: 'Course',
-//          day: lc[7],
-//          attendanceManager: attendanceData
-//        ));
-//      });
-//    }
-
-//    return _userAddedCourses;
-//  }
-
   Future<File> _localFileForUserAddedCourses() async {
     Directory tempDir = await getTemporaryDirectory();
     String tempPath = tempDir.path;
@@ -375,16 +348,6 @@ class _HomePageState extends State<HomePage>
       allCourses = makeMyCourseList(data);
     });
   }
-
-//  loadCourseData() async {
-//    sheet.getData('slots!A:F').listen((data) {
-//      todayCourses = makeTodayTimeSlotList(data);
-//    });
-//
-//    sheet.getData('timetable!A:Q').listen((data) {
-//      myCourses = makeMyCourseList(data, coursesWithoutRepetition);
-//    });
-//  }
 
   loadRepresentativesData() async {
     sheet.getData('Representatives!A:C').listen((data){
@@ -442,9 +405,8 @@ class _HomePageState extends State<HomePage>
   }
 
   List<List<TodayCourse>> makeTodayTimeSlotList(var courseSlotDataList) {
-    //int day = DateTime.now().weekday;
     List<List<TodayCourse>> courses = [[],[],[],[],[],[],[]];
-    //if (day != 6 && day != 7) {
+
     courseSlotDataList.removeAt(0);
     courseSlotDataList.removeAt(0);
 
@@ -453,9 +415,8 @@ class _HomePageState extends State<HomePage>
       for (var i = 0; i < 5; i++) {
         courses[i].add(TodayCourse(start: time[0], end: time[1], course: lc[i+1]));
       }
-      //courses.add(TodayCourse(start: time[0], end: time[1], course: lc[day]));
     });
-    //}
+
     return courses;
   }
 
@@ -811,9 +772,7 @@ class _HomePageState extends State<HomePage>
 
   prepareEventsList() {
     List<calendar.Event> todayEvents;
-    //List<EventModel> currentDayCourses;
     List<EventModel> currentDayExamCourses;
-    //List<EventModel> mergedCourses;
 
     userCourses = makeCourseEventModel(todayCourses, userAddedCourses);
     eventsList = [[],[],[],[],[],[],[]];
@@ -860,25 +819,7 @@ class _HomePageState extends State<HomePage>
         eventsList[index].add(model);
       }
     });
-//    currentDayCourses = makeCourseEventModel(todayCourses, myCourses);
-//    mergedCourses = mergeSameCourses(currentDayCourses);
-//    mergedCourses.forEach((EventModel model) {
-//      bool shouldContain = true;
-//      if (removedEvents != null) {
-//        removedEvents.forEach((EventModel removedEvent) {
-//          if (removedEvent.isCourse) {
-//            if (removedEvent.courseId == model.courseId &&
-//                removedEvent.courseName == model.courseName &&
-//                removedEvent.eventType == model.eventType) {
-//              shouldContain = false;
-//            }
-//          }
-//        });
-//      }
-//      if (shouldContain) {
-//        eventsList.add(model);
-//      }
-//    });
+
     todayEvents = todayEventsList(eventsWithoutRepetition);
     todayEvents.forEach((calendar.Event event) {
       bool shouldContain = true;
@@ -982,43 +923,6 @@ class _HomePageState extends State<HomePage>
     }
     return todayExamCourses;
   }
-
-//  List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
-//    List<EventModel> _mergedCourses = [];
-//    bool notHave;
-//
-//    if (currentDayCourses != null && currentDayCourses.length != 0) {
-//      for (int i = 0; i < currentDayCourses.length; i++) {
-//        notHave = true;
-//        if (i == 0) {
-//          _mergedCourses.add(currentDayCourses[i]);
-//        } else {
-//          _mergedCourses.forEach((EventModel _model) {
-//            double _modelEndTime = _model.end.hour.toDouble() +
-//                (_model.end.minute.toDouble() / 60);
-//            double _courseStartTime =
-//                currentDayCourses[i].start.hour.toDouble() +
-//                    (currentDayCourses[i].start.minute.toDouble() / 60);
-//            double diff = _modelEndTime - _courseStartTime;
-//            if (diff < 10 &&
-//                diff > -10 &&
-//                currentDayCourses[i].courseId == _model.courseId &&
-//                currentDayCourses[i].courseName == _model.courseName &&
-//                currentDayCourses[i].remarks == _model.remarks &&
-//                currentDayCourses[i].eventType == _model.eventType) {
-//              notHave = false;
-//              _model.end = currentDayCourses[i].end;
-//            }
-//          });
-//          if (notHave) {
-//            _mergedCourses.add(currentDayCourses[i]);
-//          }
-//        }
-//      }
-//    }
-//
-//    return _mergedCourses;
-//  }
 
   String returnText(String text) {
     if (text.length > 2) {
