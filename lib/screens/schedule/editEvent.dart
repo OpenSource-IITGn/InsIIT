@@ -550,7 +550,7 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (loadingAddCourseData) {
+    if (loadingAddCourseData || query == "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken") {
       return Center(child: CircularProgressIndicator(),);
     } else if (query.isEmpty) {
       return SingleChildScrollView(
