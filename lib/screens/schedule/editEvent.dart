@@ -14,9 +14,52 @@ class EditEvent extends StatefulWidget {
   _EditEventState createState() => _EditEventState();
 }
 
+List<MyCourse> notAddedCourses = [];
+Map<MyCourse, bool> add = {};
+bool loadingAddCourseData = false;
+
 class _EditEventState extends State<EditEvent> {
   bool updateUserAddedCourses = false;
   bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    notAddedCourses = makeNotAddedCoursesList(userAddedCourses, allCourses);
+    add = makeAddMap(notAddedCourses);
+  }
+
+  List<MyCourse> makeNotAddedCoursesList (List<MyCourse> myCourses, List<MyCourse> allCourses) {
+    List<MyCourse> remainingCourses = [];
+
+    allCourses.forEach((MyCourse course) {
+      bool contain = true;
+      if (userAddedCourses != null) {
+        myCourses.forEach((MyCourse addedCourse) {
+          if (addedCourse.courseCode == course.courseCode ||
+              addedCourse.courseName == course.courseName) {
+            contain = false;
+          }
+        });
+      }
+
+      if (contain) {
+        remainingCourses.add(course);
+      }
+    });
+
+    return remainingCourses;
+  }
+
+  Map<MyCourse, bool> makeAddMap (List<MyCourse> remainingCourses) {
+    Map<MyCourse, bool> _add = {};
+    remainingCourses.forEach((MyCourse course) {
+      _add.putIfAbsent(course, () => false);
+    });
+
+    return _add;
+  }
+
   Widget eventCard(EventModel model) {
     return GestureDetector(
       onTap: () {
@@ -279,7 +322,11 @@ class _EditEventState extends State<EditEvent> {
           FloatingActionButton(
             heroTag: "fab1rs",
             onPressed: () {
-              Navigator.popAndPushNamed(context, '/addcourse');
+              //Navigator.popAndPushNamed(context, '/addcourse');
+              showSearch(
+                context: context,
+                delegate: CustomSearch(),
+              );
             },
             backgroundColor: primaryColor,
             child: Icon(Icons.add, color:Colors.white),
@@ -317,3 +364,200 @@ class _EditEventState extends State<EditEvent> {
     );
   }
 }
+
+class CustomSearch extends SearchDelegate {
+
+  addCourses (Map<MyCourse, bool> add, BuildContext context) {
+    loadingAddCourseData = true;
+    query = "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken";
+    add.forEach((MyCourse course, bool addCourse) {
+      if (addCourse) {
+        addIfNotPresent(course);
+      }
+    });
+
+    saveFileInCache(context);
+  }
+
+  addIfNotPresent (MyCourse course) {
+    bool add = true;
+    if (userAddedCourses != null) {
+      userAddedCourses.forEach((MyCourse _course) {
+        if (course.courseName == _course.courseName ||
+            course.courseCode == _course.courseCode) {
+          add = false;
+        }
+      });
+    } else {
+      userAddedCourses = [];
+    }
+
+    if (add) {
+      userAddedCourses.add(course);
+    }
+  }
+
+  saveFileInCache (BuildContext context) async {
+    var file = await _localFileForUserAddedCourses();
+    bool exists = await file.exists();
+    if (exists) {
+      await file.delete();
+    }
+    await file.create();
+    await file.open();
+    var userAddedCoursesList =
+    makeUserAddedCoursesList(userAddedCourses);
+    await file.writeAsString(
+        ListToCsvConverter().convert(userAddedCoursesList));
+    print('DATA OF ADDED EVENT STORED IN FILE');
+
+    query = '';
+    loadingAddCourseData = false;
+    Navigator.popAndPushNamed(context, '/menuBarBase');
+    //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+  }
+
+  List<List<String>> makeUserAddedCoursesList(List<MyCourse> userAddedCourses) {
+    List<List<String>> userAddedCoursesList = [];
+
+    userAddedCourses.forEach((MyCourse course) {
+      userAddedCoursesList
+          .add([
+        course.courseCode,
+        course.courseName,
+        course.noOfLectures.toString(),
+        course.noOfTutorials.toString(),
+        course.credits.toString(),
+        course.instructors.join(','),
+        course.preRequisite,
+        course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
+        course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+        course.labCourse.join(',') + '(' + course.labLocation + ')',
+        course.remarks,
+        course.courseBooks,
+        course.links.join(',')
+      ]);
+    });
+
+    return userAddedCoursesList;
+  }
+
+  Future<File> _localFileForUserAddedCourses() async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    String filename = tempPath + 'userAddedCourses' + '.csv';
+    return File(filename);
+  }
+
+  Widget courseCard (MyCourse course, Map<MyCourse, bool> add) {
+    return GestureDetector(
+      onTap: () {
+        if (add[course]) {
+          add[course] = false;
+        } else {
+          add[course] = true;
+        }
+
+        String temp = query;
+        query = query + 'a';
+        query = temp;
+      },
+      child: Container(
+        width: ScreenSize.size.width * 1,
+        child: Card(
+          color: (add[course])?Colors.white30:Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                    child: Text(
+                      course.courseCode,
+                      style: TextStyle(
+                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                ),
+                SizedBox(width: 5,),
+                Flexible(
+                    child: Text(
+                      course.courseName,
+                      style: TextStyle(
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () {
+          addCourses(add, context);
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //DONT REMOVE
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    if (loadingAddCourseData) {
+      return Center(child: CircularProgressIndicator(),);
+    } else if (query.isEmpty) {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: notAddedCourses.map<Widget>((MyCourse course) {
+              return courseCard(course, add);
+            }).toList(),
+          ),
+        ),
+      );
+    } else {
+      final suggestionList = notAddedCourses.where((MyCourse course) => ((course.courseCode.toLowerCase()).startsWith(query.toLowerCase()) || (course.courseName.toLowerCase()).startsWith(query.toLowerCase()))).toList();
+
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: suggestionList.map<Widget>((MyCourse course) {
+              return courseCard(course, add);
+            }).toList(),
+          ),
+        ),
+      );
+    }
+  }
+}
+

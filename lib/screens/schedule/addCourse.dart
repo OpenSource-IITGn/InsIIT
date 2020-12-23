@@ -12,11 +12,11 @@ class AddCourse extends StatefulWidget {
   _AddCourseState createState() => _AddCourseState();
 }
 
-class _AddCourseState extends State<AddCourse> {
+List<MyCourse> notAddedCourses = [];
+Map<MyCourse, bool> add = {};
+bool loadingAddCourseData = false;
 
-  List<MyCourse> notAddedCourses;
-  Map<MyCourse, bool> add;
-  bool loading = false;
+class _AddCourseState extends State<AddCourse> {
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _AddCourseState extends State<AddCourse> {
   }
 
   addCourses (Map<MyCourse, bool> add) {
-    loading = true;
+    loadingAddCourseData = true;
     setState(() {});
     add.forEach((MyCourse course, bool addCourse) {
       if (addCourse) {
@@ -136,54 +136,6 @@ class _AddCourseState extends State<AddCourse> {
     return File(filename);
   }
 
-  Widget courseCard (MyCourse course, Map<MyCourse, bool> add) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          if (add[course]) {
-            add[course] = false;
-          } else {
-            add[course] = true;
-          }
-        });
-      },
-      child: Container(
-        width: ScreenSize.size.width * 1,
-        child: Card(
-          color: (add[course])?Colors.white30:Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                  child: Text(
-                    course.courseCode,
-                    style: TextStyle(
-                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  )
-                ),
-                SizedBox(width: 5,),
-                Flexible(
-                    child: Text(
-                      course.courseName,
-                      style: TextStyle(
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,19 +152,33 @@ class _AddCourseState extends State<AddCourse> {
         ),
         title: Text('Add Course',
             style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
-      ),
-      body: (loading)
-          ? Center(child: CircularProgressIndicator(),)
-          :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: notAddedCourses.map<Widget>((MyCourse course) {
-              return courseCard(course, add);
-            }).toList(),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearch(),
+              );
+            },
           ),
-        ),
+        ],
       ),
+//      body: (loading)
+//          ? Center(child: CircularProgressIndicator(),)
+//          :SingleChildScrollView(
+//        child: Padding(
+//          padding: const EdgeInsets.all(8.0),
+//          child: Column(
+//            children: notAddedCourses.map<Widget>((MyCourse course) {
+//              return courseCard(course, add);
+//            }).toList(),
+//          ),
+//        ),
+//      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -237,5 +203,119 @@ class _AddCourseState extends State<AddCourse> {
         child: Icon(Icons.add, color: Colors.white),
       ),
     );
+  }
+}
+
+class CustomSearch extends SearchDelegate {
+  var suggestion = ["ahmed", "ali", "mohammad"];
+  List<String> searchResult = List();
+
+  Widget courseCard (MyCourse course, Map<MyCourse, bool> add) {
+    return GestureDetector(
+      onTap: () {
+        if (add[course]) {
+          add[course] = false;
+        } else {
+          add[course] = true;
+        }
+
+        query = '';
+      },
+      child: Container(
+        width: ScreenSize.size.width * 1,
+        child: Card(
+          color: (add[course])?Colors.white30:Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                    child: Text(
+                      course.courseCode,
+                      style: TextStyle(
+                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                ),
+                SizedBox(width: 5,),
+                Flexible(
+                    child: Text(
+                      course.courseName,
+                      style: TextStyle(
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.menu_arrow,
+        progress: transitionAnimation,
+      ),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //DONT REMOVE
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    if (loadingAddCourseData) {
+      return Center(child: CircularProgressIndicator(),);
+    } else if (query.isEmpty) {
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: notAddedCourses.map<Widget>((MyCourse course) {
+              return courseCard(course, add);
+            }).toList(),
+          ),
+        ),
+      );
+    } else {
+      final suggestionList = notAddedCourses.where((MyCourse course) => ((course.courseCode.toLowerCase()).startsWith(query.toLowerCase()) || (course.courseName.toLowerCase()).startsWith(query.toLowerCase()))).toList();
+
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: suggestionList.map<Widget>((MyCourse course) {
+              return courseCard(course, add);
+            }).toList(),
+          ),
+        ),
+      );
+    }
   }
 }
