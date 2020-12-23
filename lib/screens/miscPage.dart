@@ -147,6 +147,7 @@ class _MiscPageState extends State<MiscPage> {
                         child: Container(
                           child: Text(
                             "Know Your Representatives",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                             ),
