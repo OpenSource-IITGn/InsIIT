@@ -7,9 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../classes/scheduleModel.dart';
-
-
 class AddCourse extends StatefulWidget {
   @override
   _AddCourseState createState() => _AddCourseState();
@@ -17,250 +14,119 @@ class AddCourse extends StatefulWidget {
 
 class _AddCourseState extends State<AddCourse> {
 
+  List<MyCourse> notAddedCourses;
+  Map<MyCourse, bool> add;
   bool loading = false;
 
-  EventModel event;
-  TextEditingController _courseIDController;
-  TextEditingController _courseNameController;
-  TextEditingController _locationController;
-  TextEditingController _creditsController;
-  TextEditingController _preRequisiteController;
-
+  @override
   void initState() {
     super.initState();
-    _courseIDController = TextEditingController();
-    _courseNameController = TextEditingController();
-    _locationController = TextEditingController();
-    _creditsController = TextEditingController();
-    _preRequisiteController = TextEditingController();
-    DateTime _currentTime = DateTime.now();
-    startTime = TimeOfDay.fromDateTime(_currentTime);
-    endTime = TimeOfDay.fromDateTime(_currentTime.add(new Duration(hours: 1)));
+    notAddedCourses = makeNotAddedCoursesList(userAddedCourses, allCourses);
+    add = makeAddMap(notAddedCourses);
   }
 
-  TimeOfDay startTime;
-  TimeOfDay endTime;
-  DateTime start;
-  DateTime end;
+  List<MyCourse> makeNotAddedCoursesList (List<MyCourse> myCourses, List<MyCourse> allCourses) {
+    List<MyCourse> remainingCourses = [];
 
-  Map<String, int> dayData = {
-    'Monday': 1,
-    'Tuesday': 2,
-    'Wednesday': 3,
-    'Thursday': 4,
-    'Friday': 5,
-    'Saturday': 6,
-    'Sunday': 7
-};
-  String selectedDay = 'Select day';
+    allCourses.forEach((MyCourse course) {
+      bool contain = true;
+      if (userAddedCourses != null) {
+        myCourses.forEach((MyCourse addedCourse) {
+          if (addedCourse.courseCode == course.courseCode ||
+              addedCourse.courseName == course.courseName) {
+            contain = false;
+          }
+        });
+      }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Add Course',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-      ),
-      body: (loading)
-        ? Center(child: CircularProgressIndicator(),)
-        :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Center(
-                    child: Text(
-                      'From: ',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  OutlineButton.icon(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    onPressed: _pickStartTime,
-                    icon: Icon(Icons.access_time, color: Colors.black),
-                    label: Text(
-                      "${startTime.hour.toString().padLeft(2, '0')} : ${startTime.minute.toString().padLeft(2, '0')}",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'To: ',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  OutlineButton.icon(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    onPressed: _pickEndTime,
-                    icon: Icon(Icons.access_time, color: Colors.black),
-                    label: Text(
-                      "${endTime.hour.toString().padLeft(2, '0')} : ${endTime.minute.toString().padLeft(2, '0')}",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              ExpansionTile(
-                title: Text(selectedDay),
-                key: GlobalKey(),
-                children: dayData.keys.map((String day) {
-                  return ListTile(
-                    title: Text(day),
-                    onTap: () {
-                      setState(() {
-                        selectedDay = day;
-                      });
-                    },
-                  );
-                }).toList()
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Course ID',
-                ),
-                controller: _courseIDController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Course Name',
-                ),
-                controller: _courseNameController,
-              ),SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Location (Optional)',
-                ),
-                controller: _locationController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Credit (Optional)',
-                ),
-                keyboardType: TextInputType.phone,
-                controller: _creditsController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Pre Requisite (Optional)',
-                ),
-                controller: _preRequisiteController,
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              FlatButton.icon(
-                color: primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () async {
-                  if (selectedDay == 'Select day' || _courseIDController.text == '' || _courseNameController.text == '') {
-                    showDialog(
-                      context: context,
-                      builder: (_) => new AlertDialog(
-                        content: Text("Please provide all the necessary information"),
-                      ),
-                    );
-                  } else {
-                    userAddedCourses.add(EventModel(
-                      isCourse: true,
-                      isExam: false,
-                      courseId: _courseIDController.text,
-                      courseName: _courseNameController.text,
-                      location: (_locationController.text == '') ? '-' : _locationController.text,
-                      credits: (_creditsController.text == '') ? '-' : _creditsController.text,
-                      preRequisite: (_preRequisiteController.text == '') ? '-' : _preRequisiteController.text,
-                      start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, startTime.hour, startTime.minute),
-                      end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, endTime.hour, endTime.minute),
-                      day: dayData[selectedDay],
-                      attendanceManager: attendanceData,
-                    ));
-                    loading = true;
-                    setState(() {});
-                    var file = await _localFileForUserAddedCourses();
-                    bool exists = await file.exists();
-                    if (exists) {
-                      await file.delete();
-                    }
-                    await file.create();
-                    await file.open();
-                    var userAddedCoursesList =
-                    makeUserAddedCoursesList(userAddedCourses);
-                    await file.writeAsString(
-                        ListToCsvConverter().convert(userAddedCoursesList));
-                    print('DATA OF ADDED EVENT STORED IN FILE');
-                    Navigator.pop(context);
-                  }
-                },
-                label: Text(
-                    'Add Course',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+      if (contain) {
+        remainingCourses.add(course);
+      }
+    });
+
+    return remainingCourses;
   }
 
-  List<List<String>> makeUserAddedCoursesList(List<EventModel> userAddedCourses) {
+  Map<MyCourse, bool> makeAddMap (List<MyCourse> remainingCourses) {
+    Map<MyCourse, bool> _add = {};
+    remainingCourses.forEach((MyCourse course) {
+      _add.putIfAbsent(course, () => false);
+    });
+
+    return _add;
+  }
+
+  addCourses (Map<MyCourse, bool> add) {
+    loading = true;
+    setState(() {});
+    add.forEach((MyCourse course, bool addCourse) {
+      if (addCourse) {
+        addIfNotPresent(course);
+      }
+    });
+
+    saveFileInCache();
+  }
+
+  addIfNotPresent (MyCourse course) {
+    bool add = true;
+    if (userAddedCourses != null) {
+      userAddedCourses.forEach((MyCourse _course) {
+        if (course.courseName == _course.courseName ||
+            course.courseCode == _course.courseCode) {
+          add = false;
+        }
+      });
+    } else {
+      userAddedCourses = [];
+    }
+
+    if (add) {
+      userAddedCourses.add(course);
+    }
+  }
+
+  saveFileInCache () async {
+    var file = await _localFileForUserAddedCourses();
+    bool exists = await file.exists();
+    if (exists) {
+      await file.delete();
+    }
+    await file.create();
+    await file.open();
+    var userAddedCoursesList =
+    makeUserAddedCoursesList(userAddedCourses);
+    await file.writeAsString(
+        ListToCsvConverter().convert(userAddedCoursesList));
+    print('DATA OF ADDED EVENT STORED IN FILE');
+
+    Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+  }
+
+  List<List<String>> makeUserAddedCoursesList(List<MyCourse> userAddedCourses) {
     List<List<String>> userAddedCoursesList = [];
 
-    userAddedCourses.forEach((EventModel model) {
-        userAddedCoursesList
-            .add([model.courseId, model.courseName, model.location, model.credits, model.preRequisite, model.start.hour.toString() + ':' + model.start.minute.toString(), model.end.hour.toString() + ':' + model.end.minute.toString(), model.day.toString()]);
+    userAddedCourses.forEach((MyCourse course) {
+      userAddedCoursesList
+          .add([
+            course.courseCode,
+            course.courseName,
+            course.noOfLectures.toString(),
+            course.noOfTutorials.toString(),
+            course.credits.toString(),
+            course.instructors.join(','),
+            course.preRequisite,
+            course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
+            course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+            course.labCourse.join(',') + '(' + course.labLocation + ')',
+            course.remarks,
+            course.courseBooks,
+            course.links.join(',')
+      ]);
     });
 
     return userAddedCoursesList;
   }
-
 
   Future<File> _localFileForUserAddedCourses() async {
     Directory tempDir = await getTemporaryDirectory();
@@ -269,20 +135,106 @@ class _AddCourseState extends State<AddCourse> {
     return File(filename);
   }
 
-  _pickStartTime() async {
-    TimeOfDay t =
-    await showTimePicker(context: context, initialTime: startTime);
-    if (t != null)
-      setState(() {
-        startTime = t;
-      });
+  Widget courseCard (MyCourse course, Map<MyCourse, bool> add) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          if (add[course]) {
+            add[course] = false;
+          } else {
+            add[course] = true;
+          }
+        });
+      },
+      child: Container(
+        width: ScreenSize.size.width * 1,
+        child: Card(
+          color: (add[course])?Colors.white30:Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  child: Text(
+                    course.courseCode,
+                    style: TextStyle(
+                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  )
+                ),
+                SizedBox(width: 5,),
+                Flexible(
+                    child: Text(
+                      course.courseName,
+                      style: TextStyle(
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    )
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  _pickEndTime() async {
-    TimeOfDay t = await showTimePicker(context: context, initialTime: endTime);
-    if (t != null)
-      setState(() {
-        endTime = t;
-      });
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Add Course',
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+      ),
+      body: (loading)
+          ? Center(child: CircularProgressIndicator(),)
+          :SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: notAddedCourses.map<Widget>((MyCourse course) {
+              return courseCard(course, add);
+            }).toList(),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => new AlertDialog(
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    addCourses(add);
+                  },
+                  child: Text('Yes'),
+                )
+              ],
+              content: Text(
+                'Do you want to add selected courses to your timetable?'
+              ),
+            ),
+          );
+        },
+        backgroundColor: primaryColor,
+        child: Icon(Icons.add, color: Colors.white),
+      ),
+    );
   }
 }

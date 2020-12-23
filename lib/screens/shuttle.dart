@@ -86,6 +86,7 @@ class _ShuttleState extends State<Shuttle>
                         "From: ",
                         style: TextStyle(
                           fontSize: 16.0,
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                         ),
                       ),
                       Text(
@@ -94,6 +95,7 @@ class _ShuttleState extends State<Shuttle>
                           fontSize: 16.0,
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                         ),
                       ),
                     ],
@@ -107,6 +109,7 @@ class _ShuttleState extends State<Shuttle>
                     "To: ",
                     style: TextStyle(
                       fontSize: 16.0,
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     ),
                   ),
                   Text(
@@ -115,6 +118,7 @@ class _ShuttleState extends State<Shuttle>
                       fontSize: 16.0,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                     ),
                   ),
                 ],
@@ -126,7 +130,7 @@ class _ShuttleState extends State<Shuttle>
                 alignment: Alignment.centerRight,
                 child: Text(
                   buses.time,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 ),
               ),
               Row(
@@ -149,7 +153,9 @@ class _ShuttleState extends State<Shuttle>
                           );
                         },
                         icon: Icon(Icons.airport_shuttle),
-                        label: Text('Route')),
+                        label: Text(
+                            'Route',
+                        style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),)),
                     CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.grey.withAlpha(25),
@@ -304,7 +310,7 @@ class _ShuttleState extends State<Shuttle>
     // initialize();
     if (!destinationSelected) {
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
               child: Padding(
@@ -316,14 +322,14 @@ class _ShuttleState extends State<Shuttle>
                 Text(
                   "Where are you going?",
                   style: TextStyle(
-                      color: Colors.black,
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontSize: 19,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
                   "Let's get you on that bus!",
                   style: TextStyle(
-                      color: Colors.black.withAlpha(150),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold),
                 ),
                 ColumnBuilder(
@@ -342,7 +348,7 @@ class _ShuttleState extends State<Shuttle>
                           padding: const EdgeInsets.all(16.0),
                           child: Text(places[index],
                               style: TextStyle(
-                                color: Colors.black,
+                                color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                                 fontSize: 16,
                               )),
                         ),
@@ -381,7 +387,7 @@ class _ShuttleState extends State<Shuttle>
     // }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       floatingActionButton: Visibility(
         visible: isFabVisible,
         // duration: Duration(milliseconds: 200),
@@ -401,12 +407,12 @@ class _ShuttleState extends State<Shuttle>
             key: GlobalKey(),
             title: Row(
               children: <Widget>[
-                Text("From: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("From: ", style: TextStyle(fontWeight: FontWeight.bold, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor)),
                 Text(this.origin,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
-                        color: Colors.black.withAlpha(150))),
+                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor)),
               ],
             ),
             children: places.map((String place) {
@@ -424,12 +430,12 @@ class _ShuttleState extends State<Shuttle>
             key: GlobalKey(),
             title: Row(
               children: <Widget>[
-                Text("To: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("To: ", style: TextStyle(fontWeight: FontWeight.bold, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor)),
                 Text(this.destination,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
-                        color: Colors.black.withAlpha(150))),
+                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor)),
               ],
             ),
             children: places.map((String place) {

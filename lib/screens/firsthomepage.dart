@@ -53,7 +53,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     ),
                     Text("to",
                         style: TextStyle(
-                            color: Colors.black.withAlpha(120), fontSize: 14)),
+                            color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor, fontSize: 14)),
                     SizedBox(
                       height: 8,
                     ),
@@ -72,23 +72,6 @@ class _MainHomePageState extends State<MainHomePage> {
   }
 
   Widget descriptionWidget(EventModel event) {
-    // if (event.isCourse || event.isExam) {
-    //   return Flexible(
-    //     child: Text(event.courseId,
-    //         style: TextStyle(
-    //             color: Colors.black.withAlpha(120),
-    //             fontWeight: FontWeight.bold,
-    //             fontSize: 14)),
-    //   );
-    // } else {
-    //   return Flexible(
-    //     child: Text(event.description,
-    //         style: TextStyle(
-    //             color: Colors.black.withAlpha(120),
-    //             fontWeight: FontWeight.bold,
-    //             fontSize: 14)),
-    //   );
-    // }
     if (event.isCourse) {
       return Container(
         width: ScreenSize.size.width * 0.55,
@@ -98,7 +81,7 @@ class _MainHomePageState extends State<MainHomePage> {
             children: <Widget>[
               Text(event.courseId,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               SizedBox(
@@ -108,7 +91,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 fit: FlexFit.loose,
                 child: Text(event.courseName,
                     style: TextStyle(
-                        color: Colors.black.withAlpha(255),
+                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16)),
               ),
@@ -119,7 +102,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 children: <Widget>[
                   Text((event.eventType == null) ? 'Course' : event.eventType,
                       style: TextStyle(
-                          color: Colors.black.withAlpha(200),
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
                   SizedBox(
@@ -129,7 +112,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     fit: FlexFit.loose,
                     child: Text('Room: ${event.location}',
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -146,7 +129,7 @@ class _MainHomePageState extends State<MainHomePage> {
             children: <Widget>[
               Text(event.courseId,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               SizedBox(
@@ -154,7 +137,7 @@ class _MainHomePageState extends State<MainHomePage> {
               ),
               Text(event.courseName,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(255),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
               SizedBox(
@@ -164,7 +147,7 @@ class _MainHomePageState extends State<MainHomePage> {
                 children: <Widget>[
                   Text(event.eventType,
                       style: TextStyle(
-                          color: Colors.black.withAlpha(200),
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
                 ],
@@ -177,7 +160,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text('Room: ',
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -187,7 +170,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text('Roll Numbers: ',
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -201,7 +184,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text(event.location,
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -211,7 +194,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text(event.rollNumbers,
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -228,7 +211,7 @@ class _MainHomePageState extends State<MainHomePage> {
             children: <Widget>[
               Text(stringReturn(event.description),
                   style: TextStyle(
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               SizedBox(
@@ -236,7 +219,7 @@ class _MainHomePageState extends State<MainHomePage> {
               ),
               Text(stringReturn(event.summary),
                   style: TextStyle(
-                      color: Colors.black.withAlpha(255),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
               SizedBox(
@@ -248,7 +231,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       stringReturn(event.remarks) +
                       ')',
                   style: TextStyle(
-                      color: Colors.black.withAlpha(200),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontStyle: FontStyle.italic,
                       fontSize: 14)),
             ]),
@@ -261,7 +244,7 @@ class _MainHomePageState extends State<MainHomePage> {
         twoDigitTime(time.hour.toString()) +
             ':' +
             twoDigitTime(time.minute.toString()),
-        style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 14));
+        style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontSize: 14));
   }
 
   String twoDigitTime(String text) {
@@ -345,14 +328,14 @@ class _MainHomePageState extends State<MainHomePage> {
                                       currentUser['given_name'].split(' ')[0] +
                                       '!',
                               style: TextStyle(
-                                  color: Colors.black,
+                                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                                   fontSize: 19,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
                               "How are you doing today? ",
                               style:
-                                  TextStyle(color: Colors.black.withAlpha(150)),
+                                  TextStyle(color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor),
                             ),
                             // Text(
                             //   "3 days to the weekend \uf601",
@@ -384,12 +367,13 @@ class _MainHomePageState extends State<MainHomePage> {
                                   style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
+                                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                                   ),
                                 ),
                                 Text(
                                   "Here's what's for ${selectMeal(foodCards)['meal'].toLowerCase()}",
                                   style: TextStyle(
-                                      color: Colors.black.withAlpha(150)),
+                                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor),
                                 ),
                               ],
                             ),
@@ -397,40 +381,6 @@ class _MainHomePageState extends State<MainHomePage> {
                           ],
                         ),
                         SizedBox(height: 10),
-                        // CarouselSlider(
-                        //   height: 100.0,
-                        //   viewportFraction: 0.3,
-                        //   enlargeCenterPage: false,
-                        //   autoPlay: true,
-                        //   items: selectMeal(foodCards)['list']
-                        //       .map<Widget>((i) {
-                        //     return Builder(
-                        //       builder: (BuildContext context) {
-                        //         return Container(
-                        //           width: 250.0,
-                        //           height: 120.0,
-                        //           child: Card(
-                        //             // color: primaryColor,
-                        //             child: Padding(
-                        //               padding: const EdgeInsets.all(15.0),
-                        //               child: Center(
-                        //                 child: Text(
-                        //                   i,
-                        //                   style: TextStyle(
-                        //                       // fontSize: 20.0,
-                        //                       ),
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         );
-                        //       },
-                        //     );
-                        //   }).toList(),
-                        // ),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
                       ],
                     ),
                   ),
@@ -459,12 +409,13 @@ class _MainHomePageState extends State<MainHomePage> {
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
+                                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                                         ),
                                       ),
                                       Text(
                                         "Enjoy your free time :)",
                                         style: TextStyle(
-                                            color: Colors.black.withAlpha(150)),
+                                            color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor),
                                       ),
                                     ],
                                   ),
@@ -499,12 +450,13 @@ class _MainHomePageState extends State<MainHomePage> {
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
+                                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                                         ),
                                       ),
                                       Text(
                                         "Here's your schedule",
                                         style: TextStyle(
-                                            color: Colors.black.withAlpha(150)),
+                                            color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor),
                                       ),
                                     ],
                                   ),
@@ -522,179 +474,6 @@ class _MainHomePageState extends State<MainHomePage> {
                           ),
                         ),
                       ),
-                /*(beta)GestureDetector(
-                        onTap: () {
-                          return Navigator.pushNamed(context, '/schedule');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Bored?",
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Checkout ongoing events",
-                                        style: TextStyle(
-                                            color: Colors.black.withAlpha(150)
-                                            // fontSize: 18.0,
-                                            // fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              CarouselSlider(
-                                height: 300.0,
-                                viewportFraction: 1.0,
-                                enlargeCenterPage: false,
-                                autoPlay: true,
-                                items: selectMeal(foodCards)['list']
-                                    .map<Widget>((i) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        // color: Colors.black,
-                                        child: Container(
-                                          child: Center(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Container(
-                                                  // color: Colors.black,
-                                                  height: 200.0,
-                                                  width: ScreenSize.size.width,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(10.0),
-                                                      topRight:
-                                                          Radius.circular(10.0),
-                                                    ),
-                                                    child: Image(
-                                                      fit: BoxFit.cover,
-                                                      height: 200.0,
-                                                      // width: 300,
-                                                      image: NetworkImage(
-                                                          'https://assets.entrepreneur.com/content/3x2/2000/20191009140007-GettyImages-1053962188.jpeg'),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  decoration: new BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: new BorderRadius
-                                                              .only(
-                                                          bottomLeft:
-                                                              const Radius
-                                                                      .circular(
-                                                                  10.0),
-                                                          bottomRight:
-                                                              const Radius
-                                                                      .circular(
-                                                                  10.0))),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(8, 8, 8, 8.0),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      // mainAxisAlignment:
-                                                      //     MainAxisAlignment
-                                                      //         .spaceAround,
-                                                      children: <Widget>[
-                                                        SizedBox(width: 10),
-                                                        Column(
-                                                          children: <Widget>[
-                                                            Text("24",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 20,
-                                                                )),
-                                                            Text('July')
-                                                          ],
-                                                        ),
-                                                        verticalDivider(),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: <Widget>[
-                                                            Text(
-                                                                "Photography Contest",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 16,
-                                                                )),
-                                                            Text("Starts 7pm!",
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withAlpha(
-                                                                          150),
-                                                                  // fontWeight:
-                                                                  //     FontWeight.bold,
-                                                                  // fontSize: 16,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),*/
-
-                // RaisedButton(
-                //   child: Text("Feed"),
-                //   onPressed: () {
-                //     Navigator.pushNamed(context, '/feed');
-                //   },
-                // ),
               ],
             ),
           ),

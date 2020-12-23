@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class MiscPage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class _MiscPageState extends State<MiscPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -69,7 +70,7 @@ class _MiscPageState extends State<MiscPage> {
                           child: Text(
                             "Important Contacts",
                             style: TextStyle(
-                              color: Colors.black45,
+                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                             ),
                           ),
                         ),
@@ -95,7 +96,7 @@ class _MiscPageState extends State<MiscPage> {
                           child: Text(
                             "Quick Links",
                             style: TextStyle(
-                              color: Colors.black45,
+                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                             ),
                           ),
                         ),
@@ -121,7 +122,7 @@ class _MiscPageState extends State<MiscPage> {
                           child: Text(
                             "Team InsIIT",
                             style: TextStyle(
-                              color: Colors.black45,
+                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                             ),
                           ),
                         ),
@@ -148,7 +149,7 @@ class _MiscPageState extends State<MiscPage> {
                             "Know Your Representatives",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.black45,
+                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                             ),
                           ),
                         ),
@@ -181,7 +182,7 @@ class _MiscPageState extends State<MiscPage> {
                           child: Text(
                             "Report Bug",
                             style: TextStyle(
-                              color: Colors.black45,
+                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                             ),
                           ),
                         ),

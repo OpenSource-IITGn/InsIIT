@@ -55,10 +55,10 @@ class _FullPostPageState extends State<FullPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -66,7 +66,7 @@ class _FullPostPageState extends State<FullPostPage> {
           },
         ),
         title: Text('Post',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(

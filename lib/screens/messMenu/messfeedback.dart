@@ -12,6 +12,7 @@ class _MessFeedBackState extends State<MessFeedBack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -20,11 +21,11 @@ class _MessFeedBackState extends State<MessFeedBack> {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: (darkMode)?navBarDarkMode:navBar,
           centerTitle: true,
           title: Text('Mess Feedback',
               style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                  TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -35,14 +36,14 @@ class _MessFeedBackState extends State<MessFeedBack> {
                 children: [
                   Text("Hey there!",
                       style: TextStyle(
-                          color: Colors.black,
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontSize: 19,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
                   Text(
                       "Loved something? Unhappy with the food? Send your feedback here.",
                       style: TextStyle(
-                          color: Colors.black.withAlpha(150),
+                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   TextField(

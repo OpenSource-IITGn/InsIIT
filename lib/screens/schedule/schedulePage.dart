@@ -17,8 +17,8 @@ class _SchedulePageState extends State<SchedulePage> {
   ScrollController _scrollController;
   int _index = 0;
 
-  Widget body(BuildContext _context) {
-    if (eventsList.length == 0) {
+  Widget body(BuildContext _context, int dayIndex) {
+    if (eventsList == null || eventsList.length == 0 || eventsList[dayIndex].length == 0) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +31,7 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
             Text('Take rest!',
               style: TextStyle(
-                color: Colors.black38,
+                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontSize: 18,
               ),),
             SizedBox(
@@ -39,7 +39,7 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
             Text('No classes or events to attend today.',
               style: TextStyle(
-                color: Colors.black38,
+                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontSize: 18,
               ),),
           ],
@@ -49,12 +49,12 @@ class _SchedulePageState extends State<SchedulePage> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          controller: _scrollController,
+          controller: (dayIndex == DateTime.now().weekday - 1)?_scrollController:null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
-            return eventsList[index].buildCard(_context);
+            return eventsList[dayIndex][index].buildCard(_context);
           },
-          itemCount: eventsList.length,
+          itemCount: eventsList[dayIndex].length,
         ),
       );
     }
@@ -76,7 +76,7 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     bool getIndex = false;
     DateTime _currentTime = DateTime.now();
-    eventsList.asMap().forEach((int index, EventModel event) {
+    eventsList[DateTime.now().weekday - 1].asMap().forEach((int index, EventModel event) {
       if (!getIndex && event.end.isAfter(_currentTime)) {
         _index = index;
         getIndex = true;
@@ -84,30 +84,65 @@ class _SchedulePageState extends State<SchedulePage> {
       }
     });
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Your Schedule',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        actions: <Widget>[
-          IconButton(
+    return DefaultTabController(
+      initialIndex: DateTime.now().weekday - 1,
+      length: 7,
+      child: Scaffold(
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+        appBar: AppBar(
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
-              Navigator.pushNamed(context, '/editevent').then((value) => setState((){}));
+              Navigator.pop(context);
             },
-            icon: Icon(Icons.edit, color: Colors.black),
-          )
-        ],
+          ),
+          backgroundColor: (darkMode)?navBarDarkMode:navBar,
+          centerTitle: true,
+          title: Text('Your Schedule',
+              style:
+              TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/editevent').then((value) => setState((){}));
+              },
+              icon: Icon(Icons.edit, color: Colors.black),
+            )
+          ],
+          bottom: PreferredSize(
+            child: TabBar(
+              isScrollable: true,
+              labelColor: primaryColor,
+              unselectedLabelColor: Colors.black.withOpacity(0.3),
+              indicatorColor: primaryColor,
+              // unselectedLabelStyle:
+              //     TextStyle(color: Colors.black.withOpacity(0.3)),
+              tabs: <Widget>[
+                Tab(text: 'Monday'),
+                Tab(text: 'Tuesday'),
+                Tab(
+                  text: 'Wednesday',
+                ),
+                Tab(text: 'Thursday'),
+                Tab(text: 'Friday'),
+                Tab(
+                  text: 'Saturday',
+                ),
+                Tab(
+                  text: 'Sunday',
+                ),
+              ],
+            ),
+            preferredSize: Size.fromHeight(50.0),
+          ),
+        ),
+        body: TabBarView(
+          children: [0, 1, 2, 3, 4, 5, 6].map((e) {
+            return body(context, e);
+          }).toList(),
+        ),
       ),
-      body: body(context),
     );
   }
 }

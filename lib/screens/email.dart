@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'homePage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class Email extends StatefulWidget {
   @override
@@ -30,15 +31,15 @@ class _EmailState extends State<Email> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         appBar: AppBar(
           title: Text('Quick Links',
               style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                  TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
           elevation: 0,
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Colors.transparent,
+          backgroundColor: (darkMode)?navBarDarkMode:navBar,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -101,7 +102,7 @@ class Template extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
+                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                 ),
               ),
               SizedBox(
@@ -114,7 +115,7 @@ class Template extends StatelessWidget {
               Text(obj.descp,
                   style: TextStyle(
                       fontSize: 14.0,
-                      color: Colors.grey,
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontStyle: FontStyle.italic))
             ],
           ),

@@ -94,7 +94,7 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
                     Text(
                       model.courseName,
                       style: TextStyle(
-                          color: Colors.black.withAlpha(255),
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     ),
@@ -104,7 +104,7 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
                     Text(
                       (model.eventType != null) ? model.eventType : 'Course',
                       style: TextStyle(
-                        color: Colors.black.withAlpha(150),
+                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -183,10 +183,11 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
     });
 
     return Scaffold(
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {

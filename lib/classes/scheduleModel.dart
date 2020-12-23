@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Map<DateTime, String> attendanceData = {
   DateTime(2020, 05, 30): 'P',
@@ -36,6 +37,7 @@ class EventModel {
   Map<DateTime, String> attendanceManager;
   int day;
   bool repeatWeekly;
+  List<String> links;
   EventModel(
       {this.start,
 
@@ -57,6 +59,7 @@ class EventModel {
         this.preRequisite,
         this.attendanceManager,
         this.day,
+        this.links,
         this.repeatWeekly: false});
 
 
@@ -64,14 +67,14 @@ class EventModel {
     if (time == null) {
       return Flexible(
         child: Text("Whole Day",
-            style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 17)),
+            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontSize: 17)),
       );
     } else {
       return Text(
           twoDigitTime(time.hour.toString()) +
               ':' +
               twoDigitTime(time.minute.toString()),
-          style: TextStyle(color: Colors.black.withAlpha(200), fontSize: 17));
+          style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontSize: 17));
     }
   }
 
@@ -104,7 +107,7 @@ class EventModel {
             children: <Widget>[
               Text(this.courseId,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               SizedBox(
@@ -112,17 +115,41 @@ class EventModel {
               ),
               Text(this.courseName,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(255),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
               SizedBox(
                 height: 8,
               ),
+              (this.links != null || this.links.length != 0)
+                  ?Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: this.links.map((link) {
+                  return GestureDetector(
+                    onTap: () async {
+                      if (await canLaunch(link)) {
+                      await launch(link, forceSafariVC: false);
+                      } else {
+                      throw 'Could not launch $link';
+                      }
+                    },
+                    child: Text(
+                      link,
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15
+                      ),
+                    ),
+                  );
+                }).toList(),
+              )
+                  :Container(),
               Row(
                 children: <Widget>[
                   Text((this.eventType == null) ? 'Course' : this.eventType,
                       style: TextStyle(
-                          color: Colors.black.withAlpha(200),
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
                   SizedBox(
@@ -131,7 +158,7 @@ class EventModel {
                   Flexible(
                     child: Text('Room: ${this.location}',
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -144,7 +171,7 @@ class EventModel {
                   'Your attendance: ' +
                       totalAttendance(this.attendanceManager).toString(),
                   style: TextStyle(
-                      color: Colors.black.withAlpha(255),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
             ]),
@@ -158,7 +185,7 @@ class EventModel {
             children: <Widget>[
               Text(this.courseId,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               SizedBox(
@@ -166,7 +193,7 @@ class EventModel {
               ),
               Text(this.courseName,
                   style: TextStyle(
-                      color: Colors.black.withAlpha(255),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
               SizedBox(
@@ -176,7 +203,7 @@ class EventModel {
                 children: <Widget>[
                   Text(this.eventType,
                       style: TextStyle(
-                          color: Colors.black.withAlpha(200),
+                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                           fontStyle: FontStyle.italic,
                           fontSize: 14)),
                 ],
@@ -189,7 +216,7 @@ class EventModel {
                   Flexible(
                     child: Text('Room: ',
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -199,7 +226,7 @@ class EventModel {
                   Flexible(
                     child: Text('Roll Numbers: ',
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -213,7 +240,7 @@ class EventModel {
                   Flexible(
                     child: Text(this.location,
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -223,7 +250,7 @@ class EventModel {
                   Flexible(
                     child: Text(this.rollNumbers,
                         style: TextStyle(
-                            color: Colors.black.withAlpha(200),
+                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                             fontStyle: FontStyle.italic,
                             fontSize: 14)),
                   ),
@@ -240,7 +267,7 @@ class EventModel {
             children: <Widget>[
               Text(stringReturn(this.description),
                   style: TextStyle(
-                      color: Colors.black.withAlpha(120),
+                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 14)),
               SizedBox(
@@ -248,7 +275,7 @@ class EventModel {
               ),
               Text(stringReturn(this.summary),
                   style: TextStyle(
-                      color: Colors.black.withAlpha(255),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16)),
               SizedBox(
@@ -260,7 +287,7 @@ class EventModel {
                       stringReturn(this.remarks) +
                       ')',
                   style: TextStyle(
-                      color: Colors.black.withAlpha(200),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontStyle: FontStyle.italic,
                       fontSize: 14)),
             ]),
@@ -302,7 +329,7 @@ class EventModel {
                     ),
                     Text("to",
                         style: TextStyle(
-                            color: Colors.black.withAlpha(120), fontSize: 14)),
+                            color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor, fontSize: 14)),
                     SizedBox(
                       height: 8,
                     ),
@@ -343,6 +370,7 @@ class MyCourse {
   String labLocation;
   String remarks;
   String courseBooks;
+  List<String> links;
 
   MyCourse({
     this.courseCode,
@@ -360,6 +388,7 @@ class MyCourse {
     this.labLocation,
     this.remarks,
     this.courseBooks,
+    this.links
   });
 }
 

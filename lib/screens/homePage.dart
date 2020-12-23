@@ -41,12 +41,13 @@ List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
 List<List<String>> foodVotes;
-List<TodayCourse> todayCourses;
-List<MyCourse> myCourses;
+List<List<TodayCourse>> todayCourses;
 List<EventModel> removedEvents;
-List<EventModel> userAddedCourses;
+List<MyCourse> userAddedCourses;
+List<List<EventModel>> userCourses;
+List<MyCourse> allCourses;
 List<EventModel> examCourses;
-List<EventModel> eventsList;
+List<List<EventModel>> eventsList;
 List<Representative> representatives;
 
 bool mainPageLoading = true;
@@ -82,7 +83,8 @@ class _HomePageState extends State<HomePage>
     loadImportantContactData();
     loadShuttleData();
     loadFoodVotesData();
-    loadCourseData();
+    loadCourseTimeData();
+    loadAllCourseData();
     loadRemovedCoursesData();
     loadUserAddedCoursesData();
     loadExamTimeTableData();
@@ -274,31 +276,38 @@ class _HomePageState extends State<HomePage>
 
   loadUserAddedCoursesData () async {
     getUserAddedCoursesData().listen((data) {
+      print(data);
       userAddedCourses = makeUserAddedCoursesList(data);
     });
   }
 
-  List<EventModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
-    List<EventModel> _userAddedCourses = [];
+  List<MyCourse> makeUserAddedCoursesList(var userAddedCoursesDataList) {
+    List<MyCourse> _userAddedCourses = [];
 
     if (userAddedCoursesDataList != null &&
         userAddedCoursesDataList.length != 0) {
       userAddedCoursesDataList.forEach((var lc) {
         print(lc);
-        _userAddedCourses.add(EventModel(
-          isCourse: true,
-          isExam: false,
-          courseId: lc[0],
-          courseName: lc[1],
-          location: lc[2],
-          credits: lc[3].toString(),
-          preRequisite: lc[4],
-          start: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[5].split(':')[0]), int.parse(lc[5].split(':')[1])),
-          end: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(lc[6].split(':')[0]), int.parse(lc[6].split(':')[1])),
-          eventType: 'Course',
-          day: lc[7],
-          attendanceManager: attendanceData
-        ));
+        _userAddedCourses.add(MyCourse(
+            courseCode: lc[0],
+            courseName: lc[1],
+            noOfLectures: lc[2].toString(),
+            noOfTutorials: lc[3].toString(),
+            credits: lc[4].toString(),
+            instructors: lc[5].split(','),
+            preRequisite: lc[6],
+            lectureCourse:
+            lc[7].split('(')[0].replaceAll(' ', '').split(','),
+            lectureLocation: returnLocation(lc[7]),
+            tutorialCourse:
+            lc[8].split('(')[0].replaceAll(' ', '').split(','),
+            tutorialLocation: returnLocation(lc[8]),
+            labCourse:
+            lc[9].split('(')[0].replaceAll(' ', '').split(','),
+            labLocation: returnLocation(lc[9]),
+            remarks: lc[10],
+            courseBooks: lc[11],
+            links: lc[12].replaceAll(' ', '').split(',')));
       });
     }
 
@@ -328,15 +337,18 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  loadCourseData() async {
+  loadCourseTimeData() async {
     sheet.getData('slots!A:F').listen((data) {
       todayCourses = makeTodayTimeSlotList(data);
     });
+  }
 
+  loadAllCourseData() async {
     sheet.getData('timetable!A:Q').listen((data) {
-      myCourses = makeMyCourseList(data, coursesWithoutRepetition);
+      allCourses = makeMyCourseList(data);
     });
   }
+
   loadRepresentativesData() async {
     sheet.getData('Representatives!A:C').listen((data){
       makeRepresentativeList(data);
@@ -350,59 +362,38 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<MyCourse> makeMyCourseList(List data, List<Course> _courses) {
-    List<MyCourse> _myCourses = [];
+  List<MyCourse> makeMyCourseList(List data) {
+    List<MyCourse> _allCourses = [];
+    data.forEach((var lc) {
+      if (lc[0] != '-' &&
+          lc[0] != '' &&
+          lc[1] != '-' &&
+          lc[1] != '' &&
+          lc[0].toString().toLowerCase() != 'course code') {
+          _allCourses.add(MyCourse(
+              courseCode: lc[0],
+              courseName: lc[1],
+              noOfLectures: lc[2].toString(),
+              noOfTutorials: lc[3].toString(),
+              credits: lc[5].toString(),
+              instructors: lc[6].split(','),
+              preRequisite: lc[10],
+              lectureCourse:
+                  lc[11].split('(')[0].replaceAll(' ', '').split(','),
+              lectureLocation: returnLocation(lc[11]),
+              tutorialCourse:
+                  lc[12].split('(')[0].replaceAll(' ', '').split(','),
+              tutorialLocation: returnLocation(lc[12]),
+              labCourse:
+                  lc[13].split('(')[0].replaceAll(' ', '').split(','),
+              labLocation: returnLocation(lc[13]),
+              remarks: lc[14],
+              courseBooks: lc[15],
+              links: lc[16].replaceAll(' ', '').split(',')));
+      }
+    });
 
-    if (_courses != null) {
-      _courses.forEach((Course course) {
-        bool mine = false;
-        data.forEach((var lc) {
-          if (mine == false &&
-              lc[0] != '-' &&
-              lc[0] != '' &&
-              lc[1] != '-' &&
-              lc[1] != '') {
-            if (lc[0].replaceAll(' ', '').contains(new RegExp(
-                    course.name.replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                course.name.replaceAll(' ', '').contains(new RegExp(
-                    lc[0].replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                compareStrings(course.name, lc[0]) ||
-                lc[1].replaceAll(' ', '').contains(new RegExp(
-                    course.name.replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                course.name.replaceAll(' ', '').contains(new RegExp(
-                    lc[1].replaceAll(' ', ''),
-                    caseSensitive: false)) ||
-                compareStrings(course.name, lc[1])) {
-              _myCourses.add(MyCourse(
-                  courseCode: lc[0],
-                  courseName: lc[1],
-                  noOfLectures: lc[2].toString(),
-                  noOfTutorials: lc[3].toString(),
-                  credits: lc[5].toString(),
-                  instructors: lc[6].split(','),
-                  preRequisite: lc[10],
-                  lectureCourse:
-                      lc[11].split('(')[0].replaceAll(' ', '').split('+'),
-                  lectureLocation: returnLocation(lc[11]),
-                  tutorialCourse:
-                      lc[12].split('(')[0].replaceAll(' ', '').split('+'),
-                  tutorialLocation: returnLocation(lc[12]),
-                  labCourse:
-                      lc[13].split('(')[0].replaceAll(' ', '').split('+'),
-                  labLocation: returnLocation(lc[13]),
-                  remarks: lc[14],
-                  courseBooks: lc[15]));
-              mine = true;
-            }
-          }
-        });
-      });
-    }
-
-    return _myCourses;
+    return _allCourses;
   }
 
   String returnLocation(var text) {
@@ -413,18 +404,19 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<TodayCourse> makeTodayTimeSlotList(var courseSlotDataList) {
-    int day = DateTime.now().weekday;
-    List<TodayCourse> courses = [];
-    if (day != 6 && day != 7) {
-      courseSlotDataList.removeAt(0);
-      courseSlotDataList.removeAt(0);
+  List<List<TodayCourse>> makeTodayTimeSlotList(var courseSlotDataList) {
+    List<List<TodayCourse>> courses = [[],[],[],[],[],[],[]];
 
-      courseSlotDataList.forEach((var lc) {
-        List<DateTime> time = returnTime(lc[0]);
-        courses.add(TodayCourse(start: time[0], end: time[1], course: lc[day]));
-      });
-    }
+    courseSlotDataList.removeAt(0);
+    courseSlotDataList.removeAt(0);
+
+    courseSlotDataList.forEach((var lc) {
+      List<DateTime> time = returnTime(lc[0]);
+      for (var i = 0; i < 5; i++) {
+        courses[i].add(TodayCourse(start: time[0], end: time[1], course: lc[i+1]));
+      }
+    });
+
     return courses;
   }
 
@@ -573,9 +565,10 @@ class _HomePageState extends State<HomePage>
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
   Widget homeScreen() {
     return Scaffold(
-      backgroundColor: Colors.white.withAlpha(252),
+      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       extendBodyBehindAppBar: true,
       bottomNavigationBar: BottomNavyBar(
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         selectedIndex: selectedIndex,
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -623,11 +616,21 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         elevation: 0,
-        leading: Icon(
-          Icons.menu,
-          color: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(
+            (darkMode)?Icons.wb_sunny_outlined:Icons.wb_sunny,
+            color: (darkMode)?Colors.deepPurpleAccent:Colors.black,
+          ),
+          onPressed: () {
+            if (darkMode) {
+              darkMode = false;
+            } else {
+              darkMode = true;
+            }
+            setState(() {});
+          },
         ),
         title: Container(
             decoration: new BoxDecoration(
@@ -639,7 +642,7 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.all(8.0),
               child: Text(titles[selectedIndex],
                   style: TextStyle(
-                      color: Colors.black.withAlpha(250),
+                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                       fontWeight: FontWeight.bold)),
             )),
         actions: <Widget>[
@@ -763,8 +766,9 @@ class _HomePageState extends State<HomePage>
   List<EventModel> makeListOfTwoEvents() {
     List<EventModel> currentEvents = [];
     DateTime currentTime = DateTime.now();
-    if (eventsList != null) {
-      eventsList.forEach((EventModel event) {
+    int day = DateTime.now().weekday;
+    if (eventsList != null && eventsList[day - 1] != null) {
+      eventsList[day - 1].forEach((EventModel event) {
         if (currentEvents.length < 2) {
           if (event.end.isAfter(currentTime) ||
               event.start.isAfter(currentTime)) {
@@ -779,30 +783,36 @@ class _HomePageState extends State<HomePage>
 
   prepareEventsList() {
     List<calendar.Event> todayEvents;
-    List<EventModel> currentDayCourses;
     List<EventModel> currentDayExamCourses;
-    List<EventModel> mergedCourses;
 
-    eventsList = [];
-    if (userAddedCourses != null) {
-      userAddedCourses.forEach((EventModel model) {
-        bool shouldContain = true;
-        if (removedEvents != null) {
-          removedEvents.forEach((EventModel removedEvent) {
-            if (removedEvent.courseId == model.courseId &&
-                removedEvent.courseName == model.courseName &&
-                removedEvent.eventType == model.eventType) {
-              shouldContain = false;
+    userCourses = makeCourseEventModel(todayCourses, userAddedCourses);
+    eventsList = [[],[],[],[],[],[],[]];
+    int index = DateTime.now().weekday - 1;
+
+    for (var i = 0; i < 5; i++) {
+      if (userCourses != null) {
+        if (userCourses[i] != null) {
+          userCourses[i].forEach((EventModel model) {
+            bool shouldContain = true;
+            if (removedEvents != null) {
+              removedEvents.forEach((EventModel removedEvent) {
+                if (removedEvent.courseId == model.courseId &&
+                    removedEvent.courseName == model.courseName &&
+                    removedEvent.eventType == model.eventType) {
+                  shouldContain = false;
+                }
+              });
+            }
+            if (model.day == DateTime
+                .now()
+                .weekday && shouldContain) {
+              eventsList[i].add(model);
             }
           });
         }
-        if (model.day == DateTime
-            .now()
-            .weekday && shouldContain) {
-          eventsList.add(model);
-        }
-      });
+      }
     }
+
     currentDayExamCourses = todayExamCourses(examCourses);
     currentDayExamCourses.forEach((EventModel model) {
       bool shouldContain = true;
@@ -817,28 +827,10 @@ class _HomePageState extends State<HomePage>
         });
       }
       if (shouldContain) {
-        eventsList.add(model);
+        eventsList[index].add(model);
       }
     });
-    currentDayCourses = makeCourseEventModel(todayCourses, myCourses);
-    mergedCourses = mergeSameCourses(currentDayCourses);
-    mergedCourses.forEach((EventModel model) {
-      bool shouldContain = true;
-      if (removedEvents != null) {
-        removedEvents.forEach((EventModel removedEvent) {
-          if (removedEvent.isCourse) {
-            if (removedEvent.courseId == model.courseId &&
-                removedEvent.courseName == model.courseName &&
-                removedEvent.eventType == model.eventType) {
-              shouldContain = false;
-            }
-          }
-        });
-      }
-      if (shouldContain) {
-        eventsList.add(model);
-      }
-    });
+
     todayEvents = todayEventsList(eventsWithoutRepetition);
     todayEvents.forEach((calendar.Event event) {
       bool shouldContain = true;
@@ -856,7 +848,7 @@ class _HomePageState extends State<HomePage>
         });
       }
       if (shouldContain) {
-        eventsList.add(EventModel(
+        eventsList[index].add(EventModel(
             start: event.start.dateTime.toLocal(),
             end: event.end.dateTime.toLocal(),
             isCourse: false,
@@ -869,9 +861,39 @@ class _HomePageState extends State<HomePage>
             remarks: event.status));
       }
     });
-    if (eventsList != null && eventsList.length != 0) {
-      quickSort(eventsList, 0, eventsList.length - 1);
+
+    List<EventModel> monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+    monday = (eventsList[0] != null)?eventsList[0]:[];
+    tuesday = (eventsList[1] != null)?eventsList[1]:[];
+    wednesday = (eventsList[2] != null)?eventsList[2]:[];
+    thursday = (eventsList[3] != null)?eventsList[3]:[];
+    friday = (eventsList[4] != null)?eventsList[4]:[];
+    saturday = (eventsList[5] != null)?eventsList[5]:[];
+    sunday = (eventsList[6] != null)?eventsList[6]:[];
+
+    if (monday != null && monday.length != 0) {
+      quickSort(monday, 0, monday.length - 1);
     }
+    if (tuesday != null && tuesday.length != 0) {
+      quickSort(tuesday, 0, tuesday.length - 1);
+    }
+    if (wednesday != null && wednesday.length != 0) {
+      quickSort(wednesday, 0, wednesday.length - 1);
+    }
+    if (thursday != null && thursday.length != 0) {
+      quickSort(thursday, 0, thursday.length - 1);
+    }
+    if (friday != null && friday.length != 0) {
+      quickSort(friday, 0, friday.length - 1);
+    }
+    if (saturday != null && saturday.length != 0) {
+      quickSort(saturday, 0, saturday.length - 1);
+    }
+    if (sunday != null && sunday.length != 0) {
+      quickSort(sunday, 0, sunday.length - 1);
+    }
+
+    eventsList = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
   }
 
   readyEvents () {
@@ -913,43 +935,6 @@ class _HomePageState extends State<HomePage>
     return todayExamCourses;
   }
 
-  List<EventModel> mergeSameCourses(List<EventModel> currentDayCourses) {
-    List<EventModel> _mergedCourses = [];
-    bool notHave;
-
-    if (currentDayCourses != null && currentDayCourses.length != 0) {
-      for (int i = 0; i < currentDayCourses.length; i++) {
-        notHave = true;
-        if (i == 0) {
-          _mergedCourses.add(currentDayCourses[i]);
-        } else {
-          _mergedCourses.forEach((EventModel _model) {
-            double _modelEndTime = _model.end.hour.toDouble() +
-                (_model.end.minute.toDouble() / 60);
-            double _courseStartTime =
-                currentDayCourses[i].start.hour.toDouble() +
-                    (currentDayCourses[i].start.minute.toDouble() / 60);
-            double diff = _modelEndTime - _courseStartTime;
-            if (diff < 10 &&
-                diff > -10 &&
-                currentDayCourses[i].courseId == _model.courseId &&
-                currentDayCourses[i].courseName == _model.courseName &&
-                currentDayCourses[i].remarks == _model.remarks &&
-                currentDayCourses[i].eventType == _model.eventType) {
-              notHave = false;
-              _model.end = currentDayCourses[i].end;
-            }
-          });
-          if (notHave) {
-            _mergedCourses.add(currentDayCourses[i]);
-          }
-        }
-      }
-    }
-
-    return _mergedCourses;
-  }
-
   String returnText(String text) {
     if (text.length > 2) {
       return text.substring(0, 2);
@@ -958,125 +943,141 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  List<EventModel> makeCourseEventModel(
-      List<TodayCourse> todayCourses, List<MyCourse> myCourses) {
-    List<EventModel> coursesEventModelList = [];
+  List<List<EventModel>> makeCourseEventModel(
+      List<List<TodayCourse>> todayCourses, List<MyCourse> myCourses) {
+    List<List<EventModel>> coursesEventModelList = [[],[],[],[],[],[],[]];
 
-    if (todayCourses != null && todayCourses.length != 0) {
-      todayCourses.forEach((TodayCourse todayCourse) {
-        if (myCourses != null) {
-          myCourses.forEach((MyCourse myCourse) {
-            myCourse.lectureCourse.forEach((String text) {
-              if (text == todayCourse.course ||
-                  text == todayCourse.course.substring(0, 1) ||
-                  returnText(text) == todayCourse.course ||
-                  returnText(text) == todayCourse.course.substring(0, 1)) {
-                if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lecture ${text.substring(2, text.length)}',
-                      location: myCourse.lectureLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      attendanceManager: attendanceData));
-                } else {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lecture',
-                      location: myCourse.lectureLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      attendanceManager: attendanceData));
-                }
-              }
-            });
-            myCourse.tutorialCourse.forEach((String text) {
-              if (text == todayCourse.course ||
-                  text == todayCourse.course.substring(0, 1) ||
-                  returnText(text) == todayCourse.course ||
-                  returnText(text) == todayCourse.course.substring(0, 1)) {
-                if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Tutorial ${text.substring(2, text.length)}',
-                      location: myCourse.tutorialLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      attendanceManager: attendanceData));
-                } else {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Tutorial',
-                      location: myCourse.tutorialLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      attendanceManager: attendanceData));
-                }
-              }
-            });
-            myCourse.labCourse.forEach((String text) {
-              if (text == todayCourse.course ||
-                  text == todayCourse.course.substring(0, 1) ||
-                  returnText(text) == todayCourse.course ||
-                  returnText(text) == todayCourse.course.substring(0, 1)) {
-                if (text.length > 2) {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lab ${text.substring(2, text.length)}',
-                      location: myCourse.labLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      attendanceManager: attendanceData));
-                } else {
-                  coursesEventModelList.add(EventModel(
-                      start: todayCourse.start,
-                      end: todayCourse.end,
-                      isCourse: true,
-                      isExam: false,
-                      courseId: myCourse.courseCode,
-                      courseName: myCourse.courseName,
-                      eventType: 'Lab',
-                      location: myCourse.labLocation,
-                      instructors: myCourse.instructors,
-                      credits: myCourse.credits,
-                      preRequisite: myCourse.preRequisite,
-                      attendanceManager: attendanceData));
-                }
-              }
-            });
+    for (var i = 0; i < 5; i++) {
+      if (todayCourses != null && todayCourses.length != 0) {
+        if (todayCourses[i] != null && todayCourses[i].length != 0) {
+          todayCourses[i].forEach((TodayCourse todayCourse) {
+            if (myCourses != null) {
+              myCourses.forEach((MyCourse myCourse) {
+                myCourse.lectureCourse.forEach((String text) {
+                  if (text == todayCourse.course ||
+                      text == todayCourse.course.substring(0, 1) ||
+                      returnText(text) == todayCourse.course ||
+                      returnText(text) == todayCourse.course.substring(0, 1)) {
+                    if (text.length > 2) {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lecture ${text.substring(2, text.length)}',
+                          location: myCourse.lectureLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    } else {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lecture',
+                          location: myCourse.lectureLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    }
+                  }
+                });
+                myCourse.tutorialCourse.forEach((String text) {
+                  if (text == todayCourse.course ||
+                      text == todayCourse.course.substring(0, 1) ||
+                      returnText(text) == todayCourse.course ||
+                      returnText(text) == todayCourse.course.substring(0, 1)) {
+                    if (text.length > 2) {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Tutorial ${text.substring(2, text.length)}',
+                          location: myCourse.tutorialLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    } else {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Tutorial',
+                          location: myCourse.tutorialLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    }
+                  }
+                });
+                myCourse.labCourse.forEach((String text) {
+                  if (text == todayCourse.course ||
+                      text == todayCourse.course.substring(0, 1) ||
+                      returnText(text) == todayCourse.course ||
+                      returnText(text) == todayCourse.course.substring(0, 1)) {
+                    if (text.length > 2) {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lab ${text.substring(2, text.length)}',
+                          location: myCourse.labLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    } else {
+                      coursesEventModelList[i].add(EventModel(
+                          start: todayCourse.start,
+                          end: todayCourse.end,
+                          day: DateTime.now().weekday,
+                          isCourse: true,
+                          isExam: false,
+                          courseId: myCourse.courseCode,
+                          courseName: myCourse.courseName,
+                          eventType: 'Lab',
+                          location: myCourse.labLocation,
+                          instructors: myCourse.instructors,
+                          credits: myCourse.credits,
+                          preRequisite: myCourse.preRequisite,
+                          links: myCourse.links,
+                          attendanceManager: attendanceData));
+                    }
+                  }
+                });
+              });
+            }
           });
         }
-      });
+      }
     }
 
     return coursesEventModelList;
