@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/feed/commentModel.dart';
-import 'package:instiapp/screens/feed/fullPostPage.dart';
+import 'package:instiapp/feed/classes/commentModel.dart';
+import 'package:instiapp/feed/screens/fullPostPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/slider.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +13,9 @@ import 'package:http/http.dart' as http;
 //TODO: Implement reactions (server implementation remaining)
 //TODO: Implement Reactions on comments
 //TODO: Implement full screen photo view
+void log(string) {
+  print("[POSTER] $string");
+}
 
 class PostModel {
   String mainText;
@@ -73,7 +76,9 @@ class PostModel {
     } else {
       timediff = difference.inDays.toString() + 'd';
     }
-    print(timediff);
+
+    log(json['results'][index]);
+    log(json['results'][index]['posted_by']);
     return PostModel(
         postId: json['results'][index]["_id"],
         postPerson: json['results'][index]['posted_by']["full_name"],
@@ -182,21 +187,30 @@ class _PostWidgetState extends State<PostWidget> {
                           children: <Widget>[
                             Text(
                               widget.post.postPerson,
-                              style: TextStyle(fontWeight: FontWeight.bold, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: (darkMode)
+                                      ? primaryTextColorDarkMode
+                                      : primaryTextColor),
                             ),
                             Text(
                               widget.post.postPersonBio,
                               style: TextStyle(
-                                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                                color: (darkMode)
+                                    ? secondaryTextColorDarkMode
+                                    : secondaryTextColor,
                                 fontSize: 12,
                               ),
                             ),
                             Text(
                               widget.post.timeElapsed,
                               style: TextStyle(
-                                  color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                                  fontSize: 12,
-                                  fontStyle: FontStyle.italic,),
+                                color: (darkMode)
+                                    ? secondaryTextColorDarkMode
+                                    : secondaryTextColor,
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
                           ],
                         ),
@@ -223,7 +237,9 @@ class _PostWidgetState extends State<PostWidget> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontStyle: FontStyle.italic,
-                                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor)),
+                                        color: (darkMode)
+                                            ? secondaryTextColorDarkMode
+                                            : secondaryTextColor)),
                               ],
                             ),
                           ),
@@ -244,8 +260,12 @@ class _PostWidgetState extends State<PostWidget> {
                                 Icon(
                                   Icons.thumb_up,
                                   color: (widget.post.isLike == true)
-                                      ? (darkMode)?primaryTextColorDarkMode:primaryTextColor
-                                      : (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                                      ? (darkMode)
+                                          ? primaryTextColorDarkMode
+                                          : primaryTextColor
+                                      : (darkMode)
+                                          ? secondaryTextColorDarkMode
+                                          : secondaryTextColor,
                                 ),
                                 SizedBox(width: 10),
                                 Text("${widget.post.reactions['like']}"),

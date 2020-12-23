@@ -46,7 +46,6 @@ class LabelBorder extends ShapeBorder {
 Widget label(String text, visible, sizeCallback) {
   return MeasureSize(
     onChange: (Size size) {
-      print("$text = $size");
       sizeCallback(size);
     },
     child: Center(
@@ -55,14 +54,18 @@ Widget label(String text, visible, sizeCallback) {
         duration: Duration(milliseconds: 1000),
         child: Container(
           decoration: ShapeDecoration(
-            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+            color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
             shape: LabelBorder(arrowArc: 0.1),
           ),
           child: Padding(
             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(text,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10, color: (darkMode)?primaryTextColorReverseDarkMode:primaryTextColorReverse)),
+                style: TextStyle(
+                    fontSize: 10,
+                    color: (darkMode)
+                        ? primaryTextColorReverseDarkMode
+                        : primaryTextColorReverse)),
           ),
         ),
       ),

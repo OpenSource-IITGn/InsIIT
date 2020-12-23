@@ -25,7 +25,8 @@ class _AddCourseState extends State<AddCourse> {
     add = makeAddMap(notAddedCourses);
   }
 
-  List<MyCourse> makeNotAddedCoursesList (List<MyCourse> myCourses, List<MyCourse> allCourses) {
+  List<MyCourse> makeNotAddedCoursesList(
+      List<MyCourse> myCourses, List<MyCourse> allCourses) {
     List<MyCourse> remainingCourses = [];
 
     allCourses.forEach((MyCourse course) {
@@ -47,7 +48,7 @@ class _AddCourseState extends State<AddCourse> {
     return remainingCourses;
   }
 
-  Map<MyCourse, bool> makeAddMap (List<MyCourse> remainingCourses) {
+  Map<MyCourse, bool> makeAddMap(List<MyCourse> remainingCourses) {
     Map<MyCourse, bool> _add = {};
     remainingCourses.forEach((MyCourse course) {
       _add.putIfAbsent(course, () => false);
@@ -58,17 +59,12 @@ class _AddCourseState extends State<AddCourse> {
 
   addCourses (Map<MyCourse, bool> add) {
     loadingAddCourseData = true;
-    setState(() {});
     add.forEach((MyCourse course, bool addCourse) {
       if (addCourse) {
-        addIfNotPresent(course);
-      }
-    });
-
     saveFileInCache();
   }
 
-  addIfNotPresent (MyCourse course) {
+  addIfNotPresent(MyCourse course) {
     bool add = true;
     if (userAddedCourses != null) {
       userAddedCourses.forEach((MyCourse _course) {
@@ -86,7 +82,7 @@ class _AddCourseState extends State<AddCourse> {
     }
   }
 
-  saveFileInCache () async {
+  saveFileInCache() async {
     var file = await _localFileForUserAddedCourses();
     bool exists = await file.exists();
     if (exists) {
@@ -94,11 +90,10 @@ class _AddCourseState extends State<AddCourse> {
     }
     await file.create();
     await file.open();
-    var userAddedCoursesList =
-    makeUserAddedCoursesList(userAddedCourses);
-    await file.writeAsString(
-        ListToCsvConverter().convert(userAddedCoursesList));
-    print('DATA OF ADDED EVENT STORED IN FILE');
+    var userAddedCoursesList = makeUserAddedCoursesList(userAddedCourses);
+    await file
+        .writeAsString(ListToCsvConverter().convert(userAddedCoursesList));
+    // print('DATA OF ADDED EVENT STORED IN FILE');
 
     Navigator.popAndPushNamed(context, '/menuBarBase');
     //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
@@ -108,21 +103,20 @@ class _AddCourseState extends State<AddCourse> {
     List<List<String>> userAddedCoursesList = [];
 
     userAddedCourses.forEach((MyCourse course) {
-      userAddedCoursesList
-          .add([
-            course.courseCode,
-            course.courseName,
-            course.noOfLectures.toString(),
-            course.noOfTutorials.toString(),
-            course.credits.toString(),
-            course.instructors.join(','),
-            course.preRequisite,
-            course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
-            course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
-            course.labCourse.join(',') + '(' + course.labLocation + ')',
-            course.remarks,
-            course.courseBooks,
-            course.links.join(',')
+      userAddedCoursesList.add([
+        course.courseCode,
+        course.courseName,
+        course.noOfLectures.toString(),
+        course.noOfTutorials.toString(),
+        course.credits.toString(),
+        course.instructors.join(','),
+        course.preRequisite,
+        course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
+        course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+        course.labCourse.join(',') + '(' + course.labLocation + ')',
+        course.remarks,
+        course.courseBooks,
+        course.links.join(',')
       ]);
     });
 
@@ -224,7 +218,7 @@ class CustomSearch extends SearchDelegate {
       child: Container(
         width: ScreenSize.size.width * 1,
         child: Card(
-          color: (add[course])?Colors.white30:Colors.white,
+          color: (add[course]) ? Colors.white30 : Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -236,20 +230,8 @@ class CustomSearch extends SearchDelegate {
                       course.courseCode,
                       style: TextStyle(
                           color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                          fontWeight: FontWeight.bold,
                           fontSize: 15),
-                    )
-                ),
-                SizedBox(width: 5,),
-                Flexible(
-                    child: Text(
-                      course.courseName,
-                      style: TextStyle(
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
-                ),
+                    )),
               ],
             ),
           ),

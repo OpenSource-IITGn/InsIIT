@@ -61,7 +61,7 @@ class _SignInPageState extends State<SignInPage> {
     var file = await _localFile('events');
     bool exists = await file.exists();
     if (exists) {
-      print("EVENTS CACHED PREVIOUSLY");
+      // print("EVENTS CACHED PREVIOUSLY");
       await file.open();
       String events = await file.readAsString();
       List<calendar.Event> eventsList = [];
@@ -72,7 +72,7 @@ class _SignInPageState extends State<SignInPage> {
       });
       return eventsList;
     } else {
-      print("EVENTS NOT CACHED PREVIOUSLY");
+      // print("EVENTS NOT CACHED PREVIOUSLY");
     }
 
     return false;
@@ -92,12 +92,13 @@ class _SignInPageState extends State<SignInPage> {
     });
     Map<String, dynamic> list = {'key': eventList};
     await file.writeAsString(jsonEncode(list));
-    print("WROTE EVENTS TO CACHE");
+    // print("WROTE EVENTS TO CACHE");
     return true;
   }
 
   Future getEventsOnline(httpClient) async {
-    var eventData = await calendar.CalendarApi(httpClient).events.list('primary');
+    var eventData =
+        await calendar.CalendarApi(httpClient).events.list('primary');
     events = [];
     events.addAll(eventData.items);
     eventsWithoutRepetition = listWithoutRepetitionEvent(events);
@@ -115,11 +116,11 @@ class _SignInPageState extends State<SignInPage> {
     final httpClient = GoogleHttpClient(authHeaders);
     await getEventsCached().then((values) async {
       if (values != false) {
-        print("Cached Events");
+        // print("Cached Events");
         events = values;
         eventsWithoutRepetition = listWithoutRepetitionEvent(events);
       } else {
-        print("Not cached events");
+        // print("Not cached events");
         await getEventsOnline(httpClient).then((value) {
           storeEventsCached();
         });
@@ -201,17 +202,17 @@ class _SignInPageState extends State<SignInPage> {
     if (asGuest) {
       currentUser = null;
       FirebaseAuth.instance.signInAnonymously();
-      print("Logging in as guest");
+      // print("Logging in as guest");
       Navigator.pushReplacementNamed(context, '/menuBarBase');
     } else {
-      print("Started GSIGN IN Method");
+      // print("Started GSIGN IN Method");
       await signInWithGoogle().then((user) {
         if (user != null) {
           currentUser = user.additionalUserInfo.profile;
           load = true;
         }
       });
-      print("AUTHORIZED");
+      // print("AUTHORIZED");
       await reloadEventsAndCourses().then((s) {});
       Navigator.pushReplacementNamed(context, '/menuBarBase');
     }
@@ -225,7 +226,7 @@ class _SignInPageState extends State<SignInPage> {
         return Future.value(false);
       },
       child: Scaffold(
-        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
         key: key,
         body: SafeArea(
           child: Container(
