@@ -105,7 +105,7 @@ class _SchedulePageState extends State<SchedulePage> {
           actions: <Widget>[
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/editevent').then((value) => setState((){}));
+                Navigator.popAndPushNamed(context, '/editevent');
               },
               icon: Icon(Icons.edit, color: Colors.black),
             )

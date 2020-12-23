@@ -100,7 +100,8 @@ class _AddCourseState extends State<AddCourse> {
         ListToCsvConverter().convert(userAddedCoursesList));
     print('DATA OF ADDED EVENT STORED IN FILE');
 
-    Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+    Navigator.popAndPushNamed(context, '/menuBarBase');
+    //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
   }
 
   List<List<String>> makeUserAddedCoursesList(List<MyCourse> userAddedCourses) {

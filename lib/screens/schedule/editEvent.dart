@@ -127,7 +127,8 @@ class _EditEventState extends State<EditEvent> {
                                 await file.writeAsString(
                                     ListToCsvConverter().convert(removedList));
                                 print('DATA OF REMOVED EVENT STORED IN FILE');
-                                Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+                                Navigator.popAndPushNamed(context, '/menuBarBase');
+                                //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
                               },
                               child: Text('Yes'),
                             ),
@@ -278,7 +279,7 @@ class _EditEventState extends State<EditEvent> {
           FloatingActionButton(
             heroTag: "fab1rs",
             onPressed: () {
-              Navigator.pushNamed(context, '/addcourse');
+              Navigator.popAndPushNamed(context, '/addcourse');
             },
             backgroundColor: primaryColor,
             child: Icon(Icons.add, color:Colors.white),
