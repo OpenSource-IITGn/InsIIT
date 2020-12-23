@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/feed/postModel.dart';
+import 'package:instiapp/feed/classes/postModel.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,7 +76,7 @@ class _FeedPageState extends State<FeedPage>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
         body: (loading == true)
             ? Center(child: CircularProgressIndicator())
             : RefreshIndicator(

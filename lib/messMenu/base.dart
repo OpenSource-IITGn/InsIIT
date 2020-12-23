@@ -47,8 +47,10 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
 
   Widget buildTray() {
     List<Widget> ret = [];
-    double pad = 0;
+    double originalPad = imageSizes[0].width / 2;
+    double pad = originalPad;
     double spacing = 30;
+
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
       if (widget.foodItems['list'][i].trim() == '-') {
         continue;
@@ -80,7 +82,9 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
               imageSizes[i] = size;
             },
             child: Image.network(
-              (widget.illustrations.containsKey(widget.foodItems['list'][i]))?widget.illustrations[widget.foodItems['list'][i]]:'https://drive.google.com/uc?export=view&id=1Dgm6bIcoeZA2u5JNozcD64QpX81Y8unZ',
+              (widget.illustrations.containsKey(widget.foodItems['list'][i]))
+                  ? widget.illustrations[widget.foodItems['list'][i]]
+                  : 'https://drive.google.com/uc?export=view&id=1Dgm6bIcoeZA2u5JNozcD64QpX81Y8unZ',
               scale: 20,
             ),
           ),
@@ -94,15 +98,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
         pad += imageSize.width + spacing;
       }
     }
-    // ret.add(
-    //   Positioned(
-    //     left: pad + 250,
-    //     child: SizedBox(
-    //       width: 500,
-    //     ),
-    //   ),
-    // );
-    pad = 0;
+    pad = originalPad;
     for (int i = 0; i < widget.foodItems['list'].length; i++) {
       if (widget.foodItems['list'][i].trim() == '-') {
         continue;
