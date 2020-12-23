@@ -30,6 +30,7 @@ class CommentModel {
     } else {
       timediff = difference.inDays.toString() + 'd';
     }
+    print(json);
     return CommentModel(
         poster: Person(
             name: json['posted_by']['full_name'],
