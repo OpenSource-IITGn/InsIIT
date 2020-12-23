@@ -44,7 +44,9 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.courseName, model.summary),
                         style: TextStyle(
-                            color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                            color: (darkMode)
+                                ? primaryTextColorDarkMode
+                                : primaryTextColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 15),
                       ),
@@ -54,7 +56,9 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.eventType, model.description),
                         style: TextStyle(
-                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                          color: (darkMode)
+                              ? secondaryTextColorDarkMode
+                              : secondaryTextColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -69,7 +73,10 @@ class _EditEventState extends State<EditEvent> {
                   ),
                 ),
                 IconButton(
-                    icon: Icon(Icons.delete, color: Colors.black,),
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.black,
+                    ),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -102,7 +109,8 @@ class _EditEventState extends State<EditEvent> {
                                 loading = true;
                                 setState(() {});
                                 if (updateUserAddedCourses) {
-                                  var file2 = await _localFileForUserAddedCourses();
+                                  var file2 =
+                                      await _localFileForUserAddedCourses();
                                   bool exists2 = await file2.exists();
                                   if (exists2) {
                                     await file2.delete();
@@ -110,10 +118,10 @@ class _EditEventState extends State<EditEvent> {
                                   await file2.create();
                                   await file2.open();
                                   var userAddedCoursesList =
-                                  makeUpdatedUserAddedCoursesList(model);
-                                  await file2.writeAsString(
-                                      ListToCsvConverter().convert(userAddedCoursesList));
-                                  print('DATA OF ADDED EVENT STORED IN FILE');
+                                      makeUpdatedUserAddedCoursesList(model);
+                                  await file2.writeAsString(ListToCsvConverter()
+                                      .convert(userAddedCoursesList));
+                                  // print('DATA OF ADDED EVENT STORED IN FILE');
                                 }
                                 var file = await _localFileForRemovedEvents();
                                 bool exists = await file.exists();
@@ -126,8 +134,9 @@ class _EditEventState extends State<EditEvent> {
                                     makeRemovedEventsList(removedEvents);
                                 await file.writeAsString(
                                     ListToCsvConverter().convert(removedList));
-                                print('DATA OF REMOVED EVENT STORED IN FILE');
-                                Navigator.popAndPushNamed(context, '/menuBarBase');
+                                // print('DATA OF REMOVED EVENT STORED IN FILE');
+                                Navigator.popAndPushNamed(
+                                    context, '/menuBarBase');
                                 //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
                               },
                               child: Text('Yes'),
@@ -146,13 +155,13 @@ class _EditEventState extends State<EditEvent> {
     );
   }
 
-  List<List<String>> makeUpdatedUserAddedCoursesList (EventModel _course) {
+  List<List<String>> makeUpdatedUserAddedCoursesList(EventModel _course) {
     List<List<String>> updatedList = [];
 
     if (userAddedCourses != null) {
       userAddedCourses.forEach((MyCourse course) {
         if (course.courseCode != _course.courseId ||
-        course.courseName != _course.courseName) {
+            course.courseName != _course.courseName) {
           updatedList.add([
             course.courseCode,
             course.courseName,
@@ -162,14 +171,17 @@ class _EditEventState extends State<EditEvent> {
             course.instructors.join(','),
             course.preRequisite,
             course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
-            course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+            course.tutorialCourse.join(',') +
+                '(' +
+                course.tutorialLocation +
+                ')',
             course.labCourse.join(',') + '(' + course.labLocation + ')',
             course.remarks,
             course.courseBooks,
             course.links.join(',')
           ]);
         }
-        });
+      });
     }
 
     return updatedList;
@@ -247,11 +259,11 @@ class _EditEventState extends State<EditEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -259,20 +271,25 @@ class _EditEventState extends State<EditEvent> {
           },
         ),
         title: Text('Edit Schedule',
-            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
+                fontWeight: FontWeight.bold)),
       ),
       body: (loading)
-          ? Center(child: CircularProgressIndicator(),)
-          :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: eventsList[DateTime.now().weekday - 1].map<Widget>((EventModel model) {
-              return eventCard(model);
-            }).toList(),
-          ),
-        ),
-      ),
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: eventsList[DateTime.now().weekday - 1]
+                      .map<Widget>((EventModel model) {
+                    return eventCard(model);
+                  }).toList(),
+                ),
+              ),
+            ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -282,7 +299,7 @@ class _EditEventState extends State<EditEvent> {
               Navigator.popAndPushNamed(context, '/addcourse');
             },
             backgroundColor: primaryColor,
-            child: Icon(Icons.add, color:Colors.white),
+            child: Icon(Icons.add, color: Colors.white),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
@@ -298,8 +315,10 @@ class _EditEventState extends State<EditEvent> {
             heroTag: "fab3rs",
             onPressed: () {
               List<EventModel> _coursesList = [];
-              if (eventsList != null && eventsList[DateTime.now().weekday - 1] != null) {
-                eventsList[DateTime.now().weekday - 1].forEach((EventModel model) {
+              if (eventsList != null &&
+                  eventsList[DateTime.now().weekday - 1] != null) {
+                eventsList[DateTime.now().weekday - 1]
+                    .forEach((EventModel model) {
                   if (model.isCourse || model.isExam) {
                     _coursesList.add(model);
                   }
@@ -310,7 +329,7 @@ class _EditEventState extends State<EditEvent> {
               });
             },
             backgroundColor: primaryColor,
-            child: Icon(Icons.file_download, color:Colors.white),
+            child: Icon(Icons.file_download, color: Colors.white),
           ),
         ],
       ),

@@ -13,21 +13,23 @@ class ExportIcsFile extends StatefulWidget {
 }
 
 class _ExportIcsFileState extends State<ExportIcsFile> {
-
   Map coursesList = {};
   bool loading = false;
   List<EventModel> addedEventModels = [];
   Directory _downloadsDirectory;
 
-  String writeText (List<EventModel> addedEventModels) {
-    String _text = 'BEGIN:VCALENDAR\nPRODID:-//Google Inc//Google Calendar 70.9054//EN\nVERSION:2.0\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\nX-WR-CALNAME:${currentUser.email}\nX-WR-TIMEZONE:Asia/Kolkata\nBEGIN:VTIMEZONE\nTZID:Asia/Kolkata\nX-LIC-LOCATION:Asia/Kolkata\nBEGIN:STANDARD\nTZOFFSETFROM:+0530\nTZOFFSETTO:+0530\nTZNAME:IST\nDTSTART:19700101T000000\nEND:STANDARD\nEND:VTIMEZONE\n';
+  String writeText(List<EventModel> addedEventModels) {
+    String _text =
+        'BEGIN:VCALENDAR\nPRODID:-//Google Inc//Google Calendar 70.9054//EN\nVERSION:2.0\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\nX-WR-CALNAME:${currentUser.email}\nX-WR-TIMEZONE:Asia/Kolkata\nBEGIN:VTIMEZONE\nTZID:Asia/Kolkata\nX-LIC-LOCATION:Asia/Kolkata\nBEGIN:STANDARD\nTZOFFSETFROM:+0530\nTZOFFSETTO:+0530\nTZNAME:IST\nDTSTART:19700101T000000\nEND:STANDARD\nEND:VTIMEZONE\n';
     int length = addedEventModels.length;
     int count = 0;
     addedEventModels.forEach((EventModel model) {
-      count ++;
+      count++;
       _text += 'BEGIN:VEVENT\n';
-      _text += 'DTSTART;TZID=Asia/Kolkata:${model.start.year}${twoDigitTime(model.start.month.toString())}${twoDigitTime(model.start.day.toString())}T${twoDigitTime(model.start.hour.toString())}${twoDigitTime(model.start.minute.toString())}00\n';
-      _text += 'DTEND;TZID=Asia/Kolkata:${model.end.year}${twoDigitTime(model.end.month.toString())}${twoDigitTime(model.end.day.toString())}T${twoDigitTime(model.end.hour.toString())}${twoDigitTime(model.end.minute.toString())}00\n';
+      _text +=
+          'DTSTART;TZID=Asia/Kolkata:${model.start.year}${twoDigitTime(model.start.month.toString())}${twoDigitTime(model.start.day.toString())}T${twoDigitTime(model.start.hour.toString())}${twoDigitTime(model.start.minute.toString())}00\n';
+      _text +=
+          'DTEND;TZID=Asia/Kolkata:${model.end.year}${twoDigitTime(model.end.month.toString())}${twoDigitTime(model.end.day.toString())}T${twoDigitTime(model.end.hour.toString())}${twoDigitTime(model.end.minute.toString())}00\n';
       if (model.repeatWeekly) {
         _text += 'RRULE:FREQ=WEEKLY;WKST=MO\n';
       }
@@ -49,7 +51,7 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
     try {
       downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
     } on PlatformException {
-      print('Could not get the downloads directory');
+      // print('Could not get the downloads directory');
     }
     if (!mounted) return;
 
@@ -61,9 +63,10 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
   Future<File> getIcsFile() async {
     String path = _downloadsDirectory.path;
     String filename = path + '/exportedCourses' + '.ics';
-    print(path);
+    // print(path);
     return File(filename);
   }
+
   String twoDigitTime(String text) {
     if (text.length == 1) {
       String _text = '0' + text;
@@ -73,7 +76,7 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
     }
   }
 
-  Widget eventCard (EventModel model) {
+  Widget eventCard(EventModel model) {
     return Container(
       width: ScreenSize.size.width * 1,
       child: Card(
@@ -94,7 +97,9 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
                     Text(
                       model.courseName,
                       style: TextStyle(
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                          color: (darkMode)
+                              ? primaryTextColorDarkMode
+                              : primaryTextColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15),
                     ),
@@ -104,7 +109,9 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
                     Text(
                       (model.eventType != null) ? model.eventType : 'Course',
                       style: TextStyle(
-                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                        color: (darkMode)
+                            ? secondaryTextColorDarkMode
+                            : secondaryTextColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -142,7 +149,8 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
                           child: Text('No'),
                         ),
                       ],
-                      content: Text('Do you want to make repeat this event weekly?'),
+                      content:
+                          Text('Do you want to make repeat this event weekly?'),
                     ),
                   );
                 },
@@ -166,14 +174,16 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
 
   @override
   Widget build(BuildContext context) {
-
     coursesList = ModalRoute.of(context).settings.arguments;
     List<EventModel> _eventModelList = coursesList['coursesList'];
     List<EventModel> eventModelList = [];
     _eventModelList.forEach((EventModel model) {
       bool contain = true;
       addedEventModels.forEach((EventModel addedModel) {
-        if (model.courseId == addedModel.courseId && model.courseName == addedModel.courseName && model.start == addedModel.start && model.end == addedModel.end) {
+        if (model.courseId == addedModel.courseId &&
+            model.courseName == addedModel.courseName &&
+            model.start == addedModel.start &&
+            model.end == addedModel.end) {
           contain = false;
         }
       });
@@ -183,11 +193,11 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
     });
 
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -198,65 +208,67 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
       ),
       body: (loading)
-          ? Center(child: CircularProgressIndicator(),)
-          :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Column(
-                children: eventModelList.map<Widget>((EventModel model) {
-                  return eventCard(model);
-                }).toList(),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              RaisedButton.icon(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      children: eventModelList.map<Widget>((EventModel model) {
+                        return eventCard(model);
+                      }).toList(),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    RaisedButton.icon(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      color: primaryColor,
+                      onPressed: () async {
+                        if (addedEventModels.length == 0) {
+                          setState(() {
+                            showDialog(
+                              context: context,
+                              builder: (_) => new AlertDialog(
+                                content:
+                                    Text('Please select atleast 1 Course!'),
+                              ),
+                            );
+                          });
+                        } else {
+                          loading = true;
+                          setState(() {});
+                          var status = await Permission.storage.status;
+                          if (!status.isGranted) {
+                            await Permission.storage.request();
+                          }
+                          var file = await getIcsFile();
+                          await file.create();
+                          await file.open();
+                          await file.writeAsString(writeText(addedEventModels));
+                          loading = false;
+                          Navigator.popUntil(
+                              context, ModalRoute.withName('/schedule'));
+                        }
+                      },
+                      icon: Icon(
+                        Icons.file_download,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Export file',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
-                color: primaryColor,
-                onPressed: () async {
-                  if (addedEventModels.length == 0) {
-                    setState(() {
-                      showDialog(
-                        context: context,
-                        builder: (_) => new AlertDialog(
-                          content: Text(
-                              'Please select atleast 1 Course!'),
-                        ),
-                      );
-                    });
-                  } else {
-                    loading = true;
-                    setState(() {});
-                    var status = await Permission.storage.status;
-                    if (!status.isGranted) {
-                      await Permission.storage.request();
-                    }
-                    var file = await getIcsFile();
-                    await file.create();
-                    await file.open();
-                    await file.writeAsString(writeText(addedEventModels));
-                    loading = false;
-                    Navigator.popUntil(
-                        context, ModalRoute.withName('/schedule'));
-                  }
-                },
-                icon: Icon(
-                  Icons.file_download,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Export file',
-                  style: TextStyle(color: Colors.white),
-                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

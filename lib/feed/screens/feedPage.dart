@@ -12,6 +12,10 @@ class FeedPage extends StatefulWidget {
   _FeedPageState createState() => _FeedPageState();
 }
 
+void log(string) {
+  print("[LOG] $string");
+}
+
 class _FeedPageState extends State<FeedPage>
     with AutomaticKeepAliveClientMixin<FeedPage> {
   List<PostModel> posts = [];
@@ -36,14 +40,19 @@ class _FeedPageState extends State<FeedPage>
       'start_from': offset.toString(),
     };
     var uri = Uri.https(baseUrl, '/getFeeds', queryParameters);
-    print("PINGING:" + uri.toString());
+    log(" PINGING:" + uri.toString());
     var response = await http.get(uri);
-    Map<String, dynamic> responseJson = jsonDecode(response.body);
-    numberOfPosts = responseJson['results'].length;
-    print("Number of posts: $numberOfPosts");
-
-    for (int i = 0; i < responseJson['results'].length; i++) {
-      posts.add(PostModel.fromJson(responseJson, i));
+    if (response.statusCode == 200) {
+      log("RESPONSE OK");
+      Map<String, dynamic> responseJson = jsonDecode(response.body);
+      if (responseJson['success'] == true) {
+        numberOfPosts = responseJson['results'].length;
+        log("Number of posts: $numberOfPosts");
+        log("${responseJson}");
+        for (int i = 0; i < numberOfPosts; i++) {
+          posts.add(PostModel.fromJson(responseJson, i));
+        }
+      }
     }
     setState(() {
       loading = false;
@@ -76,32 +85,43 @@ class _FeedPageState extends State<FeedPage>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
-        body: (loading == true)
-            ? Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: () {
+          backgroundColor:
+              (darkMode) ? backgroundColorDarkMode : Colors.transparent,
+          body: Column(
+            children: [
+              RaisedButton(
+                child: Text("RELOAD"),
+                onPressed: () {
                   refresh();
-                  return Future.value(true);
                 },
-                child: ListView.builder(
-                  controller: _controller,
-                  itemBuilder: (context, index) {
-                    if (reloading == true && index == posts.length) {
-                      return Center(
-                          child: Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-                        child: CircularProgressIndicator(),
-                      ));
-                    }
-                    return PostWidget(post: posts[index]);
-                  },
-                  itemCount:
-                      (reloading == true) ? posts.length + 1 : posts.length,
-                ),
               ),
-      ),
+              (loading == true)
+                  ? Center(child: CircularProgressIndicator())
+                  : RefreshIndicator(
+                      onRefresh: () {
+                        refresh();
+                        return Future.value(true);
+                      },
+                      child: ListView.builder(
+                        controller: _controller,
+                        itemBuilder: (context, index) {
+                          if (reloading == true && index == posts.length) {
+                            return Center(
+                                child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  16.0, 8.0, 16.0, 16.0),
+                              child: CircularProgressIndicator(),
+                            ));
+                          }
+                          return PostWidget(post: posts[index]);
+                        },
+                        itemCount: (reloading == true)
+                            ? posts.length + 1
+                            : posts.length,
+                      ),
+                    ),
+            ],
+          )),
     );
   }
 

@@ -97,7 +97,7 @@ class _AddCourseState extends State<AddCourse> {
     var userAddedCoursesList = makeUserAddedCoursesList(userAddedCourses);
     await file
         .writeAsString(ListToCsvConverter().convert(userAddedCoursesList));
-    print('DATA OF ADDED EVENT STORED IN FILE');
+    // print('DATA OF ADDED EVENT STORED IN FILE');
 
     Navigator.popAndPushNamed(context, '/menuBarBase');
     //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));

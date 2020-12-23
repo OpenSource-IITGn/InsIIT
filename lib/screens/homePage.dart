@@ -208,7 +208,6 @@ class _HomePageState extends State<HomePage>
 
   loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
-      print(data);
       removedEvents = makeRemovedEventsList(data);
     });
   }
@@ -276,7 +275,6 @@ class _HomePageState extends State<HomePage>
 
   loadUserAddedCoursesData() async {
     getUserAddedCoursesData().listen((data) {
-      print(data);
       userAddedCourses = makeUserAddedCoursesList(data);
     });
   }
@@ -287,7 +285,6 @@ class _HomePageState extends State<HomePage>
     if (userAddedCoursesDataList != null &&
         userAddedCoursesDataList.length != 0) {
       userAddedCoursesDataList.forEach((var lc) {
-        print(lc);
         _userAddedCourses.add(MyCourse(
             courseCode: lc[0],
             courseName: lc[1],
@@ -496,7 +493,6 @@ class _HomePageState extends State<HomePage>
       for (var lst in data) {
         foodIllustration.putIfAbsent(lst[0], () => lst[1]);
       }
-      print(foodIllustration);
     });
   }
 

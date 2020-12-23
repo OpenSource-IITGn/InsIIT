@@ -23,7 +23,7 @@ class _MessMenuState extends State<MessMenu> {
           Text(
             item.header,
             style: TextStyle(
-              color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+              color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),
@@ -31,7 +31,9 @@ class _MessMenuState extends State<MessMenu> {
           Text(item.timeString,
               style: TextStyle(
                   fontSize: 14,
-                  color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                  color: (darkMode)
+                      ? secondaryTextColorDarkMode
+                      : secondaryTextColor,
                   fontWeight: FontWeight.bold))
         ],
       ),
@@ -60,7 +62,9 @@ class _MessMenuState extends State<MessMenu> {
                         food,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                          color: (darkMode)
+                              ? primaryTextColorDarkMode
+                              : primaryTextColor,
                         ),
                       ),
                     ),
@@ -106,7 +110,7 @@ class _MessMenuState extends State<MessMenu> {
                             await file.open();
                             await file.writeAsString(
                                 ListToCsvConverter().convert(foodVotes));
-                            print('DATA SAVED IN CACHE');
+                            // print('DATA SAVED IN CACHE');
                           },
                         ),
                         //TODO: THERE IS SOME ERROR With SENDING DATA TO SHEETS
@@ -150,7 +154,7 @@ class _MessMenuState extends State<MessMenu> {
                             await file.open();
                             await file.writeAsString(
                                 ListToCsvConverter().convert(foodVotes));
-                            print('DATA SAVED IN CACHE');
+                            // print('DATA SAVED IN CACHE');
                           },
                         )
                       ],
@@ -353,7 +357,7 @@ class _MessMenuState extends State<MessMenu> {
       initialIndex: DateTime.now().weekday - 1,
       length: 7,
       child: Scaffold(
-        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -362,11 +366,13 @@ class _MessMenuState extends State<MessMenu> {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: (darkMode)?navBarDarkMode:navBar,
+          backgroundColor: (darkMode) ? navBarDarkMode : navBar,
           centerTitle: true,
           title: Text('Mess Menu',
-              style:
-                  TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  color:
+                      (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
+                  fontWeight: FontWeight.bold)),
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,

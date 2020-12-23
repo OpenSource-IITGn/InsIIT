@@ -61,7 +61,6 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
           child: MeasureSize(
             onChange: (Size size) {
               imageSize = size;
-              print("SVG = $imageSize");
             },
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
