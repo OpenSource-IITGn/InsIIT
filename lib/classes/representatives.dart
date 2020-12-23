@@ -41,10 +41,10 @@ class Representative{
                     child: ClipOval(
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
-                          width: 90.0,
+                          width: 75.0,
                           placeholder: (context, url) =>
                               CircularProgressIndicator(),
-                          height: 90.0,
+                          height: 75.0,
                           imageUrl: contactJson['image'],
                         )),
                   ),
