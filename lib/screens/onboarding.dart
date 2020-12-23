@@ -163,9 +163,7 @@ class Dots extends StatelessWidget {
 
   Widget _activeSlide(int index) {
     return GestureDetector(
-      onTap: () {
-        print('Tapped');
-      },
+      onTap: () {},
       child: new Container(
         child: Padding(
           padding: EdgeInsets.only(left: 8.0, right: 8.0),

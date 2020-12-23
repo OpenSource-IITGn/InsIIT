@@ -13,7 +13,6 @@ class AddCourse extends StatefulWidget {
 }
 
 class _AddCourseState extends State<AddCourse> {
-
   List<MyCourse> notAddedCourses;
   Map<MyCourse, bool> add;
   bool loading = false;
@@ -25,7 +24,8 @@ class _AddCourseState extends State<AddCourse> {
     add = makeAddMap(notAddedCourses);
   }
 
-  List<MyCourse> makeNotAddedCoursesList (List<MyCourse> myCourses, List<MyCourse> allCourses) {
+  List<MyCourse> makeNotAddedCoursesList(
+      List<MyCourse> myCourses, List<MyCourse> allCourses) {
     List<MyCourse> remainingCourses = [];
 
     allCourses.forEach((MyCourse course) {
@@ -47,7 +47,7 @@ class _AddCourseState extends State<AddCourse> {
     return remainingCourses;
   }
 
-  Map<MyCourse, bool> makeAddMap (List<MyCourse> remainingCourses) {
+  Map<MyCourse, bool> makeAddMap(List<MyCourse> remainingCourses) {
     Map<MyCourse, bool> _add = {};
     remainingCourses.forEach((MyCourse course) {
       _add.putIfAbsent(course, () => false);
@@ -56,7 +56,7 @@ class _AddCourseState extends State<AddCourse> {
     return _add;
   }
 
-  addCourses (Map<MyCourse, bool> add) {
+  addCourses(Map<MyCourse, bool> add) {
     loading = true;
     setState(() {});
     add.forEach((MyCourse course, bool addCourse) {
@@ -68,7 +68,7 @@ class _AddCourseState extends State<AddCourse> {
     saveFileInCache();
   }
 
-  addIfNotPresent (MyCourse course) {
+  addIfNotPresent(MyCourse course) {
     bool add = true;
     if (userAddedCourses != null) {
       userAddedCourses.forEach((MyCourse _course) {
@@ -86,7 +86,7 @@ class _AddCourseState extends State<AddCourse> {
     }
   }
 
-  saveFileInCache () async {
+  saveFileInCache() async {
     var file = await _localFileForUserAddedCourses();
     bool exists = await file.exists();
     if (exists) {
@@ -94,34 +94,33 @@ class _AddCourseState extends State<AddCourse> {
     }
     await file.create();
     await file.open();
-    var userAddedCoursesList =
-    makeUserAddedCoursesList(userAddedCourses);
-    await file.writeAsString(
-        ListToCsvConverter().convert(userAddedCoursesList));
-    print('DATA OF ADDED EVENT STORED IN FILE');
+    var userAddedCoursesList = makeUserAddedCoursesList(userAddedCourses);
+    await file
+        .writeAsString(ListToCsvConverter().convert(userAddedCoursesList));
+    // print('DATA OF ADDED EVENT STORED IN FILE');
 
-    Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
+    Navigator.popAndPushNamed(context, '/menuBarBase');
+    //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
   }
 
   List<List<String>> makeUserAddedCoursesList(List<MyCourse> userAddedCourses) {
     List<List<String>> userAddedCoursesList = [];
 
     userAddedCourses.forEach((MyCourse course) {
-      userAddedCoursesList
-          .add([
-            course.courseCode,
-            course.courseName,
-            course.noOfLectures.toString(),
-            course.noOfTutorials.toString(),
-            course.credits.toString(),
-            course.instructors.join(','),
-            course.preRequisite,
-            course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
-            course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
-            course.labCourse.join(',') + '(' + course.labLocation + ')',
-            course.remarks,
-            course.courseBooks,
-            course.links.join(',')
+      userAddedCoursesList.add([
+        course.courseCode,
+        course.courseName,
+        course.noOfLectures.toString(),
+        course.noOfTutorials.toString(),
+        course.credits.toString(),
+        course.instructors.join(','),
+        course.preRequisite,
+        course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
+        course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
+        course.labCourse.join(',') + '(' + course.labLocation + ')',
+        course.remarks,
+        course.courseBooks,
+        course.links.join(',')
       ]);
     });
 
@@ -135,7 +134,7 @@ class _AddCourseState extends State<AddCourse> {
     return File(filename);
   }
 
-  Widget courseCard (MyCourse course, Map<MyCourse, bool> add) {
+  Widget courseCard(MyCourse course, Map<MyCourse, bool> add) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -149,7 +148,7 @@ class _AddCourseState extends State<AddCourse> {
       child: Container(
         width: ScreenSize.size.width * 1,
         child: Card(
-          color: (add[course])?Colors.white30:Colors.white,
+          color: (add[course]) ? Colors.white30 : Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -157,24 +156,28 @@ class _AddCourseState extends State<AddCourse> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Flexible(
-                  child: Text(
-                    course.courseCode,
-                    style: TextStyle(
-                        color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  )
+                    child: Text(
+                  course.courseCode,
+                  style: TextStyle(
+                      color: (darkMode)
+                          ? secondaryTextColorDarkMode
+                          : secondaryTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                )),
+                SizedBox(
+                  width: 5,
                 ),
-                SizedBox(width: 5,),
                 Flexible(
                     child: Text(
-                      course.courseName,
-                      style: TextStyle(
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
-                ),
+                  course.courseName,
+                  style: TextStyle(
+                      color: (darkMode)
+                          ? primaryTextColorDarkMode
+                          : primaryTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                )),
               ],
             ),
           ),
@@ -186,11 +189,11 @@ class _AddCourseState extends State<AddCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -198,20 +201,24 @@ class _AddCourseState extends State<AddCourse> {
           },
         ),
         title: Text('Add Course',
-            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
+                fontWeight: FontWeight.bold)),
       ),
       body: (loading)
-          ? Center(child: CircularProgressIndicator(),)
-          :SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: notAddedCourses.map<Widget>((MyCourse course) {
-              return courseCard(course, add);
-            }).toList(),
-          ),
-        ),
-      ),
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: notAddedCourses.map<Widget>((MyCourse course) {
+                    return courseCard(course, add);
+                  }).toList(),
+                ),
+              ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -227,8 +234,7 @@ class _AddCourseState extends State<AddCourse> {
                 )
               ],
               content: Text(
-                'Do you want to add selected courses to your timetable?'
-              ),
+                  'Do you want to add the selected courses to your timetable?'),
             ),
           );
         },

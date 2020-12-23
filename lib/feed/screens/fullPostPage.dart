@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/feed/commentModel.dart';
-import 'package:instiapp/classes/feed/postModel.dart';
+import 'package:instiapp/feed/classes/commentModel.dart';
+import 'package:instiapp/feed/classes/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:http/http.dart' as http;
@@ -55,10 +55,10 @@ class _FullPostPageState extends State<FullPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -66,7 +66,9 @@ class _FullPostPageState extends State<FullPostPage> {
           },
         ),
         title: Text('Post',
-            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
+                fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: Padding(

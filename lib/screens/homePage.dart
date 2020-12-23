@@ -5,7 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instiapp/messMenu/base.dart';
-import 'package:instiapp/screens/feed/feedPage.dart';
+import 'package:instiapp/feed/screens/feedPage.dart';
 import 'package:instiapp/screens/firsthomepage.dart';
 import 'package:instiapp/screens/loading.dart';
 import 'package:instiapp/screens/map/googlemap.dart';
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage>
                       caseSensitive: false)) ||
                   compareStrings(course.name, lc[3])) {
                 List<DateTime> time = getTime(baseLc);
-                lc.addAll(['null','null','null','null','null']);
+                lc.addAll(['null', 'null', 'null', 'null', 'null']);
                 myExamCourses.add(EventModel(
                   isCourse: false,
                   isExam: true,
@@ -208,7 +208,6 @@ class _HomePageState extends State<HomePage>
 
   loadRemovedCoursesData() async {
     getRemovedEventsData().listen((data) {
-      print(data);
       removedEvents = makeRemovedEventsList(data);
     });
   }
@@ -265,7 +264,7 @@ class _HomePageState extends State<HomePage>
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -274,9 +273,8 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  loadUserAddedCoursesData () async {
+  loadUserAddedCoursesData() async {
     getUserAddedCoursesData().listen((data) {
-      print(data);
       userAddedCourses = makeUserAddedCoursesList(data);
     });
   }
@@ -287,7 +285,6 @@ class _HomePageState extends State<HomePage>
     if (userAddedCoursesDataList != null &&
         userAddedCoursesDataList.length != 0) {
       userAddedCoursesDataList.forEach((var lc) {
-        print(lc);
         _userAddedCourses.add(MyCourse(
             courseCode: lc[0],
             courseName: lc[1],
@@ -296,14 +293,11 @@ class _HomePageState extends State<HomePage>
             credits: lc[4].toString(),
             instructors: lc[5].split(','),
             preRequisite: lc[6],
-            lectureCourse:
-            lc[7].split('(')[0].replaceAll(' ', '').split(','),
+            lectureCourse: lc[7].split('(')[0].replaceAll(' ', '').split(','),
             lectureLocation: returnLocation(lc[7]),
-            tutorialCourse:
-            lc[8].split('(')[0].replaceAll(' ', '').split(','),
+            tutorialCourse: lc[8].split('(')[0].replaceAll(' ', '').split(','),
             tutorialLocation: returnLocation(lc[8]),
-            labCourse:
-            lc[9].split('(')[0].replaceAll(' ', '').split(','),
+            labCourse: lc[9].split('(')[0].replaceAll(' ', '').split(','),
             labLocation: returnLocation(lc[9]),
             remarks: lc[10],
             courseBooks: lc[11],
@@ -328,7 +322,7 @@ class _HomePageState extends State<HomePage>
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -350,10 +344,11 @@ class _HomePageState extends State<HomePage>
   }
 
   loadRepresentativesData() async {
-    sheet.getData('Representatives!A:C').listen((data){
+    sheet.getData('Representatives!A:C').listen((data) {
       makeRepresentativeList(data);
     });
   }
+
   bool compareStrings(String str1, String str2) {
     if (str1.compareTo(str2) == 0) {
       return true;
@@ -370,26 +365,23 @@ class _HomePageState extends State<HomePage>
           lc[1] != '-' &&
           lc[1] != '' &&
           lc[0].toString().toLowerCase() != 'course code') {
-          _allCourses.add(MyCourse(
-              courseCode: lc[0],
-              courseName: lc[1],
-              noOfLectures: lc[2].toString(),
-              noOfTutorials: lc[3].toString(),
-              credits: lc[5].toString(),
-              instructors: lc[6].split(','),
-              preRequisite: lc[10],
-              lectureCourse:
-                  lc[11].split('(')[0].replaceAll(' ', '').split(','),
-              lectureLocation: returnLocation(lc[11]),
-              tutorialCourse:
-                  lc[12].split('(')[0].replaceAll(' ', '').split(','),
-              tutorialLocation: returnLocation(lc[12]),
-              labCourse:
-                  lc[13].split('(')[0].replaceAll(' ', '').split(','),
-              labLocation: returnLocation(lc[13]),
-              remarks: lc[14],
-              courseBooks: lc[15],
-              links: lc[16].replaceAll(' ', '').split(',')));
+        _allCourses.add(MyCourse(
+            courseCode: lc[0],
+            courseName: lc[1],
+            noOfLectures: lc[2].toString(),
+            noOfTutorials: lc[3].toString(),
+            credits: lc[5].toString(),
+            instructors: lc[6].split(','),
+            preRequisite: lc[10],
+            lectureCourse: lc[11].split('(')[0].replaceAll(' ', '').split(','),
+            lectureLocation: returnLocation(lc[11]),
+            tutorialCourse: lc[12].split('(')[0].replaceAll(' ', '').split(','),
+            tutorialLocation: returnLocation(lc[12]),
+            labCourse: lc[13].split('(')[0].replaceAll(' ', '').split(','),
+            labLocation: returnLocation(lc[13]),
+            remarks: lc[14],
+            courseBooks: lc[15],
+            links: lc[16].replaceAll(' ', '').split(',')));
       }
     });
 
@@ -405,7 +397,7 @@ class _HomePageState extends State<HomePage>
   }
 
   List<List<TodayCourse>> makeTodayTimeSlotList(var courseSlotDataList) {
-    List<List<TodayCourse>> courses = [[],[],[],[],[],[],[]];
+    List<List<TodayCourse>> courses = [[], [], [], [], [], [], []];
 
     courseSlotDataList.removeAt(0);
     courseSlotDataList.removeAt(0);
@@ -413,7 +405,8 @@ class _HomePageState extends State<HomePage>
     courseSlotDataList.forEach((var lc) {
       List<DateTime> time = returnTime(lc[0]);
       for (var i = 0; i < 5; i++) {
-        courses[i].add(TodayCourse(start: time[0], end: time[1], course: lc[i+1]));
+        courses[i]
+            .add(TodayCourse(start: time[0], end: time[1], course: lc[i + 1]));
       }
     });
 
@@ -500,7 +493,6 @@ class _HomePageState extends State<HomePage>
       for (var lst in data) {
         foodIllustration.putIfAbsent(lst[0], () => lst[1]);
       }
-      print(foodIllustration);
     });
   }
 
@@ -565,10 +557,10 @@ class _HomePageState extends State<HomePage>
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
   Widget homeScreen() {
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       extendBodyBehindAppBar: true,
       bottomNavigationBar: BottomNavyBar(
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         selectedIndex: selectedIndex,
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -616,12 +608,14 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       appBar: AppBar(
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
-            (darkMode)?Icons.wb_sunny_outlined:Icons.wb_sunny,
-            color: (darkMode)?Colors.deepPurpleAccent:Colors.black,
+            (darkMode) ? Icons.wb_sunny_outlined : Icons.wb_sunny,
+            color: (darkMode)
+                ? Colors.deepPurpleAccent
+                : Colors.grey.withAlpha(100),
           ),
           onPressed: () {
             if (darkMode) {
@@ -642,7 +636,9 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.all(8.0),
               child: Text(titles[selectedIndex],
                   style: TextStyle(
-                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                      color: (darkMode)
+                          ? primaryTextColorDarkMode
+                          : primaryTextColor,
                       fontWeight: FontWeight.bold)),
             )),
         actions: <Widget>[
@@ -754,6 +750,7 @@ class _HomePageState extends State<HomePage>
           name: lc[0], description: lc[1], contacts: jsonDecode(lc[2])));
     }
   }
+
   makeRepresentativeList(List representativeDataList) {
     representativeDataList.removeAt(0);
     representatives = [];
@@ -786,7 +783,7 @@ class _HomePageState extends State<HomePage>
     List<EventModel> currentDayExamCourses;
 
     userCourses = makeCourseEventModel(todayCourses, userAddedCourses);
-    eventsList = [[],[],[],[],[],[],[]];
+    eventsList = [[], [], [], [], [], [], []];
     int index = DateTime.now().weekday - 1;
 
     for (var i = 0; i < 5; i++) {
@@ -803,9 +800,7 @@ class _HomePageState extends State<HomePage>
                 }
               });
             }
-            if (model.day == DateTime
-                .now()
-                .weekday && shouldContain) {
+            if (model.day == DateTime.now().weekday && shouldContain) {
               eventsList[i].add(model);
             }
           });
@@ -862,14 +857,20 @@ class _HomePageState extends State<HomePage>
       }
     });
 
-    List<EventModel> monday, tuesday, wednesday, thursday, friday, saturday, sunday;
-    monday = (eventsList[0] != null)?eventsList[0]:[];
-    tuesday = (eventsList[1] != null)?eventsList[1]:[];
-    wednesday = (eventsList[2] != null)?eventsList[2]:[];
-    thursday = (eventsList[3] != null)?eventsList[3]:[];
-    friday = (eventsList[4] != null)?eventsList[4]:[];
-    saturday = (eventsList[5] != null)?eventsList[5]:[];
-    sunday = (eventsList[6] != null)?eventsList[6]:[];
+    List<EventModel> monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday;
+    monday = (eventsList[0] != null) ? eventsList[0] : [];
+    tuesday = (eventsList[1] != null) ? eventsList[1] : [];
+    wednesday = (eventsList[2] != null) ? eventsList[2] : [];
+    thursday = (eventsList[3] != null) ? eventsList[3] : [];
+    friday = (eventsList[4] != null) ? eventsList[4] : [];
+    saturday = (eventsList[5] != null) ? eventsList[5] : [];
+    sunday = (eventsList[6] != null) ? eventsList[6] : [];
 
     if (monday != null && monday.length != 0) {
       quickSort(monday, 0, monday.length - 1);
@@ -893,10 +894,18 @@ class _HomePageState extends State<HomePage>
       quickSort(sunday, 0, sunday.length - 1);
     }
 
-    eventsList = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
+    eventsList = [
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+      sunday
+    ];
   }
 
-  readyEvents () {
+  readyEvents() {
     prepareEventsList();
     twoEvents = makeListOfTwoEvents();
   }
@@ -945,7 +954,7 @@ class _HomePageState extends State<HomePage>
 
   List<List<EventModel>> makeCourseEventModel(
       List<List<TodayCourse>> todayCourses, List<MyCourse> myCourses) {
-    List<List<EventModel>> coursesEventModelList = [[],[],[],[],[],[],[]];
+    List<List<EventModel>> coursesEventModelList = [[], [], [], [], [], [], []];
 
     for (var i = 0; i < 5; i++) {
       if (todayCourses != null && todayCourses.length != 0) {
@@ -967,7 +976,8 @@ class _HomePageState extends State<HomePage>
                           isExam: false,
                           courseId: myCourse.courseCode,
                           courseName: myCourse.courseName,
-                          eventType: 'Lecture ${text.substring(2, text.length)}',
+                          eventType:
+                              'Lecture ${text.substring(2, text.length)}',
                           location: myCourse.lectureLocation,
                           instructors: myCourse.instructors,
                           credits: myCourse.credits,
@@ -1007,7 +1017,8 @@ class _HomePageState extends State<HomePage>
                           isExam: false,
                           courseId: myCourse.courseCode,
                           courseName: myCourse.courseName,
-                          eventType: 'Tutorial ${text.substring(2, text.length)}',
+                          eventType:
+                              'Tutorial ${text.substring(2, text.length)}',
                           location: myCourse.tutorialLocation,
                           instructors: myCourse.instructors,
                           credits: myCourse.credits,
