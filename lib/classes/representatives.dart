@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Representative{
   String position;
@@ -21,120 +22,123 @@ class Representative{
   }
 
   Widget profileLink(context, contactJson) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  minRadius: 18,
-                  child: ClipOval(
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        width: 90.0,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        height: 90.0,
-                        imageUrl: contactJson['image'],
-                      )),
-                ),
-                SizedBox(height:3),
-                Text(
-                  contactJson['name'],
-                  style: TextStyle(
-                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic),
-                ),
-                Text(
-                  contactJson['designation'],
-                  style: TextStyle(fontStyle: FontStyle.italic, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
-                ),
-              ],
-            ),
-            (contactJson['email'].length > 0)
-                ? IconButton(
-              icon: Icon(
-                Icons.email,
-                color: Colors.black.withAlpha(120),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    minRadius: 18,
+                    child: ClipOval(
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          width: 90.0,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(),
+                          height: 90.0,
+                          imageUrl: contactJson['image'],
+                        )),
+                  ),
+                  SizedBox(height:3),
+                  Text(
+                    contactJson['name'],
+                    style: TextStyle(
+                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    contactJson['designation'],
+                    style: TextStyle(fontStyle: FontStyle.italic, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
+                  ),
+                ],
               ),
-              onPressed: () {
-                List emails = contactJson['email'];
-                if (emails.length > 1) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(contactJson['name']),
-                        content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: emails.map((email) {
-                              return ListTile(
-                                  title: Text("$email"),
-                                  trailing: Icon(
-                                    Icons.phone,
-                                  ),
-                                  onTap: () {
-                                    launch('mailto:$email?subject=&body=');
-                                  });
-                            }).toList()),
-                      );
-                    },
-                  );
-                } else {
-                  launch('mailto:${emails[0]}?subject=&body=');
-                }
-              },
-            )
+              (contactJson['email'].length > 0)
+                  ? IconButton(
+                icon: Icon(
+                  Icons.email,
+                  color: Colors.black.withAlpha(120),
+                ),
+                onPressed: () {
+                  List emails = contactJson['email'];
+                  if (emails.length > 1) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(contactJson['name']),
+                          content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: emails.map((email) {
+                                return ListTile(
+                                    title: Text("$email"),
+                                    trailing: Icon(
+                                      Icons.phone,
+                                    ),
+                                    onTap: () {
+                                      launch('mailto:$email?subject=&body=');
+                                    });
+                              }).toList()),
+                        );
+                      },
+                    );
+                  } else {
+                    launch('mailto:${emails[0]}?subject=&body=');
+                  }
+                },
+              )
 
-                :Container(),
-            (contactJson['phno'].length > 0)
-                ? IconButton(
-              icon: Icon(
-                Icons.phone,
-                color: Colors.black.withAlpha(120),
-              ),
-              onPressed: () {
-                List phones = contactJson['phno'];
-                if (phones.length > 1) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(contactJson['name']),
-                        content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: phones.map((phone) {
-                              return ListTile(
-                                  title: Text("$phone"),
-                                  trailing: Icon(
-                                    Icons.phone,
-                                  ),
-                                  onTap: () {
-                                    launch('tel:$phone');
-                                  });
-                            }).toList()),
-                      );
-                    },
-                  );
-                } else {
-                  launch('tel:${phones[0]}');
-                }
-              },
-            )
+                  :Container(),
+              (contactJson['phno'].length > 0)
+                  ? IconButton(
+                icon: Icon(
+                  Icons.phone,
+                  color: Colors.black.withAlpha(120),
+                ),
+                onPressed: () {
+                  List phones = contactJson['phno'];
+                  if (phones.length > 1) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(contactJson['name']),
+                          content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: phones.map((phone) {
+                                return ListTile(
+                                    title: Text("$phone"),
+                                    trailing: Icon(
+                                      Icons.phone,
+                                    ),
+                                    onTap: () {
+                                      launch('tel:$phone');
+                                    });
+                              }).toList()),
+                        );
+                      },
+                    );
+                  } else {
+                    launch('tel:${phones[0]}');
+                  }
+                },
+              )
 
-          :Container()
-          ],
-        ),
-        Divider(),
-      ],
+                  :Container()
+            ],
+          ),
+          Divider(),
+        ],
+      ),
     );
     // return AutolinkText(
     //   text: contact,
@@ -152,8 +156,35 @@ class Representative{
     // );
   }
 
+
   Widget profileCard(context) {
-    return ExpansionTile(
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              position,
+              style: TextStyle(
+                color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(height: 3,),
+          CarouselSlider(items: profiles
+              .map((contact) => profileLink(context, contact))
+              .toList(), options: CarouselOptions(
+            autoPlay: false,
+            aspectRatio: 2.0,
+            enlargeCenterPage: true,
+            scrollDirection: Axis.horizontal,
+          ))
+        ]
+    );
+
+
+    ExpansionTile(
       title: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
