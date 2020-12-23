@@ -87,41 +87,30 @@ class _FeedPageState extends State<FeedPage>
       child: Scaffold(
           backgroundColor:
               (darkMode) ? backgroundColorDarkMode : Colors.transparent,
-          body: Column(
-            children: [
-              RaisedButton(
-                child: Text("RELOAD"),
-                onPressed: () {
-                  refresh();
-                },
-              ),
-              (loading == true)
-                  ? Center(child: CircularProgressIndicator())
-                  : RefreshIndicator(
-                      onRefresh: () {
-                        refresh();
-                        return Future.value(true);
-                      },
-                      child: ListView.builder(
-                        controller: _controller,
-                        itemBuilder: (context, index) {
-                          if (reloading == true && index == posts.length) {
-                            return Center(
-                                child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  16.0, 8.0, 16.0, 16.0),
-                              child: CircularProgressIndicator(),
-                            ));
-                          }
-                          return PostWidget(post: posts[index]);
-                        },
-                        itemCount: (reloading == true)
-                            ? posts.length + 1
-                            : posts.length,
-                      ),
-                    ),
-            ],
-          )),
+          body: (loading == true)
+              ? Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                  onRefresh: () {
+                    refresh();
+                    return Future.value(true);
+                  },
+                  child: ListView.builder(
+                    controller: _controller,
+                    itemBuilder: (context, index) {
+                      if (reloading == true && index == posts.length) {
+                        return Center(
+                            child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
+                      return PostWidget(post: posts[index]);
+                    },
+                    itemCount:
+                        (reloading == true) ? posts.length + 1 : posts.length,
+                  ),
+                )),
     );
   }
 

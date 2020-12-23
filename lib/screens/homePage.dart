@@ -26,7 +26,7 @@ import 'package:instiapp/screens/signIn.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:instiapp/screens/miscPage.dart';
-import 'package:instiapp/classes/representatives.dart';
+import 'package:instiapp/representativePage/representatives.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);

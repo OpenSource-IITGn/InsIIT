@@ -168,6 +168,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
+
     user = FirebaseAuth.instance.currentUser;
     print(user);
     if (user != null) {

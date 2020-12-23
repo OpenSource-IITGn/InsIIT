@@ -21,7 +21,7 @@ import 'package:instiapp/screens/signIn.dart';
 import 'package:instiapp/screens/onboarding.dart';
 import 'package:instiapp/screens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/screens/representativePage.dart';
+import 'package:instiapp/representativePage/representativePage.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
               '/eventdetail': (context) => EventDetail(),
               '/editevent': (context) => EditEvent(),
               '/exportIcsFile': (context) => ExportIcsFile(),
-              '/representativePage' : (context) => RepresentativePage(),
+              '/representativePage': (context) => RepresentativePage(),
             },
             title: 'Instiapp',
             theme:
