@@ -16,6 +16,8 @@ class FullPostPage extends StatefulWidget {
 }
 
 class _FullPostPageState extends State<FullPostPage> {
+  String comment = '';
+  TextEditingController controller = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -50,8 +52,6 @@ class _FullPostPageState extends State<FullPostPage> {
     print(response.body);
   }
 
-  String comment = '';
-  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
