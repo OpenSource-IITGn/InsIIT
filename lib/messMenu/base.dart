@@ -129,14 +129,6 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // color: Colors.blue.withAlpha(50),
-        // height: ScreenSize.size.height * 0.2,
-        // width: ScreenSize.size.width,
-        // decoration: BoxDecoration(
-        //     color: Colors.grey,
-        //     border: Border.all(),
-        //     borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: buildTray());
+    return Container(child: buildTray());
   }
 }
