@@ -85,6 +85,11 @@ class _FeedPageState extends State<FeedPage>
     super.build(context);
     return SafeArea(
       child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/hashtags');
+              },
+              child: Icon(Icons.sort_rounded)),
           backgroundColor:
               (darkMode) ? backgroundColorDarkMode : Colors.transparent,
           body: (loading == true)

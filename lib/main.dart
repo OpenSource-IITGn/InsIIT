@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/screens/developers.dart';
 import 'package:instiapp/screens/email.dart';
 
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
               '/messfeedback': (context) => MessFeedBack(),
               '/signin': (context) => SignInPage(),
               '/menuBarBase': (context) => HomeWrapper(),
+              '/hashtags': (context) => HashtagPage(),
               '/misc': (context) => MiscPage(),
               '/developers': (context) => DevelopersPage(),
               '/map': (context) => MapPage(),

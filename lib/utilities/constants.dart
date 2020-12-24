@@ -30,14 +30,14 @@ Color primaryColor = Color.fromRGBO(63, 99, 247, 1);
 final dateFormat = new DateFormat('dd-MM-yyyy hh:mm');
 String baseUrl = "serene-reaches-30469.herokuapp.com";
 String baseUrlTL = "tranquil-shore-67034.herokuapp.com";
- final GoogleSignIn gSignIn = GoogleSignIn(
-   hostedDomain: 'iitgn.ac.in',
-   scopes: <String>[
-     'email',
-     //'https://www.googleapis.com/auth/classroom.courses.readonly',
-     'https://www.googleapis.com/auth/calendar.events.readonly',
-   ],
- );
+final GoogleSignIn gSignIn = GoogleSignIn(
+  hostedDomain: 'iitgn.ac.in',
+  scopes: <String>[
+    'email',
+    //'https://www.googleapis.com/auth/classroom.courses.readonly',
+    'https://www.googleapis.com/auth/calendar.events.readonly',
+  ],
+);
 // FirebaseUser firebaseUser;
 var currentUser;
 final FirebaseAuth firebaseauth = FirebaseAuth.instance;
@@ -65,4 +65,8 @@ verticalDivider({double height}) {
       ),
     ],
   );
+}
+
+void log(printer, tag) {
+  print("[$tag] : $printer");
 }
