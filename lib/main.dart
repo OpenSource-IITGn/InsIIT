@@ -12,7 +12,7 @@ import 'package:instiapp/screens/messMenu/messmenu.dart';
 
 import 'package:instiapp/screens/schedule/editEvent.dart';
 import 'package:instiapp/screens/schedule/eventDetail.dart';
-import 'package:instiapp/screens/schedule/exportIcsFile.dart';
+//import 'package:instiapp/screens/schedule/exportIcsFile.dart';
 import 'package:instiapp/screens/schedule/schedulePage.dart';
 
 import 'package:instiapp/screens/loading.dart';
@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
               '/schedule': (context) => SchedulePage(),
               '/eventdetail': (context) => EventDetail(),
               '/editevent': (context) => EditEvent(),
-              '/exportIcsFile': (context) => ExportIcsFile(),
+              //'/exportIcsFile': (context) => ExportIcsFile(),
               '/representativePage': (context) => RepresentativePage(),
             },
             title: 'Instiapp',
