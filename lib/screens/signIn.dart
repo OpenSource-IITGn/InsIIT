@@ -112,6 +112,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future reloadEventsAndCourses() async {
+    await gSignIn.signIn();
     final authHeaders = await gSignIn.currentUser.authHeaders;
     final httpClient = GoogleHttpClient(authHeaders);
     await getEventsCached().then((values) async {
