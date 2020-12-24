@@ -24,7 +24,6 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
 List<Representative> representatives;
@@ -60,8 +59,8 @@ class _HomePageState extends State<HomePage>
       setState(() {});
     });
     dataContainer.schedule.getData();
+    dataContainer.contacts.loadImportantContactData();
     loadlinks();
-    loadImportantContactData();
     loadShuttleData();
     loadRepresentativesData();
   }
@@ -87,12 +86,6 @@ class _HomePageState extends State<HomePage>
   loadRepresentativesData() async {
     sheet.getData('Representatives!A:C').listen((data) {
       makeRepresentativeList(data);
-    });
-  }
-
-  loadImportantContactData() async {
-    sheet.getData('Contacts!A:E').listen((data) {
-      makeContactList(data);
     });
   }
 
@@ -229,15 +222,6 @@ class _HomePageState extends State<HomePage>
         ],
       ),
     );
-  }
-
-  makeContactList(List importantContactDataList) {
-    importantContactDataList.removeAt(0);
-    contactCards = [];
-    for (List lc in importantContactDataList) {
-      contactCards.add(ContactCard(
-          name: lc[0], description: lc[1], contacts: jsonDecode(lc[2])));
-    }
   }
 
   makeRepresentativeList(List representativeDataList) {
