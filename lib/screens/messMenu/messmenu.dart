@@ -73,23 +73,27 @@ class _MessMenuState extends State<MessMenu> {
                         IconButton(
                           icon: Icon(Icons.thumb_down_alt),
                           iconSize: 20,
-                          color: returnColorUpVote(food),
+                          color: returnColorDownVote(food),
                           onPressed: () async {
                             setState(() {
+                              String temp = '';
                               bool hasAlreadyVoted = false;
                               foodVotes.forEach((List<String> ls) {
                                 if (ls[0] == food) {
-                                  if (ls[1] == '-1' || ls[1] == '0') {
-                                    ls[1] = '1';
+                                  if (ls[1] == '1' || ls[1] == '0') {
+                                    ls[1] = '-1';
+                                    temp = '-1';
                                   } else {
                                     ls[1] = '0';
+                                    temp = '0';
                                   }
                                   hasAlreadyVoted = true;
                                 }
                               });
 
                               if (!hasAlreadyVoted) {
-                                foodVotes.add([food, '1']);
+                                foodVotes.add([food, '-1']);
+                                temp = '-1';
                               }
                               sheet.writeData([
                                 [
@@ -97,7 +101,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().weekday,
                                   food,
                                   currentUser['email'],
-                                  '-1'
+                                  temp
                                 ]
                               ], 'messFeedbackItems!A:D');
                             });
@@ -113,27 +117,30 @@ class _MessMenuState extends State<MessMenu> {
                             // print('DATA SAVED IN CACHE');
                           },
                         ),
-                        //TODO: THERE IS SOME ERROR With SENDING DATA TO SHEETS
                         IconButton(
                           icon: Icon(Icons.thumb_up_alt),
                           iconSize: 20,
-                          color: returnColorDownVote(food),
+                          color: returnColorUpVote(food),
                           onPressed: () async {
                             setState(() {
+                              String temp = '';
                               bool hasAlreadyVoted = false;
                               foodVotes.forEach((List<String> ls) {
                                 if (ls[0] == food) {
-                                  if (ls[1] == '1' || ls[1] == '0') {
-                                    ls[1] = '-1';
+                                  if (ls[1] == '-1' || ls[1] == '0') {
+                                    ls[1] = '1';
+                                    temp = '1';
                                   } else {
                                     ls[1] = '0';
+                                    temp = '0';
                                   }
                                   hasAlreadyVoted = true;
                                 }
                               });
 
                               if (!hasAlreadyVoted) {
-                                foodVotes.add([food, '-1']);
+                                foodVotes.add([food, '1']);
+                                temp = '1';
                               }
                               sheet.writeData([
                                 [
@@ -141,7 +148,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().weekday,
                                   food,
                                   currentUser['email'],
-                                  '1'
+                                  temp
                                 ]
                               ], 'messFeedbackItems!A:D');
                             });
@@ -322,7 +329,7 @@ class _MessMenuState extends State<MessMenu> {
       });
     }
     if (vote == '1') {
-      return Colors.red;
+      return Colors.green;
     } else {
       return Colors.black45.withAlpha(50);
     }
@@ -338,7 +345,7 @@ class _MessMenuState extends State<MessMenu> {
       });
     }
     if (vote == '-1') {
-      return Colors.green;
+      return Colors.red;
     } else {
       return Colors.black45.withAlpha(50);
     }
