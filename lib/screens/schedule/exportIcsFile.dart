@@ -20,7 +20,7 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
 
   String writeText(List<EventModel> addedEventModels) {
     String _text =
-        'BEGIN:VCALENDAR\nPRODID:-//Google Inc//Google Calendar 70.9054//EN\nVERSION:2.0\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\nX-WR-CALNAME:${currentUser.email}\nX-WR-TIMEZONE:Asia/Kolkata\nBEGIN:VTIMEZONE\nTZID:Asia/Kolkata\nX-LIC-LOCATION:Asia/Kolkata\nBEGIN:STANDARD\nTZOFFSETFROM:+0530\nTZOFFSETTO:+0530\nTZNAME:IST\nDTSTART:19700101T000000\nEND:STANDARD\nEND:VTIMEZONE\n';
+        'BEGIN:VCALENDAR\nPRODID:-//Google Inc//Google Calendar 70.9054//EN\nVERSION:2.0\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\nX-WR-CALNAME:${currentUser["email"]}\nX-WR-TIMEZONE:Asia/Kolkata\nBEGIN:VTIMEZONE\nTZID:Asia/Kolkata\nX-LIC-LOCATION:Asia/Kolkata\nBEGIN:STANDARD\nTZOFFSETFROM:+0530\nTZOFFSETTO:+0530\nTZNAME:IST\nDTSTART:19700101T000000\nEND:STANDARD\nEND:VTIMEZONE\n';
     int length = addedEventModels.length;
     int count = 0;
     addedEventModels.forEach((EventModel model) {
@@ -253,7 +253,7 @@ class _ExportIcsFileState extends State<ExportIcsFile> {
                           await file.writeAsString(writeText(addedEventModels));
                           loading = false;
                           Navigator.popUntil(
-                              context, ModalRoute.withName('/schedule'));
+                              context, ModalRoute.withName('/menuBarBase'));
                         }
                       },
                       icon: Icon(
