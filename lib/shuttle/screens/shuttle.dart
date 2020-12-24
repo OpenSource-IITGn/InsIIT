@@ -5,7 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:instiapp/shuttle/classes/buses.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/mainScreens/homePage.dart';
+import 'package:instiapp/data/dataContainer.dart';
 
 class Shuttle extends StatefulWidget {
   @override
@@ -188,7 +188,7 @@ class _ShuttleState extends State<Shuttle>
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
 
-    buses.forEach((element) {
+    dataContainer.shuttle.buses.forEach((element) {
       if (!places.contains(element.origin.trim())) {
         places.add(element.origin.trim());
       }
@@ -265,8 +265,8 @@ class _ShuttleState extends State<Shuttle>
 
   List<List<Buses>> dividedBuses() {
     List<List<Buses>> _dividedBuses = [[], []];
-    if (buses != null) {
-      buses.forEach((Buses bus) {
+    if (dataContainer.shuttle.buses != null) {
+      dataContainer.shuttle.buses.forEach((Buses bus) {
         if (bus.origin == 'Palaj') {
           _dividedBuses[0].add(bus);
         } else {
@@ -282,9 +282,9 @@ class _ShuttleState extends State<Shuttle>
     List<Buses> _busList = [];
     List<Buses> busesAccordingToOrigin = [];
     if (origin == 'Origin') {
-      busesAccordingToOrigin.addAll(buses);
+      busesAccordingToOrigin.addAll(dataContainer.shuttle.buses);
     } else {
-      buses.forEach((Buses bus) {
+      dataContainer.shuttle.buses.forEach((Buses bus) {
         if (bus.origin == origin) {
           busesAccordingToOrigin.add(bus);
         }

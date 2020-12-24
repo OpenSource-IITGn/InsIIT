@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/mainScreens/homePage.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 class RepresentativePage extends StatefulWidget {
@@ -24,8 +24,7 @@ class _RepresentativePageState extends State<RepresentativePage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
           child: Column(
-            children:
-            representatives.map((card) => card.profileCard(context)).toList(),
+            children: dataContainer.representatives.representatives.map((card) => card.profileCard(context)).toList(),
           ),
         ),
       ),

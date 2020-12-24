@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:instiapp/feed/screens/feedPage.dart';
@@ -8,13 +7,8 @@ import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/importantContacts/classes/contactcard.dart';
-import 'package:instiapp/shuttle/classes/buses.dart';
 import 'package:instiapp/utilities/signInMethods.dart';
-import 'package:instiapp/quickLinks/screens/email.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
-import 'package:instiapp/representativePage/classes/representatives.dart';
 import 'package:instiapp/data/dataContainer.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,10 +17,6 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
-List<Buses> buses;
-List<Data> emails;
-List<Representative> representatives;
 
 bool mainPageLoading = true;
 int selectedIndex = 0;
@@ -58,46 +48,7 @@ class _HomePageState extends State<HomePage>
       mainPageLoading = false;
       setState(() {});
     });
-    dataContainer.schedule.getData();
-    dataContainer.contacts.loadImportantContactData();
-    loadlinks();
-    loadShuttleData();
-    loadRepresentativesData();
-  }
-
-  loadShuttleData() async {
-    sheet.getData('BusRoutes!A:H').listen((data) {
-      var shuttleDataList = data;
-      buses = [];
-      shuttleDataList.removeAt(0);
-      shuttleDataList.forEach((bus) {
-        buses.add(Buses(
-          origin: bus[0],
-          destination: bus[1],
-          time: bus[2],
-          url: bus[4],
-          hour: int.parse(bus[2].split(':')[0]),
-          minute: int.parse(bus[2].split(':')[1]),
-        ));
-      });
-    });
-  }
-
-  loadRepresentativesData() async {
-    sheet.getData('Representatives!A:C').listen((data) {
-      makeRepresentativeList(data);
-    });
-  }
-
-  loadlinks() async {
-    sheet.getData('QuickLinks!A:C').listen((data) {
-      var d = (data);
-      d.removeAt(0);
-      emails = [];
-      d.forEach((i) {
-        emails.add(Data(descp: i[1], name: i[0], email: i[2]));
-      });
-    });
+    dataContainer.getOtherData();
   }
 
   PageController _pageController;
@@ -222,15 +173,6 @@ class _HomePageState extends State<HomePage>
         ],
       ),
     );
-  }
-
-  makeRepresentativeList(List representativeDataList) {
-    representativeDataList.removeAt(0);
-    representatives = [];
-    for (List lc in representativeDataList) {
-      representatives.add(Representative(
-          position: lc[0], description: lc[1], profiles: jsonDecode(lc[2])));
-    }
   }
 
   @override

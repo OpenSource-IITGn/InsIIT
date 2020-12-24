@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/mainScreens/homePage.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -14,9 +14,9 @@ class _EmailState extends State<Email> {
     sheet.getData('QuickLinks!A:C').listen((data) {
       var d = (data);
       d.removeAt(0);
-      emails = [];
+      dataContainer.quickLinks.emails = [];
       d.forEach((i) {
-        emails.add(Data(descp: i[1], name: i[0], email: i[2]));
+        dataContainer.quickLinks.emails.add(Data(descp: i[1], name: i[0], email: i[2]));
       });
       setState(() {});
     });
@@ -44,7 +44,7 @@ class _EmailState extends State<Email> {
         body: SingleChildScrollView(
           child: Column(
             // children: {template(emails[0])}.toList(),
-            children: emails
+            children: dataContainer.quickLinks.emails
                 .map((currentobject) => Template(obj: currentobject))
                 .toList(),
 

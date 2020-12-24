@@ -5,7 +5,7 @@ import 'dart:convert';
 class ImportantContactsContainer {
   List<ContactCard> contactCards;
 
-  loadImportantContactData() async {
+  getData() async {
     sheet.getData('Contacts!A:E').listen((data) {
       makeContactList(data);
     });
