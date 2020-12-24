@@ -431,7 +431,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   ),
                 ),
                 MessMenuBaseDrawer(selectMeal(dataContainer.mess.foodCards), dataContainer.mess.foodIllustration),
-                (twoEvents.length == 0)
+                (dataContainer.schedule.twoEvents.length == 0)
                     ? GestureDetector(
                         onTap: () {
                           return Navigator.pushNamed(context, '/schedule');
@@ -519,7 +519,7 @@ class _MainHomePageState extends State<MainHomePage> {
                               SizedBox(height: 10),
                               Column(
                                 mainAxisSize: MainAxisSize.min,
-                                children: twoEvents.map((EventModel event) {
+                                children: dataContainer.schedule.twoEvents.map((EventModel event) {
                                   return scheduleCard(event);
                                 }).toList(),
                               ),

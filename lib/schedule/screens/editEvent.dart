@@ -3,11 +3,12 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
-import 'package:instiapp/mainScreens/homePage.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'package:device_apps/device_apps.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/data/dataContainer.dart';
 
 class EditEvent extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _EditEventState extends State<EditEvent> {
   @override
   void initState() {
     super.initState();
-    notAddedCourses = makeNotAddedCoursesList(userAddedCourses, allCourses);
+    notAddedCourses = makeNotAddedCoursesList(dataContainer.schedule.userAddedCourses, dataContainer.schedule.allCourses);
     add = makeAddMap(notAddedCourses);
   }
 
@@ -34,7 +35,7 @@ class _EditEventState extends State<EditEvent> {
 
     allCourses.forEach((MyCourse course) {
       bool contain = true;
-      if (userAddedCourses != null) {
+      if (dataContainer.schedule.userAddedCourses != null) {
         myCourses.forEach((MyCourse addedCourse) {
           if (addedCourse.courseCode == course.courseCode ||
               addedCourse.courseName == course.courseName) {
@@ -130,7 +131,7 @@ class _EditEventState extends State<EditEvent> {
                                 if (model.isCourse) {
                                   updateUserAddedCourses = true;
                                 } else if (model.isExam) {
-                                  removedEvents.add(EventModel(
+                                  dataContainer.schedule.removedEvents.add(EventModel(
                                     isCourse: false,
                                     isExam: true,
                                     courseId: model.courseId,
@@ -138,7 +139,7 @@ class _EditEventState extends State<EditEvent> {
                                     eventType: model.eventType,
                                   ));
                                 } else {
-                                  removedEvents.add(EventModel(
+                                  dataContainer.schedule.removedEvents.add(EventModel(
                                     isCourse: false,
                                     isExam: false,
                                     description: model.description,
@@ -153,7 +154,7 @@ class _EditEventState extends State<EditEvent> {
                                 setState(() {});
                                 if (updateUserAddedCourses) {
                                   var file2 =
-                                  await _localFileForUserAddedCourses();
+                                  await localFile('userAddedCourses');
                                   bool exists2 = await file2.exists();
                                   if (exists2) {
                                     await file2.delete();
@@ -166,7 +167,7 @@ class _EditEventState extends State<EditEvent> {
                                       .convert(userAddedCoursesList));
                                   // print('DATA OF ADDED EVENT STORED IN FILE');
                                 }
-                                var file = await _localFileForRemovedEvents();
+                                var file = await localFile('removedCourses');
                                 bool exists = await file.exists();
                                 if (exists) {
                                   await file.delete();
@@ -174,7 +175,7 @@ class _EditEventState extends State<EditEvent> {
                                 await file.create();
                                 await file.open();
                                 var removedList =
-                                makeRemovedEventsList(removedEvents);
+                                makeRemovedEventsList(dataContainer.schedule.removedEvents);
                                 await file.writeAsString(
                                     ListToCsvConverter().convert(removedList));
                                 // print('DATA OF REMOVED EVENT STORED IN FILE');
@@ -201,8 +202,8 @@ class _EditEventState extends State<EditEvent> {
   List<List<String>> makeUpdatedUserAddedCoursesList(EventModel _course) {
     List<List<String>> updatedList = [];
 
-    if (userAddedCourses != null) {
-      userAddedCourses.forEach((MyCourse course) {
+    if (dataContainer.schedule.userAddedCourses != null) {
+      dataContainer.schedule.userAddedCourses.forEach((MyCourse course) {
         if (course.courseCode != _course.courseId ||
             course.courseName != _course.courseName) {
           updatedList.add([
@@ -270,20 +271,6 @@ class _EditEventState extends State<EditEvent> {
     return removedEventsList;
   }
 
-  Future<File> _localFileForUserAddedCourses() async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + 'userAddedCourses' + '.csv';
-    return File(filename);
-  }
-
-  Future<File> _localFileForRemovedEvents() async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + 'removedCourses' + '.csv';
-    return File(filename);
-  }
-
   _openGoogleCalendar() async {
 //    bool isInstalled =
 //        await DeviceApps.isAppInstalled('com.google.android.calendar');
@@ -326,7 +313,7 @@ class _EditEventState extends State<EditEvent> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            children: eventsList[DateTime.now().weekday - 1]
+            children: dataContainer.schedule.eventsList[DateTime.now().weekday - 1]
                 .map<Widget>((EventModel model) {
               return eventCard(model);
             }).toList(),
@@ -400,19 +387,19 @@ class CustomSearch extends SearchDelegate {
 
   addIfNotPresent (MyCourse course) {
     bool add = true;
-    if (userAddedCourses != null) {
-      userAddedCourses.forEach((MyCourse _course) {
+    if (dataContainer.schedule.userAddedCourses != null) {
+      dataContainer.schedule.userAddedCourses.forEach((MyCourse _course) {
         if (course.courseName == _course.courseName ||
             course.courseCode == _course.courseCode) {
           add = false;
         }
       });
     } else {
-      userAddedCourses = [];
+      dataContainer.schedule.userAddedCourses = [];
     }
 
     if (add) {
-      userAddedCourses.add(course);
+      dataContainer.schedule.userAddedCourses.add(course);
     }
   }
 
@@ -425,7 +412,7 @@ class CustomSearch extends SearchDelegate {
     await file.create();
     await file.open();
     var userAddedCoursesList =
-    makeUserAddedCoursesList(userAddedCourses);
+    makeUserAddedCoursesList(dataContainer.schedule.userAddedCourses);
     await file.writeAsString(
         ListToCsvConverter().convert(userAddedCoursesList));
     print('DATA OF ADDED EVENT STORED IN FILE');

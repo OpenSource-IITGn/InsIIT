@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
-import 'package:instiapp/utilities/columnBuilder.dart';
-
-import 'package:instiapp/mainScreens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/data/dataContainer.dart';
 
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key key}) : super(key: key);
@@ -18,7 +16,7 @@ class _SchedulePageState extends State<SchedulePage> {
   int _index = 0;
 
   Widget body(BuildContext _context, int dayIndex) {
-    if (eventsList == null || eventsList.length == 0 || eventsList[dayIndex].length == 0) {
+    if (dataContainer.schedule.eventsList == null || dataContainer.schedule.eventsList.length == 0 || dataContainer.schedule.eventsList[dayIndex].length == 0) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -52,9 +50,9 @@ class _SchedulePageState extends State<SchedulePage> {
           controller: (dayIndex == DateTime.now().weekday - 1)?_scrollController:null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
-            return eventsList[dayIndex][index].buildCard(_context);
+            return dataContainer.schedule.eventsList[dayIndex][index].buildCard(_context);
           },
-          itemCount: eventsList[dayIndex].length,
+          itemCount: dataContainer.schedule.eventsList[dayIndex].length,
         ),
       );
     }
@@ -76,7 +74,7 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     bool getIndex = false;
     DateTime _currentTime = DateTime.now();
-    eventsList[DateTime.now().weekday - 1].asMap().forEach((int index, EventModel event) {
+    dataContainer.schedule.eventsList[DateTime.now().weekday - 1].asMap().forEach((int index, EventModel event) {
       if (!getIndex && event.end.isAfter(_currentTime)) {
         _index = index;
         getIndex = true;
