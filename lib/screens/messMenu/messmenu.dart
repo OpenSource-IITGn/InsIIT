@@ -79,8 +79,8 @@ class _MessMenuState extends State<MessMenu> {
                               bool hasAlreadyVoted = false;
                               foodVotes.forEach((List<String> ls) {
                                 if (ls[0] == food) {
-                                  if (ls[1] == '1' || ls[1] == '0') {
-                                    ls[1] = '-1';
+                                  if (ls[1] == '-1' || ls[1] == '0') {
+                                    ls[1] = '1';
                                   } else {
                                     ls[1] = '0';
                                   }
@@ -89,7 +89,7 @@ class _MessMenuState extends State<MessMenu> {
                               });
 
                               if (!hasAlreadyVoted) {
-                                foodVotes.add([food, '-1']);
+                                foodVotes.add([food, '1']);
                               }
                               sheet.writeData([
                                 [
@@ -123,8 +123,8 @@ class _MessMenuState extends State<MessMenu> {
                               bool hasAlreadyVoted = false;
                               foodVotes.forEach((List<String> ls) {
                                 if (ls[0] == food) {
-                                  if (ls[1] == '-1' || ls[1] == '0') {
-                                    ls[1] = '1';
+                                  if (ls[1] == '1' || ls[1] == '0') {
+                                    ls[1] = '-1';
                                   } else {
                                     ls[1] = '0';
                                   }
@@ -133,7 +133,7 @@ class _MessMenuState extends State<MessMenu> {
                               });
 
                               if (!hasAlreadyVoted) {
-                                foodVotes.add([food, '1']);
+                                foodVotes.add([food, '-1']);
                               }
                               sheet.writeData([
                                 [
