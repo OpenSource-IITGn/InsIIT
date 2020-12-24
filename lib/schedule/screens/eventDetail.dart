@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/constants.dart';
 
@@ -144,10 +144,10 @@ class _EventDetailState extends State<EventDetail> {
             (event.remarks == null)
                 ? Container()
                 : Text('Remarks: ${event.remarks}',
-                    style: TextStyle(
-                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)),
+                style: TextStyle(
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)),
             SizedBox(
               height: 8,
             ),
@@ -182,10 +182,10 @@ class _EventDetailState extends State<EventDetail> {
             (event.preRequisite == '-')
                 ? Container()
                 : Text('Pre-requisite: ${event.preRequisite}',
-                    style: TextStyle(
-                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)),
+                style: TextStyle(
+                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)),
             ExpansionTile(
               key: GlobalKey(),
               title: Text('View Attendance'),

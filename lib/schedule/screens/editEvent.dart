@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/scheduleModel.dart';
-import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/schedule/classes/scheduleModel.dart';
+import 'package:instiapp/mainScreens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'package:device_apps/device_apps.dart';
@@ -153,7 +153,7 @@ class _EditEventState extends State<EditEvent> {
                                 setState(() {});
                                 if (updateUserAddedCourses) {
                                   var file2 =
-                                      await _localFileForUserAddedCourses();
+                                  await _localFileForUserAddedCourses();
                                   bool exists2 = await file2.exists();
                                   if (exists2) {
                                     await file2.delete();
@@ -161,7 +161,7 @@ class _EditEventState extends State<EditEvent> {
                                   await file2.create();
                                   await file2.open();
                                   var userAddedCoursesList =
-                                      makeUpdatedUserAddedCoursesList(model);
+                                  makeUpdatedUserAddedCoursesList(model);
                                   await file2.writeAsString(ListToCsvConverter()
                                       .convert(userAddedCoursesList));
                                   // print('DATA OF ADDED EVENT STORED IN FILE');
@@ -174,7 +174,7 @@ class _EditEventState extends State<EditEvent> {
                                 await file.create();
                                 await file.open();
                                 var removedList =
-                                    makeRemovedEventsList(removedEvents);
+                                makeRemovedEventsList(removedEvents);
                                 await file.writeAsString(
                                     ListToCsvConverter().convert(removedList));
                                 // print('DATA OF REMOVED EVENT STORED IN FILE');
@@ -290,12 +290,12 @@ class _EditEventState extends State<EditEvent> {
 //    if (isInstalled) {
 //      DeviceApps.openApp('com.google.android.calendar');
 //    } else {
-      String url = 'https://calendar.google.com';
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+    String url = 'https://calendar.google.com';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
 //    }
   }
 
@@ -320,19 +320,19 @@ class _EditEventState extends State<EditEvent> {
       ),
       body: (loading)
           ? Center(
-              child: CircularProgressIndicator(),
-            )
+        child: CircularProgressIndicator(),
+      )
           : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: eventsList[DateTime.now().weekday - 1]
-                      .map<Widget>((EventModel model) {
-                    return eventCard(model);
-                  }).toList(),
-                ),
-              ),
-            ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: eventsList[DateTime.now().weekday - 1]
+                .map<Widget>((EventModel model) {
+              return eventCard(model);
+            }).toList(),
+          ),
+        ),
+      ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

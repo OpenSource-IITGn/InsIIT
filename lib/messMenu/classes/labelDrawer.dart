@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/messMenu/messConstants.dart';
+import 'package:instiapp/messMenu/classes/messConstants.dart';
 import 'package:instiapp/utilities/measureSize.dart';
 import 'package:instiapp/utilities/constants.dart';
 

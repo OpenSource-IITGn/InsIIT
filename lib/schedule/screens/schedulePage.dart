@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/classes/scheduleModel.dart';
+import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 
-import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/mainScreens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 class SchedulePage extends StatefulWidget {

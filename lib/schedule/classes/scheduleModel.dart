@@ -129,16 +129,16 @@ class EventModel {
                   return GestureDetector(
                     onTap: () async {
                       if (await canLaunch(link)) {
-                      await launch(link, forceSafariVC: false);
+                        await launch(link, forceSafariVC: false);
                       } else {
-                      throw 'Could not launch $link';
+                        throw 'Could not launch $link';
                       }
                     },
                     child: Text(
                       link,
                       style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15
+                          color: Colors.blue,
+                          fontSize: 15
                       ),
                     ),
                   );

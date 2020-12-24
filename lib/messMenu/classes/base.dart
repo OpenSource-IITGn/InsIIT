@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:instiapp/messMenu/labelDrawer.dart';
+import 'package:instiapp/messMenu/classes/labelDrawer.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instiapp/utilities/measureSize.dart';

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/screens/homePage.dart';
+import 'package:instiapp/mainScreens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 
-class RepresentativePage extends StatefulWidget {
+class ImportantContacts extends StatefulWidget {
   @override
-  _RepresentativePageState createState() => _RepresentativePageState();
+  _ImportantContactsState createState() => _ImportantContactsState();
 }
 
-class _RepresentativePageState extends State<RepresentativePage> {
+class _ImportantContactsState extends State<ImportantContacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +16,7 @@ class _RepresentativePageState extends State<RepresentativePage> {
         backgroundColor: (darkMode)?navBarDarkMode:navBar,
         elevation: 0,
         centerTitle: true,
-        title: Text('Know Your Representatives',
+        title: Text('Important Contacts',
             style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -25,7 +25,7 @@ class _RepresentativePageState extends State<RepresentativePage> {
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
           child: Column(
             children:
-            representatives.map((card) => card.profileCard(context)).toList(),
+                contactCards.map((card) => card.contactCard(context)).toList(),
           ),
         ),
       ),

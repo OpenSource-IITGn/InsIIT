@@ -2,27 +2,27 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
-import 'package:instiapp/screens/developers.dart';
-import 'package:instiapp/screens/email.dart';
+import 'package:instiapp/developers/screens/developers.dart';
+import 'package:instiapp/quickLinks/screens/email.dart';
 
-import 'package:instiapp/screens/homePage.dart';
-import 'package:instiapp/screens/importantContacts.dart';
-import 'package:instiapp/screens/map/googlemap.dart';
-import 'package:instiapp/screens/messMenu/messfeedback.dart';
-import 'package:instiapp/screens/messMenu/messmenu.dart';
+import 'package:instiapp/mainScreens/homePage.dart';
+import 'package:instiapp/importantContacts/screens/importantContacts.dart';
+import 'package:instiapp/map/screens/googlemap.dart';
+import 'package:instiapp/messMenu/screens/messfeedback.dart';
+import 'package:instiapp/messMenu/screens/messmenu.dart';
 
-import 'package:instiapp/screens/schedule/editEvent.dart';
-import 'package:instiapp/screens/schedule/eventDetail.dart';
-//import 'package:instiapp/screens/schedule/exportIcsFile.dart';
-import 'package:instiapp/screens/schedule/schedulePage.dart';
+import 'package:instiapp/schedule/screens/editEvent.dart';
+import 'package:instiapp/schedule/screens/eventDetail.dart';
+//import 'package:instiapp/schedule/screens/exportIcsFile.dart';
+import 'package:instiapp/schedule/screens/schedulePage.dart';
 
-import 'package:instiapp/screens/loading.dart';
-import 'package:instiapp/screens/shuttle.dart';
-import 'package:instiapp/screens/signIn.dart';
-import 'package:instiapp/screens/onboarding.dart';
-import 'package:instiapp/screens/miscPage.dart';
+import 'package:instiapp/mainScreens/loading.dart';
+import 'package:instiapp/shuttle/screens/shuttle.dart';
+import 'package:instiapp/mainScreens/signIn.dart';
+import 'package:instiapp/mainScreens/onboarding.dart';
+import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/representativePage/representativePage.dart';
+import 'package:instiapp/representativePage/screens/representativePage.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;
 
