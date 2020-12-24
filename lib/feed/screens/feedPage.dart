@@ -12,10 +12,6 @@ class FeedPage extends StatefulWidget {
   _FeedPageState createState() => _FeedPageState();
 }
 
-void log(string) {
-  print("[LOG] $string");
-}
-
 class _FeedPageState extends State<FeedPage>
     with AutomaticKeepAliveClientMixin<FeedPage> {
   List<PostModel> posts = [];
@@ -40,15 +36,11 @@ class _FeedPageState extends State<FeedPage>
       'start_from': offset.toString(),
     };
     var uri = Uri.https(baseUrl, '/getFeeds', queryParameters);
-    log(" PINGING:" + uri.toString());
     var response = await http.get(uri);
     if (response.statusCode == 200) {
-      log("RESPONSE OK");
       Map<String, dynamic> responseJson = jsonDecode(response.body);
       if (responseJson['success'] == true) {
         numberOfPosts = responseJson['results'].length;
-        log("Number of posts: $numberOfPosts");
-        log("${responseJson}");
         for (int i = 0; i < numberOfPosts; i++) {
           posts.add(PostModel.fromJson(responseJson, i));
         }

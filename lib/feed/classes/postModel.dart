@@ -7,10 +7,7 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/slider.dart';
 import 'package:http/http.dart' as http;
 
-//TODO: Implement double tap animation
 //TODO: Implement bio on server side
-//TODO: Implement Comments posting
-//TODO: Implement reactions (server implementation remaining)
 //TODO: Implement Reactions on comments
 //TODO: Implement full screen photo view
 void log(string) {
