@@ -35,16 +35,16 @@ dependencies:
   #(beta)table_calendar: ^2.2.3
   
   intl: ^0.16.1
-  device_apps: ^1.0.9
+  #(beta)device_apps: ^1.0.9
   google_maps_flutter: ^0.5.27+3
   location: ^3.0.2
   #(beta)file_picker: ^1.9.0+1
   cached_network_image: ^2.2.0+1
-  downloads_path_provider: ^0.1.0
+  #(beta)downloads_path_provider: ^0.1.0
   permission_handler: ^5.0.1
 
-  firebase_core: ^0.5.3
   firebase_analytics: ^5.0.2
+  firebase_core: ^0.5.3
   firebase_auth: ^0.18.4+1
   firebase_crashlytics: ^0.2.4
   google_sign_in: "^4.5.1"
