@@ -6,6 +6,8 @@ import 'package:instiapp/mainScreens/homePage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
+import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/mainScreens/loading.dart';
 
 class MainHomePage extends StatefulWidget {
   var reload, readyEvents;
@@ -300,7 +302,9 @@ class _MainHomePageState extends State<MainHomePage> {
           print("reloading");
           prevConnected = connected;
         }
-        return new SingleChildScrollView(
+        return (dataContainer.mess.foodCards == null || dataContainer.mess.foodCards.length != 7)
+        ? loadScreen()
+        : new SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -410,7 +414,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                   ),
                                 ),
                                 Text(
-                                  "Here's what's for ${selectMeal(foodCards)['meal'].toLowerCase()}",
+                                  "Here's what's for ${selectMeal(dataContainer.mess.foodCards)['meal'].toLowerCase()}",
                                   style: TextStyle(
                                       color: (darkMode)
                                           ? secondaryTextColorDarkMode
@@ -426,7 +430,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     ),
                   ),
                 ),
-                MessMenuBaseDrawer(selectMeal(foodCards), foodIllustration),
+                MessMenuBaseDrawer(selectMeal(dataContainer.mess.foodCards), dataContainer.mess.foodIllustration),
                 (twoEvents.length == 0)
                     ? GestureDetector(
                         onTap: () {

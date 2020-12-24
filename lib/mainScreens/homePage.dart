@@ -27,6 +27,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/representativePage/classes/representatives.dart';
+import 'package:instiapp/data/dataContainer.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -35,12 +36,9 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-List<FoodCard> foodCards;
-Map<String, String> foodIllustration = {};
 List<ContactCard> contactCards;
 List<Buses> buses;
 List<Data> emails;
-List<List<String>> foodVotes;
 List<List<TodayCourse>> todayCourses;
 List<EventModel> removedEvents;
 List<MyCourse> userAddedCourses;
@@ -77,12 +75,13 @@ class _HomePageState extends State<HomePage>
   }
 
   void reloadData() {
-    loadMessData();
-    loadFoodIllustrationData();
+    dataContainer.mess.getData().then((s) {
+      mainPageLoading = false;
+      setState(() {});
+    });
     loadlinks();
     loadImportantContactData();
     loadShuttleData();
-    loadFoodVotesData();
     loadCourseTimeData();
     loadAllCourseData();
     loadRemovedCoursesData();
@@ -446,113 +445,6 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  loadFoodVotesData() async {
-    getFoodVotesData().listen((data) {
-      foodVotes = makeFoodVotesList(data);
-    });
-  }
-
-  List<List<String>> makeFoodVotesList(var foodVotesList) {
-    List<List<String>> _foodVotes = [];
-
-    if (foodVotesList != null && foodVotesList.length != 0) {
-      foodVotesList.forEach((var lc) {
-        _foodVotes.add([lc[0], lc[1].toString()]);
-      });
-    }
-
-    return _foodVotes;
-  }
-
-  Stream<List<List<dynamic>>> getFoodVotesData() async* {
-    var file = await _localFile('foodVotes');
-    bool exists = await file.exists();
-    if (exists) {
-      await file.open();
-      String values = await file.readAsString();
-      List<List<dynamic>> rowsAsListOfValues =
-          CsvToListConverter().convert(values);
-      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
-
-      yield rowsAsListOfValues;
-    } else {
-      yield [];
-    }
-  }
-
-  Future<File> _localFile(String range) async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + range + '.csv';
-    return File(filename);
-  }
-
-  loadFoodIllustrationData() async {
-    sheet.getData('FoodItems!A:B').listen((data) {
-      data.removeAt(0);
-      for (var lst in data) {
-        foodIllustration.putIfAbsent(lst[0], () => lst[1]);
-      }
-    });
-  }
-
-  loadMessData() async {
-    sheet.getData('MessMenu!A:G').listen((data) {
-      int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
-      int num2 = (data[0][1] is int) ? data[0][1] : int.parse(data[0][1]);
-      int num3 = (data[0][2] is int) ? data[0][2] : int.parse(data[0][2]);
-      int num4 = (data[0][3] is int) ? data[0][3] : int.parse(data[0][3]);
-      data.removeAt(0);
-      makeMessList(data, num1, num2, num3, num4);
-      foodCards = [
-        FoodCard(
-            day: 'Monday',
-            breakfast: monday[0],
-            lunch: monday[1],
-            snacks: monday[2],
-            dinner: monday[3]),
-        FoodCard(
-            day: 'Tuesday',
-            breakfast: tuesday[0],
-            lunch: tuesday[1],
-            snacks: tuesday[2],
-            dinner: tuesday[3]),
-        FoodCard(
-            day: 'Wednesday',
-            breakfast: wednesday[0],
-            lunch: wednesday[1],
-            snacks: wednesday[2],
-            dinner: wednesday[3]),
-        FoodCard(
-            day: 'Thursday',
-            breakfast: thursday[0],
-            lunch: thursday[1],
-            snacks: thursday[2],
-            dinner: thursday[3]),
-        FoodCard(
-            day: 'Friday',
-            breakfast: friday[0],
-            lunch: friday[1],
-            snacks: friday[2],
-            dinner: friday[3]),
-        FoodCard(
-            day: 'Saturday',
-            breakfast: saturday[0],
-            lunch: saturday[1],
-            snacks: saturday[2],
-            dinner: saturday[3]),
-        FoodCard(
-            day: 'Sunday',
-            breakfast: sunday[0],
-            lunch: sunday[1],
-            snacks: sunday[2],
-            dinner: sunday[3]),
-      ];
-      mainPageLoading = false;
-      setState(() {});
-    });
-  }
-
   PageController _pageController;
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
   Widget homeScreen() {
@@ -675,71 +567,6 @@ class _HomePageState extends State<HomePage>
         ],
       ),
     );
-  }
-
-  var monday = [];
-  var tuesday = [];
-  var wednesday = [];
-  var thursday = [];
-  var friday = [];
-  var saturday = [];
-  var sunday = [];
-  makeMessList(var messDataList, int num1, int num2, int num3, int num4) {
-    // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
-    monday = [];
-    tuesday = [];
-    wednesday = [];
-    thursday = [];
-    friday = [];
-    saturday = [];
-    sunday = [];
-    messDataList.removeAt(0);
-    messDataList.removeAt(0);
-    messDataList.removeAt(num1);
-    messDataList.removeAt(num1);
-    messDataList.removeAt(num1 + num2);
-    messDataList.removeAt(num1 + num2);
-    messDataList.removeAt(num1 + num2 + num3);
-    messDataList.removeAt(num1 + num2 + num3);
-
-    for (var lm in messDataList) {
-      monday += [lm[0]];
-      tuesday += [lm[1]];
-      wednesday += [lm[2]];
-      thursday += [lm[3]];
-      friday += [lm[4]];
-      saturday += [lm[5]];
-      sunday += [lm[6]];
-    }
-
-    monday = [monday.sublist(0, num1)] +
-        [monday.sublist(num1, num1 + num2)] +
-        [monday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [monday.sublist(num1 + num2 + num3)];
-    tuesday = [tuesday.sublist(0, num1)] +
-        [tuesday.sublist(num1, num1 + num2)] +
-        [tuesday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [tuesday.sublist(num1 + num2 + num3)];
-    wednesday = [wednesday.sublist(0, num1)] +
-        [wednesday.sublist(num1, num1 + num2)] +
-        [wednesday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [wednesday.sublist(num1 + num2 + num3)];
-    thursday = [thursday.sublist(0, num1)] +
-        [thursday.sublist(num1, num1 + num2)] +
-        [thursday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [thursday.sublist(num1 + num2 + num3)];
-    friday = [friday.sublist(0, num1)] +
-        [friday.sublist(num1, num1 + num2)] +
-        [friday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [friday.sublist(num1 + num2 + num3)];
-    saturday = [saturday.sublist(0, num1)] +
-        [saturday.sublist(num1, num1 + num2)] +
-        [saturday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [saturday.sublist(num1 + num2 + num3)];
-    sunday = [sunday.sublist(0, num1)] +
-        [sunday.sublist(num1, num1 + num2)] +
-        [sunday.sublist(num1 + num2, num1 + num2 + num3)] +
-        [sunday.sublist(num1 + num2 + num3)];
   }
 
   makeContactList(List importantContactDataList) {
