@@ -301,10 +301,7 @@ class _MainHomePageState extends State<MainHomePage> {
           print("reloading");
           prevConnected = connected;
         }
-        return (dataContainer.mess.foodCards == null ||
-                dataContainer.mess.foodCards.length != 7)
-            ? loadScreen()
-            : new SingleChildScrollView(
+        return new SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -417,7 +414,8 @@ class _MainHomePageState extends State<MainHomePage> {
                                         ),
                                       ),
                                       Text(
-                                        "Here's what's for ${selectMeal(dataContainer.mess.foodCards)['meal'].toLowerCase()}",
+                                        "Here's what's for ${(dataContainer.mess.foodCards == null ||
+                                            dataContainer.mess.foodCards.length != 7) ? 'food' : selectMeal(dataContainer.mess.foodCards)['meal'].toLowerCase()}",
                                         style: TextStyle(
                                             color: (darkMode)
                                                 ? secondaryTextColorDarkMode
@@ -433,57 +431,13 @@ class _MainHomePageState extends State<MainHomePage> {
                           ),
                         ),
                       ),
-                      MessMenuBaseDrawer(
+                      (dataContainer.mess.foodCards == null ||
+                          dataContainer.mess.foodCards.length != 7)
+                      ? Container()
+                      : MessMenuBaseDrawer(
                           selectMeal(dataContainer.mess.foodCards),
                           dataContainer.mess.foodIllustration),
-                      (dataContainer.schedule.twoEvents.length == 0)
-                          ? GestureDetector(
-                              onTap: () {
-                                return Navigator.pushNamed(
-                                    context, '/schedule');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Wondering what's next?",
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
-                                                color: (darkMode)
-                                                    ? primaryTextColorDarkMode
-                                                    : primaryTextColor,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Enjoy your free time :)",
-                                              style: TextStyle(
-                                                  color: (darkMode)
-                                                      ? secondaryTextColorDarkMode
-                                                      : secondaryTextColor),
-                                            ),
-                                          ],
-                                        ),
-                                        Icon(Icons.arrow_forward,
-                                            color: Colors.black.withAlpha(75)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : GestureDetector(
+                      GestureDetector(
                               onTap: () {
                                 return Navigator.pushNamed(
                                     context, '/schedule');
@@ -524,7 +478,9 @@ class _MainHomePageState extends State<MainHomePage> {
                                       ],
                                     ),
                                     SizedBox(height: 10),
-                                    Column(
+                                    (dataContainer.schedule.twoEvents == null || dataContainer.schedule.twoEvents.length == 0)
+                                    ? Container()
+                                    : Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: dataContainer.schedule.twoEvents
                                           .map((EventModel event) {
