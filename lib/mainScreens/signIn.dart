@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
+
+import 'package:instiapp/globalClasses/user.dart' as userModel;
+
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'package:instiapp/utilities/measureSize.dart';
@@ -176,12 +178,17 @@ class _SignInPageState extends State<SignInPage> {
       if (user.displayName == null || user.displayName.length == 0) {
         currentUser = null;
       } else {
-        currentUser = {
-          "given_name": user.displayName,
-          "email": user.email,
-          "picture": user.photoURL,
-          'uid': user.uid
-        };
+        currentUser = userModel.User(
+            name: user.displayName,
+            imageUrl: user.photoURL,
+            email: user.email,
+            uid: user.uid);
+        // currentUser = {
+        //   "given_name": user.displayName,
+        //   "email": user.email,
+        //   "picture": user.photoURL,
+        //   'uid': user.uid
+        // };
         Future.delayed(const Duration(milliseconds: 50)).then((value) async {
           if (eventsReady) {
             Navigator.pushReplacementNamed(context, '/menuBarBase');
@@ -200,7 +207,6 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void authorize(asGuest) async {
-    bool load = false;
     if (asGuest) {
       currentUser = null;
       FirebaseAuth.instance.signInAnonymously();
@@ -210,8 +216,12 @@ class _SignInPageState extends State<SignInPage> {
       // print("Started GSIGN IN Method");
       await signInWithGoogle().then((user) {
         if (user != null) {
-          currentUser = user.additionalUserInfo.profile;
-          load = true;
+          var temp = user.additionalUserInfo.profile;
+          currentUser = userModel.User(
+              name: temp['given_name'],
+              imageUrl: temp['picture'],
+              email: temp['email'],
+              uid: temp['uid']);
         }
       });
       // print("AUTHORIZED");

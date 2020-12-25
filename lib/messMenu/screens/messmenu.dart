@@ -10,12 +10,10 @@ class MessMenu extends StatefulWidget {
 }
 
 class _MessMenuState extends State<MessMenu> {
-
   void initState() {
     super.initState();
     dataContainer.mess.makeMessItems();
   }
-
 
   Widget foodHead(item) {
     return Container(
@@ -81,7 +79,8 @@ class _MessMenuState extends State<MessMenu> {
                             setState(() {
                               String temp = '';
                               bool hasAlreadyVoted = false;
-                              dataContainer.mess.foodVotes.forEach((List<String> ls) {
+                              dataContainer.mess.foodVotes
+                                  .forEach((List<String> ls) {
                                 if (ls[0] == food) {
                                   if (ls[1] == '1' || ls[1] == '0') {
                                     ls[1] = '-1';
@@ -103,7 +102,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  currentUser['email'],
+                                  currentUser.email,
                                   temp
                                 ]
                               ], 'messFeedbackItems!A:D');
@@ -115,8 +114,8 @@ class _MessMenuState extends State<MessMenu> {
                             }
                             await file.create();
                             await file.open();
-                            await file.writeAsString(
-                                ListToCsvConverter().convert(dataContainer.mess.foodVotes));
+                            await file.writeAsString(ListToCsvConverter()
+                                .convert(dataContainer.mess.foodVotes));
                             // print('DATA SAVED IN CACHE');
                           },
                         ),
@@ -128,7 +127,8 @@ class _MessMenuState extends State<MessMenu> {
                             setState(() {
                               String temp = '';
                               bool hasAlreadyVoted = false;
-                              dataContainer.mess.foodVotes.forEach((List<String> ls) {
+                              dataContainer.mess.foodVotes
+                                  .forEach((List<String> ls) {
                                 if (ls[0] == food) {
                                   if (ls[1] == '-1' || ls[1] == '0') {
                                     ls[1] = '1';
@@ -150,7 +150,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  currentUser['email'],
+                                  currentUser.email,
                                   temp
                                 ]
                               ], 'messFeedbackItems!A:D');
@@ -162,8 +162,8 @@ class _MessMenuState extends State<MessMenu> {
                             }
                             await file.create();
                             await file.open();
-                            await file.writeAsString(
-                                ListToCsvConverter().convert(dataContainer.mess.foodVotes));
+                            await file.writeAsString(ListToCsvConverter()
+                                .convert(dataContainer.mess.foodVotes));
                             // print('DATA SAVED IN CACHE');
                           },
                         )
@@ -273,9 +273,11 @@ class _MessMenuState extends State<MessMenu> {
                     child: Column(
                       children: <Widget>[
                         ExpansionTile(
-                          title: foodHead(dataContainer.mess.messItems[e][index]),
+                          title:
+                              foodHead(dataContainer.mess.messItems[e][index]),
                           children: <Widget>[
-                            cardNew(dataContainer.mess.messItems[e][index].bodyModel),
+                            cardNew(dataContainer
+                                .mess.messItems[e][index].bodyModel),
                           ],
                         ),
                       ],

@@ -301,184 +301,97 @@ class _MainHomePageState extends State<MainHomePage> {
           print("reloading");
           prevConnected = connected;
         }
-        return (dataContainer.mess.foodCards == null || dataContainer.mess.foodCards.length != 7)
-        ? loadScreen()
-        : new SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 60),
-                AnimatedContainer(
-                  decoration: new BoxDecoration(
-                      color: Color(0xFFEE4400),
-                      borderRadius:
-                          new BorderRadius.all(const Radius.circular(10.0))),
-                  height: (connected) ? 0 : 24,
-                  width: 100,
-                  duration: Duration(milliseconds: 1000),
-                  curve: Curves.linear,
-                  child: Center(
-                    child: Text(
-                      "Offline",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                (connected)
-                    ? Container()
-                    : SizedBox(
-                        height: 10,
-                      ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      (currentUser == null)
-                          ? Image.asset(
-                              'assets/images/avatar.png',
-                              fit: BoxFit.cover,
-                              width: 90.0,
-                            )
-                          : CircleAvatar(
-                              backgroundColor: Colors.transparent,
-                              minRadius: 30,
-                              child: ClipOval(
-                                  child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                width: 90.0,
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                height: 90.0,
-                                imageUrl: currentUser['picture'],
-                              )),
-                            ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              (currentUser == null)
-                                  ? "Hey John Doe!"
-                                  : "Hey " +
-                                      currentUser['given_name'].split(' ')[0] +
-                                      '!',
-                              style: TextStyle(
-                                  color: (darkMode)
-                                      ? primaryTextColorDarkMode
-                                      : primaryTextColor,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "How are you doing today? ",
-                              style: TextStyle(
-                                  color: (darkMode)
-                                      ? secondaryTextColorDarkMode
-                                      : secondaryTextColor),
-                            ),
-                            // Text(
-                            //   "3 days to the weekend \uf601",
-                            //   style: TextStyle(
-                            //     fontSize: 12.0,
-                            //     fontStyle: FontStyle.italic,
-                            //       color: Colors.black.withAlpha(150)),
-                            // ),
-                          ]),
-                    ]),
-                SizedBox(height: 30),
-                GestureDetector(
-                  onTap: () {
-                    return Navigator.pushNamed(context, '/messmenu');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Hungry?",
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: (darkMode)
-                                        ? primaryTextColorDarkMode
-                                        : primaryTextColor,
-                                  ),
-                                ),
-                                Text(
-                                  "Here's what's for ${selectMeal(dataContainer.mess.foodCards)['meal'].toLowerCase()}",
-                                  style: TextStyle(
-                                      color: (darkMode)
-                                          ? secondaryTextColorDarkMode
-                                          : secondaryTextColor),
-                                ),
-                              ],
-                            ),
-                            Icon(Icons.arrow_forward),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
-                MessMenuBaseDrawer(selectMeal(dataContainer.mess.foodCards), dataContainer.mess.foodIllustration),
-                (dataContainer.schedule.twoEvents.length == 0)
-                    ? GestureDetector(
-                        onTap: () {
-                          return Navigator.pushNamed(context, '/schedule');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Wondering what's next?",
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: (darkMode)
-                                              ? primaryTextColorDarkMode
-                                              : primaryTextColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Enjoy your free time :)",
-                                        style: TextStyle(
-                                            color: (darkMode)
-                                                ? secondaryTextColorDarkMode
-                                                : secondaryTextColor),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward,
-                                      color: Colors.black.withAlpha(75)),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                            ],
+        return (dataContainer.mess.foodCards == null ||
+                dataContainer.mess.foodCards.length != 7)
+            ? loadScreen()
+            : new SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 60),
+                      AnimatedContainer(
+                        decoration: new BoxDecoration(
+                            color: Color(0xFFEE4400),
+                            borderRadius: new BorderRadius.all(
+                                const Radius.circular(10.0))),
+                        height: (connected) ? 0 : 24,
+                        width: 100,
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.linear,
+                        child: Center(
+                          child: Text(
+                            "Offline",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                      )
-                    : GestureDetector(
+                      ),
+                      (connected)
+                          ? Container()
+                          : SizedBox(
+                              height: 10,
+                            ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            (currentUser == null)
+                                ? Image.asset(
+                                    'assets/images/avatar.png',
+                                    fit: BoxFit.cover,
+                                    width: 90.0,
+                                  )
+                                : CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    minRadius: 30,
+                                    child: ClipOval(
+                                        child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      width: 90.0,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      height: 90.0,
+                                      imageUrl: currentUser.imageUrl,
+                                    )),
+                                  ),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    (currentUser == null)
+                                        ? "Hey John Doe!"
+                                        : "Hey " +
+                                            currentUser.name.split(' ')[0] +
+                                            '!',
+                                    style: TextStyle(
+                                        color: (darkMode)
+                                            ? primaryTextColorDarkMode
+                                            : primaryTextColor,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "How are you doing today? ",
+                                    style: TextStyle(
+                                        color: (darkMode)
+                                            ? secondaryTextColorDarkMode
+                                            : secondaryTextColor),
+                                  ),
+                                  // Text(
+                                  //   "3 days to the weekend \uf601",
+                                  //   style: TextStyle(
+                                  //     fontSize: 12.0,
+                                  //     fontStyle: FontStyle.italic,
+                                  //       color: Colors.black.withAlpha(150)),
+                                  // ),
+                                ]),
+                          ]),
+                      SizedBox(height: 30),
+                      GestureDetector(
                         onTap: () {
-                          return Navigator.pushNamed(context, '/schedule');
+                          return Navigator.pushNamed(context, '/messmenu');
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -494,7 +407,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        "Wondering what's next?",
+                                        "Hungry?",
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
@@ -504,7 +417,7 @@ class _MainHomePageState extends State<MainHomePage> {
                                         ),
                                       ),
                                       Text(
-                                        "Here's your schedule",
+                                        "Here's what's for ${selectMeal(dataContainer.mess.foodCards)['meal'].toLowerCase()}",
                                         style: TextStyle(
                                             color: (darkMode)
                                                 ? secondaryTextColorDarkMode
@@ -516,20 +429,116 @@ class _MainHomePageState extends State<MainHomePage> {
                                 ],
                               ),
                               SizedBox(height: 10),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: dataContainer.schedule.twoEvents.map((EventModel event) {
-                                  return scheduleCard(event);
-                                }).toList(),
-                              ),
                             ],
                           ),
                         ),
                       ),
-              ],
-            ),
-          ),
-        );
+                      MessMenuBaseDrawer(
+                          selectMeal(dataContainer.mess.foodCards),
+                          dataContainer.mess.foodIllustration),
+                      (dataContainer.schedule.twoEvents.length == 0)
+                          ? GestureDetector(
+                              onTap: () {
+                                return Navigator.pushNamed(
+                                    context, '/schedule');
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              "Wondering what's next?",
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: (darkMode)
+                                                    ? primaryTextColorDarkMode
+                                                    : primaryTextColor,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Enjoy your free time :)",
+                                              style: TextStyle(
+                                                  color: (darkMode)
+                                                      ? secondaryTextColorDarkMode
+                                                      : secondaryTextColor),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(Icons.arrow_forward,
+                                            color: Colors.black.withAlpha(75)),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                return Navigator.pushNamed(
+                                    context, '/schedule');
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              "Wondering what's next?",
+                                              style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: (darkMode)
+                                                    ? primaryTextColorDarkMode
+                                                    : primaryTextColor,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Here's your schedule",
+                                              style: TextStyle(
+                                                  color: (darkMode)
+                                                      ? secondaryTextColorDarkMode
+                                                      : secondaryTextColor),
+                                            ),
+                                          ],
+                                        ),
+                                        Icon(Icons.arrow_forward),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: dataContainer.schedule.twoEvents
+                                          .map((EventModel event) {
+                                        return scheduleCard(event);
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
+              );
       },
       child: Container(),
     );

@@ -1,7 +1,8 @@
 import 'package:instiapp/utilities/constants.dart';
+import 'package:instiapp/globalClasses/user.dart';
 
 class CommentModel {
-  Person poster;
+  User poster;
   String text;
   String timestamp;
   String timeText;
@@ -32,27 +33,12 @@ class CommentModel {
     }
     // print(json);
     return CommentModel(
-        poster: Person(
+        poster: User(
             name: json['posted_by']['full_name'],
             imageUrl: json['posted_by']['image_link'],
             uid: json['posted_by']['user_id']),
         text: json['content'],
         timeText: timediff,
         timestamp: json['timestamp']);
-  }
-}
-
-class Person {
-  String name;
-  String imageUrl;
-  String uid;
-  Person({this.name, this.imageUrl, this.uid});
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> ret = {
-      'full_name': name,
-      "image_link": imageUrl,
-      "user_id": uid
-    };
-    return ret;
   }
 }

@@ -12,7 +12,7 @@ class _MessFeedBackState extends State<MessFeedBack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
+        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -21,11 +21,13 @@ class _MessFeedBackState extends State<MessFeedBack> {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: (darkMode)?navBarDarkMode:navBar,
+          backgroundColor: (darkMode) ? navBarDarkMode : navBar,
           centerTitle: true,
           title: Text('Mess Feedback',
-              style:
-                  TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  color:
+                      (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
+                  fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -36,14 +38,18 @@ class _MessFeedBackState extends State<MessFeedBack> {
                 children: [
                   Text("Hey there!",
                       style: TextStyle(
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
+                          color: (darkMode)
+                              ? primaryTextColorDarkMode
+                              : primaryTextColor,
                           fontSize: 19,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
                   Text(
                       "Loved something? Unhappy with the food? Send your feedback here.",
                       style: TextStyle(
-                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
+                          color: (darkMode)
+                              ? secondaryTextColorDarkMode
+                              : secondaryTextColor,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   TextField(
@@ -65,8 +71,8 @@ class _MessFeedBackState extends State<MessFeedBack> {
                       sheet.writeData([
                         [
                           DateTime.now().toString(),
-                          currentUser['given_name'],
-                          currentUser['email'],
+                          currentUser.name,
+                          currentUser.email,
                           review
                         ]
                       ], 'messFeedbackText!A:D');

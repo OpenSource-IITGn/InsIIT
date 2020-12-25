@@ -6,6 +6,7 @@ import 'package:instiapp/feed/classes/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:instiapp/globalClasses/user.dart';
 
 class FullPostPage extends StatefulWidget {
   PostModel post;
@@ -25,10 +26,10 @@ class _FullPostPageState extends State<FullPostPage> {
 
   void postComment(String commentText) async {
     var commentObj = CommentModel(
-        poster: Person(
-            name: currentUser['given_name'],
-            imageUrl: currentUser['picture'],
-            uid: currentUser['uid']),
+        poster: User(
+            name: currentUser.name,
+            imageUrl: currentUser.imageUrl,
+            uid: currentUser.uid),
         text: commentText,
         timestamp: dateFormat.format(DateTime.now()),
         timeText: 'now');
