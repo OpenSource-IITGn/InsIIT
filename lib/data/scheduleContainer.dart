@@ -7,13 +7,14 @@ import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:connectivity/connectivity.dart';
 
 class ScheduleContainer {
-  bool eventsReady;
+  bool eventsReady = false;
 
   List<Course> courses = [];
   List<Course> coursesWithoutRepetition = [];
-  List<calendar.Event> events = [];
+  List<calendar.Event> events;
   List<calendar.Event> eventsWithoutRepetition;
 
   List<List<TodayCourse>> todayCourses;
@@ -87,26 +88,33 @@ class ScheduleContainer {
   }
 
   Future reloadEventsAndCourses() async {
-    await gSignIn.signIn();
-    final authHeaders = await gSignIn.currentUser.authHeaders;
-    final httpClient = GoogleHttpClient(authHeaders);
-    await getEventsCached().then((values) async {
-      if (values != false) {
-        // print("Cached Events");
-        events = values;
-        eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-      } else {
-        // print("Not cached events");
-        await getEventsOnline(httpClient).then((value) {
-          storeEventsCached();
-        });
-      }
-    });
-    getEventsOnline(httpClient).then((value) {
-      storeEventsCached();
-    });
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      events = [];
+      eventsWithoutRepetition = [];
+      eventsReady = true;
+    } else {
+      await gSignIn.signIn();
+      final authHeaders = await gSignIn.currentUser.authHeaders;
+      final httpClient = GoogleHttpClient(authHeaders);
+      await getEventsCached().then((values) async {
+        if (values != false) {
+          // print("Cached Events");
+          events = values;
+          eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+        } else {
+          // print("Not cached events");
+          await getEventsOnline(httpClient).then((value) {
+            storeEventsCached();
+          });
+        }
+      });
+      getEventsOnline(httpClient).then((value) {
+        storeEventsCached();
+      });
 
-    eventsReady = true;
+      eventsReady = true;
+    }
   }
 
   List listWithoutRepetitionCourse(List<Course> courses) {

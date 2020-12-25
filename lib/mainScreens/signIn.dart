@@ -1,37 +1,11 @@
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
-
 import 'package:instiapp/globalClasses/user.dart' as userModel;
-
-import 'package:http/io_client.dart';
-import 'package:http/http.dart';
 import 'package:instiapp/utilities/measureSize.dart';
 import 'package:instiapp/utilities/signInMethods.dart';
-import 'package:googleapis/classroom/v1.dart';
-import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-
-List<Course> courses = [];
-List<Course> coursesWithoutRepetition = [];
-List<calendar.Event> events = [];
-List<calendar.Event> eventsWithoutRepetition;
-
-class GoogleHttpClient extends IOClient {
-  Map<String, String> _headers;
-
-  GoogleHttpClient(this._headers) : super();
-
-  @override
-  Future<StreamedResponse> send(BaseRequest request) =>
-      super.send(request..headers.addAll(_headers));
-
-  @override
-  Future<Response> head(Object url, {Map<String, String> headers}) =>
-      super.head(url, headers: headers..addAll(_headers));
-}
+import 'package:instiapp/data/dataContainer.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -41,7 +15,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  bool eventsReady = false;
   bool loading = false;
   ValueNotifier<bool> isSignedIn = ValueNotifier(false);
   var user;
@@ -56,108 +29,6 @@ class _SignInPageState extends State<SignInPage> {
     } else {
       return false;
     }
-  }
-
-  Future getEventsCached() async {
-    var file = await localFile('events');
-    bool exists = await file.exists();
-    if (exists) {
-      // print("EVENTS CACHED PREVIOUSLY");
-      await file.open();
-      String events = await file.readAsString();
-      List<calendar.Event> eventsList = [];
-      var json = jsonDecode(events);
-      json['key'].forEach((eventJson) {
-        calendar.Event x = calendar.Event.fromJson(eventJson);
-        eventsList.add(x);
-      });
-      return eventsList;
-    } else {
-      // print("EVENTS NOT CACHED PREVIOUSLY");
-    }
-
-    return false;
-  }
-
-  Future storeEventsCached() async {
-    var file = await localFile('events');
-    bool exists = await file.exists();
-    if (exists) {
-      await file.delete();
-    }
-    await file.create();
-    await file.open();
-    List<Map<String, dynamic>> eventList = [];
-    events.forEach((element) {
-      eventList.add(element.toJson());
-    });
-    Map<String, dynamic> list = {'key': eventList};
-    await file.writeAsString(jsonEncode(list));
-    // print("WROTE EVENTS TO CACHE");
-    return true;
-  }
-
-  Future getEventsOnline(httpClient) async {
-    var eventData =
-        await calendar.CalendarApi(httpClient).events.list('primary');
-    events = [];
-    events.addAll(eventData.items);
-    eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-  }
-
-  Future reloadEventsAndCourses() async {
-    await gSignIn.signIn();
-    final authHeaders = await gSignIn.currentUser.authHeaders;
-    final httpClient = GoogleHttpClient(authHeaders);
-    await getEventsCached().then((values) async {
-      if (values != false) {
-        // print("Cached Events");
-        events = values;
-        eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-      } else {
-        // print("Not cached events");
-        await getEventsOnline(httpClient).then((value) {
-          storeEventsCached();
-        });
-      }
-    });
-    getEventsOnline(httpClient).then((value) {
-      storeEventsCached();
-    });
-
-    eventsReady = true;
-  }
-
-  List listWithoutRepetitionCourse(List<Course> courses) {
-    List<Course> withoutRepeat = [];
-    courses.forEach((Course course) {
-      bool notHave = true;
-      withoutRepeat.forEach((Course _course) {
-        if (_course.id == course.id) {
-          notHave = false;
-        }
-      });
-      if (notHave) {
-        withoutRepeat.add(course);
-      }
-    });
-    return withoutRepeat;
-  }
-
-  List listWithoutRepetitionEvent(List<calendar.Event> events) {
-    List<calendar.Event> withoutRepeat = [];
-    events.forEach((calendar.Event event) {
-      bool notHave = true;
-      withoutRepeat.forEach((calendar.Event _event) {
-        if (_event.id == event.id) {
-          notHave = false;
-        }
-      });
-      if (notHave) {
-        withoutRepeat.add(event);
-      }
-    });
-    return withoutRepeat;
   }
 
   @override
@@ -176,10 +47,10 @@ class _SignInPageState extends State<SignInPage> {
             email: user.email,
             uid: user.uid);
 
-        if (eventsReady) {
+        if (dataContainer.schedule.eventsReady) {
           Navigator.pushReplacementNamed(context, '/menuBarBase');
         } else {
-          reloadEventsAndCourses().then((s) {
+          dataContainer.schedule.reloadEventsAndCourses().then((s) {
             Navigator.pushReplacementNamed(context, '/menuBarBase');
           });
         }
@@ -211,7 +82,7 @@ class _SignInPageState extends State<SignInPage> {
         }
       });
       // print("AUTHORIZED");
-      await reloadEventsAndCourses().then((s) {});
+      await dataContainer.schedule.reloadEventsAndCourses().then((s) {});
       Navigator.pushReplacementNamed(context, '/menuBarBase');
     }
   }

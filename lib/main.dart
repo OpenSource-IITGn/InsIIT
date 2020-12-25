@@ -30,7 +30,7 @@ import 'package:provider/provider.dart';
 
 void main() => runApp(
       ChangeNotifierProvider<ThemeNotifier>(
-        create: (_) => ThemeNotifier(darkTheme),
+        create: (_) => ThemeNotifier(lightTheme),
         child: MyApp(),
       ),
     );
