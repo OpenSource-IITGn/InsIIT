@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage>
           setState(() => selectedIndex = index);
         },
         children: <Widget>[
-          MainHomePage(reloadData, dataContainer.schedule.readyEvents),
+          MainHomePage(reloadData),
           FeedPage(),
           Shuttle(),
           MapPage(),

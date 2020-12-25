@@ -8,6 +8,7 @@ class MessContainer {
   List<List<dynamic>> allDayMessList;
   Map<String, String> foodIllustration;
   List<List<String>> foodVotes;
+  Map foodItems;
 
   Map<int, String> weekDays = {
     0: 'Monday',
@@ -44,6 +45,8 @@ class MessContainer {
           dinner: allDayMessList[i][3]
         ));
       }
+
+      selectMeal();
     });
   }
 
@@ -140,6 +143,33 @@ class MessContainer {
             timeString: '7:30 pm to 9:30 pm',
             bodyModel: foodCards[i].dinner),
       ];
+    }
+  }
+
+  selectMeal() {
+    foodItems = {};
+    int day = DateTime.now().weekday - 1;
+    int hour = DateTime.now().hour;
+    if (hour >= 4 && hour <= 10) {
+      foodItems = {
+        'meal': 'Breakfast',
+        'list': foodCards[day].breakfast,
+      };
+    } else if (hour > 10 && hour <= 15) {
+      foodItems = {
+        'meal': 'Lunch',
+        'list': foodCards[day].lunch,
+      };
+    } else if (hour > 15 && hour < 19) {
+      foodItems = {
+        'meal': 'Snacks',
+        'list': foodCards[day].snacks,
+      };
+    } else {
+      foodItems = {
+        'meal': 'Dnner',
+        'list': foodCards[day].dinner,
+      };
     }
   }
 }

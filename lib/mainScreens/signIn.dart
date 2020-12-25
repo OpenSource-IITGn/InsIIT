@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -12,8 +11,8 @@ import 'package:instiapp/utilities/measureSize.dart';
 import 'package:instiapp/utilities/signInMethods.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instiapp/utilities/globalFunctions.dart';
 
 List<Course> courses = [];
 List<Course> coursesWithoutRepetition = [];
@@ -60,7 +59,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future getEventsCached() async {
-    var file = await _localFile('events');
+    var file = await localFile('events');
     bool exists = await file.exists();
     if (exists) {
       // print("EVENTS CACHED PREVIOUSLY");
@@ -81,7 +80,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future storeEventsCached() async {
-    var file = await _localFile('events');
+    var file = await localFile('events');
     bool exists = await file.exists();
     if (exists) {
       await file.delete();
@@ -104,13 +103,6 @@ class _SignInPageState extends State<SignInPage> {
     events = [];
     events.addAll(eventData.items);
     eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-  }
-
-  Future<File> _localFile(String range) async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + range + '.csv';
-    return File(filename);
   }
 
   Future reloadEventsAndCourses() async {
