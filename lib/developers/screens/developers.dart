@@ -41,7 +41,6 @@ class DevelopersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -50,10 +49,9 @@ class DevelopersPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         centerTitle: true,
-        title: Text('Team InsIIT',
-            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+        title:
+            Text('Team InsIIT', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
           child: Padding(
@@ -79,12 +77,13 @@ class DevelopersPage extends StatelessWidget {
                           Text(
                             devs[index].name,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                           Text(
                             devs[index].description,
-                            style:
-                                TextStyle(color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor),
+                            style: TextStyle(),
                           ),
                         ],
                       ),

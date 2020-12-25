@@ -16,30 +16,32 @@ class _SchedulePageState extends State<SchedulePage> {
   int _index = 0;
 
   Widget body(BuildContext _context, int dayIndex) {
-    if (dataContainer.schedule.eventsList == null || dataContainer.schedule.eventsList.length == 0 || dataContainer.schedule.eventsList[dayIndex].length == 0) {
+    if (dataContainer.schedule.eventsList == null ||
+        dataContainer.schedule.eventsList.length == 0 ||
+        dataContainer.schedule.eventsList[dayIndex].length == 0) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset(
-                'assets/images/freetime.png'
-            ),
+            Image.asset('assets/images/freetime.png'),
             SizedBox(
               height: 40,
             ),
-            Text('Take rest!',
+            Text(
+              'Take rest!',
               style: TextStyle(
-                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontSize: 18,
-              ),),
+              ),
+            ),
             SizedBox(
               height: 8,
             ),
-            Text('No classes or events to attend today.',
+            Text(
+              'No classes or events to attend today.',
               style: TextStyle(
-                color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                 fontSize: 18,
-              ),),
+              ),
+            ),
           ],
         ),
       );
@@ -47,10 +49,13 @@ class _SchedulePageState extends State<SchedulePage> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          controller: (dayIndex == DateTime.now().weekday - 1)?_scrollController:null,
+          controller: (dayIndex == DateTime.now().weekday - 1)
+              ? _scrollController
+              : null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
-            return dataContainer.schedule.eventsList[dayIndex][index].buildCard(_context);
+            return dataContainer.schedule.eventsList[dayIndex][index]
+                .buildCard(_context);
           },
           itemCount: dataContainer.schedule.eventsList[dayIndex].length,
         ),
@@ -74,7 +79,9 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     bool getIndex = false;
     DateTime _currentTime = DateTime.now();
-    dataContainer.schedule.eventsList[DateTime.now().weekday - 1].asMap().forEach((int index, EventModel event) {
+    dataContainer.schedule.eventsList[DateTime.now().weekday - 1]
+        .asMap()
+        .forEach((int index, EventModel event) {
       if (!getIndex && event.end.isAfter(_currentTime)) {
         _index = index;
         getIndex = true;
@@ -86,7 +93,6 @@ class _SchedulePageState extends State<SchedulePage> {
       initialIndex: DateTime.now().weekday - 1,
       length: 7,
       child: Scaffold(
-        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -95,11 +101,9 @@ class _SchedulePageState extends State<SchedulePage> {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: (darkMode)?navBarDarkMode:navBar,
           centerTitle: true,
           title: Text('Your Schedule',
-              style:
-              TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontWeight: FontWeight.bold)),
           actions: <Widget>[
             IconButton(
               onPressed: () {

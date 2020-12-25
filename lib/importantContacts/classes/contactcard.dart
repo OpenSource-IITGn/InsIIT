@@ -36,13 +36,13 @@ class ContactCard {
                 Text(
                   contactJson['name'],
                   style: TextStyle(
-                      color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic),
+                      fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
                 ),
                 Text(
                   contactJson['designation'],
-                  style: TextStyle(fontStyle: FontStyle.italic, color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ],
             ),
@@ -83,7 +83,6 @@ class ContactCard {
                 : IconButton(
                     icon: Icon(
                       Icons.language,
-                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                     ),
                     onPressed: () {
                       launch(contactJson['website']);
@@ -120,7 +119,6 @@ class ContactCard {
             Text(
               name,
               style: TextStyle(
-                color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -131,7 +129,6 @@ class ContactCard {
                     description,
                     style: TextStyle(
                       fontSize: 14,
-                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

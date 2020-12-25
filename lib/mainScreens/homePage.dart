@@ -5,11 +5,14 @@ import 'package:instiapp/mainScreens/firsthomepage.dart';
 import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
+
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/signInMethods.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -53,12 +56,11 @@ class _HomePageState extends State<HomePage>
 
   PageController _pageController;
   List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
+
   Widget homeScreen() {
     return Scaffold(
-      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       extendBodyBehindAppBar: true,
       bottomNavigationBar: BottomNavyBar(
-        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         selectedIndex: selectedIndex,
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -110,10 +112,8 @@ class _HomePageState extends State<HomePage>
         elevation: 0,
         leading: IconButton(
           icon: Icon(
-            (darkMode) ? Icons.wb_sunny_outlined : Icons.wb_sunny,
-            color: (darkMode)
-                ? Colors.deepPurpleAccent
-                : Colors.grey.withAlpha(100),
+            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
+            color: (darkMode) ? Colors.purple : Colors.black,
           ),
           onPressed: () {
             if (darkMode) {
@@ -121,6 +121,8 @@ class _HomePageState extends State<HomePage>
             } else {
               darkMode = true;
             }
+            Provider.of<ThemeNotifier>(context, listen: false)
+                .setTheme(darkMode);
             setState(() {});
           },
         ),
@@ -133,11 +135,7 @@ class _HomePageState extends State<HomePage>
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(titles[selectedIndex],
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? primaryTextColorDarkMode
-                          : primaryTextColor,
-                      fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontWeight: FontWeight.bold)),
             )),
         actions: <Widget>[
           IconButton(

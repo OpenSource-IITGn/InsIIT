@@ -52,12 +52,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     SizedBox(
                       height: 8,
                     ),
-                    Text("to",
-                        style: TextStyle(
-                            color: (darkMode)
-                                ? secondaryTextColorDarkMode
-                                : secondaryTextColor,
-                            fontSize: 14)),
+                    Text("to", style: TextStyle(fontSize: 14)),
                     SizedBox(
                       height: 8,
                     ),
@@ -84,24 +79,15 @@ class _MainHomePageState extends State<MainHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(event.courseId,
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? secondaryTextColorDarkMode
-                          : secondaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
               SizedBox(
                 height: 8,
               ),
               Flexible(
                 fit: FlexFit.loose,
                 child: Text(event.courseName,
-                    style: TextStyle(
-                        color: (darkMode)
-                            ? primaryTextColorDarkMode
-                            : primaryTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               ),
               SizedBox(
                 height: 8,
@@ -109,12 +95,8 @@ class _MainHomePageState extends State<MainHomePage> {
               Row(
                 children: <Widget>[
                   Text((event.eventType == null) ? 'Course' : event.eventType,
-                      style: TextStyle(
-                          color: (darkMode)
-                              ? primaryTextColorDarkMode
-                              : primaryTextColor,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 14)),
+                      style:
+                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                   SizedBox(
                     width: 8,
                   ),
@@ -122,11 +104,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     fit: FlexFit.loose,
                     child: Text('Room: ${event.location}',
                         style: TextStyle(
-                            color: (darkMode)
-                                ? primaryTextColorDarkMode
-                                : primaryTextColor,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                 ],
               ),
@@ -140,34 +118,20 @@ class _MainHomePageState extends State<MainHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(event.courseId,
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? secondaryTextColorDarkMode
-                          : secondaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
               SizedBox(
                 height: 8,
               ),
               Text(event.courseName,
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? primaryTextColorDarkMode
-                          : primaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(
                 height: 8,
               ),
               Row(
                 children: <Widget>[
                   Text(event.eventType,
-                      style: TextStyle(
-                          color: (darkMode)
-                              ? primaryTextColorDarkMode
-                              : primaryTextColor,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 14)),
+                      style:
+                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                 ],
               ),
               SizedBox(
@@ -178,11 +142,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text('Room: ',
                         style: TextStyle(
-                            color: (darkMode)
-                                ? primaryTextColorDarkMode
-                                : primaryTextColor,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                   SizedBox(
                     width: 8,
@@ -190,11 +150,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text('Roll Numbers: ',
                         style: TextStyle(
-                            color: (darkMode)
-                                ? primaryTextColorDarkMode
-                                : primaryTextColor,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                 ],
               ),
@@ -206,11 +162,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text(event.location,
                         style: TextStyle(
-                            color: (darkMode)
-                                ? primaryTextColorDarkMode
-                                : primaryTextColor,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                   SizedBox(
                     width: 8,
@@ -218,11 +170,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text(event.rollNumbers,
                         style: TextStyle(
-                            color: (darkMode)
-                                ? primaryTextColorDarkMode
-                                : primaryTextColor,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                 ],
               ),
@@ -236,22 +184,12 @@ class _MainHomePageState extends State<MainHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(stringReturn(event.description),
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? secondaryTextColorDarkMode
-                          : secondaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
               SizedBox(
                 height: 8,
               ),
               Text(stringReturn(event.summary),
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? primaryTextColorDarkMode
-                          : primaryTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(
                 height: 8,
               ),
@@ -260,12 +198,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       ' (' +
                       stringReturn(event.remarks) +
                       ')',
-                  style: TextStyle(
-                      color: (darkMode)
-                          ? primaryTextColorDarkMode
-                          : primaryTextColor,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 14)),
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
             ]),
       );
     }
@@ -276,9 +209,7 @@ class _MainHomePageState extends State<MainHomePage> {
         twoDigitTime(time.hour.toString()) +
             ':' +
             twoDigitTime(time.minute.toString()),
-        style: TextStyle(
-            color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
-            fontSize: 14));
+        style: TextStyle(fontSize: 14));
   }
 
   String twoDigitTime(String text) {
@@ -366,18 +297,12 @@ class _MainHomePageState extends State<MainHomePage> {
                                             currentUser.name.split(' ')[0] +
                                             '!',
                                     style: TextStyle(
-                                        color: (darkMode)
-                                            ? primaryTextColorDarkMode
-                                            : primaryTextColor,
                                         fontSize: 19,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     "How are you doing today? ",
-                                    style: TextStyle(
-                                        color: (darkMode)
-                                            ? secondaryTextColorDarkMode
-                                            : secondaryTextColor),
+                                    style: TextStyle(),
                                   ),
                                   // Text(
                                   //   "3 days to the weekend \uf601",
@@ -411,17 +336,11 @@ class _MainHomePageState extends State<MainHomePage> {
                                         style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold,
-                                          color: (darkMode)
-                                              ? primaryTextColorDarkMode
-                                              : primaryTextColor,
                                         ),
                                       ),
                                       Text(
                                         "Here's what's for ${selectMeal(dataContainer.mess.foodCards)['meal'].toLowerCase()}",
-                                        style: TextStyle(
-                                            color: (darkMode)
-                                                ? secondaryTextColorDarkMode
-                                                : secondaryTextColor),
+                                        style: TextStyle(),
                                       ),
                                     ],
                                   ),
@@ -460,17 +379,11 @@ class _MainHomePageState extends State<MainHomePage> {
                                               style: TextStyle(
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.bold,
-                                                color: (darkMode)
-                                                    ? primaryTextColorDarkMode
-                                                    : primaryTextColor,
                                               ),
                                             ),
                                             Text(
                                               "Enjoy your free time :)",
-                                              style: TextStyle(
-                                                  color: (darkMode)
-                                                      ? secondaryTextColorDarkMode
-                                                      : secondaryTextColor),
+                                              style: TextStyle(),
                                             ),
                                           ],
                                         ),
@@ -506,17 +419,11 @@ class _MainHomePageState extends State<MainHomePage> {
                                               style: TextStyle(
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.bold,
-                                                color: (darkMode)
-                                                    ? primaryTextColorDarkMode
-                                                    : primaryTextColor,
                                               ),
                                             ),
                                             Text(
                                               "Here's your schedule",
-                                              style: TextStyle(
-                                                  color: (darkMode)
-                                                      ? secondaryTextColorDarkMode
-                                                      : secondaryTextColor),
+                                              style: TextStyle(),
                                             ),
                                           ],
                                         ),

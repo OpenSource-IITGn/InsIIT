@@ -183,20 +183,14 @@ class _SignInPageState extends State<SignInPage> {
             imageUrl: user.photoURL,
             email: user.email,
             uid: user.uid);
-        // currentUser = {
-        //   "given_name": user.displayName,
-        //   "email": user.email,
-        //   "picture": user.photoURL,
-        //   'uid': user.uid
-        // };
-        Future.delayed(const Duration(milliseconds: 50)).then((value) async {
-          if (eventsReady) {
+
+        if (eventsReady) {
+          Navigator.pushReplacementNamed(context, '/menuBarBase');
+        } else {
+          reloadEventsAndCourses().then((s) {
             Navigator.pushReplacementNamed(context, '/menuBarBase');
-          } else {
-            await reloadEventsAndCourses().then((s) {});
-            Navigator.pushReplacementNamed(context, '/menuBarBase');
-          }
-        });
+          });
+        }
       }
     }
     checkWelcome().then((val) {
@@ -238,7 +232,6 @@ class _SignInPageState extends State<SignInPage> {
         return Future.value(false);
       },
       child: Scaffold(
-        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
         key: key,
         body: SafeArea(
           child: Container(

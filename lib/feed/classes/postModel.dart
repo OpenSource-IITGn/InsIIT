@@ -185,26 +185,18 @@ class _PostWidgetState extends State<PostWidget> {
                             Text(
                               widget.post.postPerson,
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: (darkMode)
-                                      ? primaryTextColorDarkMode
-                                      : primaryTextColor),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               widget.post.postPersonBio,
                               style: TextStyle(
-                                color: (darkMode)
-                                    ? secondaryTextColorDarkMode
-                                    : secondaryTextColor,
                                 fontSize: 12,
                               ),
                             ),
                             Text(
                               widget.post.timeElapsed,
                               style: TextStyle(
-                                color: (darkMode)
-                                    ? secondaryTextColorDarkMode
-                                    : secondaryTextColor,
                                 fontSize: 12,
                                 fontStyle: FontStyle.italic,
                               ),
@@ -232,11 +224,9 @@ class _PostWidgetState extends State<PostWidget> {
                                 TextSpan(
                                     text: '\nRead More... ',
                                     style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FontStyle.italic,
-                                        color: (darkMode)
-                                            ? secondaryTextColorDarkMode
-                                            : secondaryTextColor)),
+                                      fontWeight: FontWeight.bold,
+                                      fontStyle: FontStyle.italic,
+                                    )),
                               ],
                             ),
                           ),
@@ -256,13 +246,6 @@ class _PostWidgetState extends State<PostWidget> {
                               children: <Widget>[
                                 Icon(
                                   Icons.thumb_up,
-                                  color: (widget.post.isLike == true)
-                                      ? (darkMode)
-                                          ? primaryTextColorDarkMode
-                                          : primaryTextColor
-                                      : (darkMode)
-                                          ? secondaryTextColorDarkMode
-                                          : secondaryTextColor,
                                 ),
                                 SizedBox(width: 10),
                                 Text("${widget.post.reactions['like']}"),

@@ -26,11 +26,14 @@ class _EditEventState extends State<EditEvent> {
   @override
   void initState() {
     super.initState();
-    notAddedCourses = makeNotAddedCoursesList(dataContainer.schedule.userAddedCourses, dataContainer.schedule.allCourses);
+    notAddedCourses = makeNotAddedCoursesList(
+        dataContainer.schedule.userAddedCourses,
+        dataContainer.schedule.allCourses);
     add = makeAddMap(notAddedCourses);
   }
 
-  List<MyCourse> makeNotAddedCoursesList (List<MyCourse> myCourses, List<MyCourse> allCourses) {
+  List<MyCourse> makeNotAddedCoursesList(
+      List<MyCourse> myCourses, List<MyCourse> allCourses) {
     List<MyCourse> remainingCourses = [];
 
     allCourses.forEach((MyCourse course) {
@@ -52,7 +55,7 @@ class _EditEventState extends State<EditEvent> {
     return remainingCourses;
   }
 
-  Map<MyCourse, bool> makeAddMap (List<MyCourse> remainingCourses) {
+  Map<MyCourse, bool> makeAddMap(List<MyCourse> remainingCourses) {
     Map<MyCourse, bool> _add = {};
     remainingCourses.forEach((MyCourse course) {
       _add.putIfAbsent(course, () => false);
@@ -88,11 +91,7 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.courseName, model.summary),
                         style: TextStyle(
-                            color: (darkMode)
-                                ? primaryTextColorDarkMode
-                                : primaryTextColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
+                            fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       // SizedBox(
                       //   height: 8,
@@ -100,9 +99,6 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.eventType, model.description),
                         style: TextStyle(
-                          color: (darkMode)
-                              ? secondaryTextColorDarkMode
-                              : secondaryTextColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -131,7 +127,8 @@ class _EditEventState extends State<EditEvent> {
                                 if (model.isCourse) {
                                   updateUserAddedCourses = true;
                                 } else if (model.isExam) {
-                                  dataContainer.schedule.removedEvents.add(EventModel(
+                                  dataContainer.schedule.removedEvents
+                                      .add(EventModel(
                                     isCourse: false,
                                     isExam: true,
                                     courseId: model.courseId,
@@ -139,7 +136,8 @@ class _EditEventState extends State<EditEvent> {
                                     eventType: model.eventType,
                                   ));
                                 } else {
-                                  dataContainer.schedule.removedEvents.add(EventModel(
+                                  dataContainer.schedule.removedEvents
+                                      .add(EventModel(
                                     isCourse: false,
                                     isExam: false,
                                     description: model.description,
@@ -154,7 +152,7 @@ class _EditEventState extends State<EditEvent> {
                                 setState(() {});
                                 if (updateUserAddedCourses) {
                                   var file2 =
-                                  await localFile('userAddedCourses');
+                                      await localFile('userAddedCourses');
                                   bool exists2 = await file2.exists();
                                   if (exists2) {
                                     await file2.delete();
@@ -162,7 +160,7 @@ class _EditEventState extends State<EditEvent> {
                                   await file2.create();
                                   await file2.open();
                                   var userAddedCoursesList =
-                                  makeUpdatedUserAddedCoursesList(model);
+                                      makeUpdatedUserAddedCoursesList(model);
                                   await file2.writeAsString(ListToCsvConverter()
                                       .convert(userAddedCoursesList));
                                   // print('DATA OF ADDED EVENT STORED IN FILE');
@@ -174,8 +172,8 @@ class _EditEventState extends State<EditEvent> {
                                 }
                                 await file.create();
                                 await file.open();
-                                var removedList =
-                                makeRemovedEventsList(dataContainer.schedule.removedEvents);
+                                var removedList = makeRemovedEventsList(
+                                    dataContainer.schedule.removedEvents);
                                 await file.writeAsString(
                                     ListToCsvConverter().convert(removedList));
                                 // print('DATA OF REMOVED EVENT STORED IN FILE');
@@ -289,11 +287,9 @@ class _EditEventState extends State<EditEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: (darkMode) ? navBarDarkMode : navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -301,25 +297,24 @@ class _EditEventState extends State<EditEvent> {
           },
         ),
         title: Text('Edit Schedule',
-            style: TextStyle(
-                color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
-                fontWeight: FontWeight.bold)),
+            style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: (loading)
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: dataContainer.schedule.eventsList[DateTime.now().weekday - 1]
-                .map<Widget>((EventModel model) {
-              return eventCard(model);
-            }).toList(),
-          ),
-        ),
-      ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: dataContainer
+                      .schedule.eventsList[DateTime.now().weekday - 1]
+                      .map<Widget>((EventModel model) {
+                    return eventCard(model);
+                  }).toList(),
+                ),
+              ),
+            ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -372,8 +367,7 @@ class _EditEventState extends State<EditEvent> {
 }
 
 class CustomSearch extends SearchDelegate {
-
-  addCourses (Map<MyCourse, bool> add, BuildContext context) {
+  addCourses(Map<MyCourse, bool> add, BuildContext context) {
     loadingAddCourseData = true;
     query = "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken";
     add.forEach((MyCourse course, bool addCourse) {
@@ -385,7 +379,7 @@ class CustomSearch extends SearchDelegate {
     saveFileInCache(context);
   }
 
-  addIfNotPresent (MyCourse course) {
+  addIfNotPresent(MyCourse course) {
     bool add = true;
     if (dataContainer.schedule.userAddedCourses != null) {
       dataContainer.schedule.userAddedCourses.forEach((MyCourse _course) {
@@ -403,7 +397,7 @@ class CustomSearch extends SearchDelegate {
     }
   }
 
-  saveFileInCache (BuildContext context) async {
+  saveFileInCache(BuildContext context) async {
     var file = await _localFileForUserAddedCourses();
     bool exists = await file.exists();
     if (exists) {
@@ -412,9 +406,9 @@ class CustomSearch extends SearchDelegate {
     await file.create();
     await file.open();
     var userAddedCoursesList =
-    makeUserAddedCoursesList(dataContainer.schedule.userAddedCourses);
-    await file.writeAsString(
-        ListToCsvConverter().convert(userAddedCoursesList));
+        makeUserAddedCoursesList(dataContainer.schedule.userAddedCourses);
+    await file
+        .writeAsString(ListToCsvConverter().convert(userAddedCoursesList));
     print('DATA OF ADDED EVENT STORED IN FILE');
 
     query = '';
@@ -427,8 +421,7 @@ class CustomSearch extends SearchDelegate {
     List<List<String>> userAddedCoursesList = [];
 
     userAddedCourses.forEach((MyCourse course) {
-      userAddedCoursesList
-          .add([
+      userAddedCoursesList.add([
         course.courseCode,
         course.courseName,
         course.noOfLectures.toString(),
@@ -455,7 +448,7 @@ class CustomSearch extends SearchDelegate {
     return File(filename);
   }
 
-  Widget courseCard (MyCourse course, Map<MyCourse, bool> add) {
+  Widget courseCard(MyCourse course, Map<MyCourse, bool> add) {
     return GestureDetector(
       onTap: () {
         if (add[course]) {
@@ -471,7 +464,7 @@ class CustomSearch extends SearchDelegate {
       child: Container(
         width: ScreenSize.size.width * 1,
         child: Card(
-          color: (add[course])?Colors.white30:Colors.white,
+          color: (add[course]) ? Colors.white30 : Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -480,23 +473,17 @@ class CustomSearch extends SearchDelegate {
               children: <Widget>[
                 Flexible(
                     child: Text(
-                      course.courseCode,
-                      style: TextStyle(
-                          color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
+                  course.courseCode,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                )),
+                SizedBox(
+                  width: 5,
                 ),
-                SizedBox(width: 5,),
                 Flexible(
                     child: Text(
-                      course.courseName,
-                      style: TextStyle(
-                          color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )
-                ),
+                  course.courseName,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                )),
               ],
             ),
           ),
@@ -537,8 +524,11 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (loadingAddCourseData || query == "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken") {
-      return Center(child: CircularProgressIndicator(),);
+    if (loadingAddCourseData ||
+        query == "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken") {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     } else if (query.isEmpty) {
       return SingleChildScrollView(
         child: Padding(
@@ -551,7 +541,12 @@ class CustomSearch extends SearchDelegate {
         ),
       );
     } else {
-      final suggestionList = notAddedCourses.where((MyCourse course) => ((course.courseCode.toLowerCase()).startsWith(query.toLowerCase()) || (course.courseName.toLowerCase()).startsWith(query.toLowerCase()))).toList();
+      final suggestionList = notAddedCourses
+          .where((MyCourse course) => ((course.courseCode.toLowerCase())
+                  .startsWith(query.toLowerCase()) ||
+              (course.courseName.toLowerCase())
+                  .startsWith(query.toLowerCase())))
+          .toList();
 
       return SingleChildScrollView(
         child: Padding(
@@ -566,4 +561,3 @@ class CustomSearch extends SearchDelegate {
     }
   }
 }
-

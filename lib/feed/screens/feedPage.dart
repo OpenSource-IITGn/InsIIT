@@ -82,8 +82,6 @@ class _FeedPageState extends State<FeedPage>
                 Navigator.pushNamed(context, '/hashtags');
               },
               child: Icon(Icons.sort_rounded)),
-          backgroundColor:
-              (darkMode) ? backgroundColorDarkMode : Colors.transparent,
           body: (loading == true)
               ? Center(child: CircularProgressIndicator())
               : RefreshIndicator(

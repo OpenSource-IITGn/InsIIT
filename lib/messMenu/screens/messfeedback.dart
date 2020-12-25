@@ -12,7 +12,6 @@ class _MessFeedBackState extends State<MessFeedBack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: (darkMode) ? backgroundColorDarkMode : backgroundColor,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
@@ -21,13 +20,9 @@ class _MessFeedBackState extends State<MessFeedBack> {
               Navigator.pop(context);
             },
           ),
-          backgroundColor: (darkMode) ? navBarDarkMode : navBar,
           centerTitle: true,
           title: Text('Mess Feedback',
-              style: TextStyle(
-                  color:
-                      (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
-                  fontWeight: FontWeight.bold)),
+              style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -37,20 +32,12 @@ class _MessFeedBackState extends State<MessFeedBack> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Hey there!",
-                      style: TextStyle(
-                          color: (darkMode)
-                              ? primaryTextColorDarkMode
-                              : primaryTextColor,
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold)),
+                      style:
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
                   SizedBox(height: 8),
                   Text(
                       "Loved something? Unhappy with the food? Send your feedback here.",
-                      style: TextStyle(
-                          color: (darkMode)
-                              ? secondaryTextColorDarkMode
-                              : secondaryTextColor,
-                          fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   TextField(
                     minLines: 5,
@@ -63,7 +50,6 @@ class _MessFeedBackState extends State<MessFeedBack> {
                         hintText: 'Enter your review here.'),
                   ),
                   RaisedButton.icon(
-                    color: primaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),

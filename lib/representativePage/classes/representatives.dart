@@ -52,19 +52,13 @@ class Representative {
               Text(
                 contactJson['name'],
                 style: TextStyle(
-                    color: (darkMode)
-                        ? primaryTextColorDarkMode
-                        : primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic),
+                    fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
               ),
               Text(
                 contactJson['designation'],
                 style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    color: (darkMode)
-                        ? primaryTextColorDarkMode
-                        : primaryTextColor),
+                  fontStyle: FontStyle.italic,
+                ),
               ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +151,6 @@ class Representative {
         child: Text(
           position,
           style: TextStyle(
-            color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
           ),

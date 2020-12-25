@@ -59,50 +59,39 @@ class _EventDetailState extends State<EventDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(event.courseName,
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Text(event.courseId,
-                style: TextStyle(
-                    color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             Text(event.eventType,
                 style: TextStyle(
-                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                   fontStyle: FontStyle.italic,
                 )),
             SizedBox(
               height: 10,
             ),
             (event.links != null || event.links.length != 0)
-                ?Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: event.links.map((link) {
-                return GestureDetector(
-                  onTap: () async {
-                    if (await canLaunch(link)) {
-                      await launch(link, forceSafariVC: false);
-                    } else {
-                      throw 'Could not launch $link';
-                    }
-                  },
-                  child: Text(
-                    link,
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15
-                    ),
-                  ),
-                );
-              }).toList(),
-            )
-                :Container(),
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: event.links.map((link) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (await canLaunch(link)) {
+                            await launch(link, forceSafariVC: false);
+                          } else {
+                            throw 'Could not launch $link';
+                          }
+                        },
+                        child: Text(
+                          link,
+                          style: TextStyle(color: Colors.blue, fontSize: 15),
+                        ),
+                      );
+                    }).toList(),
+                  )
+                : Container(),
             RichText(
               text: TextSpan(
-                style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Happens at ',
@@ -119,7 +108,6 @@ class _EventDetailState extends State<EventDetail> {
             ),
             RichText(
               text: TextSpan(
-                style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor),
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Between ',
@@ -144,48 +132,41 @@ class _EventDetailState extends State<EventDetail> {
             (event.remarks == null)
                 ? Container()
                 : Text('Remarks: ${event.remarks}',
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 8,
             ),
             Text('Instructors: ',
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 8,
             ),
             Column(
-              children: (event.instructors == null) ? [Container()] :event.instructors.map<Widget>((String instructor) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(instructor,
-                      style: TextStyle(
-                        color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                        // fontWeight: FontWeight.bold,
-                      )),
-                );
-              }).toList(),
+              children: (event.instructors == null)
+                  ? [Container()]
+                  : event.instructors.map<Widget>((String instructor) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(instructor,
+                            style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                )),
+                      );
+                    }).toList(),
             ),
             SizedBox(
               height: 10,
             ),
             Text('${event.credits} credits',
                 style: TextStyle(
-                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                   fontWeight: FontWeight.bold,
                 )),
             (event.preRequisite == '-')
                 ? Container()
                 : Text('Pre-requisite: ${event.preRequisite}',
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ExpansionTile(
               key: GlobalKey(),
               title: Text('View Attendance'),
@@ -204,44 +185,26 @@ class _EventDetailState extends State<EventDetail> {
               height: 10,
             ),
             Text(event.courseName,
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Text(event.courseId,
-                style: TextStyle(
-                    color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             Text('ClassRoom: ${event.location}',
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Roll Numbers: ${event.rollNumbers}',
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Time: ' + time(event.start) + ' to ' + time(event.end),
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Type: ${event.eventType}',
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ],
         ),
       );
@@ -255,42 +218,27 @@ class _EventDetailState extends State<EventDetail> {
               height: 10,
             ),
             Text('Event: ' + stringReturn(event.summary),
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Invited by: ' + stringReturn(event.creator),
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Description: ' + stringReturn(event.description),
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Time: ' + time(event.start) + ' To ' + time(event.end),
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
             Text('Location: ' + stringReturn(event.location),
-                style: TextStyle(
-                    color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             SizedBox(
               height: 10,
             ),
@@ -308,19 +256,16 @@ class _EventDetailState extends State<EventDetail> {
       attendance = attendanceManager(event.attendanceManager);
     }
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: (darkMode)?navBarDarkMode:navBar,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Details',
-            style: TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+        title: Text('Details', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
         child: body(event),

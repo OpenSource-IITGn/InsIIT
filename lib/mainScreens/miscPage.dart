@@ -11,7 +11,6 @@ class _MiscPageState extends State<MiscPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -69,9 +68,7 @@ class _MiscPageState extends State<MiscPage> {
                         child: Container(
                           child: Text(
                             "Important Contacts",
-                            style: TextStyle(
-                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                       ),
@@ -95,9 +92,7 @@ class _MiscPageState extends State<MiscPage> {
                         child: Container(
                           child: Text(
                             "Quick Links",
-                            style: TextStyle(
-                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                       ),
@@ -121,9 +116,7 @@ class _MiscPageState extends State<MiscPage> {
                         child: Container(
                           child: Text(
                             "Team InsIIT",
-                            style: TextStyle(
-                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                       ),
@@ -148,9 +141,7 @@ class _MiscPageState extends State<MiscPage> {
                           child: Text(
                             "Know Your Representatives",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                       ),
@@ -181,9 +172,7 @@ class _MiscPageState extends State<MiscPage> {
                         child: Container(
                           child: Text(
                             "Report Bug",
-                            style: TextStyle(
-                              color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                            ),
+                            style: TextStyle(),
                           ),
                         ),
                       ),

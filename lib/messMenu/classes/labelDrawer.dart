@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:instiapp/messMenu/classes/messConstants.dart';
 import 'package:instiapp/utilities/measureSize.dart';
 import 'package:instiapp/utilities/constants.dart';
 
@@ -54,7 +53,7 @@ Widget label(String text, visible, sizeCallback) {
         duration: Duration(milliseconds: 1000),
         child: Container(
           decoration: ShapeDecoration(
-            color: (darkMode) ? primaryTextColorDarkMode : primaryTextColor,
+            color: (darkMode) ? Colors.white : Colors.black.withAlpha(200),
             shape: LabelBorder(arrowArc: 0.1),
           ),
           child: Padding(
@@ -62,10 +61,9 @@ Widget label(String text, visible, sizeCallback) {
             child: Text(text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 10,
-                    color: (darkMode)
-                        ? primaryTextColorReverseDarkMode
-                        : primaryTextColorReverse)),
+                  color: (darkMode) ? Colors.black : Colors.white,
+                  fontSize: 10,
+                )),
           ),
         ),
       ),

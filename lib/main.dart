@@ -20,21 +20,27 @@ import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/mainScreens/signIn.dart';
 import 'package:instiapp/mainScreens/onboarding.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/representativePage/screens/representativePage.dart';
 
 import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:provider/provider.dart';
 
-void main() async {
-  runApp(MyApp());
-}
+void main() => runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(darkTheme),
+        child: MyApp(),
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
   int k = 0;
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -71,8 +77,9 @@ class MyApp extends StatelessWidget {
               '/representativePage': (context) => RepresentativePage(),
             },
             title: 'Instiapp',
-            theme:
-                ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
+            theme: themeNotifier.getTheme(),
+            // theme:
+            //     ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
           );
         }
         return loadScreen();

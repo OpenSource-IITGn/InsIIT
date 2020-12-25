@@ -16,7 +16,8 @@ class _EmailState extends State<Email> {
       d.removeAt(0);
       dataContainer.quickLinks.emails = [];
       d.forEach((i) {
-        dataContainer.quickLinks.emails.add(Data(descp: i[1], name: i[0], email: i[2]));
+        dataContainer.quickLinks.emails
+            .add(Data(descp: i[1], name: i[0], email: i[2]));
       });
       setState(() {});
     });
@@ -31,15 +32,12 @@ class _EmailState extends State<Email> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: (darkMode)?backgroundColorDarkMode:backgroundColor,
         appBar: AppBar(
           title: Text('Quick Links',
-              style:
-                  TextStyle(color: (darkMode)?primaryTextColorDarkMode:primaryTextColor, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontWeight: FontWeight.bold)),
           elevation: 0,
           centerTitle: true,
           iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: (darkMode)?navBarDarkMode:navBar,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -102,7 +100,6 @@ class Template extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: (darkMode)?primaryTextColorDarkMode:primaryTextColor,
                 ),
               ),
               SizedBox(
@@ -113,10 +110,7 @@ class Template extends StatelessWidget {
                 height: 6.0,
               ),
               Text(obj.descp,
-                  style: TextStyle(
-                      fontSize: 14.0,
-                      color: (darkMode)?secondaryTextColorDarkMode:secondaryTextColor,
-                      fontStyle: FontStyle.italic))
+                  style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic))
             ],
           ),
         ),
