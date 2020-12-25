@@ -15,8 +15,29 @@ class RepresentativesContainer {
     representativeDataList.removeAt(0);
     representatives = [];
     for (List lc in representativeDataList) {
+      List<String> batch = [];
+      List listJsonData;
+      listJsonData = jsonDecode(lc[2]);
+
+      listJsonData.forEach((jsonData) {
+        String currentBatch = jsonData["batch"];
+        bool add = true;
+
+        batch.forEach((String addedBatch) {
+          if (addedBatch == currentBatch) {
+            add = false;
+          }
+        });
+
+        if (add) {
+          batch.add(currentBatch);
+        }
+      });
+
       representatives.add(Representative(
-          position: lc[0], description: lc[1], profiles: jsonDecode(lc[2])));
+          position: lc[0], description: lc[1], profiles: listJsonData, batch: batch, currentBatch: ""));
     }
   }
 }
+
+

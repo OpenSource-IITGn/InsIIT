@@ -8,6 +8,11 @@ class RepresentativePage extends StatefulWidget {
 }
 
 class _RepresentativePageState extends State<RepresentativePage> {
+
+  void reload () {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +28,7 @@ class _RepresentativePageState extends State<RepresentativePage> {
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
           child: Column(
             children: dataContainer.representatives.representatives
-                .map((card) => card.profileCard(context))
+                .map((card) => card.profileCard(context, reload))
                 .toList(),
           ),
         ),
@@ -31,3 +36,4 @@ class _RepresentativePageState extends State<RepresentativePage> {
     );
   }
 }
+
