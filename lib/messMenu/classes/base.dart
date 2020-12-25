@@ -79,6 +79,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
           child: MeasureSize(
             onChange: (Size size) {
               imageSizes[i] = size;
+              setState(() {});
             },
             child: Image.network(
               (dataContainer.mess.foodIllustration.containsKey(dataContainer.mess.foodItems['list'][i]))
