@@ -7,17 +7,20 @@ class FireBaseContainer {
   bool gotUser = false;
   FirebaseApp app;
 
-  initialize () {
+  initialize (Function f) {
     Firebase.initializeApp().then((value) {
       app = value;
       user = FirebaseAuth.instance.currentUser;
       initialized = true;
       gotUser = true;
+      print('Initialized and get user');
+      f();
     });
   }
 
   getUser () {
     user = FirebaseAuth.instance.currentUser;
     gotUser = true;
+    print('Get user');
   }
 }
