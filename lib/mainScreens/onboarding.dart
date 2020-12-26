@@ -12,12 +12,12 @@ class OnboardingPageState extends State<OnboardingPage> {
   int _slideIndex = 0;
   // final GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
   final List<String> images = [
-    //(beta)"assets/images/slide_1.png",
+    "assets/images/slide_1.png",
     "assets/images/slide_2.png",
     "assets/images/slide_3.png",
     "assets/images/slide_4.png",
-    //(beta)"assets/images/slide_5.png",
-    //(beta)"assets/images/slide_6.png",
+    "assets/images/slide_5.png",
+    "assets/images/slide_6.png",
     //(beta)"assets/images/slide_7.png",
     "assets/images/slide_8.png",
     "assets/images/slide_9.png",
@@ -25,12 +25,12 @@ class OnboardingPageState extends State<OnboardingPage> {
   ];
 
   final List<String> text0 = [
-    //(beta)"Feed",
+    "Feed",
     "Mess Menu",
     "Campus Map",
     "Shuttle Timings",
-    //(beta)"Schedule",
-    //(beta)"Calendar",
+    "Schedule",
+    "Calendar",
     //(beta)"Booking",
     "Contacts",
     "Quick Links",
@@ -38,12 +38,12 @@ class OnboardingPageState extends State<OnboardingPage> {
   ];
 
   final List<String> text1 = [
-    //(beta)"View announcements and news",
+    "View announcements and news",
     "Know what's in the mess and give feedback",
     "Search for places and get directions",
     "Know timings and set reminders",
-    //(beta)"Know what's on your day",
-    //(beta)"All events in one place",
+    "Know what's on your day",
+    "All events in one place",
     //(beta)"Book rooms, 3D printers and more",
     "Important campus contacts",
     "A collection of IITGN links",
@@ -56,8 +56,8 @@ class OnboardingPageState extends State<OnboardingPage> {
     TransformerPageView transformerPageView = TransformerPageView(
         pageSnapping: true,
         onPageChanged: (index) {
-          if (this._slideIndex == 4 /*(beta)8*/) {
-            Navigator.pop(context);
+          if (this._slideIndex == 7 /*(beta)8*/) {
+            Navigator.popAndPushNamed(context, '/signin');
           }
           setState(() {
             this._slideIndex = index;
@@ -96,7 +96,9 @@ class OnboardingPageState extends State<OnboardingPage> {
                     SizedBox(
                       height: 45.0,
                     ),
-                    new ParallaxContainer(
+                    (images[info.index] == "")
+                    ? Container()
+                    : new ParallaxContainer(
                       child: new Image.asset(
                         images[info.index],
                         fit: BoxFit.contain,
@@ -138,7 +140,7 @@ class OnboardingPageState extends State<OnboardingPage> {
             ),
           );
         }),
-        itemCount: 6 /*(beta)10*/);
+        itemCount: 9 /*(beta)10*/);
 
     return Scaffold(
       backgroundColor: Colors.white,
