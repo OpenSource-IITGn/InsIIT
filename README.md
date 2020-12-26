@@ -15,15 +15,9 @@ Kicked off on HackRush 2019, this project was brought to life with a vision to c
 ## Features
 - TODO
 
-## Code Example
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
-
-## Installation
-Provide step by step series of examples and explanations about how to get a development env running.
-
 ## API's
-
 A large part of this project runs off the Google Sheet API due to its ease of being modified without any technical knowledge whatsoever. This will change as and when a proper server has been hosted later.
+You can view the backend API hosted on heroku here: 
 
 ## Team InsIIT
 - Anurag Kurle ([praveenVnktsh](https://github.com/praveenVnktsh) Class of '23)
