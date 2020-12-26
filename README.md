@@ -27,6 +27,9 @@ You can view the backend API hosted on heroku here:
 - Nishikant Parmar ([nishikantparmariam](https://github.com/nishikantparmariam) Class of '22)
 - Praveen Venkatesh ([praveenVnktsh](https://github.com/praveenVnktsh) Class of '22)
 
+## Mentions
+
+We would like to thank Shreyas Singh (Class of '20), Shantanu Jana (Class of '21), Jainam Shah (Class of '21), Animesh Rastogi (Class of '20), and Rohit Patil (Class of '21) for their valuable help in securing the required logistics for the project.
 
 
 ## Contributors
