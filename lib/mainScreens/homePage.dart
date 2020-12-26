@@ -110,22 +110,22 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
-            color: (darkMode) ? Colors.purple : Colors.black,
-          ),
-          onPressed: () {
-            if (darkMode) {
-              darkMode = false;
-            } else {
-              darkMode = true;
-            }
-            Provider.of<ThemeNotifier>(context, listen: false)
-                .setTheme(darkMode);
-            setState(() {});
-          },
-        ),
+//        leading: IconButton(
+//          icon: Icon(
+//            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
+//            color: (darkMode) ? Colors.purple : Colors.black,
+//          ),
+//          onPressed: () {
+//            if (darkMode) {
+//              darkMode = false;
+//            } else {
+//              darkMode = true;
+//            }
+//            Provider.of<ThemeNotifier>(context, listen: false)
+//                .setTheme(darkMode);
+//            setState(() {});
+//          },
+//        ),
         title: Container(
             decoration: new BoxDecoration(
                 color: (titles[selectedIndex] == "")

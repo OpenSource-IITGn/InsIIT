@@ -115,7 +115,6 @@ class _SchedulePageState extends State<SchedulePage> {
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,
-              labelColor: primaryColor,
               unselectedLabelColor: Colors.black.withOpacity(0.3),
               indicatorColor: primaryColor,
               // unselectedLabelStyle:
