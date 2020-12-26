@@ -10,7 +10,7 @@ Kicked off via HackRush 2019, this project was brought to life with a vision to 
 
 ## Tech/framework used
 - Frontend - Flutter
-- Backend - Node.js + MongoDb, Google Sheets
+- Backend - Node.js + MongoDb, Google Sheets, FireBase
 
 ## Features
 - TODO
