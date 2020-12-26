@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:http/http.dart';
+import 'package:instiapp/data/dataContainer.dart';
 
 logoutUser() async {
+  dataContainer.fireBase.user = null;
   await gSignIn.signOut();
   await FirebaseAuth.instance.signOut();
 }

@@ -1,5 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/developers/screens/developers.dart';
@@ -15,8 +13,6 @@ import 'package:instiapp/schedule/screens/editEvent.dart';
 import 'package:instiapp/schedule/screens/eventDetail.dart';
 //import 'package:instiapp/schedule/screens/exportIcsFile.dart';
 import 'package:instiapp/schedule/screens/schedulePage.dart';
-
-import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/mainScreens/signIn.dart';
 import 'package:instiapp/mainScreens/onboarding.dart';
@@ -37,22 +33,21 @@ void main() => runApp(
 
 class MyApp extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
-  int k = 0;
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (k == 0) {
-            if (kDebugMode) {
-              print("Enabled Crashlytics");
-              FirebaseCrashlytics.instance
-                  .setCrashlyticsCollectionEnabled(false);
-            } else {}
-            k = 1;
-          }
+//    return FutureBuilder(
+//      future: Firebase.initializeApp(),
+//      builder: (BuildContext context, AsyncSnapshot snapshot) {
+//        if (snapshot.connectionState == ConnectionState.done) {
+//          if (k == 0) {
+//            if (kDebugMode) {
+//              print("Enabled Crashlytics");
+//              FirebaseCrashlytics.instance
+//                  .setCrashlyticsCollectionEnabled(false);
+//            } else {}
+//            k = 1;
+//          }
           return MaterialApp(
             initialRoute: '/signin',
             key: navigatorKey,
@@ -81,10 +76,10 @@ class MyApp extends StatelessWidget {
             // theme:
             //     ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
           );
-        }
-        return loadScreen();
-      },
-    );
+//        }
+//        return loadScreen();
+//      },
+//    );
   }
 }
 
