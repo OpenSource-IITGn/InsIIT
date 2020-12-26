@@ -20,7 +20,7 @@ A large part of this project runs off the Google Sheet API due to its ease of be
 You can view the backend API hosted on heroku here: 
 
 ## Team InsIIT
-- Anurag Kurle ([praveenVnktsh](https://github.com/praveenVnktsh) Class of '23)
+- Anurag Kurle ([27Anurag](https://github.com/27Anurag) Class of '23)
 - Chris Francis ([frank-chris](https://github.com/frank-chris) Class of '22)
 - Gaurav Viramgami ([Gaurav7214](https://github.com/Gaurav7214) Class of '23)
 - Kritika Kumawat ([KritikaKumawat3108](https://github.com/KritikaKumawat3108) Class of '23)
