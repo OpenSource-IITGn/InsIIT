@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 
@@ -57,8 +58,8 @@ class _MessFeedBackState extends State<MessFeedBack> {
                       sheet.writeData([
                         [
                           DateTime.now().toString(),
-                          currentUser.name,
-                          currentUser.email,
+                          dataContainer.auth.user.name,
+                          dataContainer.auth.user.email,
                           review
                         ]
                       ], 'messFeedbackText!A:D');

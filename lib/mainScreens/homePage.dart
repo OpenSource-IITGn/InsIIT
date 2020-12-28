@@ -8,11 +8,8 @@ import 'package:instiapp/shuttle/screens/shuttle.dart';
 
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/signInMethods.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/data/dataContainer.dart';
-import 'package:instiapp/themeing/notifier.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -148,7 +145,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              logoutUser().then((value) {
+              dataContainer.auth.logoutUser().then((value) {
                 Navigator.pushReplacementNamed(context, '/signin');
               });
             },

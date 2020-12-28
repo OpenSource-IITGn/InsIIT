@@ -33,17 +33,16 @@ class _MainHomePageState extends State<MainHomePage> {
                   flex: 1,
                   child:
                       Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                        time(event.start),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text("to",
-                            style: TextStyle(fontSize: 14)),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        time(event.end),
-                      ]),
+                    time(event.start),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text("to", style: TextStyle(fontSize: 14)),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    time(event.end),
+                  ]),
                 ),
                 verticalDivider(),
                 Expanded(
@@ -65,9 +64,7 @@ class _MainHomePageState extends State<MainHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(event.courseId,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
               SizedBox(
                 height: 8,
               ),
@@ -87,9 +84,8 @@ class _MainHomePageState extends State<MainHomePage> {
               Row(
                 children: <Widget>[
                   Text((event.eventType == null) ? 'Course' : event.eventType,
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 14)),
+                      style:
+                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                   SizedBox(
                     width: 8,
                   ),
@@ -97,8 +93,7 @@ class _MainHomePageState extends State<MainHomePage> {
                     fit: FlexFit.loose,
                     child: Text('Room: ${event.location}',
                         style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                 ],
               ),
@@ -112,25 +107,20 @@ class _MainHomePageState extends State<MainHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(event.courseId,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
               SizedBox(
                 height: 8,
               ),
               Text(event.courseName,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(
                 height: 8,
               ),
               Row(
                 children: <Widget>[
                   Text(event.eventType,
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 14)),
+                      style:
+                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
                 ],
               ),
               SizedBox(
@@ -141,8 +131,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text('Room: ',
                         style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                   SizedBox(
                     width: 8,
@@ -150,8 +139,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text('Roll Numbers: ',
                         style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                 ],
               ),
@@ -163,8 +151,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text(event.location,
                         style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                   SizedBox(
                     width: 8,
@@ -172,8 +159,7 @@ class _MainHomePageState extends State<MainHomePage> {
                   Flexible(
                     child: Text(event.rollNumbers,
                         style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 14)),
+                            fontStyle: FontStyle.italic, fontSize: 14)),
                   ),
                 ],
               ),
@@ -187,16 +173,12 @@ class _MainHomePageState extends State<MainHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(stringReturn(event.description),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
               SizedBox(
                 height: 8,
               ),
               Text(stringReturn(event.summary),
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               SizedBox(
                 height: 8,
               ),
@@ -205,9 +187,7 @@ class _MainHomePageState extends State<MainHomePage> {
                       ' (' +
                       stringReturn(event.remarks) +
                       ')',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 14)),
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
             ]),
       );
     }
@@ -218,8 +198,7 @@ class _MainHomePageState extends State<MainHomePage> {
         twoDigitTime(time.hour.toString()) +
             ':' +
             twoDigitTime(time.minute.toString()),
-        style: TextStyle(
-            fontSize: 14));
+        style: TextStyle(fontSize: 14));
   }
 
   String twoDigitTime(String text) {
@@ -243,176 +222,168 @@ class _MainHomePageState extends State<MainHomePage> {
           prevConnected = connected;
         }
         return new SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 60),
-                      AnimatedContainer(
-                        decoration: new BoxDecoration(
-                            color: Color(0xFFEE4400),
-                            borderRadius: new BorderRadius.all(
-                                const Radius.circular(10.0))),
-                        height: (connected) ? 0 : 24,
-                        width: 100,
-                        duration: Duration(milliseconds: 1000),
-                        curve: Curves.linear,
-                        child: Center(
-                          child: Text(
-                            "Offline",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      (connected)
-                          ? Container()
-                          : SizedBox(
-                              height: 10,
-                            ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            (currentUser == null)
-                                ? Image.asset(
-                                    'assets/images/avatar.png',
-                                    fit: BoxFit.cover,
-                                    width: 90.0,
-                                  )
-                                : CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    minRadius: 30,
-                                    child: ClipOval(
-                                        child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      width: 90.0,
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      height: 90.0,
-                                      imageUrl: currentUser.imageUrl,
-                                    )),
-                                  ),
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    (currentUser == null)
-                                        ? "Hey John Doe!"
-                                        : "Hey " +
-                                            currentUser.name.split(' ')[0] +
-                                            '!',
-                                    style: TextStyle(
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "How are you doing today? "
-                                  ),
-                                  // Text(
-                                  //   "3 days to the weekend \uf601",
-                                  //   style: TextStyle(
-                                  //     fontSize: 12.0,
-                                  //     fontStyle: FontStyle.italic,
-                                  //       color: Colors.black.withAlpha(150)),
-                                  // ),
-                                ]),
-                          ]),
-                      SizedBox(height: 30),
-                      GestureDetector(
-                        onTap: () {
-                          return Navigator.pushNamed(context, '/messmenu');
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        "Hungry?",
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Here's what's for ${(dataContainer.mess.foodCards == null ||
-                                            dataContainer.mess.foodCards.length != 7) ? 'food' : dataContainer.mess.foodItems['meal'].toLowerCase()}",
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      (dataContainer.mess.foodCards == null ||
-                          dataContainer.mess.foodCards.length != 7)
-                      ? Container()
-                      : MessMenuBaseDrawer(widget.reload),
-                      GestureDetector(
-                              onTap: () {
-                                return Navigator.pushNamed(
-                                    context, '/schedule');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Wondering what's next?",
-                                              style: TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Here's your schedule"
-                                            ),
-                                          ],
-                                        ),
-                                        Icon(Icons.arrow_forward),
-                                      ],
-                                    ),
-                                    SizedBox(height: 10),
-                                    (dataContainer.schedule.twoEvents == null || dataContainer.schedule.twoEvents.length == 0)
-                                    ? Container()
-                                    : Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: dataContainer.schedule.twoEvents
-                                          .map((EventModel event) {
-                                        return scheduleCard(event);
-                                      }).toList(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                    ],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 60),
+                AnimatedContainer(
+                  decoration: new BoxDecoration(
+                      color: Color(0xFFEE4400),
+                      borderRadius:
+                          new BorderRadius.all(const Radius.circular(10.0))),
+                  height: (connected) ? 0 : 24,
+                  width: 100,
+                  duration: Duration(milliseconds: 1000),
+                  curve: Curves.linear,
+                  child: Center(
+                    child: Text(
+                      "Offline",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              );
+                (connected)
+                    ? Container()
+                    : SizedBox(
+                        height: 10,
+                      ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      (dataContainer.auth.user == null)
+                          ? Image.asset(
+                              'assets/images/avatar.png',
+                              fit: BoxFit.cover,
+                              width: 90.0,
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              minRadius: 30,
+                              child: ClipOval(
+                                  child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                width: 90.0,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                height: 90.0,
+                                imageUrl: dataContainer.auth.user.photoUrl,
+                              )),
+                            ),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              (dataContainer.auth.user == null)
+                                  ? "Hey John Doe!"
+                                  : "Hey " +
+                                      dataContainer.auth.user.displayName
+                                          .split(' ')[0] +
+                                      '!',
+                              style: TextStyle(
+                                  fontSize: 19, fontWeight: FontWeight.bold),
+                            ),
+                            Text("How are you doing today? "),
+                            // Text(
+                            //   "3 days to the weekend \uf601",
+                            //   style: TextStyle(
+                            //     fontSize: 12.0,
+                            //     fontStyle: FontStyle.italic,
+                            //       color: Colors.black.withAlpha(150)),
+                            // ),
+                          ]),
+                    ]),
+                SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () {
+                    return Navigator.pushNamed(context, '/messmenu');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Hungry?",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "Here's what's for ${(dataContainer.mess.foodCards == null || dataContainer.mess.foodCards.length != 7) ? 'food' : dataContainer.mess.foodItems['meal'].toLowerCase()}",
+                                ),
+                              ],
+                            ),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  ),
+                ),
+                (dataContainer.mess.foodCards == null ||
+                        dataContainer.mess.foodCards.length != 7)
+                    ? Container()
+                    : MessMenuBaseDrawer(widget.reload),
+                GestureDetector(
+                  onTap: () {
+                    return Navigator.pushNamed(context, '/schedule');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Wondering what's next?",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text("Here's your schedule"),
+                              ],
+                            ),
+                            Icon(Icons.arrow_forward),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        (dataContainer.schedule.twoEvents == null ||
+                                dataContainer.schedule.twoEvents.length == 0)
+                            ? Container()
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: dataContainer.schedule.twoEvents
+                                    .map((EventModel event) {
+                                  return scheduleCard(event);
+                                }).toList(),
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
       child: Container(),
     );

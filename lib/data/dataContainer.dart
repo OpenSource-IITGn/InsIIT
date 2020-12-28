@@ -18,7 +18,7 @@ class DataContainer {
   ShuttleContainer shuttle = ShuttleContainer();
   RepresentativesContainer representatives = RepresentativesContainer();
   QuickLinksContainer quickLinks = QuickLinksContainer();
-  FireBaseContainer fireBase = FireBaseContainer();
+  AuthContainer auth = AuthContainer();
 
   getOtherData() {
     schedule.getData();

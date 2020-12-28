@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/messMenu/classes/labelDrawer.dart';
 import 'package:instiapp/data/dataContainer.dart';
@@ -16,7 +17,6 @@ class MessMenuBaseDrawer extends StatefulWidget {
 }
 
 class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
-
   List visible = [];
   Size imageSize = Size(0, 0);
   List sizes = [];
@@ -81,12 +81,18 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
               imageSizes[i] = size;
               setState(() {});
             },
-            child: Image.network(
-              (dataContainer.mess.foodIllustration.containsKey(dataContainer.mess.foodItems['list'][i]))
-                  ? dataContainer.mess.foodIllustration[dataContainer.mess.foodItems['list'][i]]
-                  : 'https://drive.google.com/uc?export=view&id=1Dgm6bIcoeZA2u5JNozcD64QpX81Y8unZ',
-              scale: 20,
-            ),
+            child: (dataContainer.mess.foodIllustration[
+                        dataContainer.mess.foodItems['list'][i]] !=
+                    null)
+                ? CachedNetworkImage(
+                    imageUrl: dataContainer.mess.foodIllustration[
+                        dataContainer.mess.foodItems['list'][i]],
+                    placeholder: (context, url) {
+                      return Image.asset('assets/images/taco.png', scale: 20);
+                    },
+                    // scale: 20,
+                  )
+                : Image.asset('assets/images/taco.png', scale: 20),
           ),
         ),
       );
@@ -107,7 +113,8 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
         Positioned(
           left: pad + imageSize.width / 2 - sizes[i].width / 2,
           top: 0,
-          child: label(dataContainer.mess.foodItems['list'][i], visible[i], (size) {
+          child: label(dataContainer.mess.foodItems['list'][i], visible[i],
+              (size) {
             sizes[i] = size;
           }),
         ),
@@ -122,7 +129,8 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
     return SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
-            width: (imageSize.width + 50) * dataContainer.mess.foodItems['list'].length,
+            width: (imageSize.width + 50) *
+                dataContainer.mess.foodItems['list'].length,
             height: imageSize.height,
             child: Stack(children: ret)),
         scrollDirection: Axis.horizontal);

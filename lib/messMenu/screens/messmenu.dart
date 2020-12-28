@@ -93,7 +93,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  currentUser.email,
+                                  dataContainer.auth.user.email,
                                   temp
                                 ]
                               ], 'messFeedbackItems!A:D');
@@ -141,7 +141,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  currentUser.email,
+                                  dataContainer.auth.user.email,
                                   temp
                                 ]
                               ], 'messFeedbackItems!A:D');

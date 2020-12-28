@@ -11,10 +11,10 @@ class FeedContainer {
 
   Future<bool> loadHashtags() async {
     hashTags = [];
-    log("Loading hashtags for user ${currentUser.uid}", logPrefix);
+    log("Loading hashtags for user ${dataContainer.auth.user.uid}", logPrefix);
     Map<String, String> queryParameters = {
       'api_key': 'NIKS',
-      'user_id': currentUser.uid,
+      'user_id': dataContainer.auth.user.uid,
     };
     var uri =
         Uri.https(dataContainer.baseUrl, '/getAllHashTags', queryParameters);
@@ -43,10 +43,11 @@ class FeedContainer {
   }
 
   Future<bool> addRemoveUserForHashtag(id, following) async {
-    log("Adding hashtag $id for user ${currentUser.uid}", logPrefix);
+    log("Adding hashtag $id for user ${dataContainer.auth.user.uid}",
+        logPrefix);
     Map<String, String> queryParameters = {
       'api_key': 'NIKS',
-      'user_id': currentUser.uid,
+      'user_id': dataContainer.auth.user.uid,
     };
     var uri;
     if (following == true) {

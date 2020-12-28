@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/classes/commentModel.dart';
 import 'package:instiapp/feed/classes/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
@@ -27,9 +28,9 @@ class _FullPostPageState extends State<FullPostPage> {
   void postComment(String commentText) async {
     var commentObj = CommentModel(
         poster: User(
-            name: currentUser.name,
-            imageUrl: currentUser.imageUrl,
-            uid: currentUser.uid),
+            name: dataContainer.auth.user.name,
+            imageUrl: dataContainer.auth.user.imageUrl,
+            uid: dataContainer.auth.user.uid),
         text: commentText,
         timestamp: dateFormat.format(DateTime.now()),
         timeText: 'now');

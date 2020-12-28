@@ -48,38 +48,32 @@ class MyApp extends StatelessWidget {
 //            } else {}
 //            k = 1;
 //          }
-          return MaterialApp(
-            initialRoute: '/signin',
-            key: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            routes: {
-              '/onboarding': (context) => OnboardingPage(),
-              '/importantcontacts': (context) => ImportantContacts(),
-              '/shuttle': (context) => Shuttle(),
-              '/Quicklinks': (context) => Email(),
-              '/messmenu': (context) => MessMenu(),
-              '/messfeedback': (context) => MessFeedBack(),
-              '/signin': (context) => SignInPage(),
-              '/menuBarBase': (context) => HomeWrapper(),
-              '/hashtags': (context) => HashtagPage(),
-              '/misc': (context) => MiscPage(),
-              '/developers': (context) => DevelopersPage(),
-              '/map': (context) => MapPage(),
-              '/schedule': (context) => SchedulePage(),
-              '/eventdetail': (context) => EventDetail(),
-              '/editevent': (context) => EditEvent(),
-              //'/exportIcsFile': (context) => ExportIcsFile(),
-              '/representativePage': (context) => RepresentativePage(),
-            },
-            title: 'Instiapp',
-            theme: themeNotifier.getTheme(),
-            // theme:
-            //     ThemeData(primarySwatch: Colors.indigo, fontFamily: 'OpenSans'),
-          );
-//        }
-//        return loadScreen();
-//      },
-//    );
+    return MaterialApp(
+      initialRoute: '/signin',
+      key: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/onboarding': (context) => OnboardingPage(),
+        '/importantcontacts': (context) => ImportantContacts(),
+        '/shuttle': (context) => Shuttle(),
+        '/Quicklinks': (context) => Email(),
+        '/messmenu': (context) => MessMenu(),
+        '/messfeedback': (context) => MessFeedBack(),
+        '/signin': (context) => SignInPage(),
+        '/menuBarBase': (context) => HomeWrapper(),
+        '/hashtags': (context) => HashtagPage(),
+        '/misc': (context) => MiscPage(),
+        '/developers': (context) => DevelopersPage(),
+        '/map': (context) => MapPage(),
+        '/schedule': (context) => SchedulePage(),
+        '/eventdetail': (context) => EventDetail(),
+        '/editevent': (context) => EditEvent(),
+        //'/exportIcsFile': (context) => ExportIcsFile(),
+        '/representativePage': (context) => RepresentativePage(),
+      },
+      title: 'Instiapp',
+      theme: themeNotifier.getTheme(),
+    );
   }
 }
 
