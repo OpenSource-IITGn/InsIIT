@@ -116,7 +116,7 @@ class _SchedulePageState extends State<SchedulePage> {
             child: TabBar(
               isScrollable: true,
               unselectedLabelColor: Colors.black.withOpacity(0.3),
-              indicatorColor: primaryColor,
+              // indicatorColor: primaryColor,
               // unselectedLabelStyle:
               //     TextStyle(color: Colors.black.withOpacity(0.3)),
               tabs: <Widget>[

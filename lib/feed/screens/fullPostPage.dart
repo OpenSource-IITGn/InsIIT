@@ -128,9 +128,8 @@ Widget buildComment(CommentModel comment) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
     child: Container(
-      decoration: BoxDecoration(
-          color: primaryColor.withAlpha(10),
-          borderRadius: BorderRadius.all(Radius.circular(10))),
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         child: Column(
@@ -161,10 +160,8 @@ Widget buildComment(CommentModel comment) {
                     ),
                     Text(
                       comment.timeText,
-                      style: TextStyle(
-                          color: secondaryTextColor,
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic),
+                      style:
+                          TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),

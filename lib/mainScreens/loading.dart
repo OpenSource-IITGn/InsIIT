@@ -5,17 +5,12 @@ import 'package:instiapp/utilities/constants.dart';
 import 'dart:math' as math;
 
 Widget loadScreen() {
-  Color color = secondaryColor;
+  // Color color = secondaryColor;
   return Scaffold(
-    body: AnimatedContainer(
-      duration: Duration(milliseconds: 10),
-      onEnd: () {
-        color = Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-            .withOpacity(1.0);
-      },
+    body: Container(
       // height: ScreenSize.size.height,
       // width: ScreenSize.size.width,
-      color: color,
+      // color: color,
       child: Center(
           child: Text(
         "Please wait...",

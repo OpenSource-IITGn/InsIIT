@@ -91,13 +91,14 @@ class _MapPageState extends State<MapPage> {
           icon: getIcon('user'));
       _markers.add(marker);
       circle = Circle(
-          circleId: CircleId("Accuracy"),
-          radius: newLocalData.accuracy,
-          zIndex: 1,
-          strokeColor: primaryColor.withAlpha(80),
-          strokeWidth: 1,
-          center: latlng,
-          fillColor: primaryColor.withAlpha(40));
+        circleId: CircleId("Accuracy"),
+        radius: newLocalData.accuracy,
+        zIndex: 1,
+        // strokeColor: primaryColor.withAlpha(80),
+        strokeWidth: 1,
+        center: latlng,
+        // fillColor: primaryColor.withAlpha(40)
+      );
     });
   }
 
@@ -361,7 +362,7 @@ class _MapPageState extends State<MapPage> {
                           }));
                     },
                     heroTag: "btn1",
-                    backgroundColor: primaryColor,
+                    // backgroundColor: primaryColor,
                     tooltip: 'Search',
                     child: Icon(Icons.search, color: Colors.white),
                   ),
@@ -466,7 +467,7 @@ class _MapPageState extends State<MapPage> {
                               padding: EdgeInsets.all(22),
                               child: CircleAvatar(
                                 radius: 33,
-                                backgroundColor: primaryColor,
+                                // backgroundColor: primaryColor,
                                 foregroundColor: Colors.white,
                                 child: IconButton(
                                   onPressed: () {

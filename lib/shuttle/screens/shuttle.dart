@@ -159,7 +159,7 @@ class _ShuttleState extends State<Shuttle>
                     CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.grey.withAlpha(25),
-                      foregroundColor: secondaryColor,
+                      // foregroundColor: secondaryColor,
                       child: IconButton(
                         onPressed: () {
                           _showNotificationWithDefaultSound(buses);

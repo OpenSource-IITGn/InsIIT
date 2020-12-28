@@ -72,9 +72,9 @@ class _MainHomePageState extends State<MainHomePage> {
                 fit: FlexFit.loose,
                 child: Text(event.courseName,
                     style: TextStyle(
-                        color: (darkMode)
-                            ? primaryTextColorDarkMode
-                            : primaryTextColor,
+                        // color: (darkMode)
+                        //     ? primaryTextColorDarkMode
+                        //     : primaryTextColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16)),
               ),

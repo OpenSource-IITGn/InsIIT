@@ -224,7 +224,7 @@ class _MessMenuState extends State<MessMenu> {
             child: TabBar(
               isScrollable: true,
               unselectedLabelColor: Colors.black.withOpacity(0.3),
-              indicatorColor: primaryColor,
+              // indicatorColor: primaryColor,
               // unselectedLabelStyle:
               //     TextStyle(color: Colors.black.withOpacity(0.3)),
               tabs: <Widget>[
@@ -274,7 +274,7 @@ class _MessMenuState extends State<MessMenu> {
           }).toList(),
         ),
         floatingActionButton: RaisedButton.icon(
-          color: primaryColor,
+          // color: primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),

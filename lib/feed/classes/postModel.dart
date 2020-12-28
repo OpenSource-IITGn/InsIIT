@@ -260,7 +260,8 @@ class _PostWidgetState extends State<PostWidget> {
                           FlatButton(
                             child: Row(
                               children: <Widget>[
-                                Icon(Icons.comment, color: secondaryTextColor),
+                                Icon(Icons
+                                    .comment), //, color: secondaryTextColor),
                                 SizedBox(width: 10),
                                 Text("${widget.post.comments.length}"),
                               ],
