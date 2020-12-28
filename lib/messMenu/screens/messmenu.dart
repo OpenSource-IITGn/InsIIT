@@ -1,5 +1,6 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
 // import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
@@ -10,37 +11,7 @@ class MessMenu extends StatefulWidget {
   _MessMenuState createState() => _MessMenuState();
 }
 
-class ThemeContainer {
-  Color backgroundColor;
-  Color appBarColor;
-  Color textHeadingColor;
-  Color textSubheadingColor;
-  Color iconColor;
-  Color indicatorColor;
-  Color expansionTileHighlight;
-  Color accentColor;
-  Color floatingColor;
-  Color cardAccent;
-  Color upvoteColor;
-  Color downvoteColor;
-  ThemeContainer(
-      {this.backgroundColor,
-      this.appBarColor,
-      this.textHeadingColor,
-      this.textSubheadingColor,
-      this.iconColor,
-      this.indicatorColor,
-      this.expansionTileHighlight,
-      this.accentColor,
-      this.cardAccent,
-      this.floatingColor,
-      this.downvoteColor,
-      this.upvoteColor});
-}
-
 class _MessMenuState extends State<MessMenu> {
-  ThemeContainer theme;
-  ThemeContainer lightTheme;
   void initState() {
     super.initState();
     dataContainer.mess.makeMessItems();
@@ -220,7 +191,7 @@ class _MessMenuState extends State<MessMenu> {
     if (vote == '1') {
       return theme.upvoteColor;
     } else {
-      return theme.iconColor;
+      return theme.iconColorLite;
     }
   }
 
@@ -236,27 +207,12 @@ class _MessMenuState extends State<MessMenu> {
     if (vote == '-1') {
       return theme.downvoteColor;
     } else {
-      return theme.iconColor;
+      return theme.iconColorLite;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    lightTheme = ThemeContainer(
-      backgroundColor: Color.fromRGBO(36, 36, 36, 1),
-      appBarColor: Color.fromRGBO(33, 33, 33, 1),
-      textHeadingColor: Colors.white.withAlpha(200),
-      textSubheadingColor: Colors.white.withAlpha(158),
-      iconColor: Colors.white.withAlpha(100),
-      indicatorColor: Colors.white,
-      expansionTileHighlight: Colors.black,
-      accentColor: Colors.black,
-      floatingColor: Colors.black,
-      cardAccent: Colors.white.withAlpha(3),
-      upvoteColor: Color.fromRGBO(7, 143, 18, 1),
-      downvoteColor: Color.fromRGBO(143, 12, 7, 1),
-    );
-    theme = lightTheme;
     return DefaultTabController(
       initialIndex: DateTime.now().weekday - 1,
       length: 7,
@@ -330,7 +286,7 @@ class _MessMenuState extends State<MessMenu> {
           }).toList(),
         ),
         floatingActionButton: RaisedButton.icon(
-          color: theme.accentColor,
+          color: theme.floatingColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),

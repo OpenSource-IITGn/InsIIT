@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 
@@ -12,18 +13,22 @@ class _MessFeedBackState extends State<MessFeedBack> {
   String review = '';
   @override
   Widget build(BuildContext context) {
+    swapTheme(false);
     return Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: AppBar(
+          backgroundColor: theme.appBarColor,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: theme.iconColor),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           centerTitle: true,
           title: Text('Mess Feedback',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -33,12 +38,16 @@ class _MessFeedBackState extends State<MessFeedBack> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Hey there!",
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          color: theme.textHeadingColor)),
                   SizedBox(height: 8),
                   Text(
                       "Loved something? Unhappy with the food? Send your feedback here.",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: theme.textSubheadingColor)),
                   SizedBox(height: 10),
                   TextField(
                     minLines: 5,
@@ -46,14 +55,19 @@ class _MessFeedBackState extends State<MessFeedBack> {
                     onChanged: (v) {
                       review = v;
                     },
+                    style: TextStyle(color: theme.textHeadingColor),
                     decoration: InputDecoration(
-                        border: OutlineInputBorder(),
+                        hintStyle: TextStyle(
+                            color: theme.textHeadingColor.withAlpha(100)),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)),
                         hintText: 'Enter your review here.'),
                   ),
                   RaisedButton.icon(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
+                    color: theme.buttonColor,
                     onPressed: () {
                       sheet.writeData([
                         [
@@ -65,10 +79,10 @@ class _MessFeedBackState extends State<MessFeedBack> {
                       ], 'messFeedbackText!A:D');
                       Navigator.of(context).pop();
                     },
-                    icon: Icon(Icons.send, color: Colors.white),
+                    icon: Icon(Icons.send, color: theme.buttonContentColor),
                     label: Text(
                       'Submit',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: theme.buttonContentColor),
                     ),
                   ),
                 ]),
