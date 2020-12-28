@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 class DotsIndicator extends AnimatedWidget {
@@ -47,7 +48,7 @@ class DotsIndicator extends AnimatedWidget {
       width: _kDotSpacing,
       child: new Center(
         child: new Material(
-          // color: primaryColor,
+          color: theme.accentColor,
           type: MaterialType.circle,
           child: new Container(
             width: _kDotSize * zoom,

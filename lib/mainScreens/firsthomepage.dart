@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:instiapp/messMenu/classes/base.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
@@ -285,16 +286,23 @@ class _MainHomePageState extends State<MainHomePage> {
                                           .split(' ')[0] +
                                       '!',
                               style: TextStyle(
-                                  fontSize: 19, fontWeight: FontWeight.bold),
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.textHeadingColor),
                             ),
-                            Text("How are you doing today? "),
-                            // Text(
-                            //   "3 days to the weekend \uf601",
-                            //   style: TextStyle(
-                            //     fontSize: 12.0,
-                            //     fontStyle: FontStyle.italic,
-                            //       color: Colors.black.withAlpha(150)),
-                            // ),
+                            Text("How are you doing today? ",
+                                style: TextStyle(
+                                    color: theme.textSubheadingColor)),
+                            Text(
+                              (DateTime.now().weekday != 6 ||
+                                      DateTime.now().weekday != 7)
+                                  ? "${5 - DateTime.now().weekday} days to the weekend  🤜 "
+                                  : "Enjoy your weekend 🥳",
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontStyle: FontStyle.italic,
+                                  color: theme.textSubheadingColor),
+                            ),
                           ]),
                     ]),
                 SizedBox(height: 30),
@@ -317,15 +325,18 @@ class _MainHomePageState extends State<MainHomePage> {
                                   "Hungry?",
                                   style: TextStyle(
                                     fontSize: 18.0,
+                                    color: theme.textHeadingColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
                                   "Here's what's for ${(dataContainer.mess.foodCards == null || dataContainer.mess.foodCards.length != 7) ? 'food' : dataContainer.mess.foodItems['meal'].toLowerCase()}",
+                                  style: TextStyle(
+                                      color: theme.textSubheadingColor),
                                 ),
                               ],
                             ),
-                            Icon(Icons.arrow_forward),
+                            Icon(Icons.arrow_forward, color: theme.iconColor),
                           ],
                         ),
                         SizedBox(height: 10),
@@ -355,14 +366,30 @@ class _MainHomePageState extends State<MainHomePage> {
                                 Text(
                                   "Wondering what's next?",
                                   style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.textHeadingColor),
                                 ),
-                                Text("Here's your schedule"),
+                                Text(
+                                  (dataContainer.schedule.twoEvents == null ||
+                                          dataContainer
+                                                  .schedule.twoEvents.length ==
+                                              0)
+                                      ? "Enjoy your free time!"
+                                      : "Here's your schedule",
+                                  style: TextStyle(
+                                      color: theme.textSubheadingColor),
+                                ),
                               ],
                             ),
-                            Icon(Icons.arrow_forward),
+                            Icon(Icons.arrow_forward,
+                                color:
+                                    (dataContainer.schedule.twoEvents == null ||
+                                            dataContainer.schedule.twoEvents
+                                                    .length ==
+                                                0)
+                                        ? theme.iconColor.withAlpha(150)
+                                        : theme.iconColor),
                           ],
                         ),
                         SizedBox(height: 10),

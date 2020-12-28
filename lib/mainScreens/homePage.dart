@@ -5,6 +5,7 @@ import 'package:instiapp/mainScreens/firsthomepage.dart';
 import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -57,7 +58,9 @@ class _HomePageState extends State<HomePage>
   Widget homeScreen() {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: theme.backgroundColor,
       bottomNavigationBar: BottomNavyBar(
+        backgroundColor: theme.bottomNavyBarColor,
         selectedIndex: selectedIndex,
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,32 +110,33 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-//        leading: IconButton(
-//          icon: Icon(
-//            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
-//            color: (darkMode) ? Colors.purple : Colors.black,
-//          ),
-//          onPressed: () {
-//            if (darkMode) {
-//              darkMode = false;
-//            } else {
-//              darkMode = true;
-//            }
-//            Provider.of<ThemeNotifier>(context, listen: false)
-//                .setTheme(darkMode);
-//            setState(() {});
-//          },
-//        ),
+        leading: IconButton(
+          icon: Icon(
+            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
+            color: (darkMode) ? Colors.purple : Colors.black,
+          ),
+          onPressed: () {
+            if (darkMode) {
+              darkMode = false;
+            } else {
+              darkMode = true;
+            }
+            swapTheme(darkMode);
+            setState(() {});
+          },
+        ),
         title: Container(
             decoration: new BoxDecoration(
                 color: (titles[selectedIndex] == "")
                     ? Colors.transparent
-                    : Colors.white.withAlpha(120),
+                    : theme.backgroundColor.withAlpha(150),
                 borderRadius: new BorderRadius.all(Radius.circular(40))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(titles[selectedIndex],
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor)),
             )),
         actions: <Widget>[
           IconButton(
