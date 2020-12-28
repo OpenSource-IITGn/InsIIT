@@ -10,7 +10,7 @@ Widget loadScreen() {
     body: Container(
       // height: ScreenSize.size.height,
       // width: ScreenSize.size.width,
-      // color: color,
+      color: Color.fromARGB(255, 255, 137, 87),
       child: Center(
           child: Text(
         "Please wait...",
