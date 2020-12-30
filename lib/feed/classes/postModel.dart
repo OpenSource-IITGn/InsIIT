@@ -10,9 +10,6 @@ import 'package:http/http.dart' as http;
 //TODO: Implement bio on server side
 //TODO: Implement Reactions on comments
 //TODO: Implement full screen photo view
-void log(string) {
-  print("[POSTER] $string");
-}
 
 class PostModel {
   String mainText;
@@ -74,8 +71,8 @@ class PostModel {
       timediff = difference.inDays.toString() + 'd';
     }
 
-    log(json['results'][index]);
-    log(json['results'][index]['posted_by']);
+    // log(json['results'][index]);
+    // log(json['results'][index]['posted_by']);
     return PostModel(
         postId: json['results'][index]["_id"],
         postPerson: json['results'][index]['posted_by']["full_name"],

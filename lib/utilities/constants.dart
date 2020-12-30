@@ -7,28 +7,6 @@ import 'package:intl/intl.dart';
 
 bool darkMode = false;
 
-// Color backgroundColor = Colors.white.withAlpha(252);
-// Color backgroundColorDarkMode = Color.fromRGBO(18, 18, 18, 1);
-
-// Color navBar = Colors.white;
-// Color navBarDarkMode = Color.fromRGBO(97, 97, 97, 0.1);
-
-// Color primaryTextColor = Colors.black;
-// Color primaryTextColorDarkMode = Colors.white;
-
-// Color primaryTextColorReverse = Colors.white;
-// Color primaryTextColorReverseDarkMode = Colors.black;
-
-// Color secondaryTextColor = Colors.black.withAlpha(150);
-// Color secondaryTextColorDarkMode = Colors.white30.withOpacity(1);
-
-// Color secondaryColor = Color.fromRGBO(63, 99, 247, 0.7);
-// Color primaryColor = Color.fromRGBO(63, 99, 247, 1);
-
-// Color primaryColor = Color.fromRGBO(0, 0, 0, 1);
-// Color secondaryColor = Color.fromRGBO(0, 0, 0, 0.5);
-//Color secondaryTextColor = Colors.black.withAlpha(150);
-
 final dateFormat = new DateFormat('dd-MM-yyyy hh:mm');
 String baseUrl = "serene-reaches-30469.herokuapp.com";
 String baseUrlTL = "tranquil-shore-67034.herokuapp.com";
@@ -60,8 +38,4 @@ verticalDivider({double height}) {
       ),
     ],
   );
-}
-
-void log(printer, tag) {
-  print("[$tag] : $printer");
 }

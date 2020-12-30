@@ -17,6 +17,7 @@ class ThemeContainer {
   Color buttonColor;
   Color buttonContentColor;
   Color bottomNavyBarColor;
+  Color bottomNavyBarIndicatorColor;
   ThemeContainer(
       {this.backgroundColor,
       this.appBarColor,
@@ -33,6 +34,7 @@ class ThemeContainer {
       this.buttonColor,
       this.buttonContentColor,
       this.bottomNavyBarColor,
+      this.bottomNavyBarIndicatorColor,
       this.iconColorLite});
 }
 
@@ -53,6 +55,7 @@ ThemeContainer lightTheme = ThemeContainer(
   buttonColor: Colors.black,
   buttonContentColor: Colors.white,
   bottomNavyBarColor: Colors.white,
+  bottomNavyBarIndicatorColor: Colors.black.withAlpha(50),
 );
 ThemeContainer darkTheme = ThemeContainer(
   backgroundColor: Color.fromRGBO(36, 36, 36, 1),
@@ -71,6 +74,7 @@ ThemeContainer darkTheme = ThemeContainer(
   buttonColor: Colors.black,
   buttonContentColor: Colors.white,
   bottomNavyBarColor: Color.fromRGBO(48, 48, 48, 1),
+  bottomNavyBarIndicatorColor: Colors.black.withAlpha(100),
 );
 
 ThemeContainer theme = lightTheme;

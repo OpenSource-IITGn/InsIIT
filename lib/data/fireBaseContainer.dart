@@ -4,6 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'dart:developer';
 
 class AuthContainer {
   var user;
@@ -21,7 +22,7 @@ class AuthContainer {
   );
 
   Future<bool> initialize() async {
-    print("INITIALIZING FIREBASE");
+    log("INITIALIZING", name: "AUTH");
     await Firebase.initializeApp().then((value) {
       app = value;
       user = FirebaseAuth.instance.currentUser;
@@ -33,13 +34,12 @@ class AuthContainer {
       } else {
         authorized = true;
       }
-
+      log("AUTHORIZATION = $authorized", name: "AUTH");
       if (kReleaseMode) {
-        print("Enabled Crashlytics");
+        log("ENABLED CRASHLYTICS", name: "AUTH");
         FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       }
     });
-    print(user);
     return authorized;
   }
 
@@ -49,6 +49,7 @@ class AuthContainer {
       isGuest = true;
       await FirebaseAuth.instance.signInAnonymously();
     } else {
+      log("TRYING GOOGLE SIGN IN", name: "AUTH");
       await signInWithGoogle().then((user) {
         user = user;
         authorized = true;

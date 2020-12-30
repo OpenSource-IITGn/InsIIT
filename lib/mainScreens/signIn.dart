@@ -7,6 +7,7 @@ import 'package:instiapp/utilities/measureSize.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'dart:developer';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -47,14 +48,19 @@ class _SignInPageState extends State<SignInPage> {
 
   void navigateToHome() {
     if (dataContainer.auth.authorized) {
+      log("AUTHORIZATION SUCCESS", name: "SIGNIN");
       if (dataContainer.schedule.eventsReady) {
+        log("Events are ready, going home", name: "SIGNIN");
         Navigator.pushReplacementNamed(context, '/menuBarBase');
       } else {
+        log("Refreshing events", name: "SIGNIN");
         dataContainer.schedule.reloadEventsAndCourses().then((s) {
+          log("Events are ready, going home", name: "SIGNIN");
           Navigator.pushReplacementNamed(context, '/menuBarBase');
         });
       }
     } else {
+      log("AUTHORIZATION FAIL", name: "SIGNIN");
       setState(() {});
     }
   }

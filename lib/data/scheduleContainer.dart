@@ -94,27 +94,29 @@ class ScheduleContainer {
       eventsWithoutRepetition = [];
       eventsReady = true;
     } else {
-      await dataContainer.auth.gSignIn.signIn();
-      final authHeaders =
-          await dataContainer.auth.gSignIn.currentUser.authHeaders;
-      final httpClient = GoogleHttpClient(authHeaders);
-      await getEventsCached().then((values) async {
-        if (values != false) {
-          // print("Cached Events");
-          events = values;
-          eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-        } else {
-          // print("Not cached events");
-          await getEventsOnline(httpClient).then((value) {
-            storeEventsCached();
-          });
-        }
-      });
-      getEventsOnline(httpClient).then((value) {
-        storeEventsCached();
-      });
+      // await dataContainer.auth.gSignIn.signIn();
+      dataContainer.auth.gSignIn.signInSilently().then((value) async {
+        final authHeaders =
+            await dataContainer.auth.gSignIn.currentUser.authHeaders;
+        final httpClient = GoogleHttpClient(authHeaders);
+        await getEventsCached().then((values) async {
+          if (values != false) {
+            // print("Cached Events");
+            events = values;
+            eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+          } else {
+            // print("Not cached events");
+            await getEventsOnline(httpClient).then((value) {
+              storeEventsCached();
+            });
+          }
+        });
+        getEventsOnline(httpClient).then((value) {
+          storeEventsCached();
+        });
 
-      eventsReady = true;
+        eventsReady = true;
+      });
     }
   }
 
