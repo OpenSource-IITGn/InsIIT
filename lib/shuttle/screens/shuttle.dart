@@ -6,6 +6,7 @@ import 'package:instiapp/shuttle/classes/buses.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 class Shuttle extends StatefulWidget {
   @override
@@ -310,6 +311,7 @@ class _ShuttleState extends State<Shuttle>
     // initialize();
     if (!destinationSelected) {
       return Scaffold(
+        backgroundColor: theme.backgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
               child: Padding(
@@ -320,32 +322,38 @@ class _ShuttleState extends State<Shuttle>
               children: <Widget>[
                 Text(
                   "Where are you going?",
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor),
                 ),
                 Text(
                   "Let's get you on that bus!",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: theme.textSubheadingColor),
                 ),
                 ColumnBuilder(
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       width: ScreenSize.size.width,
                       child: Card(
+                          color: theme.cardBgColor,
                           child: InkWell(
-                        onTap: () {
-                          destinationSelected = true;
-                          destination = places[index];
-                          setState(() {});
-                          initialize();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(places[index],
-                              style: TextStyle(
-                                fontSize: 16,
-                              )),
-                        ),
-                      )),
+                            onTap: () {
+                              destinationSelected = true;
+                              destination = places[index];
+                              setState(() {});
+                              initialize();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(places[index],
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: theme.textHeadingColor)),
+                            ),
+                          )),
                     );
                   },
                   itemCount: places.length,

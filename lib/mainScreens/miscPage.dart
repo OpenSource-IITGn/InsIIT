@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/constants.dart';
 
@@ -11,6 +12,7 @@ class _MiscPageState extends State<MiscPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -61,14 +63,14 @@ class _MiscPageState extends State<MiscPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                           side: BorderSide(
-                            color: Colors.black12,
+                            color: theme.flatButtonOutlineColor,
                           )),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
                           child: Text(
                             "Important Contacts",
-                            style: TextStyle(),
+                            style: TextStyle(color: theme.textHeadingColor),
                           ),
                         ),
                       ),
@@ -85,14 +87,14 @@ class _MiscPageState extends State<MiscPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                           side: BorderSide(
-                            color: Colors.black12,
+                            color: theme.flatButtonOutlineColor,
                           )),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
                           child: Text(
                             "Quick Links",
-                            style: TextStyle(),
+                            style: TextStyle(color: theme.textHeadingColor),
                           ),
                         ),
                       ),
@@ -109,14 +111,14 @@ class _MiscPageState extends State<MiscPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                           side: BorderSide(
-                            color: Colors.black12,
+                            color: theme.flatButtonOutlineColor,
                           )),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
                           child: Text(
                             "Team InsIIT",
-                            style: TextStyle(),
+                            style: TextStyle(color: theme.textHeadingColor),
                           ),
                         ),
                       ),
@@ -133,7 +135,7 @@ class _MiscPageState extends State<MiscPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                           side: BorderSide(
-                            color: Colors.black12,
+                            color: theme.flatButtonOutlineColor,
                           )),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -141,7 +143,7 @@ class _MiscPageState extends State<MiscPage> {
                           child: Text(
                             "Know Your Representatives",
                             textAlign: TextAlign.center,
-                            style: TextStyle(),
+                            style: TextStyle(color: theme.textHeadingColor),
                           ),
                         ),
                       ),
@@ -165,14 +167,14 @@ class _MiscPageState extends State<MiscPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                           side: BorderSide(
-                            color: Colors.black12,
+                            color: theme.flatButtonOutlineColor,
                           )),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
                           child: Text(
                             "Report Bug",
-                            style: TextStyle(),
+                            style: TextStyle(color: theme.textHeadingColor),
                           ),
                         ),
                       ),

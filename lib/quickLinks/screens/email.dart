@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -32,12 +33,15 @@ class _EmailState extends State<Email> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: AppBar(
+          backgroundColor: theme.appBarColor,
           title: Text('Quick Links',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
           elevation: 0,
           centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.black),
+          iconTheme: IconThemeData(color: theme.iconColor),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -89,6 +93,7 @@ class Template extends StatelessWidget {
         }
       },
       child: Card(
+        color: theme.cardBgColor,
         margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 1.0),
         child: Padding(
           padding: const EdgeInsets.all(25.0),
@@ -100,6 +105,7 @@ class Template extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  color: theme.textHeadingColor,
                 ),
               ),
               SizedBox(
@@ -110,7 +116,11 @@ class Template extends StatelessWidget {
                 height: 6.0,
               ),
               Text(obj.descp,
-                  style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic))
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    fontStyle: FontStyle.italic,
+                    color: theme.textSubheadingColor,
+                  ))
             ],
           ),
         ),

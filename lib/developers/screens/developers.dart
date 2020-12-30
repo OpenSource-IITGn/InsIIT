@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,17 +42,20 @@ class DevelopersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: theme.appBarColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: theme.iconColor),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         centerTitle: true,
-        title:
-            Text('Team InsIIT', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Team InsIIT',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
       ),
       body: SingleChildScrollView(
           child: Padding(
@@ -61,42 +65,47 @@ class DevelopersPage extends StatelessWidget {
             return Container(
               width: ScreenSize.size.width,
               child: Card(
+                  color: theme.cardBgColor,
                   child: InkWell(
-                onTap: () {
-                  launch('mailto:${devs[index].email}');
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                    onTap: () {
+                      launch('mailto:${devs[index].email}');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            devs[index].name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                devs[index].name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: theme.textHeadingColor),
+                              ),
+                              Text(
+                                devs[index].description,
+                                style:
+                                    TextStyle(color: theme.textSubheadingColor),
+                              ),
+                            ],
                           ),
-                          Text(
-                            devs[index].description,
-                            style: TextStyle(),
-                          ),
+                          Row(
+                            children: <Widget>[
+                              verticalDivider(height: 30.0),
+                              Icon(
+                                Icons.email,
+                                color: theme.iconColor,
+                              ),
+                            ],
+                          )
                         ],
                       ),
-                      Row(
-                        children: <Widget>[
-                          verticalDivider(height: 30.0),
-                          Icon(Icons.email),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              )),
+                    ),
+                  )),
             );
           },
           itemCount: devs.length,

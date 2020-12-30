@@ -18,6 +18,8 @@ class ThemeContainer {
   Color buttonContentColor;
   Color bottomNavyBarColor;
   Color bottomNavyBarIndicatorColor;
+  Color flatButtonOutlineColor;
+  Color cardBgColor;
   ThemeContainer(
       {this.backgroundColor,
       this.appBarColor,
@@ -30,6 +32,8 @@ class ThemeContainer {
       this.cardAccent,
       this.floatingColor,
       this.downvoteColor,
+      this.cardBgColor,
+      this.flatButtonOutlineColor,
       this.upvoteColor,
       this.buttonColor,
       this.buttonContentColor,
@@ -52,6 +56,8 @@ ThemeContainer lightTheme = ThemeContainer(
   downvoteColor: Colors.red,
   iconColorLite: Colors.black.withAlpha(100),
   cardAccent: Colors.black.withAlpha(3),
+  cardBgColor: Colors.white,
+  flatButtonOutlineColor: Colors.black.withAlpha(30),
   buttonColor: Colors.black,
   buttonContentColor: Colors.white,
   bottomNavyBarColor: Colors.white,
@@ -63,12 +69,14 @@ ThemeContainer darkTheme = ThemeContainer(
   textHeadingColor: Colors.white.withAlpha(200),
   textSubheadingColor: Colors.white.withAlpha(158),
   iconColor: Colors.white.withAlpha(200),
+  flatButtonOutlineColor: Colors.white.withAlpha(30),
   iconColorLite: Colors.white.withAlpha(100),
   indicatorColor: Colors.white,
   expansionTileHighlight: Colors.black,
   accentColor: Colors.black,
   floatingColor: Colors.black,
   cardAccent: Colors.white.withAlpha(3),
+  cardBgColor: Colors.white.withAlpha(3),
   upvoteColor: Color.fromRGBO(7, 143, 18, 1),
   downvoteColor: Color.fromRGBO(143, 12, 7, 1),
   buttonColor: Colors.black,
