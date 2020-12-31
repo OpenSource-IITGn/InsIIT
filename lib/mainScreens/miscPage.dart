@@ -124,31 +124,31 @@ class _MiscPageState extends State<MiscPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 22,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: FlatButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/representativePage'),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(40.0),
-                          side: BorderSide(
-                            color: theme.flatButtonOutlineColor,
-                          )),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                          child: Text(
-                            "Know Your Representatives",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: theme.textHeadingColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 22,
+                  // ),
+                  // Container(
+                  //   width: MediaQuery.of(context).size.width * 0.6,
+                  //   child: FlatButton(
+                  //     onPressed: () =>
+                  //         Navigator.pushNamed(context, '/representativePage'),
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: new BorderRadius.circular(40.0),
+                  //         side: BorderSide(
+                  //           color: theme.flatButtonOutlineColor,
+                  //         )),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(16.0),
+                  //       child: Container(
+                  //         child: Text(
+                  //           "Know Your Representatives",
+                  //           textAlign: TextAlign.center,
+                  //           style: TextStyle(color: theme.textHeadingColor),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 22,
                   ),

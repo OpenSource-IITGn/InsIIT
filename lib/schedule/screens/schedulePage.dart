@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/data/dataContainer.dart';
 
@@ -29,18 +30,14 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
             Text(
               'Take rest!',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: TextStyle(fontSize: 18, color: theme.textHeadingColor),
             ),
             SizedBox(
               height: 8,
             ),
             Text(
               'No classes or events to attend today.',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: TextStyle(fontSize: 18, color: theme.textSubheadingColor),
             ),
           ],
         ),
@@ -93,30 +90,34 @@ class _SchedulePageState extends State<SchedulePage> {
       initialIndex: DateTime.now().weekday - 1,
       length: 7,
       child: Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: AppBar(
+          backgroundColor: theme.appBarColor,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: theme.iconColor),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           centerTitle: true,
           title: Text('Your Schedule',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
           actions: <Widget>[
             IconButton(
               onPressed: () {
                 Navigator.popAndPushNamed(context, '/editevent');
               },
-              icon: Icon(Icons.edit, color: Colors.black),
+              icon: Icon(Icons.edit, color: theme.iconColor),
             )
           ],
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,
-              unselectedLabelColor: Colors.black.withOpacity(0.3),
-              // indicatorColor: primaryColor,
+
+              unselectedLabelColor: theme.textSubheadingColor,
+              indicatorColor: theme.indicatorColor,
               // unselectedLabelStyle:
               //     TextStyle(color: Colors.black.withOpacity(0.3)),
               tabs: <Widget>[

@@ -53,7 +53,13 @@ class _HomePageState extends State<HomePage>
   }
 
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
+  List<String> titles = [
+    "",
+    // "News",
+    "Buses",
+    "Campus Map",
+    "Misc"
+  ];
 
   Widget homeScreen() {
     return Scaffold(
@@ -80,16 +86,16 @@ class _HomePageState extends State<HomePage>
             inactiveColor: Colors.grey,
             textAlign: TextAlign.center,
           ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.rss_feed, color: theme.textSubheadingColor),
-            title: Text(
-              'Feed',
-              style: TextStyle(color: theme.textSubheadingColor),
-            ),
-            activeColor: theme.bottomNavyBarIndicatorColor,
-            inactiveColor: Colors.grey,
-            textAlign: TextAlign.center,
-          ),
+          // BottomNavyBarItem(
+          //   icon: Icon(Icons.rss_feed, color: theme.textSubheadingColor),
+          //   title: Text(
+          //     'Feed',
+          //     style: TextStyle(color: theme.textSubheadingColor),
+          //   ),
+          //   activeColor: theme.bottomNavyBarIndicatorColor,
+          //   inactiveColor: Colors.grey,
+          //   textAlign: TextAlign.center,
+          // ),
           BottomNavyBarItem(
             icon: Icon(Icons.airport_shuttle, color: theme.textSubheadingColor),
             title: Text(
@@ -183,7 +189,7 @@ class _HomePageState extends State<HomePage>
         },
         children: <Widget>[
           MainHomePage(reloadData),
-          FeedPage(),
+          // FeedPage(),
           Shuttle(),
           MapPage(),
           MiscPage(),

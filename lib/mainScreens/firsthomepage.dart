@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
@@ -7,6 +9,7 @@ import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:http/http.dart' as http;
 
 class MainHomePage extends StatefulWidget {
   var reload;
@@ -20,6 +23,19 @@ class MainHomePage extends StatefulWidget {
 
 class _MainHomePageState extends State<MainHomePage> {
   bool prevConnected = true;
+  String qod;
+  String qodAuthor;
+
+  @override
+  void initState() {
+    super.initState();
+    http.get('https://quotes.rest/qod').then((response) {
+      var temp = jsonDecode(response.body)['contents']['quotes'][0];
+      qod = '\"' + temp['quote'] + '\"';
+      qodAuthor = '- ' + temp['author'];
+      setState(() {});
+    });
+  }
 
   Widget scheduleCard(EventModel event) {
     return Card(
@@ -293,19 +309,25 @@ class _MainHomePageState extends State<MainHomePage> {
                             Text("How are you doing today? ",
                                 style: TextStyle(
                                     color: theme.textSubheadingColor)),
-                            Text(
-                              (DateTime.now().weekday != 6 ||
-                                      DateTime.now().weekday != 7)
-                                  ? "${5 - DateTime.now().weekday} days to the weekend  🤜 "
-                                  : "Enjoy your weekend 🥳",
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontStyle: FontStyle.italic,
-                                  color: theme.textSubheadingColor),
-                            ),
                           ]),
                     ]),
-                SizedBox(height: 30),
+                SizedBox(height: 10),
+                Text(
+                  qod ?? '',
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontStyle: FontStyle.italic,
+                      color: theme.textSubheadingColor),
+                ),
+                Text(
+                  qodAuthor ?? '',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontStyle: FontStyle.italic,
+                      color: theme.textSubheadingColor),
+                ),
+                SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
                     return Navigator.pushNamed(context, '/messmenu');
