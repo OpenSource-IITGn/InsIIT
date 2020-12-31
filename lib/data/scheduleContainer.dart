@@ -1,3 +1,4 @@
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:googleapis/classroom/v1.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
@@ -25,7 +26,6 @@ class ScheduleContainer {
   List<EventModel> examCourses;
   List<List<EventModel>> eventsList;
   List<EventModel> twoEvents;
-
 
   getData() {
     loadCourseTimeData();
@@ -81,7 +81,7 @@ class ScheduleContainer {
 
   Future getEventsOnline(httpClient) async {
     var eventData =
-    await calendar.CalendarApi(httpClient).events.list('primary');
+        await calendar.CalendarApi(httpClient).events.list('primary');
     events = [];
     events.addAll(eventData.items);
     eventsWithoutRepetition = listWithoutRepetitionEvent(events);
@@ -94,26 +94,29 @@ class ScheduleContainer {
       eventsWithoutRepetition = [];
       eventsReady = true;
     } else {
-      await gSignIn.signIn();
-      final authHeaders = await gSignIn.currentUser.authHeaders;
-      final httpClient = GoogleHttpClient(authHeaders);
-      await getEventsCached().then((values) async {
-        if (values != false) {
-          // print("Cached Events");
-          events = values;
-          eventsWithoutRepetition = listWithoutRepetitionEvent(events);
-        } else {
-          // print("Not cached events");
-          await getEventsOnline(httpClient).then((value) {
-            storeEventsCached();
-          });
-        }
-      });
-      getEventsOnline(httpClient).then((value) {
-        storeEventsCached();
-      });
+      // await dataContainer.auth.gSignIn.signIn();
+      dataContainer.auth.gSignIn.signInSilently().then((value) async {
+        final authHeaders =
+            await dataContainer.auth.gSignIn.currentUser.authHeaders;
+        final httpClient = GoogleHttpClient(authHeaders);
+        await getEventsCached().then((values) async {
+          if (values != false) {
+            // print("Cached Events");
+            events = values;
+            eventsWithoutRepetition = listWithoutRepetitionEvent(events);
+          } else {
+            // print("Not cached events");
+            await getEventsOnline(httpClient).then((value) {
+              storeEventsCached();
+            });
+          }
+        });
+        getEventsOnline(httpClient).then((value) {
+          storeEventsCached();
+        });
 
-      eventsReady = true;
+        eventsReady = true;
+      });
     }
   }
 
@@ -169,8 +172,8 @@ class ScheduleContainer {
             }
             if (lc[2] != '' && lc[2] != '-') {
               if (lc[2].replaceAll(' ', '').contains(new RegExp(
-                  course.name.replaceAll(' ', ''),
-                  caseSensitive: false)) ||
+                      course.name.replaceAll(' ', ''),
+                      caseSensitive: false)) ||
                   course.name.replaceAll(' ', '').contains(new RegExp(
                       lc[2].replaceAll(' ', ''),
                       caseSensitive: false)) ||
@@ -297,7 +300,7 @@ class ScheduleContainer {
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -348,7 +351,7 @@ class ScheduleContainer {
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -642,7 +645,7 @@ class ScheduleContainer {
                           courseId: myCourse.courseCode,
                           courseName: myCourse.courseName,
                           eventType:
-                          'Lecture ${text.substring(2, text.length)}',
+                              'Lecture ${text.substring(2, text.length)}',
                           location: myCourse.lectureLocation,
                           instructors: myCourse.instructors,
                           credits: myCourse.credits,
@@ -683,7 +686,7 @@ class ScheduleContainer {
                           courseId: myCourse.courseCode,
                           courseName: myCourse.courseName,
                           eventType:
-                          'Tutorial ${text.substring(2, text.length)}',
+                              'Tutorial ${text.substring(2, text.length)}',
                           location: myCourse.tutorialLocation,
                           instructors: myCourse.instructors,
                           credits: myCourse.credits,
@@ -823,7 +826,6 @@ class ScheduleContainer {
       quickSort(list, pi + 1, high);
     }
   }
-
 }
 
 class GoogleHttpClient extends IOClient {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/classes/commentModel.dart';
 import 'package:instiapp/feed/classes/postModel.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
@@ -27,9 +28,9 @@ class _FullPostPageState extends State<FullPostPage> {
   void postComment(String commentText) async {
     var commentObj = CommentModel(
         poster: User(
-            name: currentUser.name,
-            imageUrl: currentUser.imageUrl,
-            uid: currentUser.uid),
+            name: dataContainer.auth.user.name,
+            imageUrl: dataContainer.auth.user.imageUrl,
+            uid: dataContainer.auth.user.uid),
         text: commentText,
         timestamp: dateFormat.format(DateTime.now()),
         timeText: 'now');
@@ -127,9 +128,8 @@ Widget buildComment(CommentModel comment) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
     child: Container(
-      decoration: BoxDecoration(
-          color: primaryColor.withAlpha(10),
-          borderRadius: BorderRadius.all(Radius.circular(10))),
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
         child: Column(
@@ -160,10 +160,8 @@ Widget buildComment(CommentModel comment) {
                     ),
                     Text(
                       comment.timeText,
-                      style: TextStyle(
-                          color: secondaryTextColor,
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic),
+                      style:
+                          TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
                     ),
                   ],
                 ),

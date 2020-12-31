@@ -1,5 +1,7 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
+// import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/data/dataContainer.dart';
@@ -24,12 +26,15 @@ class _MessMenuState extends State<MessMenu> {
           Text(
             item.header,
             style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: theme.textHeadingColor),
           ),
           Text(item.timeString,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: theme.textSubheadingColor))
         ],
       ),
     );
@@ -44,7 +49,7 @@ class _MessMenuState extends State<MessMenu> {
           if (food != '-') {
             return Card(
               elevation: 0,
-              color: Colors.blueAccent.withAlpha(5),
+              color: theme.cardAccent,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
                 child: Row(
@@ -56,14 +61,15 @@ class _MessMenuState extends State<MessMenu> {
                       child: Text(
                         food,
                         style: TextStyle(
-                          fontSize: 16.0,
-                        ),
+                            fontSize: 16.0, color: theme.textHeadingColor),
                       ),
                     ),
                     Row(
                       children: <Widget>[
                         IconButton(
-                          icon: Icon(Icons.thumb_down_alt),
+                          icon: Icon(
+                            Icons.thumb_down_alt,
+                          ),
                           iconSize: 20,
                           color: returnColorDownVote(food),
                           onPressed: () async {
@@ -93,7 +99,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  currentUser.email,
+                                  dataContainer.auth.user.email,
                                   temp
                                 ]
                               ], 'messFeedbackItems!A:D');
@@ -111,7 +117,9 @@ class _MessMenuState extends State<MessMenu> {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.thumb_up_alt),
+                          icon: Icon(
+                            Icons.thumb_up_alt,
+                          ),
                           iconSize: 20,
                           color: returnColorUpVote(food),
                           onPressed: () async {
@@ -141,7 +149,7 @@ class _MessMenuState extends State<MessMenu> {
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
                                   food,
-                                  currentUser.email,
+                                  dataContainer.auth.user.email,
                                   temp
                                 ]
                               ], 'messFeedbackItems!A:D');
@@ -181,9 +189,9 @@ class _MessMenuState extends State<MessMenu> {
       });
     }
     if (vote == '1') {
-      return Colors.green;
+      return theme.upvoteColor;
     } else {
-      return Colors.black45.withAlpha(50);
+      return theme.iconColorLite;
     }
   }
 
@@ -197,9 +205,9 @@ class _MessMenuState extends State<MessMenu> {
       });
     }
     if (vote == '-1') {
-      return Colors.red;
+      return theme.downvoteColor;
     } else {
-      return Colors.black45.withAlpha(50);
+      return theme.iconColorLite;
     }
   }
 
@@ -209,22 +217,26 @@ class _MessMenuState extends State<MessMenu> {
       initialIndex: DateTime.now().weekday - 1,
       length: 7,
       child: Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: AppBar(
           elevation: 0,
+          backgroundColor: theme.appBarColor,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: theme.iconColor),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           centerTitle: true,
-          title:
-              Text('Mess Menu', style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text('Mess Menu',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
           bottom: PreferredSize(
             child: TabBar(
               isScrollable: true,
-              unselectedLabelColor: Colors.black.withOpacity(0.3),
-              indicatorColor: primaryColor,
+              unselectedLabelColor: theme.textHeadingColor.withOpacity(0.3),
+              indicatorColor: theme.indicatorColor,
+              labelColor: theme.textHeadingColor,
               // unselectedLabelStyle:
               //     TextStyle(color: Colors.black.withOpacity(0.3)),
               tabs: <Widget>[
@@ -274,7 +286,7 @@ class _MessMenuState extends State<MessMenu> {
           }).toList(),
         ),
         floatingActionButton: RaisedButton.icon(
-          color: primaryColor,
+          color: theme.floatingColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),

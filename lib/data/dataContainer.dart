@@ -6,6 +6,7 @@ import 'package:instiapp/data/shuttleContainer.dart';
 import 'package:instiapp/data/representativesContainer.dart';
 import 'package:instiapp/data/quickLinksContainer.dart';
 import 'package:instiapp/data/fireBaseContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 var dataContainer = DataContainer();
 
@@ -18,7 +19,7 @@ class DataContainer {
   ShuttleContainer shuttle = ShuttleContainer();
   RepresentativesContainer representatives = RepresentativesContainer();
   QuickLinksContainer quickLinks = QuickLinksContainer();
-  FireBaseContainer fireBase = FireBaseContainer();
+  AuthContainer auth = AuthContainer();
 
   getOtherData() {
     schedule.getData();

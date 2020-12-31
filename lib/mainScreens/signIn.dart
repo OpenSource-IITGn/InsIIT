@@ -4,9 +4,10 @@ import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/globalClasses/user.dart' as userModel;
 import 'package:instiapp/utilities/measureSize.dart';
-import 'package:instiapp/utilities/signInMethods.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'dart:developer';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);
@@ -33,8 +34,11 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
-    print(dataContainer.fireBase.user);
-    navigateToHome();
+
+    dataContainer.auth.initialize().then((value) {
+      navigateToHome();
+    });
+
     checkWelcome().then((val) {
       if (val == true) {
         Navigator.pushNamed(context, '/onboarding');
@@ -42,60 +46,34 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-  void navigateToHome () {
-    if (dataContainer.fireBase.user != null) {
-      if (dataContainer.fireBase.user.displayName == null || dataContainer.fireBase.user.displayName.length == 0) {
-        currentUser = null;
+  void navigateToHome() {
+    if (dataContainer.auth.authorized) {
+      log("AUTHORIZATION SUCCESS", name: "SIGNIN");
+      if (dataContainer.schedule.eventsReady) {
+        log("Events are ready, going home", name: "SIGNIN");
+        Navigator.pushReplacementNamed(context, '/menuBarBase');
       } else {
-        currentUser = userModel.User(
-            name: dataContainer.fireBase.user.displayName,
-            imageUrl: dataContainer.fireBase.user.photoURL,
-            email: dataContainer.fireBase.user.email,
-            uid: dataContainer.fireBase.user.uid);
-
-        if (dataContainer.schedule.eventsReady) {
+        log("Refreshing events", name: "SIGNIN");
+        dataContainer.schedule.reloadEventsAndCourses().then((s) {
+          log("Events are ready, going home", name: "SIGNIN");
           Navigator.pushReplacementNamed(context, '/menuBarBase');
-        } else {
-          dataContainer.schedule.reloadEventsAndCourses().then((s) {
-            Navigator.pushReplacementNamed(context, '/menuBarBase');
-          });
-        }
+        });
       }
+    } else {
+      log("AUTHORIZATION FAIL", name: "SIGNIN");
+      setState(() {});
     }
   }
 
-  void authorize(asGuest) async {
-    if (asGuest) {
-      currentUser = null;
-      FirebaseAuth.instance.signInAnonymously();
-      // print("Logging in as guest");
-      Navigator.pushReplacementNamed(context, '/menuBarBase');
-    } else {
-      // print("Started GSIGN IN Method");
-      await signInWithGoogle().then((user) {
-        if (user != null) {
-          var temp = user.additionalUserInfo.profile;
-          currentUser = userModel.User(
-              name: temp['given_name'],
-              imageUrl: temp['picture'],
-              email: temp['email'],
-              uid: temp['uid']);
-        }
-      });
-      // print("AUTHORIZED");
-      await dataContainer.schedule.reloadEventsAndCourses().then((s) {});
-      Navigator.pushReplacementNamed(context, '/menuBarBase');
-    }
+  void login(asGuest) async {
+    await dataContainer.auth.login(asGuest, () => setState(() {}));
+    navigateToHome();
   }
 
   var key = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    if (!dataContainer.fireBase.initialized) {
-      setState(() {
-        dataContainer.fireBase.initialize(navigateToHome);
-      });
-    }
+    if (dataContainer.auth.initialized && !dataContainer.auth.authorized) {
       return WillPopScope(
         onWillPop: () {
           return Future.value(false);
@@ -112,19 +90,14 @@ class _SignInPageState extends State<SignInPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.4,
-                          child: Image.asset(
-                              'assets/images/homepageGif.gif')),
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: Image.asset('assets/images/homepageGif.gif')),
                       Column(
                         children: [
                           Align(
                             alignment: Alignment.topLeft,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  16, 8, 16, 8),
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                               child: Text("InsIIT",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
@@ -135,8 +108,7 @@ class _SignInPageState extends State<SignInPage> {
                           Align(
                             alignment: Alignment.topLeft,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  16, 0, 16, 8),
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                               child: Text("All things IITGN",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
@@ -155,7 +127,7 @@ class _SignInPageState extends State<SignInPage> {
                             setState(() {});
                           },
                           child: FlatButton(
-                            onPressed: () => authorize(false),
+                            onPressed: () => login(false),
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(40.0),
                             ),
@@ -174,8 +146,7 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                              16.0, 8, 16, 8),
+                          padding: const EdgeInsets.fromLTRB(16.0, 8, 16, 8),
                           child: Text(
                             "or",
                             style: TextStyle(
@@ -186,16 +157,15 @@ class _SignInPageState extends State<SignInPage> {
                         Container(
                           width: buttonSize.width,
                           child: FlatButton(
-                            onPressed: () => authorize(true),
+                            onPressed: () => login(true),
                             shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(
-                                    40.0),
+                                borderRadius: new BorderRadius.circular(40.0),
                                 side: BorderSide(
                                   color: Colors.grey.withAlpha(50),
                                 )),
                             child: Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(16.0, 16, 16, 16),
+                                  const EdgeInsets.fromLTRB(16.0, 16, 16, 16),
                               child: Container(
                                 child: Text(
                                   "Login as Guest",
@@ -216,5 +186,8 @@ class _SignInPageState extends State<SignInPage> {
           ),
         ),
       );
+    } else {
+      return loadScreen();
+    }
   }
 }

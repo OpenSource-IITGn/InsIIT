@@ -327,7 +327,7 @@ class _EditEventState extends State<EditEvent> {
                 delegate: CustomSearch(),
               );
             },
-            backgroundColor: primaryColor,
+            // backgroundColor: primaryColor,
             child: Icon(Icons.add, color: Colors.white),
           ),
           SizedBox(height: 16),
@@ -336,7 +336,7 @@ class _EditEventState extends State<EditEvent> {
             onPressed: () {
               _openGoogleCalendar();
             },
-            backgroundColor: primaryColor,
+            // backgroundColor: primaryColor,
             child: Icon(Icons.calendar_today, color: Colors.white),
           ),
 //          SizedBox(height: 16),

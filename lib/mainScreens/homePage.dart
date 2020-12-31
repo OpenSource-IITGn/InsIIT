@@ -5,14 +5,12 @@ import 'package:instiapp/mainScreens/firsthomepage.dart';
 import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/utilities/signInMethods.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/data/dataContainer.dart';
-import 'package:instiapp/themeing/notifier.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);
@@ -55,12 +53,20 @@ class _HomePageState extends State<HomePage>
   }
 
   PageController _pageController;
-  List<String> titles = ["", "News", "Buses", "Campus Map", "Misc"];
+  List<String> titles = [
+    "",
+    // "News",
+    "Buses",
+    "Campus Map",
+    "Misc"
+  ];
 
   Widget homeScreen() {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: theme.backgroundColor,
       bottomNavigationBar: BottomNavyBar(
+        backgroundColor: theme.bottomNavyBarColor,
         selectedIndex: selectedIndex,
         showElevation: true,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,38 +77,56 @@ class _HomePageState extends State<HomePage>
         },
         items: [
           BottomNavyBarItem(
-            icon: Icon(Icons.apps),
-            title: Text('Home'),
-            activeColor: primaryColor,
+            icon: Icon(Icons.apps, color: theme.textSubheadingColor),
+            title: Text(
+              'Home',
+              style: TextStyle(color: theme.textSubheadingColor),
+            ),
+            activeColor: theme.bottomNavyBarIndicatorColor,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          // BottomNavyBarItem(
+          //   icon: Icon(Icons.rss_feed, color: theme.textSubheadingColor),
+          //   title: Text(
+          //     'Feed',
+          //     style: TextStyle(color: theme.textSubheadingColor),
+          //   ),
+          //   activeColor: theme.bottomNavyBarIndicatorColor,
+          //   inactiveColor: Colors.grey,
+          //   textAlign: TextAlign.center,
+          // ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.airport_shuttle, color: theme.textSubheadingColor),
+            title: Text(
+              'Shuttle',
+              style: TextStyle(color: theme.textSubheadingColor),
+            ),
+            activeColor: theme.bottomNavyBarIndicatorColor,
             inactiveColor: Colors.grey,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-            icon: Icon(Icons.rss_feed),
-            title: Text('Feed'),
-            activeColor: primaryColor,
-            inactiveColor: Colors.grey,
+            icon: Icon(
+              Icons.map,
+              color: theme.textSubheadingColor,
+            ),
             textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.airport_shuttle),
-            title: Text('Shuttle'),
-            activeColor: primaryColor,
-            inactiveColor: Colors.grey,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.map),
-            textAlign: TextAlign.center,
-            title: Text('Map'),
-            activeColor: primaryColor,
+            title: Text(
+              'Map',
+              style: TextStyle(color: theme.textSubheadingColor),
+            ),
+            activeColor: theme.bottomNavyBarIndicatorColor,
             inactiveColor: Colors.grey,
           ),
           BottomNavyBarItem(
-            icon: Icon(Icons.menu),
-            title: Text('Misc'),
+            icon: Icon(Icons.menu, color: theme.textSubheadingColor),
+            title: Text(
+              'Misc',
+              style: TextStyle(color: theme.textSubheadingColor),
+            ),
             textAlign: TextAlign.center,
-            activeColor: primaryColor,
+            activeColor: theme.bottomNavyBarIndicatorColor,
             inactiveColor: Colors.grey,
           ),
         ],
@@ -110,32 +134,33 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-//        leading: IconButton(
-//          icon: Icon(
-//            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
-//            color: (darkMode) ? Colors.purple : Colors.black,
-//          ),
-//          onPressed: () {
-//            if (darkMode) {
-//              darkMode = false;
-//            } else {
-//              darkMode = true;
-//            }
-//            Provider.of<ThemeNotifier>(context, listen: false)
-//                .setTheme(darkMode);
-//            setState(() {});
-//          },
-//        ),
+        leading: IconButton(
+          icon: Icon(
+            (darkMode) ? Icons.wb_sunny : Icons.wb_sunny_outlined,
+            color: (darkMode) ? Colors.purple : Colors.black,
+          ),
+          onPressed: () {
+            if (darkMode) {
+              darkMode = false;
+            } else {
+              darkMode = true;
+            }
+            swapTheme(darkMode);
+            setState(() {});
+          },
+        ),
         title: Container(
             decoration: new BoxDecoration(
                 color: (titles[selectedIndex] == "")
                     ? Colors.transparent
-                    : Colors.white.withAlpha(120),
+                    : theme.backgroundColor.withAlpha(150),
                 borderRadius: new BorderRadius.all(Radius.circular(40))),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(titles[selectedIndex],
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor)),
             )),
         actions: <Widget>[
           IconButton(
@@ -148,7 +173,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.exit_to_app, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              logoutUser().then((value) {
+              dataContainer.auth.logoutUser().then((value) {
                 Navigator.pushReplacementNamed(context, '/signin');
               });
             },
@@ -164,7 +189,7 @@ class _HomePageState extends State<HomePage>
         },
         children: <Widget>[
           MainHomePage(reloadData),
-          FeedPage(),
+          // FeedPage(),
           Shuttle(),
           MapPage(),
           MiscPage(),

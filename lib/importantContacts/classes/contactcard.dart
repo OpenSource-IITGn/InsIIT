@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/constants.dart';
 
@@ -36,22 +37,21 @@ class ContactCard {
                 Text(
                   contactJson['name'],
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      color: theme.textHeadingColor),
                 ),
                 Text(
                   contactJson['designation'],
                   style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                  ),
+                      fontStyle: FontStyle.italic,
+                      color: theme.textHeadingColor),
                 ),
               ],
             ),
             (contactJson['phno'].length > 0)
                 ? IconButton(
-                    icon: Icon(
-                      Icons.phone,
-                      color: Colors.black.withAlpha(120),
-                    ),
+                    icon: Icon(Icons.phone, color: theme.iconColor),
                     onPressed: () {
                       List phones = contactJson['phno'];
                       if (phones.length > 1) {
@@ -119,18 +119,18 @@ class ContactCard {
             Text(
               name,
               style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: theme.textHeadingColor),
             ),
             (description.trim() == '-')
                 ? Container()
                 : Text(
                     description,
                     style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: theme.textSubheadingColor),
                   ),
           ],
         ),
