@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/mainScreens/loading.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/globalClasses/user.dart' as userModel;
 import 'package:instiapp/utilities/measureSize.dart';
@@ -49,13 +50,11 @@ class _SignInPageState extends State<SignInPage> {
   void navigateToHome() {
     if (dataContainer.auth.authorized) {
       log("AUTHORIZATION SUCCESS", name: "SIGNIN");
+      log("${dataContainer.auth.user}", name: "SIGNIN");
       if (dataContainer.schedule.eventsReady) {
-        log("Events are ready, going home", name: "SIGNIN");
         Navigator.pushReplacementNamed(context, '/menuBarBase');
       } else {
-        log("Refreshing events", name: "SIGNIN");
         dataContainer.schedule.reloadEventsAndCourses().then((s) {
-          log("Events are ready, going home", name: "SIGNIN");
           Navigator.pushReplacementNamed(context, '/menuBarBase');
         });
       }
@@ -79,6 +78,7 @@ class _SignInPageState extends State<SignInPage> {
           return Future.value(false);
         },
         child: Scaffold(
+          backgroundColor: theme.backgroundColor,
           key: key,
           body: SafeArea(
             child: Container(

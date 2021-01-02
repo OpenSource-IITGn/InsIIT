@@ -47,11 +47,12 @@ class AuthContainer {
     if (asGuest) {
       user = null;
       isGuest = true;
+      authorized = true;
       await FirebaseAuth.instance.signInAnonymously();
     } else {
       log("TRYING GOOGLE SIGN IN", name: "AUTH");
-      await signInWithGoogle().then((user) {
-        user = user;
+      await signInWithGoogle().then((value) {
+        user = value;
         authorized = true;
         callback();
       });
@@ -73,7 +74,10 @@ class AuthContainer {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    return FirebaseAuth.instance.currentUser;
+    User user;
+    await FirebaseAuth.instance.signInWithCredential(credential).then((value) {
+      user = value.user;
+    });
+    return user;
   }
 }
