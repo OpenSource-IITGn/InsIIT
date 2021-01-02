@@ -83,6 +83,7 @@ class ContactCard {
                 : IconButton(
                     icon: Icon(
                       Icons.language,
+                      color: theme.iconColor,
                     ),
                     onPressed: () {
                       launch(contactJson['website']);
@@ -147,60 +148,6 @@ class ContactCard {
                     .map((contact) => contactLink(context, contact))
                     .toList(),
               ),
-              // SizedBox(
-              //   height: 5.0,
-              // ),
-              // (emails[0] == '-')
-              //     ? Container()
-              //     : Text(
-              //         'Emails',
-              //         style: TextStyle(
-              //           color: Colors.grey[800],
-              //           // fontSize: 18.0,
-              //           fontSize: 15.0,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              // SizedBox(
-              //   height: 5.0,
-              // ),
-              // (emails[0] == '-')
-              //     ? Container()
-              //     : Column(
-              //         crossAxisAlignment: CrossAxisAlignment.stretch,
-              //         children: emails
-              //             .map((contact) => contactLink(contact))
-              //             .toList(),
-              //       ),
-              // (websites[0] == '-')
-              //     ? Container()
-              //     : SizedBox(
-              //         height: 5.0,
-              //       ),
-              // (websites[0] == '-')
-              //     ? Container()
-              //     : Text(
-              //         'Websites',
-              //         style: TextStyle(
-              //           color: Colors.grey[800],
-              //           // fontSize: 18.0,
-              //           fontSize: 15.0,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              // (websites[0] == '-')
-              //     ? Container()
-              //     : SizedBox(
-              //         height: 5.0,
-              //       ),
-              // (websites[0] == '-')
-              //     ? Container()
-              //     : Column(
-              //         crossAxisAlignment: CrossAxisAlignment.stretch,
-              //         children: websites
-              //             .map((contact) => contactLink(contact))
-              //             .toList(),
-              //       ),
             ],
           ),
         ),

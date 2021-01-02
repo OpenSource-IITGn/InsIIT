@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'dart:developer';
 
+import 'package:instiapp/themeing/notifier.dart';
+
 class AuthContainer {
   var user;
   bool initialized = false;
@@ -23,6 +25,7 @@ class AuthContainer {
 
   Future<bool> initialize() async {
     log("INITIALIZING", name: "AUTH");
+    await getTheme();
     await Firebase.initializeApp().then((value) {
       app = value;
       user = FirebaseAuth.instance.currentUser;

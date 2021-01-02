@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instiapp/utilities/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeContainer {
   Color backgroundColor;
@@ -87,10 +89,30 @@ ThemeContainer darkTheme = ThemeContainer(
 
 ThemeContainer theme = lightTheme;
 
+Future getTheme() async {
+  SharedPreferences s = await SharedPreferences.getInstance();
+  var darkOn = s.getBool("dark");
+  if (darkOn != null) {
+    if (darkOn == true) {
+      darkMode = true;
+      theme = darkTheme;
+    } else {
+      darkMode = false;
+      theme = lightTheme;
+    }
+  }
+}
+
 void swapTheme(darkOn) {
   if (darkOn) {
     theme = darkTheme;
   } else {
     theme = lightTheme;
   }
+  storeThemeInPref(darkOn);
+}
+
+void storeThemeInPref(darkOn) async {
+  SharedPreferences s = await SharedPreferences.getInstance();
+  s.setBool("dark", darkOn);
 }

@@ -3,6 +3,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,7 +23,7 @@ bool loadingAddCourseData = false;
 class _EditEventState extends State<EditEvent> {
   bool updateUserAddedCourses = false;
   bool loading = false;
-
+  var thisTheme = theme;
   @override
   void initState() {
     super.initState();
@@ -287,38 +288,49 @@ class _EditEventState extends State<EditEvent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: thisTheme.backgroundColor,
       appBar: AppBar(
+        backgroundColor: thisTheme.appBarColor,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: thisTheme.iconColor),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: Text('Edit Schedule',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: thisTheme.textHeadingColor)),
       ),
       body: (loading)
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: dataContainer
-                      .schedule.eventsList[DateTime.now().weekday - 1]
-                      .map<Widget>((EventModel model) {
-                    return eventCard(model);
-                  }).toList(),
+          : (dataContainer
+                      .schedule.eventsList[DateTime.now().weekday - 1].length ==
+                  0)
+              ? Center(
+                  child: Text("No events have been added yet!",
+                      style: TextStyle(color: thisTheme.textHeadingColor)))
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: dataContainer
+                          .schedule.eventsList[DateTime.now().weekday - 1]
+                          .map<Widget>((EventModel model) {
+                        return eventCard(model);
+                      }).toList(),
+                    ),
+                  ),
                 ),
-              ),
-            ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           FloatingActionButton(
+            backgroundColor: thisTheme.floatingColor,
             heroTag: "fab1rs",
             onPressed: () {
               //Navigator.popAndPushNamed(context, '/addcourse');
@@ -328,16 +340,17 @@ class _EditEventState extends State<EditEvent> {
               );
             },
             // backgroundColor: primaryColor,
-            child: Icon(Icons.add, color: Colors.white),
+            child: Icon(Icons.add, color: thisTheme.iconColor),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
+            backgroundColor: thisTheme.floatingColor,
             heroTag: "fab2rs",
             onPressed: () {
               _openGoogleCalendar();
             },
             // backgroundColor: primaryColor,
-            child: Icon(Icons.calendar_today, color: Colors.white),
+            child: Icon(Icons.calendar_today, color: thisTheme.iconColor),
           ),
 //          SizedBox(height: 16),
 //          FloatingActionButton(
@@ -367,6 +380,7 @@ class _EditEventState extends State<EditEvent> {
 }
 
 class CustomSearch extends SearchDelegate {
+  var thisTheme = lightTheme;
   addCourses(Map<MyCourse, bool> add, BuildContext context) {
     loadingAddCourseData = true;
     query = "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken";
@@ -464,7 +478,7 @@ class CustomSearch extends SearchDelegate {
       child: Container(
         width: ScreenSize.size.width * 1,
         child: Card(
-          color: (add[course]) ? Colors.white30 : Colors.white,
+          color: (add[course]) ? thisTheme.cardAccent : thisTheme.cardBgColor,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -472,16 +486,19 @@ class CustomSearch extends SearchDelegate {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Flexible(
-                    child: Text(
-                  course.courseCode,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                )),
+                    child: Text(course.courseCode,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: thisTheme.textHeadingColor))),
                 SizedBox(
                   width: 5,
                 ),
                 Flexible(
                     child: Text(
                   course.courseName,
+                  textAlign: TextAlign.right,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 )),
               ],
