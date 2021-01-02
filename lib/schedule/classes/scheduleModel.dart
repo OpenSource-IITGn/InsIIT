@@ -151,10 +151,10 @@ class EventModel {
               SizedBox(
                 height: 8,
               ),
-              Text(
-                  'Your attendance: ' +
-                      totalAttendance(this.attendanceManager).toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              // Text(
+              //     'Your attendance: ' +
+              //         totalAttendance(this.attendanceManager).toString(),
+              //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ]),
       );
     } else if (this.isExam) {

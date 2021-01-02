@@ -340,7 +340,7 @@ class _EditEventState extends State<EditEvent> {
               );
             },
             // backgroundColor: primaryColor,
-            child: Icon(Icons.add, color: thisTheme.iconColor),
+            child: Icon(Icons.add, color: Colors.white),
           ),
           SizedBox(height: 16),
           FloatingActionButton(
@@ -350,7 +350,7 @@ class _EditEventState extends State<EditEvent> {
               _openGoogleCalendar();
             },
             // backgroundColor: primaryColor,
-            child: Icon(Icons.calendar_today, color: thisTheme.iconColor),
+            child: Icon(Icons.calendar_today, color: Colors.white),
           ),
 //          SizedBox(height: 16),
 //          FloatingActionButton(

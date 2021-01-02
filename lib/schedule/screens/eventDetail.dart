@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/constants.dart';
 
@@ -54,14 +55,14 @@ class _EventDetailState extends State<EventDetail> {
   Widget body(EventModel event) {
     if (event.isCourse) {
       return Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(event.courseName,
+            Text("[${event.courseId}] ${event.courseName}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            Text(event.courseId,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            // Text(,
+            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             Text(event.eventType,
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
@@ -143,11 +144,18 @@ class _EventDetailState extends State<EventDetail> {
               height: 8,
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: (event.instructors == null)
                   ? [Container()]
                   : event.instructors.map<Widget>((String instructor) {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.fromLTRB(
+                          8,
+                          0,
+                          0,
+                          0,
+                        ),
                         child: Text(instructor,
                             style: TextStyle(
                                 // fontWeight: FontWeight.bold,
@@ -167,11 +175,11 @@ class _EventDetailState extends State<EventDetail> {
                 : Text('Pre-requisite: ${event.preRequisite}',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            ExpansionTile(
-              key: GlobalKey(),
-              title: Text('View Attendance'),
-              children: attendance,
-            )
+            // ExpansionTile(
+            //   key: GlobalKey(),
+            //   title: Text('View Attendance'),
+            //   children: attendance,
+            // )
           ],
         ),
       );
@@ -256,7 +264,9 @@ class _EventDetailState extends State<EventDetail> {
       attendance = attendanceManager(event.attendanceManager);
     }
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
+        backgroundColor: theme.appBarColor,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
@@ -265,7 +275,9 @@ class _EventDetailState extends State<EventDetail> {
             Navigator.pop(context);
           },
         ),
-        title: Text('Details', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Details',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
       ),
       body: SingleChildScrollView(
         child: body(event),
