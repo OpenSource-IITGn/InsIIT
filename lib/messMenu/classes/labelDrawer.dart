@@ -42,29 +42,25 @@ class LabelBorder extends ShapeBorder {
   ShapeBorder scale(double t) => this;
 }
 
-Widget label(String text, visible, sizeCallback) {
+Widget label(String text, sizeCallback) {
   return MeasureSize(
     onChange: (Size size) {
       sizeCallback(size);
     },
     child: Center(
-      child: AnimatedOpacity(
-        opacity: visible ? 1.0 : 0.0,
-        duration: Duration(milliseconds: 1000),
-        child: Container(
-          decoration: ShapeDecoration(
-            color: (darkMode) ? Colors.white : Colors.black.withAlpha(200),
-            shape: LabelBorder(arrowArc: 0.1),
-          ),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Text(text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: (darkMode) ? Colors.black : Colors.white,
-                  fontSize: 10,
-                )),
-          ),
+      child: Container(
+        decoration: ShapeDecoration(
+          color: (darkMode) ? Colors.white : Colors.black.withAlpha(200),
+          shape: LabelBorder(arrowArc: 0.1),
+        ),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Text(text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: (darkMode) ? Colors.black : Colors.white,
+                fontSize: 10,
+              )),
         ),
       ),
     ),

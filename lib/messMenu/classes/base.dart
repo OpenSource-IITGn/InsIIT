@@ -17,20 +17,11 @@ class MessMenuBaseDrawer extends StatefulWidget {
 }
 
 class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
-  List visible = [];
   Size imageSize = Size(0, 0);
   List sizes = [];
   List imageSizes = [];
   Timer timer;
   int location = 0;
-  void handleTimer(timer) {
-    visible[location] = true;
-    location += 1;
-    if (location == visible.length) {
-      timer.cancel();
-    }
-    setState(() {});
-  }
 
   @override
   void initState() {
@@ -38,11 +29,9 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
     widget.reload();
     location = 0;
     for (int i = 0; i < dataContainer.mess.foodItems['list'].length; i++) {
-      visible.add(false);
       sizes.add(Size(0, 0));
       imageSizes.add(Size(0, 0));
     }
-    timer = Timer.periodic(Duration(milliseconds: 100), handleTimer);
   }
 
   Widget buildTray() {
@@ -113,8 +102,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
         Positioned(
           left: pad + imageSize.width / 2 - sizes[i].width / 2,
           top: 0,
-          child: label(dataContainer.mess.foodItems['list'][i], visible[i],
-              (size) {
+          child: label(dataContainer.mess.foodItems['list'][i], (size) {
             sizes[i] = size;
           }),
         ),
