@@ -98,7 +98,7 @@ class _EditEventState extends State<EditEvent> {
                       //   height: 8,
                       // ),
                       Text(
-                        stringReturn(model, model.eventType, model.description),
+                        stringReturnOnlyEvent(model, model.eventType, model.description),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -245,6 +245,21 @@ class _EditEventState extends State<EditEvent> {
     }
   }
 
+  String stringReturnOnlyEvent(
+      EventModel model, String textCourse, String textCalendar) {
+    if (model.isCourse || model.isExam) {
+      return "";
+    } else {
+      if (textCalendar == null) {
+        return 'None';
+      } else if (textCalendar.length < 100) {
+        return textCalendar;
+      } else {
+        return textCalendar.substring(0, 99);
+      }
+    }
+  }
+
   List<List<String>> makeRemovedEventsList(List<EventModel> removedEvents) {
     List<List<String>> removedEventsList = [];
 
@@ -287,6 +302,7 @@ class _EditEventState extends State<EditEvent> {
 
   @override
   Widget build(BuildContext context) {
+    dataContainer.schedule.makeAllEventsList();
     return Scaffold(
       backgroundColor: thisTheme.backgroundColor,
       appBar: AppBar(
@@ -308,8 +324,7 @@ class _EditEventState extends State<EditEvent> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : (dataContainer
-                      .schedule.eventsList[DateTime.now().weekday - 1].length ==
+          : (dataContainer.schedule.allEvents.length ==
                   0)
               ? Center(
                   child: Text("No events have been added yet!",
@@ -318,8 +333,7 @@ class _EditEventState extends State<EditEvent> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      children: dataContainer
-                          .schedule.eventsList[DateTime.now().weekday - 1]
+                      children: dataContainer.schedule.allEvents
                           .map<Widget>((EventModel model) {
                         return eventCard(model);
                       }).toList(),

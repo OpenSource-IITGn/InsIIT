@@ -26,6 +26,7 @@ class ScheduleContainer {
   List<EventModel> examCourses;
   List<List<EventModel>> eventsList;
   List<EventModel> twoEvents;
+  List<EventModel> allEvents;
 
   getData() {
     loadCourseTimeData();
@@ -33,6 +34,34 @@ class ScheduleContainer {
     loadRemovedCoursesData();
     loadUserAddedCoursesData();
     loadExamTimeTableData();
+  }
+
+  makeAllEventsList () {
+    allEvents = [];
+
+    if (eventsList != null) {
+      for (int i = 0; i < 7; i++) {
+        if (eventsList[i] != null && eventsList[i].length > 0) {
+          eventsList[i].forEach((EventModel event) {
+            bool add = true;
+
+            if (event.isCourse) {
+              allEvents.forEach((EventModel _event) {
+                if (_event.isCourse) {
+                  if (event.courseId == _event.courseId || event.courseName == _event.courseName) {
+                    add = false;
+                  }
+                }
+              });
+            }
+
+            if (add) {
+              allEvents.add(event);
+            }
+          });
+        }
+      }
+    }
   }
 
   readyEvents() {
