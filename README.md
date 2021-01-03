@@ -43,7 +43,7 @@ We would love to have you onboard! Do submit a pull request if you would like to
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://praveenvnktsh.github.io"><img src="https://avatars0.githubusercontent.com/u/30774147?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Praveen Venkatesh</b></sub></a><br /><a href="https://github.com/praveenVnktsh/IITGN-Institute-App/commits?author=praveenVnktsh" title="Code">💻</a></td>
+    <td align="center"><a href="http://praveenvnktsh.github.io"><img src="https://avatars0.githubusercontent.com/u/30774147?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Praveen Venkatesh</b></sub></a><br /><a href="https://github.com/praveenVnktsh/IITGN-Institute-App/commits?author=praveenVnktsh" title="Code">💻</a> <a href="https://github.com/praveenVnktsh/IITGN-Institute-App/commits?author=praveenVnktsh" title="Documentation">📖</a> <a href="#design-praveenVnktsh" title="Design">🎨</a> <a href="#maintenance-praveenVnktsh" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 
