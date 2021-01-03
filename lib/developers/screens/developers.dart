@@ -1,44 +1,97 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+// class DevModel {
+//   String name;
+//   String description;
+//   String email;
+//   DevModel({this.name, this.description, this.email});
+// }
 
 class DevModel {
+  String login;
   String name;
-  String description;
-  String email;
-  DevModel({this.name, this.description, this.email});
+  String avatar_url;
+  String profile;
+  List<String> contributions;
+  DevModel({
+    this.login,
+    this.name,
+    this.avatar_url,
+    this.profile,
+    this.contributions,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'login': login,
+      'name': name,
+      'avatar_url': avatar_url,
+      'profile': profile,
+      'contributions': contributions,
+    };
+  }
+
+  factory DevModel.fromMap(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return DevModel(
+      login: map['login'],
+      name: map['name'],
+      avatar_url: map['avatar_url'],
+      profile: map['profile'],
+      contributions: List<String>.from(map['contributions']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory DevModel.fromJson(String source) =>
+      DevModel.fromMap(json.decode(source));
 }
 
-class DevelopersPage extends StatelessWidget {
+class DevelopersPage extends StatefulWidget {
   DevelopersPage({Key key}) : super(key: key);
-  var devs = [
-    DevModel(
-        name: 'Praveen Venkatesh',
-        description: 'B.Tech \'18',
-        email: 'praveen.venkatesh@iitgn.ac.in'),
-    DevModel(
-        name: 'Chris Francis',
-        description: 'B.Tech \'18',
-        email: 'chris.francis@iitgn.ac.in'),
-    DevModel(
-        name: 'Nishikant Parmar',
-        description: 'B.Tech \'18',
-        email: 'nishikant.parmar@iitgn.ac.in'),
-    DevModel(
-        name: 'Gaurav Viramgami',
-        description: 'B.Tech \'19',
-        email: 'viramgami.g@iitgn.ac.in'),
-    DevModel(
-        name: 'Kritika Kumawat',
-        description: 'B.Tech \'19',
-        email: 'kritika.k@iitgn.ac.in'),
-    DevModel(
-        name: 'Anurag Kurle',
-        description: 'B.Tech \'19',
-        email: 'kurle.anurag@iitgn.ac.in')
-  ];
+
+  @override
+  _DevelopersPageState createState() => _DevelopersPageState();
+}
+
+class _DevelopersPageState extends State<DevelopersPage> {
+  bool loading = true;
+  List<DevModel> devs = [];
+
+  void refresh() {
+    loading = true;
+    devs = [];
+    setState(() {});
+    http
+        .get(
+            "https://raw.githubusercontent.com/praveenVnktsh/IITGN-Institute-App/dev/.all-contributorsrc")
+        .then((value) {
+      List body = jsonDecode(value.body)['contributors'];
+      for (int i = 0; i < body.length; i++) {
+        devs.add(DevModel.fromMap(body[i]));
+      }
+      loading = false;
+      setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,65 +105,82 @@ class DevelopersPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: theme.iconColor,
+              ),
+              onPressed: () {
+                refresh();
+              })
+        ],
         centerTitle: true,
         title: Text('Team InsIIT',
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
       ),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ColumnBuilder(
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-              width: ScreenSize.size.width,
-              child: Card(
-                  color: theme.cardBgColor,
-                  child: InkWell(
-                    onTap: () {
-                      launch('mailto:${devs[index].email}');
-                    },
+      body: (loading == true)
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemCount: devs.length,
+                itemBuilder: (context, index) {
+                  return GridTile(
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                devs[index].name,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: theme.textHeadingColor),
-                              ),
-                              Text(
-                                devs[index].description,
-                                style:
-                                    TextStyle(color: theme.textSubheadingColor),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              verticalDivider(height: 30.0),
-                              Icon(
-                                Icons.email,
-                                color: theme.iconColor,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          color: Colors.black,
+                          child: InkWell(
+                            onTap: () {
+                              launch(devs[index].profile);
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                    height: ScreenSize.size.width / 2 - 16,
+                                    width: ScreenSize.size.width / 2 - 16,
+                                    child: CachedNetworkImage(
+                                        imageUrl: devs[index].avatar_url)),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    color: Colors.white.withAlpha(200),
+                                    width: ScreenSize.size.width / 2 - 16,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(height: 8),
+                                        Text(
+                                          devs[index].name,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          devs[index].login,
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     ),
-                  )),
-            );
-          },
-          itemCount: devs.length,
-        ),
-      )),
+                  );
+                },
+              ),
+            ),
     );
   }
 }
