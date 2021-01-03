@@ -1,6 +1,6 @@
 ## InsIIT - IITGn's Official Institute App
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 You've stumbled across the official FOSS repository of IITGn's Institute App! This project is in its infant stages, and all contributions in any form are welcome :)
@@ -44,6 +44,7 @@ We would love to have you onboard! Do submit a pull request if you would like to
 <table>
   <tr>
     <td align="center"><a href="http://praveenvnktsh.github.io"><img src="https://avatars0.githubusercontent.com/u/30774147?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Praveen Venkatesh</b></sub></a><br /><a href="https://github.com/praveenVnktsh/IITGN-Institute-App/commits?author=praveenVnktsh" title="Code">💻</a></td>
+    <td align="center"><a href="http://linkedin.com/in/chrisfrancis09"><img src="https://avatars0.githubusercontent.com/u/46838731?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chris Francis</b></sub></a><br /><a href="https://github.com/praveenVnktsh/IITGN-Institute-App/commits?author=frank-chris" title="Code">💻</a> <a href="#ideas-frank-chris" title="Ideas, Planning, & Feedback">🤔</a> <a href="#design-frank-chris" title="Design">🎨</a></td>
   </tr>
 </table>
 
