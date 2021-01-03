@@ -60,7 +60,7 @@
         "code",
         "maintenance"
       ]
-    }
+    },
     {
       "login": "27Anurag",
       "name": "27Anurag",
@@ -70,10 +70,7 @@
         "code",
         "maintenance"
       ]
-    },
-    
-    
-    
+    }    
   ],
   "contributorsPerLine": 7,
   "projectName": "IITGN-Institute-App",
