@@ -1,4 +1,7 @@
 ## InsIIT - IITGn's Official Institute App
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 You've stumbled across the official FOSS repository of IITGn's Institute App! This project is in its infant stages, and all contributions in any form are welcome :)
 
@@ -35,4 +38,17 @@ We would like to thank Shreyas Singh (Class of '20), Shantanu Jana (Class of '21
 ## Contributors
 
 We would love to have you onboard! Do submit a pull request if you would like to contribute to a feature.
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://praveenvnktsh.github.io"><img src="https://avatars0.githubusercontent.com/u/30774147?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Praveen Venkatesh</b></sub></a><br /><a href="https://github.com/praveenVnktsh/IITGN-Institute-App/commits?author=praveenVnktsh" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
