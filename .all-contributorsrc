@@ -13,6 +13,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "27Anurag",
+      "name": "27Anurag",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/56363215?v=4",
+      "profile": "https://github.com/27Anurag",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
