@@ -48,6 +48,17 @@
         "ideas",
         "design"
       ]
+    },
+    {
+      "login": "Gaurav7214",
+      "name": "Gaurav Viramgami",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/58519896?v=4",
+      "profile": "https://github.com/Gaurav7214",
+      "contributions": [
+        "code",
+        "ideas",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
