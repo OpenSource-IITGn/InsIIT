@@ -1,7 +1,5 @@
 {
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "imageSize": 100,
   "commit": false,
   "contributors": [
@@ -10,55 +8,35 @@
       "name": "Praveen Venkatesh",
       "avatar_url": "https://avatars0.githubusercontent.com/u/30774147?v=4",
       "profile": "http://praveenvnktsh.github.io",
-      "contributions": [
-        "code",
-        "doc",
-        "design",
-        "maintenance"
-      ]
+      "contributions": ["code", "doc", "design", "maintenance"]
     },
     {
       "login": "nishikantparmariam",
       "name": "Nishikant Parmar",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7736252?v=4",
       "profile": "https://github.com/nishikantparmariam",
-      "contributions": [
-        "doc",
-        "code",
-        "ideas",
-        "maintenance"
-      ]
+      "contributions": ["doc", "code", "ideas", "maintenance"]
     },
     {
       "login": "27Anurag",
       "name": "27Anurag",
       "avatar_url": "https://avatars1.githubusercontent.com/u/56363215?v=4",
       "profile": "https://github.com/27Anurag",
-      "contributions": [
-        "code",
-        "maintenance"],
-        {
-  
+      "contributions": ["code", "maintenance"]
+    },
+    {
       "login": "frank-chris",
       "name": "Chris Francis",
       "avatar_url": "https://avatars0.githubusercontent.com/u/46838731?v=4",
       "profile": "http://linkedin.com/in/chrisfrancis09",
-      "contributions": [
-        "code",
-        "ideas",
-        "design"
-      ]
+      "contributions": ["code", "ideas", "design"]
     },
     {
       "login": "Gaurav7214",
       "name": "Gaurav Viramgami",
       "avatar_url": "https://avatars2.githubusercontent.com/u/58519896?v=4",
       "profile": "https://github.com/Gaurav7214",
-      "contributions": [
-        "code",
-        "ideas",
-        "maintenance"
-      ]
+      "contributions": ["code", "ideas", "maintenance"]
     }
   ],
   "contributorsPerLine": 7,
