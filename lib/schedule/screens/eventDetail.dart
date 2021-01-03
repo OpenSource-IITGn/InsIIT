@@ -60,13 +60,16 @@ class _EventDetailState extends State<EventDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text("[${event.courseId}] ${event.courseName}",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: theme.textHeadingColor)),
             // Text(,
             //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
             Text(event.eventType,
                 style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                )),
+                    fontStyle: FontStyle.italic,
+                    color: theme.textHeadingColor)),
             SizedBox(
               height: 10,
             ),
@@ -84,8 +87,8 @@ class _EventDetailState extends State<EventDetail> {
                           }
                         },
                         child: Text(
-                          link,
-                          style: TextStyle(color: Colors.blue, fontSize: 15),
+                          (link == '-') ? "" : link,
+                          style: TextStyle(fontSize: 15),
                         ),
                       );
                     }).toList(),
@@ -99,7 +102,9 @@ class _EventDetailState extends State<EventDetail> {
                   ),
                   TextSpan(
                     text: event.location,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: theme.textHeadingColor),
                   ),
                 ],
               ),
@@ -133,13 +138,18 @@ class _EventDetailState extends State<EventDetail> {
             (event.remarks == null)
                 ? Container()
                 : Text('Remarks: ${event.remarks}',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: theme.textHeadingColor)),
             SizedBox(
               height: 8,
             ),
             Text('Instructors: ',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: theme.textHeadingColor)),
             SizedBox(
               height: 8,
             ),
@@ -159,7 +169,7 @@ class _EventDetailState extends State<EventDetail> {
                         child: Text(instructor,
                             style: TextStyle(
                                 // fontWeight: FontWeight.bold,
-                                )),
+                                color: theme.textSubheadingColor)),
                       );
                     }).toList(),
             ),
@@ -168,13 +178,15 @@ class _EventDetailState extends State<EventDetail> {
             ),
             Text('${event.credits} credits',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                )),
+                    fontWeight: FontWeight.bold,
+                    color: theme.textHeadingColor)),
             (event.preRequisite == '-')
                 ? Container()
                 : Text('Pre-requisite: ${event.preRequisite}',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: theme.textHeadingColor)),
             // ExpansionTile(
             //   key: GlobalKey(),
             //   title: Text('View Attendance'),
@@ -193,16 +205,28 @@ class _EventDetailState extends State<EventDetail> {
               height: 10,
             ),
             Text(event.courseName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: theme.textHeadingColor)),
             Text(event.courseId,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: theme.textHeadingColor)),
             Text('ClassRoom: ${event.location}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: theme.textHeadingColor)),
             SizedBox(
               height: 10,
             ),
             Text('Roll Numbers: ${event.rollNumbers}',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: theme.textHeadingColor)),
             SizedBox(
               height: 10,
             ),
@@ -226,7 +250,10 @@ class _EventDetailState extends State<EventDetail> {
               height: 10,
             ),
             Text('Event: ' + stringReturn(event.summary),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: theme.textHeadingColor)),
             SizedBox(
               height: 10,
             ),
@@ -270,7 +297,7 @@ class _EventDetailState extends State<EventDetail> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: theme.iconColor),
           onPressed: () {
             Navigator.pop(context);
           },

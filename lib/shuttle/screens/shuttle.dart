@@ -72,6 +72,7 @@ class _ShuttleState extends State<Shuttle>
 
   Widget busesTemplate(buses) {
     return Card(
+      color: theme.cardBgColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -87,6 +88,7 @@ class _ShuttleState extends State<Shuttle>
                         "From: ",
                         style: TextStyle(
                           fontSize: 16.0,
+                          color: theme.textHeadingColor,
                         ),
                       ),
                       Text(
@@ -95,6 +97,7 @@ class _ShuttleState extends State<Shuttle>
                           fontSize: 16.0,
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
+                          color: theme.textHeadingColor,
                         ),
                       ),
                     ],
@@ -108,6 +111,7 @@ class _ShuttleState extends State<Shuttle>
                     "To: ",
                     style: TextStyle(
                       fontSize: 16.0,
+                      color: theme.textHeadingColor,
                     ),
                   ),
                   Text(
@@ -116,6 +120,7 @@ class _ShuttleState extends State<Shuttle>
                       fontSize: 16.0,
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor,
                     ),
                   ),
                 ],
@@ -128,9 +133,9 @@ class _ShuttleState extends State<Shuttle>
                 child: Text(
                   buses.time,
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.textHeadingColor),
                 ),
               ),
               Row(
@@ -138,7 +143,7 @@ class _ShuttleState extends State<Shuttle>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     FlatButton.icon(
-                        color: Colors.grey.withAlpha(25),
+                        color: theme.buttonColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                         ),
@@ -152,10 +157,13 @@ class _ShuttleState extends State<Shuttle>
                             ),
                           );
                         },
-                        icon: Icon(Icons.airport_shuttle),
+                        icon: Icon(Icons.airport_shuttle,
+                            color: theme.buttonContentColor),
                         label: Text(
                           'Route',
-                          style: TextStyle(),
+                          style: TextStyle(
+                            color: theme.buttonContentColor,
+                          ),
                         )),
                     CircleAvatar(
                       radius: 20,
@@ -388,17 +396,19 @@ class _ShuttleState extends State<Shuttle>
     // }
 
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       floatingActionButton: Visibility(
         visible: isFabVisible,
         // duration: Duration(milliseconds: 200),
         child: FloatingActionButton(
-            backgroundColor: Colors.white,
+            backgroundColor: theme.floatingColor,
             onPressed: () {
               _scrollController.animateTo(0,
                   duration: Duration(milliseconds: 800),
                   curve: Curves.easeInOut);
             },
-            child: Icon(Icons.keyboard_arrow_up, color: Colors.black)),
+            child:
+                Icon(Icons.keyboard_arrow_up, color: theme.buttonContentColor)),
       ),
       body: ListView(
         controller: _scrollController,
@@ -410,17 +420,20 @@ class _ShuttleState extends State<Shuttle>
                 Text("From: ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor,
                     )),
                 Text(this.origin,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic,
+                      color: theme.textHeadingColor,
                     )),
               ],
             ),
             children: places.map((String place) {
               return ListTile(
-                title: Text(place),
+                title: Text(place,
+                    style: TextStyle(color: theme.textSubheadingColor)),
                 onTap: () {
                   setState(() {
                     this.origin = place;
@@ -436,17 +449,20 @@ class _ShuttleState extends State<Shuttle>
                 Text("To: ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor,
                     )),
                 Text(this.destination,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic,
+                      color: theme.textHeadingColor,
                     )),
               ],
             ),
             children: places.map((String place) {
               return ListTile(
-                title: Text(place),
+                title: Text(place,
+                    style: TextStyle(color: theme.textSubheadingColor)),
                 onTap: () {
                   setState(() {
                     this.destination = place;

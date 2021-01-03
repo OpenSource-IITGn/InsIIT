@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 Map<DateTime, String> attendanceData = {
   DateTime(2020, 05, 30): 'P',
@@ -64,14 +65,15 @@ class EventModel {
   Widget time(DateTime time) {
     if (time == null) {
       return Flexible(
-        child: Text("Whole Day", style: TextStyle(fontSize: 17)),
+        child: Text("Whole Day",
+            style: TextStyle(fontSize: 17, color: theme.textHeadingColor)),
       );
     } else {
       return Text(
           twoDigitTime(time.hour.toString()) +
               ':' +
               twoDigitTime(time.minute.toString()),
-          style: TextStyle(fontSize: 17));
+          style: TextStyle(fontSize: 17, color: theme.textHeadingColor));
     }
   }
 
@@ -103,12 +105,18 @@ class EventModel {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(this.courseId,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: theme.textSubheadingColor)),
               SizedBox(
                 height: 8,
               ),
               Text(this.courseName,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.textHeadingColor)),
               SizedBox(
                 height: 8,
               ),
@@ -134,17 +142,22 @@ class EventModel {
                     )
                   : Container(),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text((this.eventType == null) ? 'Course' : this.eventType,
-                      style:
-                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 14,
+                          color: theme.textHeadingColor)),
                   SizedBox(
                     width: 8,
                   ),
                   Flexible(
                     child: Text('Room: ${this.location}',
                         style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 14)),
+                            fontStyle: FontStyle.italic,
+                            fontSize: 14,
+                            color: theme.textHeadingColor)),
                   ),
                 ],
               ),
@@ -264,6 +277,7 @@ class EventModel {
 
   Widget buildCard(BuildContext context) {
     return Card(
+      color: theme.cardBgColor,
       child: Container(
         width: ScreenSize.size.width,
         child: InkWell(
@@ -283,7 +297,9 @@ class EventModel {
                     SizedBox(
                       height: 8,
                     ),
-                    Text("to", style: TextStyle(fontSize: 14)),
+                    Text("to",
+                        style: TextStyle(
+                            fontSize: 14, color: theme.textHeadingColor)),
                     SizedBox(
                       height: 8,
                     ),
