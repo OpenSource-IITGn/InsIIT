@@ -18,6 +18,17 @@
       ]
     },
     {
+      "login": "Gaurav7214",
+      "name": "Gaurav Viramgami",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/58519896?v=4",
+      "profile": "https://github.com/Gaurav7214",
+      "contributions": [
+        "code",
+        "ideas",
+        "maintenance"
+      ]
+    },
+    {
       "login": "nishikantparmariam",
       "name": "Nishikant Parmar",
       "avatar_url": "https://avatars1.githubusercontent.com/u/7736252?v=4",
@@ -26,16 +37,6 @@
         "doc",
         "code",
         "ideas",
-        "maintenance"
-      ]
-    },
-    {
-      "login": "27Anurag",
-      "name": "27Anurag",
-      "avatar_url": "https://avatars1.githubusercontent.com/u/56363215?v=4",
-      "profile": "https://github.com/27Anurag",
-      "contributions": [
-        "code",
         "maintenance"
       ]
     },
@@ -51,17 +52,6 @@
       ]
     },
     {
-      "login": "Gaurav7214",
-      "name": "Gaurav Viramgami",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/58519896?v=4",
-      "profile": "https://github.com/Gaurav7214",
-      "contributions": [
-        "code",
-        "ideas",
-        "maintenance"
-      ]
-    },
-    {
       "login": "KritikaKumawat3108",
       "name": "KritikaKumawat3108",
       "avatar_url": "https://avatars3.githubusercontent.com/u/57754090?v=4",
@@ -70,7 +60,17 @@
         "code",
         "maintenance"
       ]
-    }
+    },
+    {
+      "login": "27Anurag",
+      "name": "27Anurag",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/56363215?v=4",
+      "profile": "https://github.com/27Anurag",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
+    }    
   ],
   "contributorsPerLine": 7,
   "projectName": "IITGN-Institute-App",
