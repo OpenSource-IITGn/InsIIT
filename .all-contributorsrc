@@ -16,6 +16,18 @@
         "design",
         "maintenance"
       ]
+    },
+    {
+      "login": "nishikantparmariam",
+      "name": "Nishikant Parmar",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7736252?v=4",
+      "profile": "https://github.com/nishikantparmariam",
+      "contributions": [
+        "doc",
+        "code",
+        "ideas",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
