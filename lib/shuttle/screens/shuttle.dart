@@ -14,7 +14,9 @@ class Shuttle extends StatefulWidget {
 }
 
 class _ShuttleState extends State<Shuttle>
-    with TickerProviderStateMixin<Shuttle> {
+    with
+        TickerProviderStateMixin<Shuttle>,
+        AutomaticKeepAliveClientMixin<Shuttle> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   ScrollController _scrollController;
   int _index = 0;
@@ -480,4 +482,8 @@ class _ShuttleState extends State<Shuttle>
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

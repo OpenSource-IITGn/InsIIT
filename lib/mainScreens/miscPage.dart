@@ -3,12 +3,7 @@ import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:instiapp/utilities/constants.dart';
 
-class MiscPage extends StatefulWidget {
-  @override
-  _MiscPageState createState() => _MiscPageState();
-}
-
-class _MiscPageState extends State<MiscPage> {
+class MiscPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

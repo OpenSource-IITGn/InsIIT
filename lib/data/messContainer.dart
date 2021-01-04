@@ -167,7 +167,7 @@ class MessContainer {
       };
     } else {
       foodItems = {
-        'meal': 'Dnner',
+        'meal': 'Dinner',
         'list': foodCards[day].dinner,
       };
     }

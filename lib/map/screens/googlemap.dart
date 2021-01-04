@@ -37,7 +37,8 @@ class MapPage extends StatefulWidget {
   _MapPageState createState() => _MapPageState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _MapPageState extends State<MapPage>
+    with AutomaticKeepAliveClientMixin<MapPage> {
   Completer<GoogleMapController> _controller = Completer();
 
   Location _locationTracker = Location();
@@ -591,6 +592,10 @@ class _MapPageState extends State<MapPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class CustomSearch extends SearchDelegate<String> {

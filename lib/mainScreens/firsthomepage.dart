@@ -13,15 +13,16 @@ import 'package:http/http.dart' as http;
 
 class MainHomePage extends StatefulWidget {
   var reload;
-  MainHomePage(Function f) {
-    this.reload = f;
+  MainHomePage(Function reloadEverythingCallback) {
+    this.reload = reloadEverythingCallback;
   }
 
   @override
   _MainHomePageState createState() => _MainHomePageState();
 }
 
-class _MainHomePageState extends State<MainHomePage> {
+class _MainHomePageState extends State<MainHomePage>
+    with AutomaticKeepAliveClientMixin<MainHomePage> {
   bool prevConnected = true;
   String qod;
   String qodAuthor;
@@ -30,10 +31,12 @@ class _MainHomePageState extends State<MainHomePage> {
   void initState() {
     super.initState();
     http.get('https://quotes.rest/qod').then((response) {
-      var temp = jsonDecode(response.body)['contents']['quotes'][0];
-      qod = '\"' + temp['quote'] + '\"';
-      qodAuthor = '- ' + temp['author'];
-      setState(() {});
+      if (response.statusCode == 200) {
+        var temp = jsonDecode(response.body)['contents']['quotes'][0];
+        qod = '\"' + temp['quote'] + '\"';
+        qodAuthor = '- ' + temp['author'];
+        setState(() {});
+      }
     });
   }
 
@@ -437,4 +440,8 @@ class _MainHomePageState extends State<MainHomePage> {
       child: Container(),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
