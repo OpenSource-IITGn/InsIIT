@@ -10,6 +10,13 @@ import 'dart:convert';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:connectivity/connectivity.dart';
 
+// Courses from timetable
+// Events from app
+// Exams
+// Export timetable as excel
+// colour each schedule thing
+// choose slot for each course
+
 class ScheduleContainer {
   bool eventsReady = false;
 
@@ -20,9 +27,9 @@ class ScheduleContainer {
 
   List<List<TodayCourse>> todayCourses;
   List<EventModel> removedEvents;
-  List<MyCourse> userAddedCourses;
+  List<CourseModel> userAddedCourses;
   List<List<EventModel>> userCourses;
-  List<MyCourse> allCourses;
+  List<CourseModel> allCourses;
   List<EventModel> examCourses;
   List<List<EventModel>> eventsList;
   List<EventModel> twoEvents;
@@ -36,7 +43,7 @@ class ScheduleContainer {
     loadExamTimeTableData();
   }
 
-  makeAllEventsList () {
+  void makeAllEventsList() {
     allEvents = [];
 
     if (eventsList != null) {
@@ -48,7 +55,8 @@ class ScheduleContainer {
             if (event.isCourse) {
               allEvents.forEach((EventModel _event) {
                 if (_event.isCourse) {
-                  if (event.courseId == _event.courseId || event.courseName == _event.courseName) {
+                  if (event.courseId == _event.courseId ||
+                      event.courseName == _event.courseName) {
                     add = false;
                   }
                 }
@@ -344,13 +352,13 @@ class ScheduleContainer {
     });
   }
 
-  List<MyCourse> makeUserAddedCoursesList(var userAddedCoursesDataList) {
-    List<MyCourse> _userAddedCourses = [];
+  List<CourseModel> makeUserAddedCoursesList(var userAddedCoursesDataList) {
+    List<CourseModel> _userAddedCourses = [];
 
     if (userAddedCoursesDataList != null &&
         userAddedCoursesDataList.length != 0) {
       userAddedCoursesDataList.forEach((var lc) {
-        _userAddedCourses.add(MyCourse(
+        _userAddedCourses.add(CourseModel(
             courseCode: lc[0],
             courseName: lc[1],
             noOfLectures: lc[2].toString(),
@@ -395,10 +403,16 @@ class ScheduleContainer {
     });
   }
 
-  loadAllCourseData() async {
-    sheet.getData('timetable!A:Q').listen((data) {
-      allCourses = makeMyCourseList(data);
-    });
+  loadAllCourseData({online = false}) async {
+    if (online) {
+      await sheet.getDataOnline('timetable!A:Q').then((data) {
+        allCourses = makeMyCourseList(data);
+      });
+    } else {
+      sheet.getData('timetable!A:Q').listen((data) {
+        allCourses = makeMyCourseList(data);
+      });
+    }
   }
 
   bool compareStrings(String str1, String str2) {
@@ -409,15 +423,15 @@ class ScheduleContainer {
     }
   }
 
-  List<MyCourse> makeMyCourseList(List data) {
-    List<MyCourse> _allCourses = [];
+  List<CourseModel> makeMyCourseList(List data) {
+    List<CourseModel> _allCourses = [];
     data.forEach((var lc) {
       if (lc[0] != '-' &&
           lc[0] != '' &&
           lc[1] != '-' &&
           lc[1] != '' &&
           lc[0].toString().toLowerCase() != 'course code') {
-        _allCourses.add(MyCourse(
+        _allCourses.add(CourseModel(
             courseCode: lc[0],
             courseName: lc[1],
             noOfLectures: lc[2].toString(),
@@ -650,7 +664,7 @@ class ScheduleContainer {
   }
 
   List<List<EventModel>> makeCourseEventModel(
-      List<List<TodayCourse>> todayCourses, List<MyCourse> myCourses) {
+      List<List<TodayCourse>> todayCourses, List<CourseModel> myCourses) {
     List<List<EventModel>> coursesEventModelList = [[], [], [], [], [], [], []];
 
     for (var i = 0; i < 5; i++) {
@@ -658,7 +672,7 @@ class ScheduleContainer {
         if (todayCourses[i] != null && todayCourses[i].length != 0) {
           todayCourses[i].forEach((TodayCourse todayCourse) {
             if (myCourses != null) {
-              myCourses.forEach((MyCourse myCourse) {
+              myCourses.forEach((CourseModel myCourse) {
                 myCourse.lectureCourse.forEach((String text) {
                   if (text == todayCourse.course ||
                       text == todayCourse.course.substring(0, 1) ||

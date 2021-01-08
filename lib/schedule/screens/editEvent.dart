@@ -3,6 +3,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
+import 'package:instiapp/schedule/classes/searchDelegate.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -16,8 +17,8 @@ class EditEvent extends StatefulWidget {
   _EditEventState createState() => _EditEventState();
 }
 
-List<MyCourse> notAddedCourses = [];
-Map<MyCourse, bool> add = {};
+List<CourseModel> notAddedCourses = [];
+Map<CourseModel, bool> add = {};
 bool loadingAddCourseData = false;
 
 class _EditEventState extends State<EditEvent> {
@@ -33,14 +34,14 @@ class _EditEventState extends State<EditEvent> {
     add = makeAddMap(notAddedCourses);
   }
 
-  List<MyCourse> makeNotAddedCoursesList(
-      List<MyCourse> myCourses, List<MyCourse> allCourses) {
-    List<MyCourse> remainingCourses = [];
+  List<CourseModel> makeNotAddedCoursesList(
+      List<CourseModel> myCourses, List<CourseModel> allCourses) {
+    List<CourseModel> remainingCourses = [];
 
-    allCourses.forEach((MyCourse course) {
+    allCourses.forEach((CourseModel course) {
       bool contain = true;
       if (dataContainer.schedule.userAddedCourses != null) {
-        myCourses.forEach((MyCourse addedCourse) {
+        myCourses.forEach((CourseModel addedCourse) {
           if (addedCourse.courseCode == course.courseCode ||
               addedCourse.courseName == course.courseName) {
             contain = false;
@@ -56,9 +57,9 @@ class _EditEventState extends State<EditEvent> {
     return remainingCourses;
   }
 
-  Map<MyCourse, bool> makeAddMap(List<MyCourse> remainingCourses) {
-    Map<MyCourse, bool> _add = {};
-    remainingCourses.forEach((MyCourse course) {
+  Map<CourseModel, bool> makeAddMap(List<CourseModel> remainingCourses) {
+    Map<CourseModel, bool> _add = {};
+    remainingCourses.forEach((CourseModel course) {
       _add.putIfAbsent(course, () => false);
     });
 
@@ -75,6 +76,7 @@ class _EditEventState extends State<EditEvent> {
       child: Container(
         width: ScreenSize.size.width * 1,
         child: Card(
+          color: theme.cardBgColor,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -92,16 +94,19 @@ class _EditEventState extends State<EditEvent> {
                       Text(
                         stringReturn(model, model.courseName, model.summary),
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: theme.textHeadingColor),
                       ),
                       // SizedBox(
                       //   height: 8,
                       // ),
                       Text(
-                        stringReturnOnlyEvent(model, model.eventType, model.description),
+                        stringReturnOnlyEvent(
+                            model, model.eventType, model.description),
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            color: theme.textHeadingColor),
                       ),
                       SizedBox(
                         height: 8,
@@ -116,7 +121,7 @@ class _EditEventState extends State<EditEvent> {
                 IconButton(
                     icon: Icon(
                       Icons.delete,
-                      color: Colors.black,
+                      color: theme.iconColor,
                     ),
                     onPressed: () {
                       showDialog(
@@ -202,7 +207,7 @@ class _EditEventState extends State<EditEvent> {
     List<List<String>> updatedList = [];
 
     if (dataContainer.schedule.userAddedCourses != null) {
-      dataContainer.schedule.userAddedCourses.forEach((MyCourse course) {
+      dataContainer.schedule.userAddedCourses.forEach((CourseModel course) {
         if (course.courseCode != _course.courseId ||
             course.courseName != _course.courseName) {
           updatedList.add([
@@ -286,20 +291,15 @@ class _EditEventState extends State<EditEvent> {
   }
 
   _openGoogleCalendar() async {
-//    bool isInstalled =
-//        await DeviceApps.isAppInstalled('com.google.android.calendar');
-//    if (isInstalled) {
-//      DeviceApps.openApp('com.google.android.calendar');
-//    } else {
     String url = 'https://calendar.google.com';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
     }
-//    }
   }
 
+  void storeCoursesOffline() {}
   @override
   Widget build(BuildContext context) {
     dataContainer.schedule.makeAllEventsList();
@@ -324,8 +324,7 @@ class _EditEventState extends State<EditEvent> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : (dataContainer.schedule.allEvents.length ==
-                  0)
+          : (dataContainer.schedule.allEvents.length == 0)
               ? Center(
                   child: Text("No events have been added yet!",
                       style: TextStyle(color: thisTheme.textHeadingColor)))
@@ -347,13 +346,10 @@ class _EditEventState extends State<EditEvent> {
             backgroundColor: thisTheme.floatingColor,
             heroTag: "fab1rs",
             onPressed: () {
-              //Navigator.popAndPushNamed(context, '/addcourse');
-              showSearch(
-                context: context,
-                delegate: CustomSearch(),
-              );
+              Navigator.pushNamed(context, '/addCourses').then((value) {
+                storeCoursesOffline();
+              });
             },
-            // backgroundColor: primaryColor,
             child: Icon(Icons.add, color: Colors.white),
           ),
           SizedBox(height: 16),
@@ -390,205 +386,5 @@ class _EditEventState extends State<EditEvent> {
         ],
       ),
     );
-  }
-}
-
-class CustomSearch extends SearchDelegate {
-  var thisTheme = lightTheme;
-  addCourses(Map<MyCourse, bool> add, BuildContext context) {
-    loadingAddCourseData = true;
-    query = "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken";
-    add.forEach((MyCourse course, bool addCourse) {
-      if (addCourse) {
-        addIfNotPresent(course);
-      }
-    });
-
-    saveFileInCache(context);
-  }
-
-  addIfNotPresent(MyCourse course) {
-    bool add = true;
-    if (dataContainer.schedule.userAddedCourses != null) {
-      dataContainer.schedule.userAddedCourses.forEach((MyCourse _course) {
-        if (course.courseName == _course.courseName ||
-            course.courseCode == _course.courseCode) {
-          add = false;
-        }
-      });
-    } else {
-      dataContainer.schedule.userAddedCourses = [];
-    }
-
-    if (add) {
-      dataContainer.schedule.userAddedCourses.add(course);
-    }
-  }
-
-  saveFileInCache(BuildContext context) async {
-    var file = await _localFileForUserAddedCourses();
-    bool exists = await file.exists();
-    if (exists) {
-      await file.delete();
-    }
-    await file.create();
-    await file.open();
-    var userAddedCoursesList =
-        makeUserAddedCoursesList(dataContainer.schedule.userAddedCourses);
-    await file
-        .writeAsString(ListToCsvConverter().convert(userAddedCoursesList));
-    print('DATA OF ADDED EVENT STORED IN FILE');
-
-    query = '';
-    loadingAddCourseData = false;
-    Navigator.popAndPushNamed(context, '/menuBarBase');
-    //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
-  }
-
-  List<List<String>> makeUserAddedCoursesList(List<MyCourse> userAddedCourses) {
-    List<List<String>> userAddedCoursesList = [];
-
-    userAddedCourses.forEach((MyCourse course) {
-      userAddedCoursesList.add([
-        course.courseCode,
-        course.courseName,
-        course.noOfLectures.toString(),
-        course.noOfTutorials.toString(),
-        course.credits.toString(),
-        course.instructors.join(','),
-        course.preRequisite,
-        course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
-        course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
-        course.labCourse.join(',') + '(' + course.labLocation + ')',
-        course.remarks,
-        course.courseBooks,
-        course.links.join(',')
-      ]);
-    });
-
-    return userAddedCoursesList;
-  }
-
-  Future<File> _localFileForUserAddedCourses() async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + 'userAddedCourses' + '.csv';
-    return File(filename);
-  }
-
-  Widget courseCard(MyCourse course, Map<MyCourse, bool> add) {
-    return GestureDetector(
-      onTap: () {
-        if (add[course]) {
-          add[course] = false;
-        } else {
-          add[course] = true;
-        }
-
-        String temp = query;
-        query = query + 'a';
-        query = temp;
-      },
-      child: Container(
-        width: ScreenSize.size.width * 1,
-        child: Card(
-          color: (add[course]) ? thisTheme.cardAccent : thisTheme.cardBgColor,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Flexible(
-                    child: Text(course.courseCode,
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: thisTheme.textHeadingColor))),
-                SizedBox(
-                  width: 5,
-                ),
-                Flexible(
-                    child: Text(
-                  course.courseName,
-                  textAlign: TextAlign.right,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                )),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () {
-          addCourses(add, context);
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: transitionAnimation,
-      ),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    //DONT REMOVE
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    if (loadingAddCourseData ||
-        query == "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken") {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if (query.isEmpty) {
-      return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: notAddedCourses.map<Widget>((MyCourse course) {
-              return courseCard(course, add);
-            }).toList(),
-          ),
-        ),
-      );
-    } else {
-      final suggestionList = notAddedCourses
-          .where((MyCourse course) => ((course.courseCode.toLowerCase())
-                  .startsWith(query.toLowerCase()) ||
-              (course.courseName.toLowerCase())
-                  .startsWith(query.toLowerCase())))
-          .toList();
-
-      return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: suggestionList.map<Widget>((MyCourse course) {
-              return courseCard(course, add);
-            }).toList(),
-          ),
-        ),
-      );
-    }
   }
 }

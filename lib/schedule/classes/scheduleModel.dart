@@ -324,12 +324,13 @@ class TodayCourse {
   TodayCourse({this.start, this.end, this.course});
 }
 
-class MyCourse {
+class CourseModel {
   String courseCode;
   String courseName;
   String noOfLectures;
   String noOfTutorials;
   String credits;
+  bool enrolled = false;
   List<String> instructors;
   String preRequisite;
   List<String> lectureCourse;
@@ -342,7 +343,7 @@ class MyCourse {
   String courseBooks;
   List<String> links;
 
-  MyCourse(
+  CourseModel(
       {this.courseCode,
       this.courseName,
       this.noOfLectures,

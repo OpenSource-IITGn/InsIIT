@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/developers/screens/developers.dart';
@@ -8,6 +10,7 @@ import 'package:instiapp/importantContacts/screens/importantContacts.dart';
 import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/messMenu/screens/messfeedback.dart';
 import 'package:instiapp/messMenu/screens/messmenu.dart';
+import 'package:instiapp/schedule/screens/addCourse.dart';
 
 import 'package:instiapp/schedule/screens/editEvent.dart';
 import 'package:instiapp/schedule/screens/eventDetail.dart';
@@ -20,7 +23,9 @@ import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/representativePage/screens/representativePage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
@@ -46,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/schedule': (context) => SchedulePage(),
         '/eventdetail': (context) => EventDetail(),
         '/editevent': (context) => EditEvent(),
+        '/addCourses': (context) => AddCoursePage(),
         //'/exportIcsFile': (context) => ExportIcsFile(),
         '/representativePage': (context) => RepresentativePage(),
       },
