@@ -69,12 +69,12 @@ class ScheduleContainerActual {
       events = [[],[],[],[],[],[],[]];
     } else {
       // await dataContainer.auth.gSignIn.signIn();
-      dataContainer.auth.gSignIn.signInSilently().then((value) async {
+      //dataContainer.auth.gSignIn.signInSilently().then((value) async {
         final authHeaders =
         await dataContainer.auth.gSignIn.currentUser.authHeaders;
         final httpClient = GoogleHttpClient(authHeaders);
         getEventsOnline(httpClient);
-      });
+      //});
     }
   }
 
