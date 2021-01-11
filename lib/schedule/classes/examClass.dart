@@ -17,6 +17,9 @@ class Exam extends Event {
     var startTime;
     var endTime; //find this from row[0] and row[1]
     return Exam(
-        name: row[3], startTime: startTime, location: row[5], endTime: endTime);
+        name: row[3],
+        startTime: startTime,
+        location: row[5],
+        endTime: endTime);
   }
 }

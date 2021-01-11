@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:instiapp/utilities/googleSheets.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 
 String stringReturn(String text) {
   if (text == null) {
@@ -21,4 +22,35 @@ Future<File> localFile(String range) async {
   String tempPath = tempDir.path;
   String filename = tempPath + range + '.csv';
   return File(filename);
+}
+
+Future getCachedData(fileName) async {
+  var file = await localFile(fileName);
+  bool exists = await file.exists();
+  if (exists) {
+    await file.open();
+    String cache = await file.readAsString();
+    List data = [];
+    var json = jsonDecode(cache);
+    json['key'].forEach((item) {
+      data.add(item);
+    });
+    return data;
+  } else {
+    return [];
+  }
+}
+
+Future storeCachedData(fileName, list) async {
+  var file = await localFile(fileName);
+  bool exists = await file.exists();
+  if (exists) {
+    await file.delete();
+  }
+  await file.create();
+  await file.open();
+
+  Map<String, dynamic> json = {'key': list};
+  await file.writeAsString(jsonEncode(json));
+  return true;
 }

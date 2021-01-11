@@ -1,6 +1,7 @@
 import 'package:instiapp/data/feedContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
+import 'package:instiapp/data/scheduleContainerNew.dart';
 import 'package:instiapp/data/importantContactsContainer.dart';
 import 'package:instiapp/data/shuttleContainer.dart';
 import 'package:instiapp/data/representativesContainer.dart';
@@ -15,6 +16,7 @@ class DataContainer {
   FeedContainer feed = FeedContainer();
   MessContainer mess = MessContainer();
   ScheduleContainer schedule = ScheduleContainer();
+  ScheduleContainerActual scheduleNew = ScheduleContainerActual();
   ImportantContactsContainer contacts = ImportantContactsContainer();
   ShuttleContainer shuttle = ShuttleContainer();
   RepresentativesContainer representatives = RepresentativesContainer();

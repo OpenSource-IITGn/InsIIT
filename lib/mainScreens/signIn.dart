@@ -51,13 +51,8 @@ class _SignInPageState extends State<SignInPage> {
     if (dataContainer.auth.authorized) {
       log("AUTHORIZATION SUCCESS", name: "SIGNIN");
       log("${dataContainer.auth.user}", name: "SIGNIN");
-      if (dataContainer.schedule.eventsReady) {
-        Navigator.pushReplacementNamed(context, '/menuBarBase');
-      } else {
-        dataContainer.schedule.reloadEventsAndCourses().then((s) {
-          Navigator.pushReplacementNamed(context, '/menuBarBase');
-        });
-      }
+      //Navigator.pushReplacementNamed(context, '/menuBarBase');
+
     } else {
       log("AUTHORIZATION FAIL", name: "SIGNIN");
       setState(() {});
