@@ -34,7 +34,6 @@ class _EditEventState extends State<EditEvent> {
 
   @override
   Widget build(BuildContext context) {
-    dataContainer.schedule.makeAllEventsList();
     return Scaffold(
       backgroundColor: thisTheme.backgroundColor,
       appBar: AppBar(
@@ -100,12 +99,19 @@ class _EditEventState extends State<EditEvent> {
                                 ),
                               ],
                             ),
-                            Icon(Icons.delete)
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                dataContainer.scheduleNew.unEnrollCourse(index);
+                                setState(() {});
+                              },
+                            )
                           ],
                         ),
                       ));
                     },
-                    itemCount: dataContainer.scheduleNew.enrolledCourses.length,
+                    itemCount: dataContainer.scheduleNew
+                        .enrolledCourses[DateTime.now().weekday].length,
                   )),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,

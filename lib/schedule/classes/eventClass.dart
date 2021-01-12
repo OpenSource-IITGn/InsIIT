@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Event {
   DateTime startTime;
   DateTime endTime;
@@ -11,4 +13,8 @@ class Event {
     this.host,
     this.link,
   });
+
+  Widget buildEventCard() {
+    return Card();
+  }
 }

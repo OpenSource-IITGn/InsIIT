@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -51,10 +52,11 @@ class _SchedulePageState extends State<SchedulePage> {
               : null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
-            return dataContainer.schedule.eventsList[dayIndex][index]
-                .buildCard(_context);
+            Course course =
+                dataContainer.scheduleNew.enrolledCourses[dayIndex][index];
+            return course.buildEventCard();
           },
-          itemCount: dataContainer.schedule.eventsList[dayIndex].length,
+          itemCount: dataContainer.scheduleNew.enrolledCourses[dayIndex].length,
         ),
       );
     }

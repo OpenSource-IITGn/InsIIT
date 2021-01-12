@@ -96,6 +96,11 @@ class ScheduleContainerActual {
     return list;
   }
 
+  void unEnrollCourse(int index) {
+    enrolledCourses[DateTime.now().weekday].removeAt(index);
+    storeEnrolledCourses();
+  }
+
   void enrollCourseFromIndex(int index) {
     log('Enrolling course #$index', name: 'COURSES');
     var row = allCoursesRows[index];
