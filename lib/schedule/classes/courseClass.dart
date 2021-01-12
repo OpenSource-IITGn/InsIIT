@@ -30,6 +30,17 @@ class Course extends Event {
     this.prerequisite,
   }) : super(name: name, startTime: startTime, link: link, endTime: endTime);
 
+  String getCourseType() {
+    if (slotType == 0) {
+      return "Lecture";
+    } else if (slotType == 1) {
+      return "Tutorial";
+    }
+    else{
+      return "Lab";
+    }
+  }
+
   factory Course.fromSheetRow(List row, var slot, int slotType) {
     var times = [DateTime.now(), DateTime.now()];
     if (slot.runtimeType != String) {

@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:csv/csv.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/schedule/classes/searchDelegate.dart';
 import 'package:instiapp/themeing/notifier.dart';
@@ -28,278 +30,8 @@ class _EditEventState extends State<EditEvent> {
   @override
   void initState() {
     super.initState();
-    notAddedCourses = makeNotAddedCoursesList(
-        dataContainer.schedule.userAddedCourses,
-        dataContainer.schedule.allCourses);
-    add = makeAddMap(notAddedCourses);
   }
 
-  List<CourseModel> makeNotAddedCoursesList(
-      List<CourseModel> myCourses, List<CourseModel> allCourses) {
-    List<CourseModel> remainingCourses = [];
-
-    allCourses.forEach((CourseModel course) {
-      bool contain = true;
-      if (dataContainer.schedule.userAddedCourses != null) {
-        myCourses.forEach((CourseModel addedCourse) {
-          if (addedCourse.courseCode == course.courseCode ||
-              addedCourse.courseName == course.courseName) {
-            contain = false;
-          }
-        });
-      }
-
-      if (contain) {
-        remainingCourses.add(course);
-      }
-    });
-
-    return remainingCourses;
-  }
-
-  Map<CourseModel, bool> makeAddMap(List<CourseModel> remainingCourses) {
-    Map<CourseModel, bool> _add = {};
-    remainingCourses.forEach((CourseModel course) {
-      _add.putIfAbsent(course, () => false);
-    });
-
-    return _add;
-  }
-
-  Widget eventCard(EventModel model) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/eventdetail', arguments: {
-          'eventModel': model,
-        });
-      },
-      child: Container(
-        width: ScreenSize.size.width * 1,
-        child: Card(
-          color: theme.cardBgColor,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: ScreenSize.size.width * 0.5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        stringReturn(model, model.courseName, model.summary),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: theme.textHeadingColor),
-                      ),
-                      // SizedBox(
-                      //   height: 8,
-                      // ),
-                      Text(
-                        stringReturnOnlyEvent(
-                            model, model.eventType, model.description),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: theme.textHeadingColor),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-
-                      SizedBox(
-                        height: 8,
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: theme.iconColor,
-                    ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => new AlertDialog(
-                          actions: <Widget>[
-                            FlatButton(
-                              onPressed: () async {
-                                if (model.isCourse) {
-                                  updateUserAddedCourses = true;
-                                } else if (model.isExam) {
-                                  dataContainer.schedule.removedEvents
-                                      .add(EventModel(
-                                    isCourse: false,
-                                    isExam: true,
-                                    courseId: model.courseId,
-                                    courseName: model.courseName,
-                                    eventType: model.eventType,
-                                  ));
-                                } else {
-                                  dataContainer.schedule.removedEvents
-                                      .add(EventModel(
-                                    isCourse: false,
-                                    isExam: false,
-                                    description: model.description,
-                                    summary: model.summary,
-                                    location: model.location,
-                                    creator: model.creator,
-                                    remarks: model.remarks,
-                                  ));
-                                }
-                                Navigator.pop(context);
-                                loading = true;
-                                setState(() {});
-                                if (updateUserAddedCourses) {
-                                  var file2 =
-                                      await localFile('userAddedCourses');
-                                  bool exists2 = await file2.exists();
-                                  if (exists2) {
-                                    await file2.delete();
-                                  }
-                                  await file2.create();
-                                  await file2.open();
-                                  var userAddedCoursesList =
-                                      makeUpdatedUserAddedCoursesList(model);
-                                  await file2.writeAsString(ListToCsvConverter()
-                                      .convert(userAddedCoursesList));
-                                  // print('DATA OF ADDED EVENT STORED IN FILE');
-                                }
-                                var file = await localFile('removedCourses');
-                                bool exists = await file.exists();
-                                if (exists) {
-                                  await file.delete();
-                                }
-                                await file.create();
-                                await file.open();
-                                var removedList = makeRemovedEventsList(
-                                    dataContainer.schedule.removedEvents);
-                                await file.writeAsString(
-                                    ListToCsvConverter().convert(removedList));
-                                // print('DATA OF REMOVED EVENT STORED IN FILE');
-                                Navigator.popAndPushNamed(
-                                    context, '/menuBarBase');
-                                //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
-                              },
-                              child: Text('Yes'),
-                            ),
-                          ],
-                          content: Text(
-                              'Do you want to remove this event from your schedule?'),
-                        ),
-                      );
-                    })
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<List<String>> makeUpdatedUserAddedCoursesList(EventModel _course) {
-    List<List<String>> updatedList = [];
-
-    if (dataContainer.schedule.userAddedCourses != null) {
-      dataContainer.schedule.userAddedCourses.forEach((CourseModel course) {
-        if (course.courseCode != _course.courseId ||
-            course.courseName != _course.courseName) {
-          updatedList.add([
-            course.courseCode,
-            course.courseName,
-            course.noOfLectures.toString(),
-            course.noOfTutorials.toString(),
-            course.credits.toString(),
-            course.instructors.join(','),
-            course.preRequisite,
-            course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
-            course.tutorialCourse.join(',') +
-                '(' +
-                course.tutorialLocation +
-                ')',
-            course.labCourse.join(',') + '(' + course.labLocation + ')',
-            course.remarks,
-            course.courseBooks,
-            course.links.join(',')
-          ]);
-        }
-      });
-    }
-
-    return updatedList;
-  }
-
-  String stringReturn(
-      EventModel model, String textCourse, String textCalendar) {
-    if (model.isCourse || model.isExam) {
-      return textCourse;
-    } else {
-      if (textCalendar == null) {
-        return 'None';
-      } else if (textCalendar.length < 100) {
-        return textCalendar;
-      } else {
-        return textCalendar.substring(0, 99);
-      }
-    }
-  }
-
-  String stringReturnOnlyEvent(
-      EventModel model, String textCourse, String textCalendar) {
-    if (model.isCourse || model.isExam) {
-      return "";
-    } else {
-      if (textCalendar == null) {
-        return 'None';
-      } else if (textCalendar.length < 100) {
-        return textCalendar;
-      } else {
-        return textCalendar.substring(0, 99);
-      }
-    }
-  }
-
-  List<List<String>> makeRemovedEventsList(List<EventModel> removedEvents) {
-    List<List<String>> removedEventsList = [];
-
-    removedEvents.forEach((EventModel model) {
-      if (model.isCourse) {
-        removedEventsList
-            .add(['course', model.courseId, model.courseName, model.eventType]);
-      } else if (model.isExam) {
-        removedEventsList
-            .add(['exam', model.courseId, model.courseName, model.eventType]);
-      } else {
-        removedEventsList.add([
-          'calendar',
-          model.description,
-          model.summary,
-          model.location,
-          model.creator,
-          model.remarks
-        ]);
-      }
-    });
-
-    return removedEventsList;
-  }
-
-  _openGoogleCalendar() async {
-    String url = 'https://calendar.google.com';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  void storeCoursesOffline() {}
   @override
   Widget build(BuildContext context) {
     dataContainer.schedule.makeAllEventsList();
@@ -328,17 +60,53 @@ class _EditEventState extends State<EditEvent> {
               ? Center(
                   child: Text("No events have been added yet!",
                       style: TextStyle(color: thisTheme.textHeadingColor)))
-              : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: dataContainer.schedule.allEvents
-                          .map<Widget>((EventModel model) {
-                        return eventCard(model);
-                      }).toList(),
-                    ),
-                  ),
-                ),
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      Course course = dataContainer.scheduleNew
+                          .enrolledCourses[DateTime.now().weekday][index];
+                      String startTime =
+                          formatDate(course.startTime, [HH, ':', nn]);
+                      String endTime =
+                          formatDate(course.endTime, [HH, ':', nn]);
+                      return Card(
+                          child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  course.name,
+                                  style: TextStyle(
+                                      color: theme.textHeadingColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "${course.code} | ${startTime} - ${endTime}",
+                                  style: TextStyle(
+                                    color: theme.textSubheadingColor,
+                                  ),
+                                ),
+                                Text(
+                                  course.getCourseType(),
+                                  style: TextStyle(
+                                    color: theme.textSubheadingColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Icon(Icons.delete)
+                          ],
+                        ),
+                      ));
+                    },
+                    itemCount: dataContainer.scheduleNew.enrolledCourses.length,
+                  )),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -347,7 +115,7 @@ class _EditEventState extends State<EditEvent> {
             heroTag: "fab1rs",
             onPressed: () {
               Navigator.pushNamed(context, '/addCourses').then((value) {
-                storeCoursesOffline();
+                // storeCoursesOffline();
               });
             },
             child: Icon(Icons.add, color: Colors.white),
@@ -357,7 +125,7 @@ class _EditEventState extends State<EditEvent> {
             backgroundColor: thisTheme.floatingColor,
             heroTag: "fab2rs",
             onPressed: () {
-              _openGoogleCalendar();
+              // _openGoogleCalendar();
             },
             // backgroundColor: primaryColor,
             child: Icon(Icons.calendar_today, color: Colors.white),

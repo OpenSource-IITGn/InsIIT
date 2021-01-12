@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
 
   flutter_autolink_text: ^1.0.0+1
+  date_format: ^1.0.9
   url_launcher: ^5.4.7
   image_picker: ^0.6.4
   flutter_local_notifications: ^1.4.0
