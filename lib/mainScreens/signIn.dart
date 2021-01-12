@@ -51,8 +51,7 @@ class _SignInPageState extends State<SignInPage> {
     if (dataContainer.auth.authorized) {
       log("AUTHORIZATION SUCCESS", name: "SIGNIN");
       log("${dataContainer.auth.user}", name: "SIGNIN");
-      //Navigator.pushReplacementNamed(context, '/menuBarBase');
-
+      Navigator.pushReplacementNamed(context, '/menuBarBase');
     } else {
       log("AUTHORIZATION FAIL", name: "SIGNIN");
       setState(() {});
@@ -67,6 +66,8 @@ class _SignInPageState extends State<SignInPage> {
   var key = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    log('Auth Initialized = ${dataContainer.auth.initialized} | Authorized = ${!dataContainer.auth.authorized}',
+        name: 'SIGNIN');
     if (dataContainer.auth.initialized && !dataContainer.auth.authorized) {
       return WillPopScope(
         onWillPop: () {

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:instiapp/data/scheduleContainerNew.dart';
+
 import 'eventClass.dart';
 
 class Course extends Event {
@@ -28,8 +30,8 @@ class Course extends Event {
   }) : super(name: name, startTime: startTime, link: link, endTime: endTime);
 
   factory Course.fromSheetRow(List row, String slot) {
-    var times =
-        getTimeFromSlot(slot); //this method is there in schedulecontaineractual
+    var times = ScheduleContainerActual.getTimeFromSlot(
+        slot); //this method is there in schedulecontaineractual
 
     return Course(
         code: row[0],

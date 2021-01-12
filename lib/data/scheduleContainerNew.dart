@@ -19,7 +19,7 @@ class ScheduleContainerActual {
   List<List<Event>> events;
   List<List<Exam>> exams; //this should be based on enrolledCourses
 
-  Map<String, List<DateTime>> slots = {
+  static Map<String, List<DateTime>> slots = {
     'A1': [
       DateTime(2021, 1, 1, 8, 5),
       DateTime(2021, 1, 1, 9, 5)
@@ -28,7 +28,7 @@ class ScheduleContainerActual {
     // GET THIS FROM THE SHEET AND STORE HERE LIKE THIS
   };
 
-  List<DateTime> getTimeFromSlot(String slot) {
+  static List<DateTime>  getTimeFromSlot(String slot) {
     return slots[slot];
   }
 
