@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:instiapp/data/scheduleContainerNew.dart';
 import 'package:instiapp/messMenu/classes/base.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -26,6 +27,7 @@ class _MainHomePageState extends State<MainHomePage>
   bool prevConnected = true;
   String qod;
   String qodAuthor;
+  ScheduleContainerActual scheduleContainerTemp = ScheduleContainerActual();
 
   @override
   void initState() {
@@ -418,6 +420,11 @@ class _MainHomePageState extends State<MainHomePage>
                           ],
                         ),
                         SizedBox(height: 10),
+                        RaisedButton(
+                            child: Text("RELOAD"),
+                            onPressed: () {
+                              scheduleContainerTemp.getAllCourses();
+                            }),
                         (dataContainer.schedule.twoEvents == null ||
                                 dataContainer.schedule.twoEvents.length == 0)
                             ? Container()

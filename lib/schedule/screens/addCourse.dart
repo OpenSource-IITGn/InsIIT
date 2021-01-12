@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/data/scheduleContainerNew.dart';
+import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 
@@ -14,12 +16,9 @@ class _AddCoursePageState extends State<AddCoursePage> {
   var courseIndices = [];
   String query = '';
   bool loading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    dataContainer.schedule.loadAllCourseData(online: true).then((data) {
-      for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
+  void refresh() {
+    dataContainer.scheduleNew.getAllCourses().then((data) {
+      for (int i = 0; i < dataContainer.scheduleNew.allCourses.length; i++) {
         courseIndices.add(i);
       }
       setState(() {
@@ -28,18 +27,25 @@ class _AddCoursePageState extends State<AddCoursePage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    refresh();
+  }
+
   void populateCourses() {
+    courseIndices = [];
     if (query == '') {
-      for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
+      for (int i = 0; i < dataContainer.scheduleNew.allCourses.length; i++) {
         courseIndices.add(i);
       }
       return;
     }
-    courseIndices = [];
-    for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
-      var course = dataContainer.schedule.allCourses[i];
-      String searchString = course.courseName.replaceAll(' ', '');
-      searchString += course.courseCode.replaceAll(' ', '');
+
+    for (int i = 0; i < dataContainer.scheduleNew.allCourses.length; i++) {
+      Course course = dataContainer.scheduleNew.allCourses[i];
+      String searchString = course.name.replaceAll(' ', '');
+      searchString += course.code.replaceAll(' ', '');
       searchString = searchString.toLowerCase();
       if (searchString.contains(query)) {
         courseIndices.add(i);
@@ -51,7 +57,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
     //TODO
     // this should create x events if there are x repititions in the calendar for that course.
   }
-
+  var _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -65,13 +71,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
               IconButton(
                   icon: Icon(Icons.refresh, color: theme.iconColor),
                   onPressed: () {
-                    dataContainer.schedule
-                        .loadAllCourseData(online: true)
-                        .then((data) {
-                      setState(() {
-                        loading = false;
-                      });
-                    });
+                    refresh();
                   }),
             ],
             leading: IconButton(
@@ -93,8 +93,18 @@ class _AddCoursePageState extends State<AddCoursePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextField(
+                        controller: _controller,
                         decoration: InputDecoration(
                             icon: Icon(Icons.search, color: theme.iconColor),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                query = '';
+                                populateCourses();
+                                _controller.clear();
+                                setState(() {});
+                              },
+                              icon: Icon(Icons.clear),
+                            ),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(color: theme.iconColor),
                             ),
@@ -109,11 +119,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
                         // height: ScreenSize.size.height,
                         child: ListView.builder(
                           itemBuilder: (context, index) {
-                            String courseName = dataContainer.schedule
-                                .allCourses[courseIndices[index]].courseName;
-                            String courseCode = dataContainer.schedule
-                                .allCourses[courseIndices[index]].courseCode;
-                            bool enrolled = dataContainer.schedule
+                            String courseName = dataContainer.scheduleNew
+                                .allCourses[courseIndices[index]].name;
+                            String courseCode = dataContainer.scheduleNew
+                                .allCourses[courseIndices[index]].code;
+                            bool enrolled = dataContainer.scheduleNew
                                 .allCourses[courseIndices[index]].enrolled;
                             return Card(
                                 color: (enrolled == true)
@@ -122,13 +132,17 @@ class _AddCoursePageState extends State<AddCoursePage> {
                                 child: InkWell(
                                   onTap: () {
                                     dataContainer
-                                            .schedule
+                                            .scheduleNew
                                             .allCourses[courseIndices[index]]
                                             .enrolled =
                                         !dataContainer
-                                            .schedule
+                                            .scheduleNew
                                             .allCourses[courseIndices[index]]
                                             .enrolled;
+
+                                    dataContainer.scheduleNew
+                                        .enrollCourseFromIndex(
+                                            courseIndices[index]);
                                     setState(() {});
                                   },
                                   child: Padding(

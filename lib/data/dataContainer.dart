@@ -22,7 +22,6 @@ class DataContainer {
   RepresentativesContainer representatives = RepresentativesContainer();
   QuickLinksContainer quickLinks = QuickLinksContainer();
   AuthContainer auth = AuthContainer();
-
   getOtherData() {
     schedule.getData();
     contacts.getData();
