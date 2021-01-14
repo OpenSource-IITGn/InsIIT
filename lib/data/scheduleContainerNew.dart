@@ -147,6 +147,7 @@ class ScheduleContainerActual {
     }
     getCachedData('enrolledCourses').then((data) {
       if (data != null) {
+        //In cache the data is stored as list of list so list[i] is courses of weekday = i + 1
         for (int i = 0; i < 7; i++) {
           List courses = data[i];
           courses.forEach((jsonCourse) {
