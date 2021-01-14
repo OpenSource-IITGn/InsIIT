@@ -27,8 +27,6 @@ class ScheduleContainerActual {
 
   //All courses in a single row for deleting purpose
   List<List> allEnrolledSlots = [];
-//  List<int> allEnrolledSlotsWeekDay = [];
-//  List<int> allEnrolledSlotsIndex = [];
 
   //Current two events
   List<dynamic> twoEvents = [];
