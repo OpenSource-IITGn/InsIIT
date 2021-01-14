@@ -114,9 +114,30 @@ class _EditEventState extends State<EditEvent> {
                             IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
-                                dataContainer.schedule.unEnrollCourse(dataContainer.schedule.allEnrolledSlots[index][2], dataContainer.schedule.allEnrolledSlots[index][1]);
-                                dataContainer.schedule.getAllEnrolledCourses();
-                                setState(() {});
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => new AlertDialog(
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () async {
+                                          dataContainer.schedule.unEnrollCourse(dataContainer.schedule.allEnrolledSlots[index][2], dataContainer.schedule.allEnrolledSlots[index][1]);
+                                          dataContainer.schedule.getAllEnrolledCourses();
+                                          Navigator.pop(context);
+                                          setState(() {});
+                                        },
+                                        child: Text('Remove only this slot'),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () async {
+
+                                        },
+                                        child: Text('Unenroll from ${course.code} course'),
+                                      )
+                                    ],
+                                    content: Text(
+                                        'Select one option'),
+                                  ),
+                                );
                               },
                             )
                           ],
