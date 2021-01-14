@@ -185,23 +185,22 @@ class ScheduleContainer {
       List lecSlots = parseSlotString(row[11]);
       List tutSlots = parseSlotString(row[12]);
       List labSlots = parseSlotString(row[13]);
-
       lecSlots.forEach((slot) {
-        Course course = Course.fromSheetRow(row, slot, 0);
+        Course course = Course.fromSheetRow(row, slot, 0, index);
         if (!enrolledCourses[course.startTime.weekday].any(
             (_course) => _course.code == course.code && _course.slot == slot)) {
           enrolledCourses[course.startTime.weekday].add(course);
         }
       });
       tutSlots.forEach((slot) {
-        Course course = Course.fromSheetRow(row, slot, 1);
+        Course course = Course.fromSheetRow(row, slot, 1, index);
         if (!enrolledCourses[course.startTime.weekday].any(
             (_course) => _course.code == course.code && _course.slot == slot)) {
           enrolledCourses[course.startTime.weekday].add(course);
         }
       });
       labSlots.forEach((slot) {
-        Course course = Course.fromSheetRow(row, slot, 2);
+        Course course = Course.fromSheetRow(row, slot, 2, index);
         if (!enrolledCourses[course.startTime.weekday].any(
             (_course) => _course.code == course.code && _course.slot == slot)) {
           enrolledCourses[course.startTime.weekday].add(course);
@@ -215,8 +214,10 @@ class ScheduleContainer {
       allCourses = [];
       allCoursesRows = [];
       data.removeAt(0);
+      int i = 0;
       data.forEach((var row) {
-        allCourses.add(Course.fromSheetRow(row, 'UNEXPANDED', 0));
+        allCourses.add(Course.fromSheetRow(row, 'UNEXPANDED', 0, i));
+        i += 1;
         allCoursesRows.add(row);
       });
       log("Loaded ${allCourses.length} courses from ${data.length} rows",

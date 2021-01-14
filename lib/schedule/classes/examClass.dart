@@ -16,20 +16,22 @@ class Exam extends Event {
     currentlyRunning,
     this.location,
     this.courseCode,
-  }) : super(name: name, startTime: startTime, link: link, endTime: endTime, currentlyRunning: currentlyRunning);
+  }) : super(
+            name: name,
+            startTime: startTime,
+            link: link,
+            endTime: endTime,
+            currentlyRunning: currentlyRunning);
 
   factory Exam.fromSheetRow(List row) {
     var startTime;
     var endTime; //find this from row[0] and row[1]
     return Exam(
-        name: row[3],
-        startTime: startTime,
-        location: row[5],
-        endTime: endTime);
+        name: row[3], startTime: startTime, location: row[5], endTime: endTime);
   }
 
   @override
-  Widget buildEventCard() {
+  Widget buildEventCard(context) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =
@@ -129,9 +131,9 @@ class Exam extends Event {
                   ),
                   (ongoing == true)
                       ? Icon(
-                    Icons.adjust,
-                    color: Colors.green,
-                  )
+                          Icons.adjust,
+                          color: Colors.green,
+                        )
                       : Container(),
                 ],
               )),

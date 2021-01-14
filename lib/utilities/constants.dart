@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 import 'package:intl/intl.dart';
 
@@ -31,7 +32,7 @@ verticalDivider({double height}) {
       Container(
         height: height,
         width: 1,
-        color: Colors.grey,
+        color: theme.textHeadingColor.withAlpha(128),
       ),
       SizedBox(
         width: 16,

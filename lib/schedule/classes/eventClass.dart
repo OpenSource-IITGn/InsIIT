@@ -28,7 +28,7 @@ class Event {
   //   color = Colors.primaries[index].withOpacity(alpha);
   // }
 
-  Widget buildEventCard() {
+  Widget buildEventCard(context) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =

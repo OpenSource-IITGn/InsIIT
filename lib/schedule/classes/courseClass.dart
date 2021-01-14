@@ -57,7 +57,7 @@ class Course extends Event {
     }
   }
 
-  factory Course.fromSheetRow(List row, var slot, int slotType) {
+  factory Course.fromSheetRow(List row, var slot, int slotType, int index) {
     var times = [DateTime.now(), DateTime.now()];
     if (slot.runtimeType != String) {
       times[0] = ScheduleContainer.getTimeFromSlot(slot[0])[0];
@@ -66,16 +66,13 @@ class Course extends Event {
     } else {
       times = ScheduleContainer.getTimeFromSlot(slot);
     }
-    String name = row[1].toString();
+    String name = row[0].toString();
     var hash = 0;
     for (var i = 0; i < name.length; i++) {
       hash = name.codeUnitAt(i) + ((hash << 5) - hash);
     }
-    final finalHash = hash.abs() % (360 * 100 * 100);
-    final hue = ((finalHash & 0xFF0000) >> 16);
-    // final sat = ((finalHash & 0xFF00) >> 8);
-    // final illumination = ((finalHash & 0xFF));
-    var col = convert.hsv.rgb(hue, 80, 100);
+
+    var col = convert.hsv.rgb(10 * index % 360, 80, 80);
     Course course = Course(
         code: row[0].toString(),
         name: row[1].toString(),
@@ -99,7 +96,7 @@ class Course extends Event {
   }
 
   @override
-  Widget buildEventCard() {
+  Widget buildEventCard(context) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =
@@ -111,9 +108,9 @@ class Course extends Event {
         width: ScreenSize.size.width,
         child: InkWell(
           onTap: () {
-            // Navigator.pushNamed('/eventdetail', arguments: {
-            //   'eventModel': this,
-            // });
+            Navigator.pushNamed(context, '/eventdetail', arguments: {
+              'eventModel': this,
+            });
           },
           child: Padding(
               padding: EdgeInsets.all(16),
