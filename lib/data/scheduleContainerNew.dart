@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/schedule/classes/examClass.dart';
@@ -158,10 +159,23 @@ class ScheduleContainerActual {
     return list;
   }
 
-  void unEnrollCourse(int index, int weekday) {
-    enrolledCourses[weekday].removeAt(index);
-    getAllEnrolledCourses();
-    storeEnrolledCourses();
+  void unEnrollCourse(int index, int weekday, bool unEnroll) {
+    if (unEnroll) {
+      Course unEnrollCourse = enrolledCourses[weekday][index];
+      for (int i = 1; i < 8; i++) {
+        int idx = enrolledCourses[i].indexWhere((Course course) => course.code == unEnrollCourse.code);
+        while (idx != -1) {
+          enrolledCourses[i].removeAt(idx);
+          idx = enrolledCourses[i].indexWhere((Course course) => course.code == unEnrollCourse.code);
+        }
+      }
+      getAllEnrolledCourses();
+      storeEnrolledCourses();
+    } else {
+      enrolledCourses[weekday].removeAt(index);
+      getAllEnrolledCourses();
+      storeEnrolledCourses();
+    }
   }
 
   void enrollCourseFromIndex(int index, bool value) {

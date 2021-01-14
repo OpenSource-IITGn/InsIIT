@@ -120,7 +120,10 @@ class _EditEventState extends State<EditEvent> {
                                     actions: <Widget>[
                                       FlatButton(
                                         onPressed: () async {
-                                          dataContainer.schedule.unEnrollCourse(dataContainer.schedule.allEnrolledSlots[index][2], dataContainer.schedule.allEnrolledSlots[index][1]);
+                                          dataContainer.schedule.unEnrollCourse(
+                                              dataContainer.schedule.allEnrolledSlots[index][2],
+                                              dataContainer.schedule.allEnrolledSlots[index][1],
+                                              false);
                                           dataContainer.schedule.getAllEnrolledCourses();
                                           Navigator.pop(context);
                                           setState(() {});
@@ -129,7 +132,13 @@ class _EditEventState extends State<EditEvent> {
                                       ),
                                       FlatButton(
                                         onPressed: () async {
-
+                                          dataContainer.schedule.unEnrollCourse(
+                                              dataContainer.schedule.allEnrolledSlots[index][2],
+                                              dataContainer.schedule.allEnrolledSlots[index][1],
+                                              true);
+                                          dataContainer.schedule.getAllEnrolledCourses();
+                                          Navigator.pop(context);
+                                          setState(() {});
                                         },
                                         child: Text('Unenroll from ${course.code} course'),
                                       )
