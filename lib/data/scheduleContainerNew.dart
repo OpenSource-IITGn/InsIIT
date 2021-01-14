@@ -6,7 +6,6 @@ import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/schedule/classes/examClass.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
@@ -160,9 +159,6 @@ class ScheduleContainerActual {
   }
 
   void unEnrollCourse(int index, int weekday) {
-    print(enrolledCourses);
-    print(index);
-    print(weekday);
     enrolledCourses[weekday].removeAt(index);
     getAllEnrolledCourses();
     storeEnrolledCourses();
@@ -345,8 +341,6 @@ class ScheduleContainerActual {
       int index = 0;
       dayCourses.forEach((Course course) {
         allEnrolledSlots.add([course, day, index++]);
-//        allEnrolledSlotsWeekDay.add(day);
-//        allEnrolledSlotsIndex.add(index ++);
       });
     });
    }

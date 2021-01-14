@@ -92,7 +92,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
               setState(() {});
               dataContainer.schedule.storeEnrolledCourses();
               loading = false;
-              setState(() {});
+              Navigator.pop(context);
             },
             child: Icon(Icons.add, color: Colors.white),
           ),
