@@ -30,18 +30,14 @@ Future getCachedData(fileName) async {
   if (exists) {
     await file.open();
     String cache = await file.readAsString();
-    List data = [];
     var json = jsonDecode(cache);
-    json['key'].forEach((item) {
-      data.add(item);
-    });
-    return data;
+    return json;
   } else {
-    return [];
+    return null;
   }
 }
 
-Future storeCachedData(fileName, list) async {
+Future storeCachedData(fileName, data) async {
   var file = await localFile(fileName);
   bool exists = await file.exists();
   if (exists) {
@@ -50,7 +46,6 @@ Future storeCachedData(fileName, list) async {
   await file.create();
   await file.open();
 
-  Map<String, dynamic> json = {'key': list};
-  await file.writeAsString(jsonEncode(json));
+  await file.writeAsString(jsonEncode(data));
   return true;
 }

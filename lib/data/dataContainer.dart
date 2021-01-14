@@ -23,6 +23,7 @@ class DataContainer {
   QuickLinksContainer quickLinks = QuickLinksContainer();
   AuthContainer auth = AuthContainer();
   getOtherData() {
+    scheduleNew.getData();
     schedule.getData();
     contacts.getData();
     shuttle.getData();

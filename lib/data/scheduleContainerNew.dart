@@ -17,8 +17,8 @@ class ScheduleContainerActual {
 
   // 1 = monday, 2 = tuesday and so on. defined in datetime package
   Map<int, List<Course>> enrolledCourses = {};
-  Map<int, List<Course>> events = {};
-  Map<int, List<Course>> exams = {};
+  Map<int, List<Event>> events = {};
+  Map<int, List<Exam>> exams = {};
 
   static Map<String, List<DateTime>> slots = {};
 
@@ -31,8 +31,10 @@ class ScheduleContainerActual {
 
   ScheduleContainerActual() {
     getSlots();
-    for (int i = 0; i < 7; i++) {
+    for (int i = 1; i < 8; i++) {
       enrolledCourses[i] = [];
+      events[i] = [];
+      exams[i] = [];
     }
   }
 
@@ -61,11 +63,14 @@ class ScheduleContainerActual {
 
   void getData() {
     // check if there is a cached file that has enrolledCourses
+    getEnrolledCourses();
     // load all courses from sheets
+    getAllCourses();
     // load events from calendar api
-    // reloadEvents();
+    reloadEvents();
     // load exams from sheets
   }
+
   List parseSlotString(String slotString) {
     List list = [];
     slotString = slotString.replaceAll(' ', '');
@@ -136,91 +141,123 @@ class ScheduleContainerActual {
     });
   }
 
-  //COURSES
-  void storeEnrolledCourses() {
-    //do something similar for exams and courses
-    List courses = [];
-    // enrolledCourses.forEach((day) {
-    //   day.forEach((course) {
-    //     courses.add(course.toJson());
-    //   });
-    // });
-    String jsonCourses = jsonEncode(courses);
-    //write this string to file
+  void getEnrolledCourses() {
+    for (int i = 1; i < 8; i++) {
+      enrolledCourses[i] = [];
+    }
+    getCachedData('enrolledCourses').then((data) {
+      if (data != null) {
+        for (int i = 0; i < 7; i++) {
+          List courses = data[i];
+          courses.forEach((jsonCourse) {
+            Map course = jsonDecode(jsonCourse);
+            enrolledCourses[i + 1].add(
+              Course(
+                  code: course['code'],
+                  name: course['name'],
+                  ltpc: [
+                    course['ltpc'][0],
+                    course['ltpc'][1],
+                    course['ltpc'][2],
+                    course['ltpc'][3]
+                  ],
+                  startTime: DateTime(course['startTime'][0], course['startTime'][1], course['startTime'][2], course['startTime'][3], course['startTime'][4]),
+                  endTime: DateTime(course['endTime'][0], course['endTime'][1], course['endTime'][2], course['endTime'][3], course['endTime'][4]),
+                  instructors: course['instructors'],
+                  slotType: course['slotType'],
+                  minor: course['minor'],
+                  cap: course['cap'],
+                  prerequisite: course['prerequisite'],
+                  enrolled: true,
+                  slot: course['slot']
+              )
+            );
+          });
+        }
+      }
 
-    // create another method that does the jsonDecode and gets back the stuff accurately
-  }
-
-  Future loadUserEnrolledCoursesData() async {
-    getCachedData('userEnrolledCourses').then((data) {
-      //Have defined getCachedData and storeCachedData functions in GlobalFunctions
-      enrolledCourses = data;
-      print(enrolledCourses);
+      log("Loaded enrolled courses from Cache",
+          name: 'COURSES');
     });
   }
 
-  //EVENTS
-  // Future reloadEvents() async {
-  //   var connectivityResult = await (Connectivity().checkConnectivity());
-  //   if (connectivityResult == ConnectivityResult.none) {
-  //     events = [[],[],[],[],[],[],[]];
-  //   } else {
-  //     // await dataContainer.auth.gSignIn.signIn();
-  //     //dataContainer.auth.gSignIn.signInSilently().then((value) async {
-  //       final authHeaders =
-  //       await dataContainer.auth.gSignIn.currentUser.authHeaders;
-  //       final httpClient = GoogleHttpClient(authHeaders);
-  //       getEventsOnline(httpClient);
-  //     //});
-  //   }
-  // }
+  void storeEnrolledCourses() {
+    List<List> saveToCache = [[], [], [], [], [], [], []];
 
-  // Future getEventsOnline(httpClient) async {
-  //   var eventData =
-  //   await calendar.CalendarApi(httpClient).events.list('primary');
-  //   List<calendar.Event> tempEvents = [];
-  //   tempEvents.addAll(eventData.items);
-  //   makeListWithoutRepetitionEvent(tempEvents);
-  // }
+    enrolledCourses.forEach((int day, List<Course> courses) {
+      courses.forEach((Course course) {
+        saveToCache[day - 1].add(course.toJson());
+      });
+    });
 
-  // void makeListWithoutRepetitionEvent(List<calendar.Event> tempEvents) {
-  //   List<calendar.Event> withoutRepeat = [];
-  //   events = [[],[],[],[],[],[],[]];
-  //   int day = DateTime.now().weekday;
-  //   tempEvents.forEach((calendar.Event event) {
-  //     bool notHave = true;
-  //     withoutRepeat.forEach((calendar.Event _event) {
-  //       if (_event.id == event.id) {
-  //         notHave = false;
-  //       }
-  //     });
-  //     if (notHave) {
-  //       withoutRepeat.add(event);
-  //     }
-  //   });
+    storeCachedData('enrolledCourses', saveToCache).then((value) {
+      log("Stored enrolled courses to Cache",
+          name: 'COURSES');
+    });
+  }
 
-  //   withoutRepeat.forEach((calendar.Event event) {
-  //     events[day - 1].add(Event(
-  //       startTime: event.start.dateTime.toLocal(),
-  //       endTime: event.end.dateTime.toLocal(),
-  //       name: event.description,
-  //       host: event.creator.displayName,
-  //       link: event.htmlLink //TODO: Have to check how to obtain link from calendar.event object
-  //     ));
-  //   });
-  // }
+   Future reloadEvents() async {
+     var connectivityResult = await (Connectivity().checkConnectivity());
+     if (connectivityResult != ConnectivityResult.none) {
+        await dataContainer.auth.gSignIn.signIn();
+        dataContainer.auth.gSignIn.signInSilently().then((value) async {
+          final authHeaders =
+          await dataContainer.auth.gSignIn.currentUser.authHeaders;
+          final httpClient = GoogleHttpClient(authHeaders);
+          getEventsOnline(httpClient);
+        });
+     } else {
+       for (int i = 0; i < 7; i++) {
+         events[i] = [];
+       }
+     }
+   }
+
+   Future getEventsOnline(httpClient) async {
+     var eventData =
+     await calendar.CalendarApi(httpClient).events.list('primary');
+     List<calendar.Event> tempEvents = [];
+     tempEvents.addAll(eventData.items);
+     makeListWithoutRepetitionEvent(tempEvents);
+   }
+
+   void makeListWithoutRepetitionEvent(List<calendar.Event> tempEvents) {
+     List<calendar.Event> withoutRepeat = [];
+
+     tempEvents.forEach((calendar.Event event) {
+       bool notHave = true;
+       withoutRepeat.forEach((calendar.Event _event) {
+         if (_event.id == event.id) {
+           notHave = false;
+         }
+       });
+       if (notHave) {
+         withoutRepeat.add(event);
+       }
+     });
+
+     withoutRepeat.forEach((calendar.Event event) {
+       events[DateTime.now().weekday].add(Event(
+         startTime: event.start.dateTime.toLocal(),
+         endTime: event.end.dateTime.toLocal(),
+         name: event.description,
+         host: event.creator.displayName,
+         link: event.htmlLink //TODO: Have to check how to obtain link from calendar.event object
+       ));
+     });
+   }
 }
 
-// class GoogleHttpClient extends IOClient {
-//   Map<String, String> _headers;
+ class GoogleHttpClient extends IOClient {
+   Map<String, String> _headers;
 
-//   GoogleHttpClient(this._headers) : super();
+   GoogleHttpClient(this._headers) : super();
 
-//   @override
-//   Future<StreamedResponse> send(BaseRequest request) =>
-//       super.send(request..headers.addAll(_headers));
+   @override
+   Future<StreamedResponse> send(BaseRequest request) =>
+       super.send(request..headers.addAll(_headers));
 
-//   @override
-//   Future<Response> head(Object url, {Map<String, String> headers}) =>
-//       super.head(url, headers: headers..addAll(_headers));
-// }
+   @override
+   Future<Response> head(Object url, {Map<String, String> headers}) =>
+       super.head(url, headers: headers..addAll(_headers));
+ }

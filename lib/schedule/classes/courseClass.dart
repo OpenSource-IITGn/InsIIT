@@ -77,15 +77,18 @@ class Course extends Event {
 
   Map<String, dynamic> toMap() {
     return {
-      'enrolled': enrolled,
-      'ltpc': ltpc,
       'code': code,
-      'slot': slot,
-      'minor': minor,
+      'name': name,
+      'ltpc': ltpc,
+      'startTime': [startTime.year, startTime.month, startTime.day, startTime.hour, startTime.minute],
+      'endTime': [endTime.year, endTime.month, endTime.day, endTime.hour, endTime.minute],
       'instructors': instructors,
+      'slotType': slotType,
+      'minor': minor,
       'cap': cap,
       'prerequisite': prerequisite,
-      'slotType': slotType,
+      'enrolled': enrolled,
+      'slot': slot
     };
   }
 
