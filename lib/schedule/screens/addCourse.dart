@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
-import 'package:instiapp/data/scheduleContainerNew.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -13,12 +12,13 @@ class AddCoursePage extends StatefulWidget {
 }
 
 class _AddCoursePageState extends State<AddCoursePage> {
+  var thisTheme = theme;
   var courseIndices = [];
   String query = '';
   bool loading = true;
   void refresh() {
-    dataContainer.scheduleNew.getAllCourses().then((data) {
-      for (int i = 0; i < dataContainer.scheduleNew.allCourses.length; i++) {
+    dataContainer.schedule.getAllCourses().then((data) {
+      for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
         courseIndices.add(i);
       }
       setState(() {
@@ -36,14 +36,14 @@ class _AddCoursePageState extends State<AddCoursePage> {
   void populateCourses() {
     courseIndices = [];
     if (query == '') {
-      for (int i = 0; i < dataContainer.scheduleNew.allCourses.length; i++) {
+      for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
         courseIndices.add(i);
       }
       return;
     }
 
-    for (int i = 0; i < dataContainer.scheduleNew.allCourses.length; i++) {
-      Course course = dataContainer.scheduleNew.allCourses[i];
+    for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
+      Course course = dataContainer.schedule.allCourses[i];
       String searchString = course.name.replaceAll(' ', '');
       searchString += course.code.replaceAll(' ', '');
       searchString = searchString.toLowerCase();
@@ -57,6 +57,7 @@ class _AddCoursePageState extends State<AddCoursePage> {
     //TODO
     // this should create x events if there are x repititions in the calendar for that course.
   }
+
   var _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -83,6 +84,17 @@ class _AddCoursePageState extends State<AddCoursePage> {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: theme.textHeadingColor)),
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: thisTheme.floatingColor,
+            onPressed: () {
+              loading = true;
+              setState(() {});
+              dataContainer.schedule.storeEnrolledCourses();
+              loading = false;
+              setState(() {});
+            },
+            child: Icon(Icons.add, color: Colors.white),
           ),
           body: (loading == true)
               ? Center(child: CircularProgressIndicator())
@@ -119,11 +131,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
                         // height: ScreenSize.size.height,
                         child: ListView.builder(
                           itemBuilder: (context, index) {
-                            String courseName = dataContainer.scheduleNew
+                            String courseName = dataContainer.schedule
                                 .allCourses[courseIndices[index]].name;
-                            String courseCode = dataContainer.scheduleNew
+                            String courseCode = dataContainer.schedule
                                 .allCourses[courseIndices[index]].code;
-                            bool enrolled = dataContainer.scheduleNew
+                            bool enrolled = dataContainer.schedule
                                 .allCourses[courseIndices[index]].enrolled;
                             return Card(
                                 color: (enrolled == true)
@@ -132,17 +144,20 @@ class _AddCoursePageState extends State<AddCoursePage> {
                                 child: InkWell(
                                   onTap: () {
                                     dataContainer
-                                            .scheduleNew
+                                            .schedule
                                             .allCourses[courseIndices[index]]
                                             .enrolled =
                                         !dataContainer
-                                            .scheduleNew
+                                            .schedule
                                             .allCourses[courseIndices[index]]
                                             .enrolled;
 
-                                    dataContainer.scheduleNew
+                                    dataContainer.schedule
                                         .enrollCourseFromIndex(
-                                            courseIndices[index]);
+                                            courseIndices[index], dataContainer
+                                        .schedule
+                                        .allCourses[courseIndices[index]]
+                                        .enrolled);
                                     setState(() {});
                                   },
                                   child: Padding(

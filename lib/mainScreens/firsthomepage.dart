@@ -27,7 +27,6 @@ class _MainHomePageState extends State<MainHomePage>
   bool prevConnected = true;
   String qod;
   String qodAuthor;
-  ScheduleContainerActual scheduleContainerTemp = ScheduleContainerActual();
 
   @override
   void initState() {
@@ -42,195 +41,195 @@ class _MainHomePageState extends State<MainHomePage>
     });
   }
 
-  Widget scheduleCard(EventModel event) {
-    return Card(
-      child: Container(
-        child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child:
-                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    time(event.start),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text("to", style: TextStyle(fontSize: 14)),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    time(event.end),
-                  ]),
-                ),
-                verticalDivider(),
-                Expanded(
-                  flex: 3,
-                  child: descriptionWidget(event),
-                ),
-              ],
-            )),
-      ),
-    );
-  }
-
-  Widget descriptionWidget(EventModel event) {
-    if (event.isCourse) {
-      return Container(
-        width: ScreenSize.size.width * 0.55,
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(event.courseId,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              SizedBox(
-                height: 8,
-              ),
-              Flexible(
-                fit: FlexFit.loose,
-                child: Text(event.courseName,
-                    style: TextStyle(
-                        // color: (darkMode)
-                        //     ? primaryTextColorDarkMode
-                        //     : primaryTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  Text((event.eventType == null) ? 'Course' : event.eventType,
-                      style:
-                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Flexible(
-                    fit: FlexFit.loose,
-                    child: Text('Room: ${event.location}',
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 14)),
-                  ),
-                ],
-              ),
-            ]),
-      );
-    } else if (event.isExam) {
-      return Container(
-        width: ScreenSize.size.width * 0.55,
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(event.courseId,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              SizedBox(
-                height: 8,
-              ),
-              Text(event.courseName,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  Text(event.eventType,
-                      style:
-                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  Flexible(
-                    child: Text('Room: ',
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 14)),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Flexible(
-                    child: Text('Roll Numbers: ',
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 14)),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: <Widget>[
-                  Flexible(
-                    child: Text(event.location,
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 14)),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Flexible(
-                    child: Text(event.rollNumbers,
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 14)),
-                  ),
-                ],
-              ),
-            ]),
-      );
-    } else {
-      return Container(
-        width: ScreenSize.size.width * 0.55,
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(stringReturn(event.description),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-              SizedBox(
-                height: 8,
-              ),
-              Text(stringReturn(event.summary),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              SizedBox(
-                height: 8,
-              ),
-              Text(
-                  stringReturn(event.eventType) +
-                      ' (' +
-                      stringReturn(event.remarks) +
-                      ')',
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
-            ]),
-      );
-    }
-  }
-
-  Widget time(DateTime time) {
-    return Text(
-        twoDigitTime(time.hour.toString()) +
-            ':' +
-            twoDigitTime(time.minute.toString()),
-        style: TextStyle(fontSize: 14));
-  }
-
-  String twoDigitTime(String text) {
-    if (text.length == 1) {
-      String _text = '0' + text;
-      return _text;
-    } else {
-      return text;
-    }
-  }
+//  Widget scheduleCard(EventModel event) {
+//    return Card(
+//      child: Container(
+//        child: Padding(
+//            padding: EdgeInsets.all(16),
+//            child: Row(
+//              crossAxisAlignment: CrossAxisAlignment.center,
+//              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//              children: <Widget>[
+//                Expanded(
+//                  flex: 1,
+//                  child:
+//                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+//                        time(event.start),
+//                        SizedBox(
+//                          height: 8,
+//                        ),
+//                        Text("to", style: TextStyle(fontSize: 14)),
+//                        SizedBox(
+//                          height: 8,
+//                        ),
+//                        time(event.end),
+//                  ]),
+//                ),
+//                verticalDivider(),
+//                Expanded(
+//                  flex: 3,
+//                  child: descriptionWidget(event),
+//                ),
+//              ],
+//            )),
+//      ),
+//    );
+//  }
+//
+//  Widget descriptionWidget(EventModel event) {
+//    if (event.isCourse) {
+//      return Container(
+//        width: ScreenSize.size.width * 0.55,
+//        child: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: <Widget>[
+//              Text(event.courseId,
+//                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Flexible(
+//                fit: FlexFit.loose,
+//                child: Text(event.courseName,
+//                    style: TextStyle(
+//                        // color: (darkMode)
+//                        //     ? primaryTextColorDarkMode
+//                        //     : primaryTextColor,
+//                        fontWeight: FontWeight.bold,
+//                        fontSize: 16)),
+//              ),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Row(
+//                children: <Widget>[
+//                  Text((event.eventType == null) ? 'Course' : event.eventType,
+//                      style:
+//                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+//                  SizedBox(
+//                    width: 8,
+//                  ),
+//                  Flexible(
+//                    fit: FlexFit.loose,
+//                    child: Text('Room: ${event.location}',
+//                        style: TextStyle(
+//                            fontStyle: FontStyle.italic, fontSize: 14)),
+//                  ),
+//                ],
+//              ),
+//            ]),
+//      );
+//    } else if (event.isExam) {
+//      return Container(
+//        width: ScreenSize.size.width * 0.55,
+//        child: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: <Widget>[
+//              Text(event.courseId,
+//                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Text(event.courseName,
+//                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Row(
+//                children: <Widget>[
+//                  Text(event.eventType,
+//                      style:
+//                          TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+//                ],
+//              ),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Row(
+//                children: <Widget>[
+//                  Flexible(
+//                    child: Text('Room: ',
+//                        style: TextStyle(
+//                            fontStyle: FontStyle.italic, fontSize: 14)),
+//                  ),
+//                  SizedBox(
+//                    width: 8,
+//                  ),
+//                  Flexible(
+//                    child: Text('Roll Numbers: ',
+//                        style: TextStyle(
+//                            fontStyle: FontStyle.italic, fontSize: 14)),
+//                  ),
+//                ],
+//              ),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Row(
+//                children: <Widget>[
+//                  Flexible(
+//                    child: Text(event.location,
+//                        style: TextStyle(
+//                            fontStyle: FontStyle.italic, fontSize: 14)),
+//                  ),
+//                  SizedBox(
+//                    width: 8,
+//                  ),
+//                  Flexible(
+//                    child: Text(event.rollNumbers,
+//                        style: TextStyle(
+//                            fontStyle: FontStyle.italic, fontSize: 14)),
+//                  ),
+//                ],
+//              ),
+//            ]),
+//      );
+//    } else {
+//      return Container(
+//        width: ScreenSize.size.width * 0.55,
+//        child: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: <Widget>[
+//              Text(stringReturn(event.description),
+//                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Text(stringReturn(event.summary),
+//                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+//              SizedBox(
+//                height: 8,
+//              ),
+//              Text(
+//                  stringReturn(event.eventType) +
+//                      ' (' +
+//                      stringReturn(event.remarks) +
+//                      ')',
+//                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 14)),
+//            ]),
+//      );
+//    }
+//  }
+//
+//  Widget time(DateTime time) {
+//    return Text(
+//        twoDigitTime(time.hour.toString()) +
+//            ':' +
+//            twoDigitTime(time.minute.toString()),
+//        style: TextStyle(fontSize: 14));
+//  }
+//
+//  String twoDigitTime(String text) {
+//    if (text.length == 1) {
+//      String _text = '0' + text;
+//      return _text;
+//    } else {
+//      return text;
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -239,10 +238,11 @@ class _MainHomePageState extends State<MainHomePage>
         bool connected = connectivity != ConnectivityResult.none;
         if (connected != prevConnected) {
           widget.reload();
-          dataContainer.schedule.readyEvents();
+          dataContainer.schedule.buildData();
           print("reloading");
           prevConnected = connected;
         }
+        dataContainer.schedule.buildData();
         return new SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -423,7 +423,7 @@ class _MainHomePageState extends State<MainHomePage>
                         RaisedButton(
                             child: Text("RELOAD"),
                             onPressed: () {
-                              scheduleContainerTemp.getAllCourses();
+                              dataContainer.schedule.getAllCourses();
                             }),
                         (dataContainer.schedule.twoEvents == null ||
                                 dataContainer.schedule.twoEvents.length == 0)
@@ -431,9 +431,7 @@ class _MainHomePageState extends State<MainHomePage>
                             : Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: dataContainer.schedule.twoEvents
-                                    .map((EventModel event) {
-                                  return scheduleCard(event);
-                                }).toList(),
+                                    .map<Widget>((event) => event.buildEventCard()).toList(),
                               ),
                       ],
                     ),

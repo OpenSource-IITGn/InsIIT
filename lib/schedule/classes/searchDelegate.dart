@@ -1,97 +1,11 @@
-import 'dart:io';
-
-import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/schedule/screens/editEvent.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CustomSearch extends SearchDelegate {
   var thisTheme = lightTheme;
-  addCourses(Map<CourseModel, bool> add, BuildContext context) {
-    loadingAddCourseData = true;
-    query = "gfufievkldnvodjsjvkdsnvklnviwehlekwdmcnewklvnlehvldkncken";
-    add.forEach((CourseModel course, bool addCourse) {
-      if (addCourse) {
-        addIfNotPresent(course);
-      }
-    });
-
-    saveFileInCache(context);
-  }
-
-  addIfNotPresent(CourseModel course) {
-    bool add = true;
-    if (dataContainer.schedule.userAddedCourses != null) {
-      dataContainer.schedule.userAddedCourses.forEach((CourseModel _course) {
-        if (course.courseName == _course.courseName ||
-            course.courseCode == _course.courseCode) {
-          add = false;
-        }
-      });
-    } else {
-      dataContainer.schedule.userAddedCourses = [];
-    }
-
-    if (add) {
-      dataContainer.schedule.userAddedCourses.add(course);
-    }
-  }
-
-  saveFileInCache(BuildContext context) async {
-    var file = await _localFileForUserAddedCourses();
-    bool exists = await file.exists();
-    if (exists) {
-      await file.delete();
-    }
-    await file.create();
-    await file.open();
-    var userAddedCoursesList =
-        makeUserAddedCoursesList(dataContainer.schedule.userAddedCourses);
-    await file
-        .writeAsString(ListToCsvConverter().convert(userAddedCoursesList));
-    print('DATA OF ADDED EVENT STORED IN FILE');
-
-    query = '';
-    loadingAddCourseData = false;
-    Navigator.popAndPushNamed(context, '/menuBarBase');
-    //Navigator.popUntil(context, ModalRoute.withName('/menuBarBase'));
-  }
-
-  List<List<String>> makeUserAddedCoursesList(
-      List<CourseModel> userAddedCourses) {
-    List<List<String>> userAddedCoursesList = [];
-
-    userAddedCourses.forEach((CourseModel course) {
-      userAddedCoursesList.add([
-        course.courseCode,
-        course.courseName,
-        course.noOfLectures.toString(),
-        course.noOfTutorials.toString(),
-        course.credits.toString(),
-        course.instructors.join(','),
-        course.preRequisite,
-        course.lectureCourse.join(',') + '(' + course.lectureLocation + ')',
-        course.tutorialCourse.join(',') + '(' + course.tutorialLocation + ')',
-        course.labCourse.join(',') + '(' + course.labLocation + ')',
-        course.remarks,
-        course.courseBooks,
-        course.links.join(',')
-      ]);
-    });
-
-    return userAddedCoursesList;
-  }
-
-  Future<File> _localFileForUserAddedCourses() async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    String filename = tempPath + 'userAddedCourses' + '.csv';
-    return File(filename);
-  }
 
   Widget courseCard(CourseModel course, Map<CourseModel, bool> add) {
     return GestureDetector(
@@ -142,14 +56,7 @@ class CustomSearch extends SearchDelegate {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () {
-          addCourses(add, context);
-        },
-      ),
-    ];
+    //
   }
 
   @override

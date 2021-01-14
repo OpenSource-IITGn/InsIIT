@@ -15,15 +15,15 @@ class DataContainer {
   String baseUrl = "serene-reaches-30469.herokuapp.com";
   FeedContainer feed = FeedContainer();
   MessContainer mess = MessContainer();
-  ScheduleContainer schedule = ScheduleContainer();
-  ScheduleContainerActual scheduleNew = ScheduleContainerActual();
+  //ScheduleContainer schedule = ScheduleContainer();
+  ScheduleContainerActual schedule = ScheduleContainerActual();
   ImportantContactsContainer contacts = ImportantContactsContainer();
   ShuttleContainer shuttle = ShuttleContainer();
   RepresentativesContainer representatives = RepresentativesContainer();
   QuickLinksContainer quickLinks = QuickLinksContainer();
   AuthContainer auth = AuthContainer();
   getOtherData() {
-    scheduleNew.getData();
+    //scheduleNew.getData();
     schedule.getData();
     contacts.getData();
     shuttle.getData();

@@ -17,10 +17,10 @@ class _SchedulePageState extends State<SchedulePage> {
   ScrollController _scrollController;
   int _index = 0;
 
-  Widget body(BuildContext _context, int dayIndex) {
-    if (dataContainer.schedule.eventsList == null ||
-        dataContainer.schedule.eventsList.length == 0 ||
-        dataContainer.schedule.eventsList[dayIndex].length == 0) {
+  Widget body(BuildContext _context, int day) {
+    if (dataContainer.schedule.schedule == null ||
+        dataContainer.schedule.schedule.length == 0 ||
+        dataContainer.schedule.schedule[day].length == 0) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,16 +47,16 @@ class _SchedulePageState extends State<SchedulePage> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          controller: (dayIndex == DateTime.now().weekday - 1)
+          controller: (day == DateTime.now().weekday)
               ? _scrollController
               : null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
-            Course course =
-                dataContainer.scheduleNew.enrolledCourses[dayIndex][index];
-            return course.buildEventCard();
+            dynamic event =
+                dataContainer.schedule.schedule[day][index];
+            return event.buildEventCard();
           },
-          itemCount: dataContainer.scheduleNew.enrolledCourses[dayIndex].length,
+          itemCount: dataContainer.schedule.schedule[day].length,
         ),
       );
     }
@@ -78,10 +78,10 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     bool getIndex = false;
     DateTime _currentTime = DateTime.now();
-    dataContainer.schedule.eventsList[DateTime.now().weekday - 1]
+    dataContainer.schedule.schedule[DateTime.now().weekday]
         .asMap()
-        .forEach((int index, EventModel event) {
-      if (!getIndex && event.end.isAfter(_currentTime)) {
+        .forEach((int index, dynamic event) {
+      if (!getIndex && event.endTime.isAfter(_currentTime)) {
         _index = index;
         getIndex = true;
         event.currentlyRunning = true;
@@ -126,26 +126,18 @@ class _SchedulePageState extends State<SchedulePage> {
               tabs: <Widget>[
                 Tab(text: 'Monday'),
                 Tab(text: 'Tuesday'),
-                Tab(
-                  text: 'Wednesday',
-                ),
+                Tab(text: 'Wednesday'),
                 Tab(text: 'Thursday'),
                 Tab(text: 'Friday'),
-                Tab(
-                  text: 'Saturday',
-                ),
-                Tab(
-                  text: 'Sunday',
-                ),
+                Tab(text: 'Saturday'),
+                Tab(text: 'Sunday'),
               ],
             ),
             preferredSize: Size.fromHeight(50.0),
           ),
         ),
         body: TabBarView(
-          children: [0, 1, 2, 3, 4, 5, 6].map((e) {
-            return body(context, e);
-          }).toList(),
+          children: [1, 2, 3, 4, 5, 6, 7].map((e) => body(context, e)).toList(),
         ),
       ),
     );

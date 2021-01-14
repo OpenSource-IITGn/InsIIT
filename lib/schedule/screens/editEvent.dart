@@ -27,6 +27,17 @@ class _EditEventState extends State<EditEvent> {
   bool updateUserAddedCourses = false;
   bool loading = false;
   var thisTheme = theme;
+
+  Map<int, String> weekDay = {
+    1: 'Monday',
+    2: 'Tuesday',
+    3: 'Wednesday',
+    4: 'Thursday',
+    5: 'Friday',
+    6: 'Saturday',
+    7: 'Sunday'
+  };
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +45,7 @@ class _EditEventState extends State<EditEvent> {
 
   @override
   Widget build(BuildContext context) {
+    dataContainer.schedule.getAllEnrolledCourses();
     return Scaffold(
       backgroundColor: thisTheme.backgroundColor,
       appBar: AppBar(
@@ -55,7 +67,7 @@ class _EditEventState extends State<EditEvent> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : (dataContainer.schedule.allEvents.length == 0)
+          : (dataContainer.schedule.allEnrolledSlots.length == 0)
               ? Center(
                   child: Text("No events have been added yet!",
                       style: TextStyle(color: thisTheme.textHeadingColor)))
@@ -63,8 +75,8 @@ class _EditEventState extends State<EditEvent> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      Course course = dataContainer.scheduleNew
-                          .enrolledCourses[DateTime.now().weekday][index];
+                      Course course = dataContainer.schedule
+                          .allEnrolledSlots[index][0];
                       String startTime =
                           formatDate(course.startTime, [HH, ':', nn]);
                       String endTime =
@@ -86,7 +98,7 @@ class _EditEventState extends State<EditEvent> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  "${course.code} | ${startTime} - ${endTime}",
+                                  "${course.code} | ${startTime} - ${endTime} | ${weekDay[course.startTime.weekday]}",
                                   style: TextStyle(
                                     color: theme.textSubheadingColor,
                                   ),
@@ -102,7 +114,8 @@ class _EditEventState extends State<EditEvent> {
                             IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
-                                dataContainer.scheduleNew.unEnrollCourse(index);
+                                dataContainer.schedule.unEnrollCourse(dataContainer.schedule.allEnrolledSlots[index][2], dataContainer.schedule.allEnrolledSlots[index][1]);
+                                dataContainer.schedule.getAllEnrolledCourses();
                                 setState(() {});
                               },
                             )
@@ -110,8 +123,8 @@ class _EditEventState extends State<EditEvent> {
                         ),
                       ));
                     },
-                    itemCount: dataContainer.scheduleNew
-                        .enrolledCourses[DateTime.now().weekday].length,
+                    itemCount: dataContainer.schedule
+                        .allEnrolledSlots.length,
                   )),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,

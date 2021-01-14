@@ -28,12 +28,13 @@ class Course extends Event {
     endTime,
     this.instructors,
     link,
+    currentlyRunning,
     this.slot,
     this.minor,
     this.cap,
     this.slotType,
     this.prerequisite,
-  }) : super(name: name, startTime: startTime, link: link, endTime: endTime);
+  }) : super(name: name, startTime: startTime, link: link, endTime: endTime, currentlyRunning: currentlyRunning);
 
   String getCourseType() {
     if (slotType == 0) {
@@ -133,7 +134,7 @@ class Course extends Event {
                   verticalDivider(),
                   // descriptionWidget(),
                   Container(
-                    width: ScreenSize.size.width * 0.55,
+                    //width: ScreenSize.size.width * 0.55,
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,

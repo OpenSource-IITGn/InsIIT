@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/schedule/classes/examClass.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
@@ -19,6 +21,17 @@ class ScheduleContainerActual {
   Map<int, List<Course>> enrolledCourses = {};
   Map<int, List<Event>> events = {};
   Map<int, List<Exam>> exams = {};
+
+  // Sorted Map for all Courses + Events + Exams
+  Map<int, List<dynamic>> schedule = {};
+
+  //All courses in a single row for deleting purpose
+  List<List> allEnrolledSlots = [];
+//  List<int> allEnrolledSlotsWeekDay = [];
+//  List<int> allEnrolledSlotsIndex = [];
+
+  //Current two events
+  List<dynamic> twoEvents = [];
 
   static Map<String, List<DateTime>> slots = {};
 
@@ -37,6 +50,61 @@ class ScheduleContainerActual {
       exams[i] = [];
     }
   }
+
+  void getData() {
+    // check if there is a cached file that has enrolledCourses
+    getEnrolledCourses();
+    // load all courses from sheets
+    getAllCourses();
+    // load events from calendar api
+    reloadEvents();
+    // load exams from sheets
+  }
+
+  void buildData() {
+    buildSchedule();
+    buildTwoEvents();
+  }
+
+  //------------------------------------BUILD AND SORT SCHEDULE--------------------------------------------//
+  void buildSchedule() {
+    schedule = {};
+    for (int i = 1; i < 8; i++) {
+      schedule[i] = [];
+    }
+
+    for (int i = 1; i < 8; i++) {
+      enrolledCourses[i].forEach((Course course) {
+        schedule[i].add(course);
+      });
+      events[i].forEach((Event event) {
+        schedule[i].add(event);
+      });
+      exams[i].forEach((Exam exam) {
+        schedule[i].add(exam);
+      });
+
+      schedule[i].sort((a,b) => a.startTime.compareTo(b.startTime));
+    }
+  }
+
+  //Return currently scheduled two events to show on Home Screen
+  void buildTwoEvents() {
+    twoEvents = [];
+    DateTime currentTime = DateTime.now();
+    if (schedule != null && schedule[DateTime.now().weekday] != null) {
+      schedule[DateTime.now().weekday].forEach((event) {
+        if (twoEvents.length < 2) {
+          if (event.endTime.isAfter(currentTime) ||
+              event.startTime.isAfter(currentTime)) {
+            twoEvents.add(event);
+          }
+        }
+      });
+    }
+  }
+
+  //------------------------------------COURSES--------------------------------------------//
 
   static void getSlots() {
     sheet.getData('slots!A:F').listen((data) {
@@ -59,16 +127,6 @@ class ScheduleContainerActual {
         }
       });
     });
-  }
-
-  void getData() {
-    // check if there is a cached file that has enrolledCourses
-    getEnrolledCourses();
-    // load all courses from sheets
-    getAllCourses();
-    // load events from calendar api
-    reloadEvents();
-    // load exams from sheets
   }
 
   List parseSlotString(String slotString) {
@@ -101,30 +159,42 @@ class ScheduleContainerActual {
     return list;
   }
 
-  void unEnrollCourse(int index) {
-    enrolledCourses[DateTime.now().weekday].removeAt(index);
+  void unEnrollCourse(int index, int weekday) {
+    print(enrolledCourses);
+    print(index);
+    print(weekday);
+    enrolledCourses[weekday].removeAt(index);
+    getAllEnrolledCourses();
     storeEnrolledCourses();
   }
 
-  void enrollCourseFromIndex(int index) {
-    log('Enrolling course #$index', name: 'COURSES');
-    var row = allCoursesRows[index];
-    List lecSlots = parseSlotString(row[11]);
-    List tutSlots = parseSlotString(row[12]);
-    List labSlots = parseSlotString(row[13]);
+  void enrollCourseFromIndex(int index, bool value) {
+    if (value == true) {
+      log('Enrolling course #$index', name: 'COURSES');
+      var row = allCoursesRows[index];
+      List lecSlots = parseSlotString(row[11]);
+      List tutSlots = parseSlotString(row[12]);
+      List labSlots = parseSlotString(row[13]);
 
-    lecSlots.forEach((slot) {
-      Course course = Course.fromSheetRow(row, slot, 0);
-      enrolledCourses[course.startTime.weekday].add(course);
-    });
-    tutSlots.forEach((slot) {
-      Course course = Course.fromSheetRow(row, slot, 1);
-      enrolledCourses[course.startTime.weekday].add(course);
-    });
-    labSlots.forEach((slot) {
-      Course course = Course.fromSheetRow(row, slot, 2);
-      enrolledCourses[course.startTime.weekday].add(course);
-    });
+      lecSlots.forEach((slot) {
+        Course course = Course.fromSheetRow(row, slot, 0);
+        if (!enrolledCourses[course.startTime.weekday].any((_course) => _course.code == course.code && _course.slot == slot)) {
+          enrolledCourses[course.startTime.weekday].add(course);
+        }
+      });
+      tutSlots.forEach((slot) {
+        Course course = Course.fromSheetRow(row, slot, 1);
+        if (!enrolledCourses[course.startTime.weekday].any((_course) => _course.code == course.code && _course.slot == slot)) {
+          enrolledCourses[course.startTime.weekday].add(course);
+        }
+      });
+      labSlots.forEach((slot) {
+        Course course = Course.fromSheetRow(row, slot, 2);
+        if (!enrolledCourses[course.startTime.weekday].any((_course) => _course.code == course.code && _course.slot == slot)) {
+          enrolledCourses[course.startTime.weekday].add(course);
+        }
+      });
+    }
   }
 
   Future getAllCourses() async {
@@ -182,7 +252,7 @@ class ScheduleContainerActual {
     });
   }
 
-  void storeEnrolledCourses() {
+  void storeEnrolledCourses() {       //Will be stored as List of List
     List<List> saveToCache = [[], [], [], [], [], [], []];
 
     enrolledCourses.forEach((int day, List<Course> courses) {
@@ -192,12 +262,18 @@ class ScheduleContainerActual {
     });
 
     storeCachedData('enrolledCourses', saveToCache).then((value) {
+      buildData();
       log("Stored enrolled courses to Cache",
           name: 'COURSES');
     });
   }
 
+  //------------------------------------CALENDAR EVENTS--------------------------------------------//
+
    Future reloadEvents() async {
+     for (int i = 1; i < 8; i++) {
+       events[i] = [];
+     }
      var connectivityResult = await (Connectivity().checkConnectivity());
      if (connectivityResult != ConnectivityResult.none) {
         await dataContainer.auth.gSignIn.signIn();
@@ -207,10 +283,6 @@ class ScheduleContainerActual {
           final httpClient = GoogleHttpClient(authHeaders);
           getEventsOnline(httpClient);
         });
-     } else {
-       for (int i = 0; i < 7; i++) {
-         events[i] = [];
-       }
      }
    }
 
@@ -232,23 +304,55 @@ class ScheduleContainerActual {
            notHave = false;
          }
        });
-       if (notHave) {
+       if (notHave && event != null && event.start != null && event.start.dateTime != null && event.start.dateTime.year == DateTime.now().year && event.start.dateTime.month == DateTime.now().month && event.start.dateTime.day == DateTime.now().day) {
          withoutRepeat.add(event);
        }
      });
 
+     for (int i = 1; i < 8; i++) {
+       events[i] = [];
+     }
+
      withoutRepeat.forEach((calendar.Event event) {
-       events[DateTime.now().weekday].add(Event(
-         startTime: event.start.dateTime.toLocal(),
-         endTime: event.end.dateTime.toLocal(),
-         name: event.description,
-         host: event.creator.displayName,
-         link: event.htmlLink //TODO: Have to check how to obtain link from calendar.event object
-       ));
+       if (event != null) {
+         events[DateTime
+             .now()
+             .weekday].add(Event(
+             startTime: (event.start != null && event.start.dateTime != null)
+                 ? event.start.dateTime.toLocal()
+                 : DateTime(2021, 1, 1, 1),
+             endTime: (event.end != null && event.end.dateTime != null) ? event
+                 .end.dateTime.toLocal() : DateTime(2021, 1, 1, 2),
+             name: (event.description != null) ? event.description : "",
+             host: (event.creator != null && event.creator.displayName != null)
+                 ? event.creator.displayName
+                 : "",
+             link: (event.htmlLink != null)
+                 ? event.htmlLink
+                 : "" //TODO: Have to check how to obtain link from calendar.event object
+         ));
+       }
      });
+
+     log("Loaded ${withoutRepeat.length} calendar events",
+         name: 'EVENTS');
+   }
+
+   //Function to get all the enrolled course slots in a single list for deleting purpose
+   getAllEnrolledCourses() {
+    allEnrolledSlots = [];
+    enrolledCourses.forEach((int day, List<Course> dayCourses) {
+      int index = 0;
+      dayCourses.forEach((Course course) {
+        allEnrolledSlots.add([course, day, index++]);
+//        allEnrolledSlotsWeekDay.add(day);
+//        allEnrolledSlotsIndex.add(index ++);
+      });
+    });
    }
 }
 
+//For getting headers to fetch Calendar Events
  class GoogleHttpClient extends IOClient {
    Map<String, String> _headers;
 

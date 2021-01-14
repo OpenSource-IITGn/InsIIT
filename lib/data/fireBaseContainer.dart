@@ -59,7 +59,6 @@ class AuthContainer {
         authorized = true;
         callback();
       });
-      await dataContainer.schedule.reloadEventsAndCourses();
     }
   }
 

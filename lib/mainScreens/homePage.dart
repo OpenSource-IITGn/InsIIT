@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage>
             icon: Icon(Icons.refresh, color: Colors.grey.withAlpha(100)),
             onPressed: () {
               reloadData();
-              dataContainer.schedule.readyEvents();
+              dataContainer.schedule.buildData();
             },
           ),
           IconButton(
@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage>
     if (mainPageLoading == true) {
       return loadScreen();
     } else {
-      dataContainer.schedule.readyEvents();
+      dataContainer.schedule.buildData();
       return WillPopScope(onWillPop: _onBackPressed, child: homeScreen());
     }
   }
