@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Event {
   DateTime startTime;
@@ -19,7 +20,7 @@ class Event {
     this.currentlyRunning
   });
 
-  Widget buildEventCard() {
+  Widget buildEventCard(BuildContext context) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =
@@ -31,9 +32,9 @@ class Event {
         width: ScreenSize.size.width,
         child: InkWell(
           onTap: () {
-            // Navigator.pushNamed('/eventdetail', arguments: {
-            //   'eventModel': this,
-            // });
+             Navigator.pushNamed(context, '/eventdetail', arguments: {
+               'event': this,
+             });
           },
           child: Padding(
               padding: EdgeInsets.all(16),
@@ -130,6 +131,92 @@ class Event {
                 ],
               )),
         ),
+      ),
+    );
+  }
+
+  Widget buildEventDetails() {
+    String startTimeString = formatDate(startTime, [HH, ':', nn]);
+    String endTimeString = formatDate(endTime, [HH, ':', nn]);
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(name,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: theme.textHeadingColor)),
+          // Text(,
+          //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(host,
+              style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: theme.textHeadingColor)),
+          SizedBox(
+            height: 10,
+          ),
+          (link != null || link.length != 0)
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: link.split(',').map((link) {
+              return GestureDetector(
+                onTap: () async {
+                  if (await canLaunch(link)) {
+                    await launch(link, forceSafariVC: false);
+                  } else {
+                    throw 'Could not launch $link';
+                  }
+                },
+                child: Text(
+                  (link == '-') ? "" : link,
+                  style: TextStyle(fontSize: 15),
+                ),
+              );
+            }).toList(),
+          )
+              : Container(),
+//          RichText(
+//            text: TextSpan(
+//              children: <TextSpan>[
+//                TextSpan(
+//                  text: 'Happens at ',
+//                ),
+//                TextSpan(
+//                  text: location,
+//                  style: TextStyle(
+//                      fontWeight: FontWeight.bold,
+//                      color: theme.textHeadingColor),
+//                ),
+//              ],
+//            ),
+//          ),
+//          SizedBox(
+//            height: 10,
+//          ),
+          RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Between ',
+                ),
+                TextSpan(
+                  text: startTimeString,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: ' and ',
+                ),
+                TextSpan(
+                  text: endTimeString,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

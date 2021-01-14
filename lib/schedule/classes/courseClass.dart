@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/data/scheduleContainerNew.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'eventClass.dart';
 
@@ -96,7 +97,7 @@ class Course extends Event {
   String toJson() => json.encode(toMap());
 
   @override
-  Widget buildEventCard() {
+  Widget buildEventCard(BuildContext context) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =
@@ -108,9 +109,9 @@ class Course extends Event {
         width: ScreenSize.size.width,
         child: InkWell(
           onTap: () {
-            // Navigator.pushNamed('/eventdetail', arguments: {
-            //   'eventModel': this,
-            // });
+             Navigator.pushNamed(context, '/eventdetail', arguments: {
+               'event': this,
+             });
           },
           child: Padding(
               padding: EdgeInsets.all(16),
@@ -203,6 +204,153 @@ class Course extends Event {
                 ],
               )),
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildEventDetails() {
+    String startTimeString = formatDate(startTime, [HH, ':', nn]);
+    String endTimeString = formatDate(endTime, [HH, ':', nn]);
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("[$code] $name",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: theme.textHeadingColor)),
+          // Text(,
+          //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(getCourseType(),
+              style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: theme.textHeadingColor)),
+          SizedBox(
+            height: 10,
+          ),
+          (link != null && link.length != 0)
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: link.split(',').map((link) {
+              return GestureDetector(
+                onTap: () async {
+                  if (await canLaunch(link)) {
+                    await launch(link, forceSafariVC: false);
+                  } else {
+                    throw 'Could not launch $link';
+                  }
+                },
+                child: Text(
+                  (link == '-') ? "" : link,
+                  style: TextStyle(fontSize: 15),
+                ),
+              );
+            }).toList(),
+          )
+              : Container(),
+//          RichText(
+//            text: TextSpan(
+//              children: <TextSpan>[
+//                TextSpan(
+//                  text: 'Happens at ',
+//                ),
+//                TextSpan(
+//                  text: location,
+//                  style: TextStyle(
+//                      fontWeight: FontWeight.bold,
+//                      color: theme.textHeadingColor),
+//                ),
+//              ],
+//            ),
+//          ),
+//          SizedBox(
+//            height: 10,
+//          ),
+          RichText(
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Between ',
+                ),
+                TextSpan(
+                  text: startTimeString,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: ' and ',
+                ),
+                TextSpan(
+                  text: endTimeString,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          (minor == null)
+              ? Container()
+              : Text('Minor: $minor',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: theme.textHeadingColor)),
+          SizedBox(
+            height: 8,
+          ),
+          Text('Instructors: ',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: theme.textHeadingColor)),
+          SizedBox(
+            height: 8,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: (instructors == null)
+                ? [Container()]
+                : instructors.split(',').map<Widget>((String instructor) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  8,
+                  0,
+                  0,
+                  0,
+                ),
+                child: Text(instructor,
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                        color: theme.textSubheadingColor)),
+              );
+            }).toList(),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text('${ltpc[3]} credits',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: theme.textHeadingColor)),
+          (prerequisite == '-')
+              ? Container()
+              : Text('Pre-requisite: $prerequisite',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: theme.textHeadingColor)),
+          // ExpansionTile(
+          //   key: GlobalKey(),
+          //   title: Text('View Attendance'),
+          //   children: attendance,
+          // )
+        ],
       ),
     );
   }

@@ -54,7 +54,7 @@ class _SchedulePageState extends State<SchedulePage> {
           itemBuilder: (context, index) {
             dynamic event =
                 dataContainer.schedule.schedule[day][index];
-            return event.buildEventCard();
+            return event.buildEventCard(_context);
           },
           itemCount: dataContainer.schedule.schedule[day].length,
         ),
