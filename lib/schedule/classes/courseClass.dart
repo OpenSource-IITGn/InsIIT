@@ -5,7 +5,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
 import 'package:instiapp/data/dataContainer.dart';
-import 'package:instiapp/data/scheduleContainerNew.dart';
+import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 

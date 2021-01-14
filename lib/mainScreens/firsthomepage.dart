@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
-import 'package:instiapp/data/scheduleContainerNew.dart';
+import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/messMenu/classes/base.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';

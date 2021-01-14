@@ -1,6 +1,6 @@
 import 'package:instiapp/data/feedContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
-import 'package:instiapp/data/scheduleContainerNew.dart';
+import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/data/importantContactsContainer.dart';
 import 'package:instiapp/data/shuttleContainer.dart';
 import 'package:instiapp/data/representativesContainer.dart';
