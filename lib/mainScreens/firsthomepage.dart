@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
-import 'package:instiapp/data/scheduleContainerNew.dart';
+import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/messMenu/classes/base.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -420,18 +420,20 @@ class _MainHomePageState extends State<MainHomePage>
                           ],
                         ),
                         SizedBox(height: 10),
-                        RaisedButton(
-                            child: Text("RELOAD"),
-                            onPressed: () {
-                              dataContainer.schedule.getAllCourses();
-                            }),
+                        // RaisedButton(
+                        //     child: Text("RELOAD"),
+                        //     onPressed: () {
+                        //       dataContainer.schedule.getAllCourses();
+                        //     }),
                         (dataContainer.schedule.twoEvents == null ||
                                 dataContainer.schedule.twoEvents.length == 0)
                             ? Container()
                             : Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: dataContainer.schedule.twoEvents
-                                    .map<Widget>((event) => event.buildEventCard()).toList(),
+                                    .map<Widget>(
+                                        (event) => event.buildEventCard())
+                                    .toList(),
                               ),
                       ],
                     ),

@@ -75,86 +75,102 @@ class _EditEventState extends State<EditEvent> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      Course course = dataContainer.schedule
-                          .allEnrolledSlots[index][0];
+                      Course course =
+                          dataContainer.schedule.allEnrolledSlots[index][0];
                       String startTime =
                           formatDate(course.startTime, [HH, ':', nn]);
                       String endTime =
                           formatDate(course.endTime, [HH, ':', nn]);
                       return Card(
+                          color: course.color,
                           child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  course.name,
-                                  style: TextStyle(
-                                      color: theme.textHeadingColor,
-                                      fontWeight: FontWeight.bold),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: ScreenSize.size.width * 0.7,
+                                      child: Text(
+                                        course.name,
+                                        style: TextStyle(
+                                            color: theme.textHeadingColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Text(
+                                      "${course.code} | ${startTime} - ${endTime} | ${weekDay[course.startTime.weekday]}",
+                                      style: TextStyle(
+                                        color: theme.textSubheadingColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      course.getCourseType(),
+                                      style: TextStyle(
+                                        color: theme.textSubheadingColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  "${course.code} | ${startTime} - ${endTime} | ${weekDay[course.startTime.weekday]}",
-                                  style: TextStyle(
-                                    color: theme.textSubheadingColor,
-                                  ),
-                                ),
-                                Text(
-                                  course.getCourseType(),
-                                  style: TextStyle(
-                                    color: theme.textSubheadingColor,
-                                  ),
-                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => new AlertDialog(
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            onPressed: () async {
+                                              dataContainer.schedule
+                                                  .unEnrollCourse(
+                                                      dataContainer.schedule
+                                                              .allEnrolledSlots[
+                                                          index][2],
+                                                      dataContainer.schedule
+                                                              .allEnrolledSlots[
+                                                          index][1],
+                                                      false);
+                                              dataContainer.schedule
+                                                  .getAllEnrolledCourses();
+                                              Navigator.pop(context);
+                                              setState(() {});
+                                            },
+                                            child:
+                                                Text('Remove only this slot'),
+                                          ),
+                                          FlatButton(
+                                            onPressed: () async {
+                                              dataContainer.schedule
+                                                  .unEnrollCourse(
+                                                      dataContainer.schedule
+                                                              .allEnrolledSlots[
+                                                          index][2],
+                                                      dataContainer.schedule
+                                                              .allEnrolledSlots[
+                                                          index][1],
+                                                      true);
+                                              dataContainer.schedule
+                                                  .getAllEnrolledCourses();
+                                              Navigator.pop(context);
+                                              setState(() {});
+                                            },
+                                            child: Text(
+                                                'Unenroll from ${course.code}'),
+                                          )
+                                        ],
+                                        content: Text('Select one option'),
+                                      ),
+                                    );
+                                  },
+                                )
                               ],
                             ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => new AlertDialog(
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        onPressed: () async {
-                                          dataContainer.schedule.unEnrollCourse(
-                                              dataContainer.schedule.allEnrolledSlots[index][2],
-                                              dataContainer.schedule.allEnrolledSlots[index][1],
-                                              false);
-                                          dataContainer.schedule.getAllEnrolledCourses();
-                                          Navigator.pop(context);
-                                          setState(() {});
-                                        },
-                                        child: Text('Remove only this slot'),
-                                      ),
-                                      FlatButton(
-                                        onPressed: () async {
-                                          dataContainer.schedule.unEnrollCourse(
-                                              dataContainer.schedule.allEnrolledSlots[index][2],
-                                              dataContainer.schedule.allEnrolledSlots[index][1],
-                                              true);
-                                          dataContainer.schedule.getAllEnrolledCourses();
-                                          Navigator.pop(context);
-                                          setState(() {});
-                                        },
-                                        child: Text('Unenroll from ${course.code} course'),
-                                      )
-                                    ],
-                                    content: Text(
-                                        'Select one option'),
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                      ));
+                          ));
                     },
-                    itemCount: dataContainer.schedule
-                        .allEnrolledSlots.length,
+                    itemCount: dataContainer.schedule.allEnrolledSlots.length,
                   )),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
@@ -165,6 +181,7 @@ class _EditEventState extends State<EditEvent> {
             onPressed: () {
               Navigator.pushNamed(context, '/addCourses').then((value) {
                 // storeCoursesOffline();
+                setState(() {});
               });
             },
             child: Icon(Icons.add, color: Colors.white),

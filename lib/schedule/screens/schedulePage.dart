@@ -47,9 +47,8 @@ class _SchedulePageState extends State<SchedulePage> {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          controller: (day == DateTime.now().weekday)
-              ? _scrollController
-              : null,
+          controller:
+              (day == DateTime.now().weekday) ? _scrollController : null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
             dynamic event =
@@ -109,7 +108,8 @@ class _SchedulePageState extends State<SchedulePage> {
           actions: <Widget>[
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/editevent');
+                Navigator.pushNamed(context, '/editevent')
+                    .then((value) => setState(() {}));
               },
               icon: Icon(Icons.edit, color: theme.iconColor),
             )
