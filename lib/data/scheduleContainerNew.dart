@@ -27,8 +27,6 @@ class ScheduleContainer {
 
   //All courses in a single row for deleting purpose
   List<List> allEnrolledSlots = [];
-//  List<int> allEnrolledSlotsWeekDay = [];
-//  List<int> allEnrolledSlotsIndex = [];
 
   //Current two events
   List<dynamic> twoEvents = [];
@@ -289,6 +287,17 @@ class ScheduleContainer {
     });
   }
 
+  //Function to get all the enrolled course slots in a single list for deleting purpose
+  getAllEnrolledCourses() {
+    allEnrolledSlots = [];
+    enrolledCourses.forEach((int day, List<Course> dayCourses) {
+      int index = 0;
+      dayCourses.forEach((Course course) {
+        allEnrolledSlots.add([course, day, index++]);
+      });
+    });
+  }
+
   //------------------------------------CALENDAR EVENTS--------------------------------------------//
 
   Future reloadEvents() async {
@@ -297,6 +306,7 @@ class ScheduleContainer {
     }
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
+      await dataContainer.auth.gSignIn.signIn();
       dataContainer.auth.gSignIn.signInSilently().then((value) async {
         final authHeaders =
             await dataContainer.auth.gSignIn.currentUser.authHeaders;
@@ -360,17 +370,6 @@ class ScheduleContainer {
     });
 
     log("Loaded ${withoutRepeat.length} calendar events", name: 'EVENTS');
-  }
-
-  //Function to get all the enrolled course slots in a single list for deleting purpose
-  getAllEnrolledCourses() {
-    allEnrolledSlots = [];
-    enrolledCourses.forEach((int day, List<Course> dayCourses) {
-      int index = 0;
-      dayCourses.forEach((Course course) {
-        allEnrolledSlots.add([course, day, index++]);
-      });
-    });
   }
 }
 
