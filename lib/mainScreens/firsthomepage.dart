@@ -242,7 +242,7 @@ class _MainHomePageState extends State<MainHomePage>
                                 mainAxisSize: MainAxisSize.min,
                                 children: dataContainer.schedule.twoEvents
                                     .map<Widget>(
-                                        (event) => event.buildEventCard())
+                                        (event) => event.buildEventCard(context))
                                     .toList(),
                               ),
                       ],
