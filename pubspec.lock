@@ -85,6 +85,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.3"
+  color_convert:
+    dependency: "direct main"
+    description:
+      name: color_convert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   connectivity:
     dependency: transitive
     description:

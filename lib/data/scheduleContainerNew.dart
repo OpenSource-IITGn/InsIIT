@@ -13,7 +13,7 @@ import 'package:http/http.dart';
 import 'package:connectivity/connectivity.dart';
 import 'dart:developer';
 
-class ScheduleContainerActual {
+class ScheduleContainer {
   List<Course> allCourses = [];
   List allCoursesRows = [];
 
@@ -42,7 +42,7 @@ class ScheduleContainerActual {
     return slots[slot];
   }
 
-  ScheduleContainerActual() {
+  ScheduleContainer() {
     getSlots();
     for (int i = 1; i < 8; i++) {
       enrolledCourses[i] = [];
@@ -84,7 +84,7 @@ class ScheduleContainerActual {
         schedule[i].add(exam);
       });
 
-      schedule[i].sort((a,b) => a.startTime.compareTo(b.startTime));
+      schedule[i].sort((a, b) => a.startTime.compareTo(b.startTime));
     }
   }
 
@@ -140,7 +140,7 @@ class ScheduleContainerActual {
         clubbedString = clubbedString.split('+');
         if (clubbedString.length == 1) {
           if (clubbedString[0].length == 1) {
-            var keys = ScheduleContainerActual.slots.keys.toList();
+            var keys = ScheduleContainer.slots.keys.toList();
             for (int i = 0; i < keys.length; i++) {
               if (keys[i][0] == clubbedString[0][0]) {
                 newList.add(keys[i]);
@@ -163,10 +163,12 @@ class ScheduleContainerActual {
     if (unEnroll) {
       Course unEnrollCourse = enrolledCourses[weekday][index];
       for (int i = 1; i < 8; i++) {
-        int idx = enrolledCourses[i].indexWhere((Course course) => course.code == unEnrollCourse.code);
+        int idx = enrolledCourses[i]
+            .indexWhere((Course course) => course.code == unEnrollCourse.code);
         while (idx != -1) {
           enrolledCourses[i].removeAt(idx);
-          idx = enrolledCourses[i].indexWhere((Course course) => course.code == unEnrollCourse.code);
+          idx = enrolledCourses[i].indexWhere(
+              (Course course) => course.code == unEnrollCourse.code);
         }
       }
       getAllEnrolledCourses();
@@ -188,19 +190,22 @@ class ScheduleContainerActual {
 
       lecSlots.forEach((slot) {
         Course course = Course.fromSheetRow(row, slot, 0);
-        if (!enrolledCourses[course.startTime.weekday].any((_course) => _course.code == course.code && _course.slot == slot)) {
+        if (!enrolledCourses[course.startTime.weekday].any(
+            (_course) => _course.code == course.code && _course.slot == slot)) {
           enrolledCourses[course.startTime.weekday].add(course);
         }
       });
       tutSlots.forEach((slot) {
         Course course = Course.fromSheetRow(row, slot, 1);
-        if (!enrolledCourses[course.startTime.weekday].any((_course) => _course.code == course.code && _course.slot == slot)) {
+        if (!enrolledCourses[course.startTime.weekday].any(
+            (_course) => _course.code == course.code && _course.slot == slot)) {
           enrolledCourses[course.startTime.weekday].add(course);
         }
       });
       labSlots.forEach((slot) {
         Course course = Course.fromSheetRow(row, slot, 2);
-        if (!enrolledCourses[course.startTime.weekday].any((_course) => _course.code == course.code && _course.slot == slot)) {
+        if (!enrolledCourses[course.startTime.weekday].any(
+            (_course) => _course.code == course.code && _course.slot == slot)) {
           enrolledCourses[course.startTime.weekday].add(course);
         }
       });
@@ -232,37 +237,44 @@ class ScheduleContainerActual {
           List courses = data[i];
           courses.forEach((jsonCourse) {
             Map course = jsonDecode(jsonCourse);
-            enrolledCourses[i + 1].add(
-              Course(
-                  code: course['code'],
-                  name: course['name'],
-                  ltpc: [
-                    course['ltpc'][0],
-                    course['ltpc'][1],
-                    course['ltpc'][2],
-                    course['ltpc'][3]
-                  ],
-                  startTime: DateTime(course['startTime'][0], course['startTime'][1], course['startTime'][2], course['startTime'][3], course['startTime'][4]),
-                  endTime: DateTime(course['endTime'][0], course['endTime'][1], course['endTime'][2], course['endTime'][3], course['endTime'][4]),
-                  instructors: course['instructors'],
-                  slotType: course['slotType'],
-                  minor: course['minor'],
-                  cap: course['cap'],
-                  prerequisite: course['prerequisite'],
-                  enrolled: true,
-                  slot: course['slot']
-              )
-            );
+            enrolledCourses[i + 1].add(Course(
+                code: course['code'],
+                name: course['name'],
+                ltpc: [
+                  course['ltpc'][0],
+                  course['ltpc'][1],
+                  course['ltpc'][2],
+                  course['ltpc'][3]
+                ],
+                startTime: DateTime(
+                    course['startTime'][0],
+                    course['startTime'][1],
+                    course['startTime'][2],
+                    course['startTime'][3],
+                    course['startTime'][4]),
+                endTime: DateTime(
+                    course['endTime'][0],
+                    course['endTime'][1],
+                    course['endTime'][2],
+                    course['endTime'][3],
+                    course['endTime'][4]),
+                instructors: course['instructors'],
+                slotType: course['slotType'],
+                minor: course['minor'],
+                cap: course['cap'],
+                prerequisite: course['prerequisite'],
+                enrolled: true,
+                slot: course['slot']));
           });
         }
       }
 
-      log("Loaded enrolled courses from Cache",
-          name: 'COURSES');
+      log("Loaded enrolled courses from Cache", name: 'COURSES');
     });
   }
 
-  void storeEnrolledCourses() {       //Will be stored as List of List
+  void storeEnrolledCourses() {
+    //Will be stored as List of List
     List<List> saveToCache = [[], [], [], [], [], [], []];
 
     enrolledCourses.forEach((int day, List<Course> courses) {
@@ -273,83 +285,85 @@ class ScheduleContainerActual {
 
     storeCachedData('enrolledCourses', saveToCache).then((value) {
       buildData();
-      log("Stored enrolled courses to Cache",
-          name: 'COURSES');
+      log("Stored enrolled courses to Cache", name: 'COURSES');
     });
   }
 
   //------------------------------------CALENDAR EVENTS--------------------------------------------//
 
-   Future reloadEvents() async {
-     for (int i = 1; i < 8; i++) {
-       events[i] = [];
-     }
-     var connectivityResult = await (Connectivity().checkConnectivity());
-     if (connectivityResult != ConnectivityResult.none) {
-        await dataContainer.auth.gSignIn.signIn();
-        dataContainer.auth.gSignIn.signInSilently().then((value) async {
-          final authHeaders =
-          await dataContainer.auth.gSignIn.currentUser.authHeaders;
-          final httpClient = GoogleHttpClient(authHeaders);
-          getEventsOnline(httpClient);
-        });
-     }
-   }
+  Future reloadEvents() async {
+    for (int i = 1; i < 8; i++) {
+      events[i] = [];
+    }
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      dataContainer.auth.gSignIn.signInSilently().then((value) async {
+        final authHeaders =
+            await dataContainer.auth.gSignIn.currentUser.authHeaders;
+        final httpClient = GoogleHttpClient(authHeaders);
+        getEventsOnline(httpClient);
+      });
+    }
+  }
 
-   Future getEventsOnline(httpClient) async {
-     var eventData =
-     await calendar.CalendarApi(httpClient).events.list('primary');
-     List<calendar.Event> tempEvents = [];
-     tempEvents.addAll(eventData.items);
-     makeListWithoutRepetitionEvent(tempEvents);
-   }
+  Future getEventsOnline(httpClient) async {
+    var eventData =
+        await calendar.CalendarApi(httpClient).events.list('primary');
+    List<calendar.Event> tempEvents = [];
+    tempEvents.addAll(eventData.items);
+    makeListWithoutRepetitionEvent(tempEvents);
+  }
 
-   void makeListWithoutRepetitionEvent(List<calendar.Event> tempEvents) {
-     List<calendar.Event> withoutRepeat = [];
+  void makeListWithoutRepetitionEvent(List<calendar.Event> tempEvents) {
+    List<calendar.Event> withoutRepeat = [];
 
-     tempEvents.forEach((calendar.Event event) {
-       bool notHave = true;
-       withoutRepeat.forEach((calendar.Event _event) {
-         if (_event.id == event.id) {
-           notHave = false;
-         }
-       });
-       if (notHave && event != null && event.start != null && event.start.dateTime != null && event.start.dateTime.year == DateTime.now().year && event.start.dateTime.month == DateTime.now().month && event.start.dateTime.day == DateTime.now().day) {
-         withoutRepeat.add(event);
-       }
-     });
+    tempEvents.forEach((calendar.Event event) {
+      bool notHave = true;
+      withoutRepeat.forEach((calendar.Event _event) {
+        if (_event.id == event.id) {
+          notHave = false;
+        }
+      });
+      if (notHave &&
+          event != null &&
+          event.start != null &&
+          event.start.dateTime != null &&
+          event.start.dateTime.year == DateTime.now().year &&
+          event.start.dateTime.month == DateTime.now().month &&
+          event.start.dateTime.day == DateTime.now().day) {
+        withoutRepeat.add(event);
+      }
+    });
 
-     for (int i = 1; i < 8; i++) {
-       events[i] = [];
-     }
+    for (int i = 1; i < 8; i++) {
+      events[i] = [];
+    }
 
-     withoutRepeat.forEach((calendar.Event event) {
-       if (event != null) {
-         events[DateTime
-             .now()
-             .weekday].add(Event(
-             startTime: (event.start != null && event.start.dateTime != null)
-                 ? event.start.dateTime.toLocal()
-                 : DateTime(2021, 1, 1, 1),
-             endTime: (event.end != null && event.end.dateTime != null) ? event
-                 .end.dateTime.toLocal() : DateTime(2021, 1, 1, 2),
-             name: (event.description != null) ? event.description : "",
-             host: (event.creator != null && event.creator.displayName != null)
-                 ? event.creator.displayName
-                 : "",
-             link: (event.htmlLink != null)
-                 ? event.htmlLink
-                 : "" //TODO: Have to check how to obtain link from calendar.event object
-         ));
-       }
-     });
+    withoutRepeat.forEach((calendar.Event event) {
+      if (event != null) {
+        events[DateTime.now().weekday].add(Event(
+            startTime: (event.start != null && event.start.dateTime != null)
+                ? event.start.dateTime.toLocal()
+                : DateTime(2021, 1, 1, 1),
+            endTime: (event.end != null && event.end.dateTime != null)
+                ? event.end.dateTime.toLocal()
+                : DateTime(2021, 1, 1, 2),
+            name: (event.description != null) ? event.description : "",
+            host: (event.creator != null && event.creator.displayName != null)
+                ? event.creator.displayName
+                : "",
+            link: (event.htmlLink != null)
+                ? event.htmlLink
+                : "" //TODO: Have to check how to obtain link from calendar.event object
+            ));
+      }
+    });
 
-     log("Loaded ${withoutRepeat.length} calendar events",
-         name: 'EVENTS');
-   }
+    log("Loaded ${withoutRepeat.length} calendar events", name: 'EVENTS');
+  }
 
-   //Function to get all the enrolled course slots in a single list for deleting purpose
-   getAllEnrolledCourses() {
+  //Function to get all the enrolled course slots in a single list for deleting purpose
+  getAllEnrolledCourses() {
     allEnrolledSlots = [];
     enrolledCourses.forEach((int day, List<Course> dayCourses) {
       int index = 0;
@@ -357,20 +371,20 @@ class ScheduleContainerActual {
         allEnrolledSlots.add([course, day, index++]);
       });
     });
-   }
+  }
 }
 
 //For getting headers to fetch Calendar Events
- class GoogleHttpClient extends IOClient {
-   Map<String, String> _headers;
+class GoogleHttpClient extends IOClient {
+  Map<String, String> _headers;
 
-   GoogleHttpClient(this._headers) : super();
+  GoogleHttpClient(this._headers) : super();
 
-   @override
-   Future<StreamedResponse> send(BaseRequest request) =>
-       super.send(request..headers.addAll(_headers));
+  @override
+  Future<StreamedResponse> send(BaseRequest request) =>
+      super.send(request..headers.addAll(_headers));
 
-   @override
-   Future<Response> head(Object url, {Map<String, String> headers}) =>
-       super.head(url, headers: headers..addAll(_headers));
- }
+  @override
+  Future<Response> head(Object url, {Map<String, String> headers}) =>
+      super.head(url, headers: headers..addAll(_headers));
+}

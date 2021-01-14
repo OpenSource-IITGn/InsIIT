@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:instiapp/themeing/notifier.dart';
@@ -8,16 +10,23 @@ class Event {
   DateTime endTime;
   String name;
   String host;
+  Color color;
   String link;
   bool currentlyRunning = false;
-  Event({
-    this.startTime,
-    this.endTime,
-    this.name,
-    this.host,
-    this.link,
-    this.currentlyRunning
-  });
+  Event(
+      {this.startTime,
+      this.endTime,
+      this.name,
+      this.color,
+      this.host,
+      this.link,
+      this.currentlyRunning});
+
+  // void setColor(index) {
+  //   double alpha = 1 - index / 100;
+  //   index = index % Colors.primaries.length;
+  //   color = Colors.primaries[index].withOpacity(alpha);
+  // }
 
   Widget buildEventCard() {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
@@ -123,9 +132,9 @@ class Event {
                   ),
                   (ongoing == true)
                       ? Icon(
-                    Icons.adjust,
-                    color: Colors.green,
-                  )
+                          Icons.adjust,
+                          color: Colors.green,
+                        )
                       : Container(),
                 ],
               )),

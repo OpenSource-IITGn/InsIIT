@@ -420,18 +420,20 @@ class _MainHomePageState extends State<MainHomePage>
                           ],
                         ),
                         SizedBox(height: 10),
-                        RaisedButton(
-                            child: Text("RELOAD"),
-                            onPressed: () {
-                              dataContainer.schedule.getAllCourses();
-                            }),
+                        // RaisedButton(
+                        //     child: Text("RELOAD"),
+                        //     onPressed: () {
+                        //       dataContainer.schedule.getAllCourses();
+                        //     }),
                         (dataContainer.schedule.twoEvents == null ||
                                 dataContainer.schedule.twoEvents.length == 0)
                             ? Container()
                             : Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: dataContainer.schedule.twoEvents
-                                    .map<Widget>((event) => event.buildEventCard()).toList(),
+                                    .map<Widget>(
+                                        (event) => event.buildEventCard())
+                                    .toList(),
                               ),
                       ],
                     ),

@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:color_convert/color_convert.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/data/scheduleContainerNew.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -18,6 +21,7 @@ class Course extends Event {
   String instructors;
   String cap;
   String prerequisite;
+
   int slotType; // 0 = lecture, 1 = tutorial, 2 = lab
   Course({
     this.enrolled,
@@ -31,10 +35,17 @@ class Course extends Event {
     currentlyRunning,
     this.slot,
     this.minor,
+    color,
     this.cap,
     this.slotType,
     this.prerequisite,
-  }) : super(name: name, startTime: startTime, link: link, endTime: endTime, currentlyRunning: currentlyRunning);
+  }) : super(
+            name: name,
+            startTime: startTime,
+            link: link,
+            color: color,
+            endTime: endTime,
+            currentlyRunning: currentlyRunning);
 
   String getCourseType() {
     if (slotType == 0) {
@@ -49,14 +60,23 @@ class Course extends Event {
   factory Course.fromSheetRow(List row, var slot, int slotType) {
     var times = [DateTime.now(), DateTime.now()];
     if (slot.runtimeType != String) {
-      times[0] = ScheduleContainerActual.getTimeFromSlot(slot[0])[0];
-      times[1] =
-          ScheduleContainerActual.getTimeFromSlot(slot[slot.length - 1])[1];
+      times[0] = ScheduleContainer.getTimeFromSlot(slot[0])[0];
+      times[1] = ScheduleContainer.getTimeFromSlot(slot[slot.length - 1])[1];
       slot = slot.join('+');
     } else {
-      times = ScheduleContainerActual.getTimeFromSlot(slot);
+      times = ScheduleContainer.getTimeFromSlot(slot);
     }
-    return Course(
+    String name = row[1].toString();
+    var hash = 0;
+    for (var i = 0; i < name.length; i++) {
+      hash = name.codeUnitAt(i) + ((hash << 5) - hash);
+    }
+    final finalHash = hash.abs() % (360 * 100 * 100);
+    final hue = ((finalHash & 0xFF0000) >> 16);
+    // final sat = ((finalHash & 0xFF00) >> 8);
+    // final illumination = ((finalHash & 0xFF));
+    var col = convert.hsv.rgb(hue, 80, 100);
+    Course course = Course(
         code: row[0].toString(),
         name: row[1].toString(),
         ltpc: [
@@ -66,6 +86,7 @@ class Course extends Event {
           row[5].toString()
         ],
         startTime: times[0],
+        color: Color.fromARGB(100, col[0], col[1], col[2]),
         endTime: times[1],
         instructors: row[6].toString(),
         slotType: slotType,
@@ -74,26 +95,8 @@ class Course extends Event {
         prerequisite: row[9].toString(),
         enrolled: false,
         slot: slot.toString());
+    return course;
   }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'code': code,
-      'name': name,
-      'ltpc': ltpc,
-      'startTime': [startTime.year, startTime.month, startTime.day, startTime.hour, startTime.minute],
-      'endTime': [endTime.year, endTime.month, endTime.day, endTime.hour, endTime.minute],
-      'instructors': instructors,
-      'slotType': slotType,
-      'minor': minor,
-      'cap': cap,
-      'prerequisite': prerequisite,
-      'enrolled': enrolled,
-      'slot': slot
-    };
-  }
-
-  String toJson() => json.encode(toMap());
 
   @override
   Widget buildEventCard() {
@@ -103,7 +106,7 @@ class Course extends Event {
         DateTime.now().isBefore(endTime) && startTime.isBefore(DateTime.now());
 
     return Card(
-      color: theme.cardBgColor,
+      color: color,
       child: Container(
         width: ScreenSize.size.width,
         child: InkWell(
@@ -119,7 +122,8 @@ class Course extends Event {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    Text(startTimeString),
+                    Text(startTimeString,
+                        style: TextStyle(color: theme.textHeadingColor)),
                     SizedBox(
                       height: 8,
                     ),
@@ -129,12 +133,13 @@ class Course extends Event {
                     SizedBox(
                       height: 8,
                     ),
-                    Text(endTimeString),
+                    Text(endTimeString,
+                        style: TextStyle(color: theme.textHeadingColor)),
                   ]),
                   verticalDivider(),
                   // descriptionWidget(),
                   Container(
-                    //width: ScreenSize.size.width * 0.55,
+                    width: ScreenSize.size.width * 0.55,
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,4 +211,21 @@ class Course extends Event {
       ),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'enrolled': enrolled,
+      'ltpc': ltpc,
+      'code': code,
+      'slot': slot,
+      'minor': minor,
+      'instructors': instructors,
+      'cap': cap,
+      'prerequisite': prerequisite,
+      'color': color?.value,
+      'slotType': slotType,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 }

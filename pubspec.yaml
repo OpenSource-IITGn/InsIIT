@@ -33,6 +33,7 @@ dependencies:
   flutter_svg: ^0.19.0
   googleapis_auth: ^0.2.11+1
   progressive_image: ^1.0.1 
+  color_convert: ^1.0.2
   #(beta)flutter_spinkit: ^4.1.2+1
   #(beta)table_calendar: ^2.2.3
   
