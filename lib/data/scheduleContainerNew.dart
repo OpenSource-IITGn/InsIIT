@@ -276,6 +276,17 @@ class ScheduleContainerActual {
     });
   }
 
+  //Function to get all the enrolled course slots in a single list for deleting purpose
+  getAllEnrolledCourses() {
+    allEnrolledSlots = [];
+    enrolledCourses.forEach((int day, List<Course> dayCourses) {
+      int index = 0;
+      dayCourses.forEach((Course course) {
+        allEnrolledSlots.add([course, day, index++]);
+      });
+    });
+  }
+
   //------------------------------------CALENDAR EVENTS--------------------------------------------//
 
    Future reloadEvents() async {
@@ -344,17 +355,6 @@ class ScheduleContainerActual {
 
      log("Loaded ${withoutRepeat.length} calendar events",
          name: 'EVENTS');
-   }
-
-   //Function to get all the enrolled course slots in a single list for deleting purpose
-   getAllEnrolledCourses() {
-    allEnrolledSlots = [];
-    enrolledCourses.forEach((int day, List<Course> dayCourses) {
-      int index = 0;
-      dayCourses.forEach((Course course) {
-        allEnrolledSlots.add([course, day, index++]);
-      });
-    });
    }
 }
 
