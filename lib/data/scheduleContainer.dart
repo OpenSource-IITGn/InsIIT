@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:color_convert/color_convert.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/schedule/classes/examClass.dart';
@@ -233,8 +234,10 @@ class ScheduleContainer {
       if (data != null) {
         //In cache the data is stored as list of list so list[i] is courses of weekday = i + 1
         for (int i = 0; i < 7; i++) {
+          int index = 0;
           List courses = data[i];
           courses.forEach((jsonCourse) {
+            var col = convert.hsv.rgb(10 * index ++ % 360, 80, 80);
             Map course = jsonDecode(jsonCourse);
             enrolledCourses[i + 1].add(Course(
                 code: course['code'],
@@ -263,7 +266,8 @@ class ScheduleContainer {
                 cap: course['cap'],
                 prerequisite: course['prerequisite'],
                 enrolled: true,
-                slot: course['slot']));
+                slot: course['slot'],
+                color: Color.fromARGB(100, col[0], col[1], col[2])));
           });
         }
       }

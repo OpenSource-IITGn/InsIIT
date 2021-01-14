@@ -75,6 +75,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
+    dataContainer.schedule.buildData();
     bool getIndex = false;
     DateTime _currentTime = DateTime.now();
     dataContainer.schedule.schedule[DateTime.now().weekday]

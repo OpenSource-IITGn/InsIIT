@@ -24,7 +24,7 @@ Map<CourseModel, bool> add = {};
 bool loadingAddCourseData = false;
 
 class _EditEventState extends State<EditEvent> {
-  bool updateUserAddedCourses = false;
+
   bool loading = false;
   var thisTheme = theme;
 

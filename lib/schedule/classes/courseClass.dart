@@ -4,7 +4,6 @@ import 'package:color_convert/color_convert.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
-import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -95,6 +94,25 @@ class Course extends Event {
         slot: slot.toString());
     return course;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'code': code,
+      'name': name,
+      'ltpc': ltpc,
+      'startTime': [startTime.year, startTime.month, startTime.day, startTime.hour, startTime.minute],
+      'endTime': [endTime.year, endTime.month, endTime.day, endTime.hour, endTime.minute],
+      'instructors': instructors,
+      'slotType': slotType,
+      'minor': minor,
+      'cap': cap,
+      'prerequisite': prerequisite,
+      'enrolled': enrolled,
+      'slot': slot
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 
   @override
   Widget buildEventCard(BuildContext context) {
