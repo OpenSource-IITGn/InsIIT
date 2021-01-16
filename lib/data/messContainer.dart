@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:instiapp/messMenu/classes/weekdaycard.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:csv/csv.dart';
@@ -9,6 +10,8 @@ class MessContainer {
   Map<String, String> foodIllustration;
   List<List<String>> foodVotes;
   Map foodItems;
+
+  Box messCache;
 
   Map<int, String> weekDays = {
     0: 'Monday',
@@ -26,6 +29,10 @@ class MessContainer {
     loadFoodIllustrationData();
   }
 
+  Future<void> initializeCache() async {
+    messCache = await Hive.openBox('mess');
+  }
+
   loadMessData() async {
     sheet.getData('MessMenu!A:G').listen((data) {
       int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
@@ -38,12 +45,11 @@ class MessContainer {
 
       for (var i = 0; i < 7; i++) {
         foodCards.add(FoodCard(
-          day: weekDays[i],
-          breakfast: allDayMessList[i][0],
-          lunch: allDayMessList[i][1],
-          snacks: allDayMessList[i][2],
-          dinner: allDayMessList[i][3]
-        ));
+            day: weekDays[i],
+            breakfast: allDayMessList[i][0],
+            lunch: allDayMessList[i][1],
+            snacks: allDayMessList[i][2],
+            dinner: allDayMessList[i][3]));
       }
 
       selectMeal();
@@ -52,7 +58,7 @@ class MessContainer {
 
   makeMessList(var messDataList, int num1, int num2, int num3, int num4) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
-    allDayMessList = [[],[],[],[],[],[],[]];
+    allDayMessList = [[], [], [], [], [], [], []];
 
     messDataList.removeAt(0);
     messDataList.removeAt(0);
@@ -64,7 +70,7 @@ class MessContainer {
     messDataList.removeAt(num1 + num2 + num3);
 
     for (var lm in messDataList) {
-      for (var i = 0; i < 7; i ++) {
+      for (var i = 0; i < 7; i++) {
         allDayMessList[i] += [lm[i]];
       }
     }
@@ -112,7 +118,7 @@ class MessContainer {
       await file.open();
       String values = await file.readAsString();
       List<List<dynamic>> rowsAsListOfValues =
-      CsvToListConverter().convert(values);
+          CsvToListConverter().convert(values);
       // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
 
       yield rowsAsListOfValues;
@@ -122,9 +128,9 @@ class MessContainer {
   }
 
   makeMessItems() {
-    messItems = [[],[],[],[],[],[],[]];
+    messItems = [[], [], [], [], [], [], []];
 
-    for (var i = 0; i < 7; i ++) {
+    for (var i = 0; i < 7; i++) {
       messItems[i] = [
         ItemModel(
             header: 'Breakfast',

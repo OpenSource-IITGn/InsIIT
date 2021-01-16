@@ -24,29 +24,3 @@ Future<File> localFile(String range) async {
   String filename = tempPath + range + '.csv';
   return File(filename);
 }
-
-Future getCachedData(fileName) async {
-  var file = await localFile(fileName);
-  bool exists = await file.exists();
-  if (exists) {
-    await file.open();
-    String cache = await file.readAsString();
-    var json = jsonDecode(cache);
-    return json;
-  } else {
-    return null;
-  }
-}
-
-Future storeCachedData(fileName, data) async {
-  var file = await localFile(fileName);
-  bool exists = await file.exists();
-  if (exists) {
-    await file.delete();
-  }
-  await file.create();
-  await file.open();
-
-  await file.writeAsString(jsonEncode(data));
-  return true;
-}

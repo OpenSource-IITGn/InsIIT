@@ -36,6 +36,7 @@ class DataContainer {
 
   Future<void> initializeCaches() async {
     await schedule.initializeCache();
+    await mess.initializeCache();
   }
 
   getOtherData() {

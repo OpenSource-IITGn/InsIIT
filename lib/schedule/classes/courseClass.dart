@@ -116,6 +116,7 @@ class Course extends Event {
       'slotType': slotType,
       'minor': minor,
       'cap': cap,
+      'color': color.toString(),
       'prerequisite': prerequisite,
       'enrolled': enrolled,
       'slot': slot

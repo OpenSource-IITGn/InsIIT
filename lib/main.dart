@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/developers/screens/developers.dart';
 import 'package:instiapp/quickLinks/screens/email.dart';
@@ -22,8 +24,14 @@ import 'package:instiapp/mainScreens/onboarding.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/representativePage/screens/representativePage.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+  dataContainer = DataContainer();
+  await dataContainer.initializeCaches();
   runApp(MyApp());
 }
 
