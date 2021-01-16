@@ -77,7 +77,7 @@ class _MessMenuState extends State<MessMenu> {
                               String temp = '';
                               bool hasAlreadyVoted = false;
                               dataContainer.mess.foodVotes
-                                  .forEach((List<String> ls) {
+                                  .forEach((List<dynamic> ls) {
                                 if (ls[0] == food) {
                                   if (ls[1] == '1' || ls[1] == '0') {
                                     ls[1] = '-1';
@@ -104,16 +104,7 @@ class _MessMenuState extends State<MessMenu> {
                                 ]
                               ], 'messFeedbackItems!A:D');
                             });
-                            var file = await localFile('foodVotes');
-                            bool exists = await file.exists();
-                            if (exists) {
-                              await file.delete();
-                            }
-                            await file.create();
-                            await file.open();
-                            await file.writeAsString(ListToCsvConverter()
-                                .convert(dataContainer.mess.foodVotes));
-                            // print('DATA SAVED IN CACHE');
+                            dataContainer.mess.storeFoodVotes();
                           },
                         ),
                         IconButton(
@@ -127,7 +118,7 @@ class _MessMenuState extends State<MessMenu> {
                               String temp = '';
                               bool hasAlreadyVoted = false;
                               dataContainer.mess.foodVotes
-                                  .forEach((List<String> ls) {
+                                  .forEach((List<dynamic> ls) {
                                 if (ls[0] == food) {
                                   if (ls[1] == '-1' || ls[1] == '0') {
                                     ls[1] = '1';
@@ -154,16 +145,7 @@ class _MessMenuState extends State<MessMenu> {
                                 ]
                               ], 'messFeedbackItems!A:D');
                             });
-                            var file = await localFile('foodVotes');
-                            bool exists = await file.exists();
-                            if (exists) {
-                              await file.delete();
-                            }
-                            await file.create();
-                            await file.open();
-                            await file.writeAsString(ListToCsvConverter()
-                                .convert(dataContainer.mess.foodVotes));
-                            // print('DATA SAVED IN CACHE');
+                            dataContainer.mess.storeFoodVotes();
                           },
                         )
                       ],
@@ -182,7 +164,7 @@ class _MessMenuState extends State<MessMenu> {
   Color returnColorUpVote(String food) {
     String vote = '0';
     if (dataContainer.mess.foodVotes != null) {
-      dataContainer.mess.foodVotes.forEach((List<String> ls) {
+      dataContainer.mess.foodVotes.forEach((List<dynamic> ls) {
         if (ls[0] == food) {
           vote = ls[1];
         }
@@ -198,7 +180,7 @@ class _MessMenuState extends State<MessMenu> {
   Color returnColorDownVote(String food) {
     String vote = '0';
     if (dataContainer.mess.foodVotes != null) {
-      dataContainer.mess.foodVotes.forEach((List<String> ls) {
+      dataContainer.mess.foodVotes.forEach((List<dynamic> ls) {
         if (ls[0] == food) {
           vote = ls[1];
         }

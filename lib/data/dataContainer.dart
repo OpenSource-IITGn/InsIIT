@@ -28,6 +28,7 @@ class DataContainer {
 
   Future<void> initializeCaches() async {
     await schedule.initializeCache();
+    await mess.initializeCache();
     await sheet.initializeCache();
   }
 

@@ -9,7 +9,7 @@ class MessContainer {
   List<FoodCard> foodCards;
   List<List<dynamic>> allDayMessList;
   Map<String, String> foodIllustration;
-  List<List<String>> foodVotes;
+  List<List<dynamic>> foodVotes;
   Map foodItems;
 
   Box messCache;
@@ -97,38 +97,18 @@ class MessContainer {
     });
   }
 
-  void loadFoodVotesData() async {
-    getFoodVotesData().listen((data) {
-      foodVotes = makeFoodVotesList(data);
-    });
-  }
-
-  List<List<String>> makeFoodVotesList(var foodVotesList) {
-    List<List<String>> _foodVotes = [];
-
-    if (foodVotesList != null && foodVotesList.length != 0) {
-      foodVotesList.forEach((var lc) {
-        _foodVotes.add([lc[0], lc[1].toString()]);
+  void loadFoodVotesData() {
+    var data = messCache.get('foodvotes');
+    foodVotes = [];
+    if (data != null && data.length != 0) {
+      data.forEach((var lc) {
+        foodVotes.add([lc[0], lc[1].toString()]);
       });
     }
-
-    return _foodVotes;
   }
 
-  Stream<List<List<dynamic>>> getFoodVotesData() async* {
-    var file = await localFile('foodVotes');
-    bool exists = await file.exists();
-    if (exists) {
-      await file.open();
-      String values = await file.readAsString();
-      List<List<dynamic>> rowsAsListOfValues =
-          CsvToListConverter().convert(values);
-      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
-
-      yield rowsAsListOfValues;
-    } else {
-      yield [];
-    }
+  void storeFoodVotes() {
+    messCache.put('foodvotes', foodVotes);
   }
 
   void makeMessItems() {
