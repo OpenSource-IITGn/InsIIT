@@ -1,3 +1,4 @@
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/shuttle/classes/buses.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 
@@ -5,7 +6,7 @@ class ShuttleContainer {
   List<Buses> buses;
 
   getData() async {
-    sheet.getData('BusRoutes!A:H').listen((data) {
+    dataContainer.sheet.getData('BusRoutes!A:H').listen((data) {
       var shuttleDataList = data;
       buses = [];
       shuttleDataList.removeAt(0);

@@ -49,7 +49,6 @@ class ScheduleContainer {
   }
 
   ScheduleContainer() {
-    getSlots();
     for (int i = 1; i < 8; i++) {
       enrolledCourses[i] = [];
       events[i] = [];
@@ -62,6 +61,7 @@ class ScheduleContainer {
 
   void getData() {
     // check if there is a cached file that has enrolledCourses
+    getSlots();
     getEnrolledCourses();
     // load all courses from sheets
     getAllCourses();
@@ -115,8 +115,9 @@ class ScheduleContainer {
 
   //------------------------------------COURSES--------------------------------------------//
 
-  static void getSlots() {
-    sheet.getData('slots!A:F').listen((data) {
+  void getSlots() {
+    print(dataContainer.sheet);
+    dataContainer.sheet.getData('slots!A:F').listen((data) {
       //remove useless rows
       data.removeAt(0);
       data.removeAt(0);
@@ -218,7 +219,7 @@ class ScheduleContainer {
   }
 
   Future getAllCourses() async {
-    await sheet.getDataOnline('timetable!A:Q').then((data) {
+    await dataContainer.sheet.getDataOnline('timetable!A:Q').then((data) {
       allCourses = [];
       allCoursesRows = [];
       data.removeAt(0);

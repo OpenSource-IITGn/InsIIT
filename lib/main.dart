@@ -28,9 +28,10 @@ import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  dataContainer = DataContainer();
   var dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  dataContainer = DataContainer();
+
   await dataContainer.initializeCaches();
   runApp(MyApp());
 }

@@ -4,6 +4,7 @@ import 'package:csv/csv.dart';
 import 'package:googleapis/sheets/v4.dart';
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:googleapis/sheets/v4.dart' as sheets;
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
@@ -24,17 +25,22 @@ final _credentials = new auth.ServiceAccountCredentials.fromJson(r'''
 ''');
 
 class GSheet {
+  //range in the form "sheetname!A:C" A:C is range of columns
+  //data returned in the form of [[row], [row], [row], [row]]
   final scopes = [sheets.SheetsApi.SpreadsheetsScope];
+
   String spreadSheetID;
+  Box cache;
   GSheet(
     String id,
   ) {
     this.spreadSheetID = id;
   }
+  Future<void> initializeCache() async {
+    cache = await Hive.openBox('sheetCache');
+  }
 
   Future writeData(var data, String range) async {
-    //range is like sheetname!A:J
-
     await auth
         .clientViaServiceAccount(_credentials, this.scopes)
         .then((client) {
@@ -57,56 +63,20 @@ class GSheet {
     });
   }
 
-  Future<File> _localFile(String range) async {
-    Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
-    var x = range.split('!');
-    var y = x[1].split(':');
-    String filename = tempPath + x[0] + y[0] + y[1] + '.csv';
-    return File(filename);
-  }
-
-  Stream<List<List<dynamic>>> getData(String range) async* {
-    //range in the form "sheetname!A:C" A:C is range of columns
-    //data returned in the form of [[row], [row], [row], [row]]
+  Stream<List> getData(String range) async* {
     var returnval;
-    var file = await _localFile(range);
-    bool exists = await file.exists();
-    if (exists) {
-      // print('FILE EXISTS at ' + range);
-      await file.open();
-      String values = await file.readAsString();
-      List<List<dynamic>> rowsAsListOfValues =
-          CsvToListConverter().convert(values);
-      // print("FROM LOCAL: ${rowsAsListOfValues[2]}");
+    var data = cache.get(range);
 
-      yield rowsAsListOfValues;
+    if (data != null) {
+      yield data;
     }
-    await file.create();
-    await auth
-        .clientViaServiceAccount(_credentials, this.scopes)
-        .then((client) async {
-      await auth
-          .obtainAccessCredentialsViaServiceAccount(
-              _credentials, this.scopes, client)
-          .then((auth.AccessCredentials cred) async {
-        SheetsApi api = new SheetsApi(client);
-        await api.spreadsheets.values.get(this.spreadSheetID, range).then((qs) {
-          returnval = qs.values;
-        });
-      });
-    });
+    returnval = await getDataOnline(range);
 
-    await file.delete();
-    await file.create();
-    await file.open();
-    await file.writeAsString(ListToCsvConverter().convert(returnval));
-
+    cache.put(range, returnval);
     yield returnval;
   }
 
   Future<List> getDataOnline(String range) async {
-    //range in the form "sheetname!A:C" A:C is range of columns
     var returnval;
     await auth
         .clientViaServiceAccount(_credentials, this.scopes)
@@ -121,13 +91,10 @@ class GSheet {
         });
       });
     });
-    //data returned in the form of [[row], [row], [row], [row]]
     return returnval;
   }
 
   Future updateData(var data, String range) async {
-    //range is like sheetname!A:J
-
     await auth
         .clientViaServiceAccount(_credentials, this.scopes)
         .then((client) {

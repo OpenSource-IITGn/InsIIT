@@ -12,7 +12,7 @@ class Email extends StatefulWidget {
 
 class _EmailState extends State<Email> {
   loadlinks() async {
-    sheet.getData('QuickLinks!A:C').listen((data) {
+    dataContainer.sheet.getData('QuickLinks!A:C').listen((data) {
       var d = (data);
       d.removeAt(0);
       dataContainer.quickLinks.emails = [];

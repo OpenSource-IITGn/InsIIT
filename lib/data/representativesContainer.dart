@@ -1,3 +1,4 @@
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/representativePage/classes/representatives.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'dart:convert';
@@ -6,7 +7,7 @@ class RepresentativesContainer {
   List<Representative> representatives;
 
   getData() async {
-    sheet.getData('Representatives!A:C').listen((data) {
+    dataContainer.sheet.getData('Representatives!A:C').listen((data) {
       makeRepresentativeList(data);
     });
   }
@@ -35,9 +36,11 @@ class RepresentativesContainer {
       });
 
       representatives.add(Representative(
-          position: lc[0], description: lc[1], profiles: listJsonData, batch: batch, currentBatch: ""));
+          position: lc[0],
+          description: lc[1],
+          profiles: listJsonData,
+          batch: batch,
+          currentBatch: ""));
     }
   }
 }
-
-

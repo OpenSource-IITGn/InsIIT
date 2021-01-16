@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:location/location.dart';
@@ -235,7 +236,7 @@ class _MapPageState extends State<MapPage>
   }
 
   _markerSet() async {
-    sheet.getData('map!A:J').listen((data) {
+    dataContainer.sheet.getData('map!A:J').listen((data) {
       var mapData = data;
       mapInfoWindowList = [];
       locationList = [];

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/messMenu/classes/weekdaycard.dart';
 import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:csv/csv.dart';
@@ -23,7 +24,7 @@ class MessContainer {
     6: 'Sunday'
   };
 
-  getData() async {
+  void getData() async {
     loadMessData();
     loadFoodVotesData();
     loadFoodIllustrationData();
@@ -33,8 +34,9 @@ class MessContainer {
     messCache = await Hive.openBox('mess');
   }
 
-  loadMessData() async {
-    sheet.getData('MessMenu!A:G').listen((data) {
+  void loadMessData() async {
+    dataContainer.sheet.getData('MessMenu!A:G').listen((data) {
+      print("Offline FoodItems!A:B = $data");
       int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
       int num2 = (data[0][1] is int) ? data[0][1] : int.parse(data[0][1]);
       int num3 = (data[0][2] is int) ? data[0][2] : int.parse(data[0][2]);
@@ -56,7 +58,7 @@ class MessContainer {
     });
   }
 
-  makeMessList(var messDataList, int num1, int num2, int num3, int num4) {
+  void makeMessList(var messDataList, int num1, int num2, int num3, int num4) {
     // num1 : Number of cells in breakfast, num2 : Number of cells in lunch, num3 : Number of cells in snacks, num4 : Number of cells in dinner.
     allDayMessList = [[], [], [], [], [], [], []];
 
@@ -83,17 +85,19 @@ class MessContainer {
     }
   }
 
-  loadFoodIllustrationData() async {
+  void loadFoodIllustrationData() async {
     foodIllustration = {};
-    sheet.getData('FoodItems!A:B').listen((data) {
-      data.removeAt(0);
-      for (var lst in data) {
-        foodIllustration.putIfAbsent(lst[0], () => lst[1]);
+    dataContainer.sheet.getData('FoodItems!A:B').listen((data) {
+      if (data.length != 0) {
+        data.removeAt(0);
+        for (var lst in data) {
+          foodIllustration.putIfAbsent(lst[0], () => lst[1]);
+        }
       }
     });
   }
 
-  loadFoodVotesData() async {
+  void loadFoodVotesData() async {
     getFoodVotesData().listen((data) {
       foodVotes = makeFoodVotesList(data);
     });
@@ -127,7 +131,7 @@ class MessContainer {
     }
   }
 
-  makeMessItems() {
+  void makeMessItems() {
     messItems = [[], [], [], [], [], [], []];
 
     for (var i = 0; i < 7; i++) {
@@ -152,7 +156,7 @@ class MessContainer {
     }
   }
 
-  selectMeal() {
+  void selectMeal() {
     foodItems = {};
     int day = DateTime.now().weekday - 1;
     int hour = DateTime.now().hour;
