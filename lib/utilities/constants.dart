@@ -20,6 +20,16 @@ class ScreenSize {
   static Size size;
 }
 
+Map<int, String> weekDay = {
+  1: 'Monday',
+  2: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday',
+  7: 'Sunday'
+};
+
 verticalDivider({double height}) {
   if (height == null) {
     height = 50.0;

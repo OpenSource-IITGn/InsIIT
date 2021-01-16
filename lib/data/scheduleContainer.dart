@@ -28,6 +28,8 @@ class ScheduleContainer {
 
   //All courses in a single row for deleting purpose
   List<List> allEnrolledSlots = [];
+  List<List> allExams = [];
+  List<List> allEvents = [];
 
   //Current two events
   List<dynamic> twoEvents = [];
