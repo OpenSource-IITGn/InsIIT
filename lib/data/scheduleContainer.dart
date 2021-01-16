@@ -60,13 +60,12 @@ class ScheduleContainer {
   }
 
   void getData() {
-    // check if there is a cached file that has enrolledCourses
     getSlots();
     getEnrolledCourses();
-    // load all courses from sheets
-    getAllCourses();
-    // load events from calendar api
-    reloadEvents();
+
+    getAllCourses(); // load all courses from sheets
+    
+    reloadEvents(); // load events from calendar api
     // load exams from sheets
   }
 
