@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:instiapp/data/feedContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
@@ -7,20 +8,36 @@ import 'package:instiapp/data/representativesContainer.dart';
 import 'package:instiapp/data/quickLinksContainer.dart';
 import 'package:instiapp/data/fireBaseContainer.dart';
 import 'package:instiapp/themeing/notifier.dart';
+import 'package:path_provider/path_provider.dart';
 
-var dataContainer = DataContainer();
+var dataContainer;
 
 class DataContainer {
   String baseUrl = "serene-reaches-30469.herokuapp.com";
-  FeedContainer feed = FeedContainer();
-  MessContainer mess = MessContainer();
+  FeedContainer feed;
+  MessContainer mess;
   //ScheduleContainer schedule = ScheduleContainer();
-  ScheduleContainer schedule = ScheduleContainer();
-  ImportantContactsContainer contacts = ImportantContactsContainer();
-  ShuttleContainer shuttle = ShuttleContainer();
-  RepresentativesContainer representatives = RepresentativesContainer();
-  QuickLinksContainer quickLinks = QuickLinksContainer();
+  ScheduleContainer schedule;
+  ImportantContactsContainer contacts;
+  ShuttleContainer shuttle;
+  RepresentativesContainer representatives;
+  QuickLinksContainer quickLinks;
   AuthContainer auth = AuthContainer();
+
+  DataContainer() {
+    feed = FeedContainer();
+    mess = MessContainer();
+    schedule = ScheduleContainer();
+    contacts = ImportantContactsContainer();
+    shuttle = ShuttleContainer();
+    representatives = RepresentativesContainer();
+    quickLinks = QuickLinksContainer();
+  }
+
+  Future<void> initializeCaches() async {
+    await schedule.initializeCache();
+  }
+
   getOtherData() {
     schedule.getData();
     contacts.getData();

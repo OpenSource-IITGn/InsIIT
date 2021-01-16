@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:color_convert/color_convert.dart';
+import 'package:hive/hive.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/schedule/classes/examClass.dart';
@@ -14,7 +15,11 @@ import 'package:http/http.dart';
 import 'package:connectivity/connectivity.dart';
 import 'dart:developer';
 
+import 'package:path_provider/path_provider.dart';
+
 class ScheduleContainer {
+  Box scheduleCache;
+
   List<Course> allCourses = [];
   List allCoursesRows = [];
 
@@ -50,6 +55,9 @@ class ScheduleContainer {
       events[i] = [];
       exams[i] = [];
     }
+  }
+  Future initializeCache() async {
+    scheduleCache = await Hive.openBox('schedule');
   }
 
   void getData() {
@@ -135,7 +143,6 @@ class ScheduleContainer {
     slotString = slotString.replaceAll(' ', '');
     if (slotString != '-') {
       list = slotString.split(',');
-      // print(list);
       List newList = [];
       list.forEach((var clubbedString) {
         clubbedString = clubbedString.split('+');
@@ -172,13 +179,11 @@ class ScheduleContainer {
               (Course course) => course.code == unEnrollCourse.code);
         }
       }
-      getAllEnrolledCourses();
-      storeEnrolledCourses();
     } else {
       enrolledCourses[weekday].removeAt(index);
-      getAllEnrolledCourses();
-      storeEnrolledCourses();
     }
+    getAllEnrolledCourses();
+    storeEnrolledCourses();
   }
 
   void enrollCourseFromIndex(int index, bool value) {
@@ -228,54 +233,57 @@ class ScheduleContainer {
     });
   }
 
-  void getEnrolledCourses() {
+  void getEnrolledCourses() async {
     for (int i = 1; i < 8; i++) {
       enrolledCourses[i] = [];
     }
-    getCachedData('enrolledCourses').then((data) {
-      if (data != null) {
-        //In cache the data is stored as list of list so list[i] is courses of weekday = i + 1
-        for (int i = 0; i < 7; i++) {
-          int index = 0;
-          List courses = data[i];
-          courses.forEach((jsonCourse) {
-            var col = convert.hsv.rgb(10 * index++ % 360, 80, 80);
-            Map course = jsonDecode(jsonCourse);
-            enrolledCourses[i + 1].add(Course(
-                code: course['code'],
-                name: course['name'],
-                ltpc: [
-                  course['ltpc'][0],
-                  course['ltpc'][1],
-                  course['ltpc'][2],
-                  course['ltpc'][3]
-                ],
-                startTime: DateTime(
-                    course['startTime'][0],
-                    course['startTime'][1],
-                    course['startTime'][2],
-                    course['startTime'][3],
-                    course['startTime'][4]),
-                endTime: DateTime(
-                    course['endTime'][0],
-                    course['endTime'][1],
-                    course['endTime'][2],
-                    course['endTime'][3],
-                    course['endTime'][4]),
-                instructors: course['instructors'],
-                slotType: course['slotType'],
-                minor: course['minor'],
-                cap: course['cap'],
-                prerequisite: course['prerequisite'],
-                enrolled: true,
-                slot: course['slot'],
-                color: Color.fromARGB(100, col[0], col[1], col[2])));
-          });
-        }
+
+    var data = scheduleCache.get('enrolledCourses');
+    if (data != null) {
+      //In cache the data is stored as list of list so list[i] is courses of weekday = i + 1
+      for (int i = 0; i < 7; i++) {
+        List courses = data[i];
+        courses.forEach((jsonCourse) {
+          Map course = jsonDecode(jsonCourse);
+          String colorString = course['color'].toString();
+          String valueString = colorString.split('(0x')[1].split(')')[0];
+          int value = int.parse(valueString, radix: 16);
+          Color colorFromJson = new Color(value);
+
+          enrolledCourses[i + 1].add(Course(
+              code: course['code'],
+              name: course['name'],
+              ltpc: [
+                course['ltpc'][0],
+                course['ltpc'][1],
+                course['ltpc'][2],
+                course['ltpc'][3]
+              ],
+              startTime: DateTime(
+                  course['startTime'][0],
+                  course['startTime'][1],
+                  course['startTime'][2],
+                  course['startTime'][3],
+                  course['startTime'][4]),
+              endTime: DateTime(
+                  course['endTime'][0],
+                  course['endTime'][1],
+                  course['endTime'][2],
+                  course['endTime'][3],
+                  course['endTime'][4]),
+              instructors: course['instructors'],
+              slotType: course['slotType'],
+              minor: course['minor'],
+              cap: course['cap'],
+              prerequisite: course['prerequisite'],
+              enrolled: true,
+              slot: course['slot'],
+              color: colorFromJson));
+        });
       }
 
       log("Loaded enrolled courses from Cache", name: 'COURSES');
-    });
+    }
   }
 
   void storeEnrolledCourses() {
@@ -288,10 +296,9 @@ class ScheduleContainer {
       });
     });
 
-    storeCachedData('enrolledCourses', saveToCache).then((value) {
-      buildData();
-      log("Stored enrolled courses to Cache", name: 'COURSES');
-    });
+    scheduleCache.put('enrolledCourses', saveToCache);
+    buildData();
+    log("Stored enrolled courses to Cache", name: 'COURSES');
   }
 
   //Function to get all the enrolled course slots in a single list for deleting purpose

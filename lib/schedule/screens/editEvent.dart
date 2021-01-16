@@ -23,89 +23,93 @@ List<CourseModel> notAddedCourses = [];
 Map<CourseModel, bool> add = {};
 bool loadingAddCourseData = false;
 
-class _EditEventState extends State<EditEvent> {
+class _EditEventState extends State<EditEvent>
+    with SingleTickerProviderStateMixin {
   bool loading = false;
   var thisTheme = theme;
-
+  TabController controller;
   @override
   void initState() {
     super.initState();
+    controller = TabController(length: 3, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     dataContainer.schedule.getAllEnrolledCourses();
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: thisTheme.backgroundColor,
-        appBar: AppBar(
-          backgroundColor: thisTheme.appBarColor,
-          elevation: 0,
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: thisTheme.iconColor),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                  child: Text("Courses",
-                      style: TextStyle(color: theme.textHeadingColor))),
-              Tab(
-                  child: Text("Exams",
-                      style: TextStyle(color: theme.textHeadingColor))),
-              Tab(
-                  child: Text("Events",
-                      style: TextStyle(color: theme.textHeadingColor))),
-            ],
-          ),
-          title: Text('Edit Schedule',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: thisTheme.textHeadingColor)),
+    return Scaffold(
+      backgroundColor: thisTheme.backgroundColor,
+      appBar: AppBar(
+        backgroundColor: thisTheme.appBarColor,
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: thisTheme.iconColor),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: (loading)
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : TabBarView(children: [
-                editCourseSchedule(() {
-                  setState(() {});
-                }),
-                editExamSchedule(() {
-                  setState(() {});
-                }),
-                editEventSchedule(() {
-                  setState(() {});
-                }),
-              ]),
-        floatingActionButton: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FloatingActionButton(
-              backgroundColor: thisTheme.floatingColor,
-              heroTag: "fab1rs",
-              onPressed: () {
+        bottom: TabBar(
+          controller: controller,
+          tabs: [
+            Tab(
+                child: Text("Courses",
+                    style: TextStyle(color: theme.textHeadingColor))),
+            Tab(
+                child: Text("Exams",
+                    style: TextStyle(color: theme.textHeadingColor))),
+            Tab(
+                child: Text("Events",
+                    style: TextStyle(color: theme.textHeadingColor))),
+          ],
+        ),
+        title: Text('Edit Schedule',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: thisTheme.textHeadingColor)),
+      ),
+      body: (loading)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : TabBarView(controller: controller, children: [
+              editCourseSchedule(() {
+                setState(() {});
+              }),
+              editExamSchedule(() {
+                setState(() {});
+              }),
+              editEventSchedule(() {
+                setState(() {});
+              }),
+            ]),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FloatingActionButton(
+            backgroundColor: thisTheme.floatingColor,
+            tooltip: (controller.index == 0)
+                ? "Add course"
+                : (controller.index == 1)
+                    ? "Add exam"
+                    : "Add event",
+            heroTag: "fab1rs",
+            onPressed: () {
+              print(controller.index);
+              if (controller.index == 0) {
                 Navigator.pushNamed(context, '/addCourses').then((value) {
                   // storeCoursesOffline();
                   setState(() {});
                 });
-              },
-              child: Icon(Icons.add, color: Colors.white),
-            ),
-            SizedBox(height: 16),
-            FloatingActionButton(
-              backgroundColor: thisTheme.floatingColor,
-              heroTag: "fab2rs",
-              onPressed: () {
-                // _openGoogleCalendar();
-              },
-              // backgroundColor: primaryColor,
-              child: Icon(Icons.calendar_today, color: Colors.white),
-            ),
+              } else if (controller.index == 1) {
+                // add exam!
+              } else {
+                launch("https://calendar.google.com");
+              }
+            },
+            child: Icon(Icons.add, color: Colors.white),
+          ),
+
 //          SizedBox(height: 16),
 //          FloatingActionButton(
 //            heroTag: "fab3rs",
@@ -127,8 +131,7 @@ class _EditEventState extends State<EditEvent> {
 //            backgroundColor: primaryColor,
 //            child: Icon(Icons.file_download, color: Colors.white),
 //          ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -198,7 +201,7 @@ Widget editCourseSchedule(Function setState) {
                                       dataContainer.schedule
                                           .getAllEnrolledCourses();
                                       Navigator.pop(context);
-                                      setState(() {});
+                                      setState();
                                     },
                                     child: Text('Remove only this slot'),
                                   ),
@@ -213,7 +216,7 @@ Widget editCourseSchedule(Function setState) {
                                       dataContainer.schedule
                                           .getAllEnrolledCourses();
                                       Navigator.pop(context);
-                                      setState(() {});
+                                      setState();
                                     },
                                     child: Text('Unenroll from ${course.code}'),
                                   )
@@ -310,7 +313,7 @@ Widget editEventSchedule(Function setState) {
                                       dataContainer.schedule
                                           .getAllEnrolledCourses();
                                       Navigator.pop(context);
-                                      setState(() {});
+                                      setState();
                                     },
                                     child: Text('Unenroll from ${course.code}'),
                                   )
