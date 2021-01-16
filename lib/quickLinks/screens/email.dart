@@ -47,7 +47,7 @@ class _EmailState extends State<Email> {
           child: Column(
             // children: {template(emails[0])}.toList(),
             children: dataContainer.quickLinks.emails
-                .map((currentobject) => Template(obj: currentobject))
+                .map<Widget>((currentobject) => Template(obj: currentobject))
                 .toList(),
 
             //.toList across the whole emails.map(), since the children of coloumn need to be in list

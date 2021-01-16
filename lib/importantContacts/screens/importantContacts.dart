@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/importantContacts/classes/contactcard.dart';
 import 'package:instiapp/themeing/notifier.dart';
-import 'package:instiapp/utilities/constants.dart';
 
 class ImportantContacts extends StatefulWidget {
   @override
@@ -27,7 +27,7 @@ class _ImportantContactsState extends State<ImportantContacts> {
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
           child: Column(
             children: dataContainer.contacts.contactCards
-                .map((card) => card.contactCard(context))
+                .map<Widget>((ContactCard card) => card.contactCard(context))
                 .toList(),
           ),
         ),
