@@ -66,13 +66,11 @@ class Course extends Event {
     } else {
       times = ScheduleContainer.getTimeFromSlot(slot);
     }
-    String name = row[0].toString();
-    var hash = 0;
-    for (var i = 0; i < name.length; i++) {
-      hash = name.codeUnitAt(i) + ((hash << 5) - hash);
-    }
+    int hue = 30 * index % 360;
+    int sat = 80;
+    int illum = 80 - (index ~/ 12) * 10;
 
-    var col = convert.hsv.rgb(10 * index % 360, 80, 80);
+    var col = convert.hsv.rgb(hue, sat, illum);
     Course course = Course(
         code: row[0].toString(),
         name: row[1].toString(),
@@ -100,8 +98,20 @@ class Course extends Event {
       'code': code,
       'name': name,
       'ltpc': ltpc,
-      'startTime': [startTime.year, startTime.month, startTime.day, startTime.hour, startTime.minute],
-      'endTime': [endTime.year, endTime.month, endTime.day, endTime.hour, endTime.minute],
+      'startTime': [
+        startTime.year,
+        startTime.month,
+        startTime.day,
+        startTime.hour,
+        startTime.minute
+      ],
+      'endTime': [
+        endTime.year,
+        endTime.month,
+        endTime.day,
+        endTime.hour,
+        endTime.minute
+      ],
       'instructors': instructors,
       'slotType': slotType,
       'minor': minor,
@@ -127,9 +137,9 @@ class Course extends Event {
         width: ScreenSize.size.width,
         child: InkWell(
           onTap: () {
-             Navigator.pushNamed(context, '/eventdetail', arguments: {
-               'event': this,
-             });
+            Navigator.pushNamed(context, '/eventdetail', arguments: {
+              'event': this,
+            });
           },
           child: Padding(
               padding: EdgeInsets.all(16),
@@ -237,40 +247,42 @@ class Course extends Event {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("[$code] $name",
+          Text("$name",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: theme.textHeadingColor)),
-          // Text(,
-          //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(code,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: theme.textSubheadingColor)),
           Text(getCourseType(),
               style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: theme.textHeadingColor)),
+                  fontStyle: FontStyle.italic, color: theme.textHeadingColor)),
           SizedBox(
             height: 10,
           ),
           (link != null && link.length != 0)
               ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: link.split(',').map((link) {
-              return GestureDetector(
-                onTap: () async {
-                  if (await canLaunch(link)) {
-                    await launch(link, forceSafariVC: false);
-                  } else {
-                    throw 'Could not launch $link';
-                  }
-                },
-                child: Text(
-                  (link == '-') ? "" : link,
-                  style: TextStyle(fontSize: 15),
-                ),
-              );
-            }).toList(),
-          )
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: link.split(',').map((link) {
+                    return GestureDetector(
+                      onTap: () async {
+                        if (await canLaunch(link)) {
+                          await launch(link, forceSafariVC: false);
+                        } else {
+                          throw 'Could not launch $link';
+                        }
+                      },
+                      child: Text(
+                        (link == '-') ? "" : link,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    );
+                  }).toList(),
+                )
               : Container(),
 //          RichText(
 //            text: TextSpan(
@@ -316,10 +328,10 @@ class Course extends Event {
           (minor == null)
               ? Container()
               : Text('Minor: $minor',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: theme.textHeadingColor)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.textHeadingColor)),
           SizedBox(
             height: 8,
           ),
@@ -337,34 +349,33 @@ class Course extends Event {
             children: (instructors == null)
                 ? [Container()]
                 : instructors.split(',').map<Widget>((String instructor) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  8,
-                  0,
-                  0,
-                  0,
-                ),
-                child: Text(instructor,
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                        color: theme.textSubheadingColor)),
-              );
-            }).toList(),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        8,
+                        0,
+                        0,
+                        0,
+                      ),
+                      child: Text(instructor,
+                          style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                              color: theme.textSubheadingColor)),
+                    );
+                  }).toList(),
           ),
           SizedBox(
             height: 10,
           ),
           Text('${ltpc[3]} credits',
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: theme.textHeadingColor)),
+                  fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
           (prerequisite == '-')
               ? Container()
               : Text('Pre-requisite: $prerequisite',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: theme.textHeadingColor)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.textHeadingColor)),
           // ExpansionTile(
           //   key: GlobalKey(),
           //   title: Text('View Attendance'),

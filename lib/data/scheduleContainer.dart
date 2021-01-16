@@ -237,7 +237,7 @@ class ScheduleContainer {
           int index = 0;
           List courses = data[i];
           courses.forEach((jsonCourse) {
-            var col = convert.hsv.rgb(10 * index ++ % 360, 80, 80);
+            var col = convert.hsv.rgb(10 * index++ % 360, 80, 80);
             Map course = jsonDecode(jsonCourse);
             enrolledCourses[i + 1].add(Course(
                 code: course['code'],
@@ -311,7 +311,6 @@ class ScheduleContainer {
     }
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
-      await dataContainer.auth.gSignIn.signIn();
       dataContainer.auth.gSignIn.signInSilently().then((value) async {
         final authHeaders =
             await dataContainer.auth.gSignIn.currentUser.authHeaders;
