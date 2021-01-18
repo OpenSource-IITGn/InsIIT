@@ -290,6 +290,10 @@ class ScheduleContainer {
     }
   }
 
+  void storeAllData() {
+    storeEnrolledCourses();
+  }
+
   void storeEnrolledCourses() {
     //Will be stored as List of List
     List<List> saveToCache = [[], [], [], [], [], [], []];

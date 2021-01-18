@@ -125,8 +125,14 @@ class Course extends Event {
 
   String toJson() => json.encode(toMap());
 
+  Future<void> navigateToDetail(context) async {
+    await Navigator.pushNamed(context, '/eventdetail', arguments: {
+      'event': this,
+    });
+  }
+
   @override
-  Widget buildEventCard(BuildContext context) {
+  Widget buildEventCard(BuildContext context, {Function callBack}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =
@@ -138,8 +144,8 @@ class Course extends Event {
         width: ScreenSize.size.width,
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/eventdetail', arguments: {
-              'event': this,
+            navigateToDetail(context).then((val) {
+              callBack();
             });
           },
           child: Padding(
@@ -239,31 +245,66 @@ class Course extends Event {
     );
   }
 
+  _pickDate(start, context) async {
+    if (start) {
+      TimeOfDay time = await showTimePicker(
+          context: context,
+          initialTime:
+              TimeOfDay(hour: startTime.hour, minute: startTime.minute));
+      if (time != null)
+        startTime = DateTime(startTime.year, startTime.month, startTime.day,
+            time.hour, time.minute);
+    } else {
+      TimeOfDay time = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay(hour: endTime.hour, minute: endTime.minute));
+      if (time != null)
+        endTime = DateTime(
+            endTime.year, endTime.month, endTime.day, time.hour, time.minute);
+    }
+  }
+
   @override
-  Widget buildEventDetails() {
+  Widget buildEventDetails(BuildContext context, {Function callback}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("$name",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: theme.textHeadingColor)),
-          Text(code,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: theme.textSubheadingColor)),
-          Text(getCourseType(),
-              style: TextStyle(
-                  fontStyle: FontStyle.italic, color: theme.textHeadingColor)),
-          SizedBox(
-            height: 10,
+          ListTile(
+            title: Text("${code} | ${name}",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: theme.textHeadingColor)),
           ),
+          ListTile(
+              title: Text('Slot type  : ${getCourseType()}',
+                  style: TextStyle(color: theme.textHeadingColor))),
+          ListTile(
+            title:
+                Text("Start         : ${formatDate(startTime, [HH, ':', nn])}"),
+            trailing: Icon(Icons.edit),
+            onTap: () {
+              _pickDate(true, context);
+              callback();
+            },
+          ),
+          ListTile(
+            title:
+                Text("End           : ${formatDate(endTime, [HH, ':', nn])} "),
+            trailing: Icon(Icons.edit),
+            onTap: () {
+              _pickDate(false, context);
+              callback();
+            },
+          ),
+          ListTile(
+              title: Text(
+                  'L-T-P-C      : ${ltpc[0]} - ${ltpc[1]} - ${ltpc[2]} - ${ltpc[3]}',
+                  style: TextStyle(color: theme.textHeadingColor))),
           (link != null && link.length != 0)
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,91 +326,39 @@ class Course extends Event {
                   }).toList(),
                 )
               : Container(),
-//          RichText(
-//            text: TextSpan(
-//              children: <TextSpan>[
-//                TextSpan(
-//                  text: 'Happens at ',
-//                ),
-//                TextSpan(
-//                  text: location,
-//                  style: TextStyle(
-//                      fontWeight: FontWeight.bold,
-//                      color: theme.textHeadingColor),
-//                ),
-//              ],
-//            ),
-//          ),
-//          SizedBox(
-//            height: 10,
-//          ),
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'Between ',
-                ),
-                TextSpan(
-                  text: startTimeString,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: ' and ',
-                ),
-                TextSpan(
-                  text: endTimeString,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
           (minor == null)
               ? Container()
-              : Text('Minor: $minor',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: theme.textHeadingColor)),
-          SizedBox(
-            height: 8,
+              : ListTile(
+                  title: Text('Minor        : $minor',
+                      style: TextStyle(color: theme.textHeadingColor))),
+
+          ListTile(
+            title: Text('Instructors',
+                style: TextStyle(
+                    color: theme.textHeadingColor,
+                    fontWeight: FontWeight.bold)),
+            subtitle: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: (instructors == null)
+                  ? [Container()]
+                  : instructors.split(',').map<Widget>((String instructor) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          8,
+                          0,
+                          0,
+                          0,
+                        ),
+                        child: Text(instructor,
+                            style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                color: theme.textSubheadingColor)),
+                      );
+                    }).toList(),
+            ),
           ),
-          Text('Instructors: ',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: theme.textHeadingColor)),
-          SizedBox(
-            height: 8,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: (instructors == null)
-                ? [Container()]
-                : instructors.split(',').map<Widget>((String instructor) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        8,
-                        0,
-                        0,
-                        0,
-                      ),
-                      child: Text(instructor,
-                          style: TextStyle(
-                              // fontWeight: FontWeight.bold,
-                              color: theme.textSubheadingColor)),
-                    );
-                  }).toList(),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text('${ltpc[3]} credits',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
+
           (prerequisite == '-')
               ? Container()
               : Text('Pre-requisite: $prerequisite',
