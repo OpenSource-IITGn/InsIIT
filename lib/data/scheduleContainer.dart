@@ -116,7 +116,11 @@ class ScheduleContainer {
 
   void getSlots() {
     print(dataContainer.sheet);
-    dataContainer.sheet.getData('slots!A:F').listen((data) {
+    dataContainer.sheet.getData('slots!A:F').listen((cache) {
+      var data = [];
+      for (int i = 0; i < cache.length; i++) {
+        data.add(cache[i]);
+      }
       //remove useless rows
       data.removeAt(0);
       data.removeAt(0);

@@ -35,8 +35,12 @@ class MessContainer {
   }
 
   void loadMessData() async {
-    dataContainer.sheet.getData('MessMenu!A:G').listen((data) {
-      print("Offline FoodItems!A:B = $data");
+    dataContainer.sheet.getData('MessMenu!A:G').listen((cache) {
+      var data = [];
+      for (int i = 0; i < cache.length; i++) {
+        data.add(cache[i]);
+      }
+      //print("Offline FoodItems!A:B = $data");
       int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
       int num2 = (data[0][1] is int) ? data[0][1] : int.parse(data[0][1]);
       int num3 = (data[0][2] is int) ? data[0][2] : int.parse(data[0][2]);

@@ -6,7 +6,11 @@ class ShuttleContainer {
   List<Buses> buses;
 
   getData() async {
-    dataContainer.sheet.getData('BusRoutes!A:H').listen((data) {
+    dataContainer.sheet.getData('BusRoutes!A:H').listen((cache) {
+      var data = [];
+      for (int i = 0; i < cache.length; i++) {
+        data.add(cache[i]);
+      }
       var shuttleDataList = data;
       buses = [];
       shuttleDataList.removeAt(0);

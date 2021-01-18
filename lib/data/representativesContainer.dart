@@ -7,7 +7,11 @@ class RepresentativesContainer {
   List<Representative> representatives;
 
   getData() async {
-    dataContainer.sheet.getData('Representatives!A:C').listen((data) {
+    dataContainer.sheet.getData('Representatives!A:C').listen((cache) {
+      var data = [];
+      for (int i = 0; i < cache.length; i++) {
+        data.add(cache[i]);
+      }
       makeRepresentativeList(data);
     });
   }

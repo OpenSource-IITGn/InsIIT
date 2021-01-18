@@ -6,7 +6,11 @@ class QuickLinksContainer {
   List<Data> emails;
 
   void getData() async {
-    dataContainer.sheet.getData('QuickLinks!A:C').listen((data) {
+    dataContainer.sheet.getData('QuickLinks!A:C').listen((cache) {
+      var data = [];
+      for (int i = 0; i < cache.length; i++) {
+        data.add(cache[i]);
+      }
       data.removeAt(0);
       emails = [];
       data.forEach((i) {

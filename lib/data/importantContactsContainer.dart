@@ -9,7 +9,11 @@ class ImportantContactsContainer {
   List<ContactCard> contactCards;
 
   getData() async {
-    dataContainer.sheet.getData('Contacts!A:E').listen((data) {
+    dataContainer.sheet.getData('Contacts!A:E').listen((cache) {
+      var data = [];
+      for (int i = 0; i < cache.length; i++) {
+        data.add(cache[i]);
+      }
       makeContactList(data);
     });
   }
