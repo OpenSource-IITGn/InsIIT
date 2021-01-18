@@ -49,7 +49,6 @@ class _MainHomePageState extends State<MainHomePage>
         if (connected != prevConnected) {
           widget.reload();
           dataContainer.schedule.buildData();
-          print("reloading");
           prevConnected = connected;
         }
         dataContainer.schedule.buildData();
@@ -241,8 +240,8 @@ class _MainHomePageState extends State<MainHomePage>
                             : Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: dataContainer.schedule.twoEvents
-                                    .map<Widget>(
-                                        (event) => event.buildEventCard(context))
+                                    .map<Widget>((event) =>
+                                        event.buildEventCard(context))
                                     .toList(),
                               ),
                       ],

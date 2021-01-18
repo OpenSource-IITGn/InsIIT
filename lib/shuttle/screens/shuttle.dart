@@ -216,8 +216,6 @@ class _ShuttleState extends State<Shuttle>
           duration: new Duration(seconds: 1), curve: Curves.ease);
     });
     _scrollController.addListener(() {
-      //print(_scrollController.position.pixels);
-      //print(_scrollController.position.maxScrollExtent);
       if (_scrollController.position.pixels <=
           _scrollController.position.maxScrollExtent - 50) {
         isFabVisible = true;

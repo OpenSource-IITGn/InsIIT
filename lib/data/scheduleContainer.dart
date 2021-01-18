@@ -31,7 +31,7 @@ class ScheduleContainer {
   // Sorted Map for all Courses + Events + Exams
   Map<int, List<dynamic>> schedule = {};
 
-  //All courses in a single row for deleting purpose
+  //All courses in a single row for deleting and storing purpose
   List<List> allEnrolledSlots = [];
   List<List> allExams = [];
   List<List> allEvents = [];
@@ -64,9 +64,10 @@ class ScheduleContainer {
     getEnrolledCourses();
 
     getAllCourses(); // load all courses from sheets
-
+    getExams();
     reloadEvents(); // load events from calendar api
     // load exams from sheets
+    buildData();
   }
 
   void buildData() {
@@ -103,8 +104,20 @@ class ScheduleContainer {
     if (schedule != null && schedule[DateTime.now().weekday] != null) {
       schedule[DateTime.now().weekday].forEach((event) {
         if (twoEvents.length < 2) {
-          if (DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, event.endTime.hour, event.endTime.minute).isAfter(currentTime) ||
-              DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, event.startTime.hour, event.startTime.minute).isAfter(currentTime)) {
+          if (DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day,
+                      event.endTime.hour,
+                      event.endTime.minute)
+                  .isAfter(currentTime) ||
+              DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day,
+                      event.startTime.hour,
+                      event.startTime.minute)
+                  .isAfter(currentTime)) {
             twoEvents.add(event);
           }
         }
@@ -112,10 +125,46 @@ class ScheduleContainer {
     }
   }
 
+  //------------------------------------EXAMS --------------------------------------------//
+  void getAllExams() {
+    allExams = [];
+    exams.forEach((int day, List<Exam> dayCourses) {
+      int index = 0;
+      dayCourses.forEach((Exam course) {
+        allExams.add([course, day, index++]);
+      });
+    });
+  }
+
+  void getExams() {
+    dataContainer.sheet.getData('exams!A:D').listen((data) {
+      for (int i = 1; i < 8; i++) {
+        exams[i] = [];
+      }
+      data.removeAt(0);
+      getAllEnrolledCourses();
+      data.forEach((row) {
+        var exam = Exam.fromSheetRow(row);
+        if (exam.startTime.difference(DateTime.now()).inDays.abs() < 7 ||
+            true) {
+          print(allEnrolledSlots.length);
+          for (int i = 0; i < allEnrolledSlots.length; i++) {
+            Course course = allEnrolledSlots[i][0];
+            if (exam.code.replaceAll(' ', '') ==
+                course.code.replaceAll(' ', '')) {
+              exams[exam.startTime.weekday].add(exam);
+              break;
+            }
+          }
+        }
+      });
+    });
+    getAllExams();
+  }
+
   //------------------------------------COURSES--------------------------------------------//
 
   void getSlots() {
-    print(dataContainer.sheet);
     dataContainer.sheet.getData('slots!A:F').listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
@@ -222,7 +271,9 @@ class ScheduleContainer {
   }
 
   Future getAllCourses() async {
-    dataContainer.sheet.getData('timetable!A:Q').listen((data) {
+    dataContainer.sheet
+        .getData('timetable!A:Q', forceRefresh: true)
+        .listen((data) {
       allCourses = [];
       allCoursesRows = [];
       data.removeAt(0);
@@ -328,6 +379,7 @@ class ScheduleContainer {
     }
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.none) {
+      // await dataContainer.auth.gSignIn.signIn();
       dataContainer.auth.gSignIn.signInSilently().then((value) async {
         final authHeaders =
             await dataContainer.auth.gSignIn.currentUser.authHeaders;
@@ -342,6 +394,10 @@ class ScheduleContainer {
         await calendar.CalendarApi(httpClient).events.list('primary');
     List<calendar.Event> tempEvents = [];
     tempEvents.addAll(eventData.items);
+
+    // tempEvents.forEach((calendar.Event val) {
+    //   log("${val.summary} ${val.start.date}", name: "CALENDAR EVENTS");
+    // });
     makeListWithoutRepetitionEvent(tempEvents);
   }
 

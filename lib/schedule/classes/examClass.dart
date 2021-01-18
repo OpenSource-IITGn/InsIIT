@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
 import 'package:instiapp/themeing/notifier.dart';
@@ -6,9 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'eventClass.dart';
 
 class Exam extends Event {
-  String courseCode;
+  String code;
   String location;
-  String courseName;
   Exam({
     name,
     startTime,
@@ -16,7 +17,7 @@ class Exam extends Event {
     link,
     currentlyRunning,
     this.location,
-    this.courseCode,
+    this.code,
   }) : super(
             name: name,
             startTime: startTime,
@@ -25,10 +26,21 @@ class Exam extends Event {
             currentlyRunning: currentlyRunning);
 
   factory Exam.fromSheetRow(List row) {
-    var startTime;
-    var endTime; //find this from row[0] and row[1]
+    var date = row[0].split('/');
+    var temp = row[1].replaceAll(' ', '');
+    temp = temp.split('-');
+
+    var starttime = temp[0].split(':');
+    var endtime = temp[1].split(':');
+    DateTime startTime = DateTime(int.parse(date[2]), int.parse(date[0]),
+        int.parse(date[1]), int.parse(starttime[0]), int.parse(starttime[1]));
+    DateTime endTime = DateTime(int.parse(date[2]), int.parse(date[0]),
+        int.parse(date[1]), int.parse(endtime[0]), int.parse(endtime[1]));
     return Exam(
-        name: row[3], startTime: startTime, location: row[5], endTime: endTime);
+        name: row[3],
+        startTime: startTime,
+        endTime: endTime,
+        code: row[2].replaceAll(' ', ''));
   }
 
   @override
@@ -75,7 +87,7 @@ class Exam extends Event {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(courseCode,
+                          Text("$code",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -83,7 +95,7 @@ class Exam extends Event {
                           SizedBox(
                             height: 8,
                           ),
-                          Text(courseName,
+                          Text(name,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -152,7 +164,7 @@ class Exam extends Event {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("[$courseCode] $courseName",
+          Text("[$code] $name",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,

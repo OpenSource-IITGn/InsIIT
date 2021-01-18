@@ -144,7 +144,7 @@ class GSheet {
             .update(vr, this.spreadSheetID, range,
                 valueInputOption: 'USER_ENTERED')
             .then((UpdateValuesResponse r) {
-          print('DATA UPDATED');
+          log("Updated data at $range", name: "SHEET");
           client.close();
         });
       });

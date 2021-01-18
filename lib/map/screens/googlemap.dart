@@ -284,11 +284,8 @@ class _MapPageState extends State<MapPage>
   void launchMap(double lat, double long) async {
     String url = "https://www.google.com/maps/search/?api=1&query=$lat,$long";
     if (await canLaunch(url)) {
-      // print("Can launch");
-
       await launch(url);
     } else {
-      // print("Could not launch");
       throw 'Could not launch Maps';
     }
   }
@@ -687,7 +684,6 @@ class CustomSearch extends SearchDelegate<String> {
               .toLowerCase()
               .contains(query.toLowerCase()))
           .toList();
-      print(locationList);
       return ListView.builder(
         itemBuilder: (context, index) => ListTile(
           onTap: () {

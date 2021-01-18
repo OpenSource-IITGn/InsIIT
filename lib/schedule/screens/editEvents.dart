@@ -4,6 +4,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
+import 'package:instiapp/schedule/classes/examClass.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
 import 'package:instiapp/schedule/classes/searchDelegate.dart';
 import 'package:instiapp/themeing/notifier.dart';
@@ -32,6 +33,9 @@ class _EditEventState extends State<EditEvent>
   void initState() {
     super.initState();
     controller = TabController(length: 3, vsync: this);
+    controller.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -83,55 +87,24 @@ class _EditEventState extends State<EditEvent>
                 setState(() {});
               }),
             ]),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          FloatingActionButton(
-            backgroundColor: thisTheme.floatingColor,
-            tooltip: (controller.index == 0)
-                ? "Add course"
-                : (controller.index == 1)
-                    ? "Add exam"
-                    : "Add event",
-            heroTag: "fab1rs",
-            onPressed: () {
-              print(controller.index);
-              if (controller.index == 0) {
-                Navigator.pushNamed(context, '/addCourses').then((value) {
-                  setState(() {});
-                });
-              } else if (controller.index == 1) {
-                // add exam!
-              } else {
-                launch("https://calendar.google.com");
-              }
-            },
-            child: Icon(Icons.add, color: Colors.white),
-          ),
-
-//          SizedBox(height: 16),
-//          FloatingActionButton(
-//            heroTag: "fab3rs",
-//            onPressed: () {
-//              List<EventModel> _coursesList = [];
-//              if (eventsList != null &&
-//                  eventsList[DateTime.now().weekday - 1] != null) {
-//                eventsList[DateTime.now().weekday - 1]
-//                    .forEach((EventModel model) {
-//                  if (model.isCourse || model.isExam) {
-//                    _coursesList.add(model);
-//                  }
-//                });
-//              }
-//              Navigator.pushNamed(context, '/exportIcsFile', arguments: {
-//                'coursesList': _coursesList,
-//              });
-//            },
-//            backgroundColor: primaryColor,
-//            child: Icon(Icons.file_download, color: Colors.white),
-//          ),
-        ],
-      ),
+      floatingActionButton: (controller.index == 0)
+          ? FloatingActionButton(
+              backgroundColor: thisTheme.floatingColor,
+              tooltip: "Add course",
+              onPressed: () {
+                if (controller.index == 0) {
+                  Navigator.pushNamed(context, '/addCourses').then((value) {
+                    setState(() {});
+                  });
+                } else if (controller.index == 1) {
+                  // add exam!
+                } else {
+                  launch("https://calendar.google.com");
+                }
+              },
+              child: Icon(Icons.add, color: Colors.white),
+            )
+          : Container(),
     );
   }
 }
@@ -169,7 +142,7 @@ Widget editCourseSchedule(Function setState) {
                               ),
                             ),
                             Text(
-                              "${course.code} | ${weekDay[course.startTime.weekday].substring(0, 3)} | ${startTime} - ${endTime}",
+                              "${course.code.substring(0, 2)}${course.code.substring(2)} | ${weekDay[course.startTime.weekday].substring(0, 3)} | $startTime - $endTime",
                               style: TextStyle(
                                 color: theme.textSubheadingColor,
                               ),
@@ -353,7 +326,7 @@ Widget editExamSchedule(Function setState) {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
             itemBuilder: (context, index) {
-              Course course = dataContainer.schedule.allEnrolledSlots[index][0];
+              Exam course = dataContainer.schedule.allExams[index][0];
               String startTime = formatDate(course.startTime, [HH, ':', nn]);
               String endTime = formatDate(course.endTime, [HH, ':', nn]);
               return Card(
@@ -383,7 +356,7 @@ Widget editExamSchedule(Function setState) {
                               ),
                             ),
                             Text(
-                              course.getCourseType(),
+                              "Exam",
                               style: TextStyle(
                                 color: theme.textSubheadingColor,
                               ),

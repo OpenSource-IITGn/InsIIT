@@ -71,8 +71,10 @@ class Course extends Event {
     int illum = 80 - (index ~/ 12) * 10;
 
     var col = convert.hsv.rgb(hue, sat, illum);
+    String code = row[0].toString().replaceAll(' ', '');
+
     Course course = Course(
-        code: row[0].toString(),
+        code: code,
         name: row[1].toString(),
         ltpc: [
           row[2].toString(),
@@ -177,7 +179,7 @@ class Course extends Event {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(code,
+                          Text("$code",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -274,7 +276,8 @@ class Course extends Event {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ListTile(
-            title: Text("${code} | ${name}",
+            title: Text(
+                "${code.substring(0, 2)} ${code.substring(2)} | ${name}",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
