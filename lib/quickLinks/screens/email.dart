@@ -11,22 +11,8 @@ class Email extends StatefulWidget {
 }
 
 class _EmailState extends State<Email> {
-  loadlinks() async {
-    dataContainer.sheet.getData('QuickLinks!A:C').listen((data) {
-      var d = (data);
-      d.removeAt(0);
-      dataContainer.quickLinks.emails = [];
-      d.forEach((i) {
-        dataContainer.quickLinks.emails
-            .add(Data(descp: i[1], name: i[0], email: i[2]));
-      });
-      setState(() {});
-    });
-  }
-
   @override
   void initState() {
-    loadlinks();
     super.initState();
   }
 
@@ -45,14 +31,9 @@ class _EmailState extends State<Email> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            // children: {template(emails[0])}.toList(),
             children: dataContainer.quickLinks.emails
                 .map<Widget>((currentobject) => Template(obj: currentobject))
                 .toList(),
-
-            //.toList across the whole emails.map(), since the children of coloumn need to be in list
-
-            //since children property expects a list, adding .toList()
           ),
         ));
   }
