@@ -103,8 +103,8 @@ class ScheduleContainer {
     if (schedule != null && schedule[DateTime.now().weekday] != null) {
       schedule[DateTime.now().weekday].forEach((event) {
         if (twoEvents.length < 2) {
-          if (event.endTime.isAfter(currentTime) ||
-              event.startTime.isAfter(currentTime)) {
+          if (DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, event.endTime.hour, event.endTime.minute).isAfter(currentTime) ||
+              DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, event.startTime.hour, event.startTime.minute).isAfter(currentTime)) {
             twoEvents.add(event);
           }
         }
