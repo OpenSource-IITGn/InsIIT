@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/themeing/notifier.dart';
+import 'package:instiapp/data/dataContainer.dart';
 
 class EventDetail extends StatefulWidget {
   @override
@@ -41,12 +42,23 @@ class _EventDetailState extends State<EventDetail> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save, color: theme.iconColor),
+            onPressed: () {
+              dataContainer.schedule.storeAllData();
+              Navigator.pop(context);
+            },
+          ),
+        ],
         title: Text('Details',
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
       ),
       body: SingleChildScrollView(
-        child: event.buildEventDetails(),
+        child: event.buildEventDetails(context, callback: () {
+          setState(() {});
+        }),
       ),
     );
   }

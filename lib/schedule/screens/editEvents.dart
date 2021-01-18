@@ -98,7 +98,6 @@ class _EditEventState extends State<EditEvent>
               print(controller.index);
               if (controller.index == 0) {
                 Navigator.pushNamed(context, '/addCourses').then((value) {
-                  // storeCoursesOffline();
                   setState(() {});
                 });
               } else if (controller.index == 1) {
@@ -161,7 +160,7 @@ Widget editCourseSchedule(Function setState) {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: ScreenSize.size.width * 0.7,
+                              // width: ScreenSize.size.width * 0.5,
                               child: Text(
                                 course.name,
                                 style: TextStyle(
@@ -170,7 +169,7 @@ Widget editCourseSchedule(Function setState) {
                               ),
                             ),
                             Text(
-                              "${course.code} | ${startTime} - ${endTime} | ${weekDay[course.startTime.weekday]}",
+                              "${course.code} | ${weekDay[course.startTime.weekday].substring(0, 3)} | ${startTime} - ${endTime}",
                               style: TextStyle(
                                 color: theme.textSubheadingColor,
                               ),
@@ -183,49 +182,63 @@ Widget editCourseSchedule(Function setState) {
                             ),
                           ],
                         ),
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => new AlertDialog(
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () async {
-                                      dataContainer.schedule.unEnrollCourse(
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                course.navigateToDetail(context).then((val) {
+                                  dataContainer.schedule.storeAllData();
+                                  setState();
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => new AlertDialog(
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () async {
+                                          dataContainer.schedule.unEnrollCourse(
+                                              dataContainer.schedule
+                                                  .allEnrolledSlots[index][2],
+                                              dataContainer.schedule
+                                                  .allEnrolledSlots[index][1],
+                                              false);
                                           dataContainer.schedule
-                                              .allEnrolledSlots[index][2],
+                                              .getAllEnrolledCourses();
+                                          Navigator.pop(context);
+                                          setState();
+                                        },
+                                        child: Text('Remove only this slot'),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () async {
+                                          dataContainer.schedule.unEnrollCourse(
+                                              dataContainer.schedule
+                                                  .allEnrolledSlots[index][2],
+                                              dataContainer.schedule
+                                                  .allEnrolledSlots[index][1],
+                                              true);
                                           dataContainer.schedule
-                                              .allEnrolledSlots[index][1],
-                                          false);
-                                      dataContainer.schedule
-                                          .getAllEnrolledCourses();
-                                      Navigator.pop(context);
-                                      setState();
-                                    },
-                                    child: Text('Remove only this slot'),
+                                              .getAllEnrolledCourses();
+                                          Navigator.pop(context);
+                                          setState();
+                                        },
+                                        child: Text(
+                                            'Unenroll from ${course.code}'),
+                                      )
+                                    ],
+                                    content: Text('Select one option'),
                                   ),
-                                  FlatButton(
-                                    onPressed: () async {
-                                      dataContainer.schedule.unEnrollCourse(
-                                          dataContainer.schedule
-                                              .allEnrolledSlots[index][2],
-                                          dataContainer.schedule
-                                              .allEnrolledSlots[index][1],
-                                          true);
-                                      dataContainer.schedule
-                                          .getAllEnrolledCourses();
-                                      Navigator.pop(context);
-                                      setState();
-                                    },
-                                    child: Text('Unenroll from ${course.code}'),
-                                  )
-                                ],
-                                content: Text('Select one option'),
-                              ),
-                            );
-                          },
-                        )
+                                );
+                              },
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ));

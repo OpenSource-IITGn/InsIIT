@@ -32,7 +32,7 @@ class Exam extends Event {
   }
 
   @override
-  Widget buildEventCard(BuildContext context) {
+  Widget buildEventCard(BuildContext context, {Function callBack}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     bool ongoing =
@@ -44,9 +44,9 @@ class Exam extends Event {
         width: ScreenSize.size.width,
         child: InkWell(
           onTap: () {
-             Navigator.pushNamed(context, '/eventdetail', arguments: {
-               'event': this,
-             });
+            Navigator.pushNamed(context, '/eventdetail', arguments: {
+              'event': this,
+            });
           },
           child: Padding(
               padding: EdgeInsets.all(16),
@@ -144,7 +144,7 @@ class Exam extends Event {
   }
 
   @override
-  Widget buildEventDetails() {
+  Widget buildEventDetails(BuildContext context, {Function callback}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
     return Padding(
@@ -161,31 +161,30 @@ class Exam extends Event {
           //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           Text('Exam',
               style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: theme.textHeadingColor)),
+                  fontStyle: FontStyle.italic, color: theme.textHeadingColor)),
           SizedBox(
             height: 10,
           ),
           (link != null || link.length != 0)
               ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: link.split(',').map((link) {
-              return GestureDetector(
-                onTap: () async {
-                  if (await canLaunch(link)) {
-                    await launch(link, forceSafariVC: false);
-                  } else {
-                    throw 'Could not launch $link';
-                  }
-                },
-                child: Text(
-                  (link == '-') ? "" : link,
-                  style: TextStyle(fontSize: 15),
-                ),
-              );
-            }).toList(),
-          )
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: link.split(',').map((link) {
+                    return GestureDetector(
+                      onTap: () async {
+                        if (await canLaunch(link)) {
+                          await launch(link, forceSafariVC: false);
+                        } else {
+                          throw 'Could not launch $link';
+                        }
+                      },
+                      child: Text(
+                        (link == '-') ? "" : link,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    );
+                  }).toList(),
+                )
               : Container(),
           RichText(
             text: TextSpan(

@@ -51,9 +51,10 @@ class _SchedulePageState extends State<SchedulePage> {
               (day == DateTime.now().weekday) ? _scrollController : null,
           // mainAxisSize: MainAxisSize.min,
           itemBuilder: (context, index) {
-            dynamic event =
-                dataContainer.schedule.schedule[day][index];
-            return event.buildEventCard(_context);
+            dynamic event = dataContainer.schedule.schedule[day][index];
+            return event.buildEventCard(_context, callBack: () {
+              setState(() {});
+            });
           },
           itemCount: dataContainer.schedule.schedule[day].length,
         ),

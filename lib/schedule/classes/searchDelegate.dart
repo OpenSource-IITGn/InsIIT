@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
-import 'package:instiapp/schedule/screens/editEvent.dart';
+import 'package:instiapp/schedule/screens/editEvents.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 
