@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/representativePage/classes/representatives.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 
 class RepresentativePage extends StatefulWidget {
@@ -8,8 +10,7 @@ class RepresentativePage extends StatefulWidget {
 }
 
 class _RepresentativePageState extends State<RepresentativePage> {
-
-  void reload () {
+  void reload() {
     setState(() {});
   }
 
@@ -18,17 +19,20 @@ class _RepresentativePageState extends State<RepresentativePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: theme.appBarColor,
         centerTitle: true,
         title: Text('Know Your Representatives',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        iconTheme: IconThemeData(color: Colors.black),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
+        iconTheme: IconThemeData(color: theme.iconColor),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
           child: Column(
             children: dataContainer.representatives.representatives
-                .map((card) => card.profileCard(context, reload))
+                .map<Widget>(
+                    (Representative card) => card.profileCard(context, reload))
                 .toList(),
           ),
         ),
@@ -36,4 +40,3 @@ class _RepresentativePageState extends State<RepresentativePage> {
     );
   }
 }
-

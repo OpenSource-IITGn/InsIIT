@@ -40,7 +40,7 @@ class RepresentativesContainer {
           description: lc[1],
           profiles: listJsonData,
           batch: batch,
-          currentBatch: ""));
+          currentBatch: batch[0]));
     }
   }
 }

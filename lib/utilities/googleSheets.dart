@@ -37,7 +37,7 @@ class GSheet {
     this.spreadSheetID = id;
   }
   Future<void> initializeCache() async {
-    cache = await Hive.openBox('sheetCache');
+    cache = await Hive.openBox(spreadSheetID);
   }
 
   Future writeData(var data, String range) async {
