@@ -64,7 +64,7 @@ class ScheduleContainer {
     getEnrolledCourses();
 
     getAllCourses(); // load all courses from sheets
-    
+
     reloadEvents(); // load events from calendar api
     // load exams from sheets
   }
@@ -222,7 +222,7 @@ class ScheduleContainer {
   }
 
   Future getAllCourses() async {
-    await dataContainer.sheet.getDataOnline('timetable!A:Q').then((data) {
+    dataContainer.sheet.getData('timetable!A:Q').listen((data) {
       allCourses = [];
       allCoursesRows = [];
       data.removeAt(0);

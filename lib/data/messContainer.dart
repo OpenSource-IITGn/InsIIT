@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/messMenu/classes/weekdaycard.dart';
@@ -57,7 +59,7 @@ class MessContainer {
             snacks: allDayMessList[i][2],
             dinner: allDayMessList[i][3]));
       }
-
+      log('Retrieved ${foodCards.length} food items', name: "MESS");
       selectMeal();
     });
   }
