@@ -329,6 +329,7 @@ Widget editExamSchedule(Function setState) {
               Exam course = dataContainer.schedule.allExams[index][0];
               String startTime = formatDate(course.startTime, [HH, ':', nn]);
               String endTime = formatDate(course.endTime, [HH, ':', nn]);
+              String date = formatDate(course.startTime, [d, '/', m]);
               return Card(
                   color: course.color,
                   child: Padding(
@@ -350,7 +351,7 @@ Widget editExamSchedule(Function setState) {
                               ),
                             ),
                             Text(
-                              "${course.code} | ${startTime} - ${endTime} | ${weekDay[course.startTime.weekday]}",
+                              "${course.code} | ${startTime} - ${endTime} | ${date}",
                               style: TextStyle(
                                 color: theme.textSubheadingColor,
                               ),
@@ -410,6 +411,6 @@ Widget editExamSchedule(Function setState) {
                     ),
                   ));
             },
-            itemCount: dataContainer.schedule.allEnrolledSlots.length,
+            itemCount: dataContainer.schedule.allExams.length,
           ));
 }

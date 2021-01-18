@@ -47,6 +47,7 @@ class Exam extends Event {
   Widget buildEventCard(BuildContext context, {Function callBack}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
+
     bool ongoing =
         DateTime.now().isBefore(endTime) && startTime.isBefore(DateTime.now());
 
@@ -159,6 +160,7 @@ class Exam extends Event {
   Widget buildEventDetails(BuildContext context, {Function callback}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
+    String date = formatDate(startTime, [DD, '-', MM]);
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Column(
