@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
@@ -31,12 +32,18 @@ class GSheet {
 
   String spreadSheetID;
   Box cache;
+  bool refreshNeeded = null;
   GSheet(
     String id,
   ) {
     this.spreadSheetID = id;
   }
   Future<void> initializeCache() async {
+    cache = await Hive.openBox(spreadSheetID);
+  }
+
+  Future<void> forceClearCache() async {
+    await cache.deleteFromDisk();
     cache = await Hive.openBox(spreadSheetID);
   }
 
@@ -56,24 +63,52 @@ class GSheet {
             .append(vr, this.spreadSheetID, range,
                 valueInputOption: 'USER_ENTERED')
             .then((AppendValuesResponse r) {
-          print("SENT DATA TO SHEETS");
           client.close();
         });
       });
     });
   }
 
-  Stream<List> getData(String range) async* {
+  bool isRefreshRequired() {
+    if (refreshNeeded != null) {
+      return refreshNeeded;
+    }
+    String lastRetrieved = cache.get('lastAccessed');
+    if (lastRetrieved == null) {
+      return true;
+    }
+    final lastAccessedDate = DateTime.parse(lastRetrieved);
+    final now = DateTime.now();
+    final difference = now.difference(lastAccessedDate).inDays;
+
+    if (difference > 0) {
+      refreshNeeded = true;
+      log("It's been $difference days since last refreshed.", name: "SHEET");
+    } else {
+      refreshNeeded = false;
+      log("Sheet refresh not needed", name: "SHEET");
+    }
+
+    return refreshNeeded;
+  }
+
+  Stream<List> getData(String range, {forceRefresh = false}) async* {
     var returnval;
     var data = cache.get(range);
 
-    if (data != null) {
+    if (data != null && !forceRefresh) {
+      log("Getting data at $range from cache", name: "SHEET");
       yield data;
     }
-    returnval = await getDataOnline(range);
 
-    cache.put(range, returnval);
-    yield returnval;
+    if (forceRefresh || data == null || isRefreshRequired()) {
+      log("Getting data at $range from internet", name: "SHEET");
+      returnval = await getDataOnline(range);
+
+      cache.put(range, returnval);
+      cache.put('lastAccessed', DateTime.now().toString());
+      yield returnval;
+    }
   }
 
   Future<List> getDataOnline(String range) async {

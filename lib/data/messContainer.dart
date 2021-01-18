@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/messMenu/classes/weekdaycard.dart';
@@ -36,7 +38,6 @@ class MessContainer {
 
   void loadMessData() async {
     dataContainer.sheet.getData('MessMenu!A:G').listen((data) {
-      print("Offline FoodItems!A:B = $data");
       int num1 = (data[0][0] is int) ? data[0][0] : int.parse(data[0][0]);
       int num2 = (data[0][1] is int) ? data[0][1] : int.parse(data[0][1]);
       int num3 = (data[0][2] is int) ? data[0][2] : int.parse(data[0][2]);
@@ -53,7 +54,7 @@ class MessContainer {
             snacks: allDayMessList[i][2],
             dinner: allDayMessList[i][3]));
       }
-
+      log('Retrieved ${foodCards.length} food items', name: "MESS");
       selectMeal();
     });
   }
