@@ -180,12 +180,20 @@ class ScheduleContainer {
         times[1] = times[1].trim();
 
         for (int i = 1; i < 6; i++) {
-          slots[row[i]] = [
-            DateTime(2021, 1, 3 + i, int.parse(times[0].split(':')[0]),
-                int.parse(times[0].split(':')[1])),
-            DateTime(2021, 1, 3 + i, int.parse(times[1].split(':')[0]),
-                int.parse(times[1].split(':')[1]))
-          ];
+          if (slots.containsKey(row[i])) {
+            slots[row[i]] = [
+              slots[row[i]][0],
+              DateTime(2021, 1, 3 + i, int.parse(times[1].split(':')[0]),
+                  int.parse(times[1].split(':')[1]))
+            ];
+          } else {
+            slots[row[i]] = [
+              DateTime(2021, 1, 3 + i, int.parse(times[0].split(':')[0]),
+                  int.parse(times[0].split(':')[1])),
+              DateTime(2021, 1, 3 + i, int.parse(times[1].split(':')[0]),
+                  int.parse(times[1].split(':')[1]))
+            ];
+          }
         }
       });
     });
@@ -270,9 +278,9 @@ class ScheduleContainer {
     }
   }
 
-  Future getAllCourses() async {
-    dataContainer.sheet
-        .getData('timetable!A:Q', forceRefresh: true)
+  Future getAllCourses({forceRefresh = false}) async {
+    await dataContainer.sheet
+        .getData('timetable!A:Q', forceRefresh: forceRefresh)
         .listen((data) {
       allCourses = [];
       allCoursesRows = [];

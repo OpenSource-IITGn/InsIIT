@@ -14,10 +14,14 @@ class AddCoursePage extends StatefulWidget {
 class _AddCoursePageState extends State<AddCoursePage> {
   var thisTheme = theme;
   var courseIndices = [];
+  List coursesToEnroll = [];
   String query = '';
   bool loading = true;
   void refresh() {
-    dataContainer.schedule.getAllCourses().then((data) {
+    setState(() {
+      loading = true;
+    });
+    dataContainer.schedule.getAllCourses(forceRefresh: true).then((data) {
       for (int i = 0; i < dataContainer.schedule.allCourses.length; i++) {
         courseIndices.add(i);
       }
@@ -53,11 +57,6 @@ class _AddCoursePageState extends State<AddCoursePage> {
     }
   }
 
-  void finalizeEnrolledCourses() {
-    //TODO
-    // this should create x events if there are x repititions in the calendar for that course.
-  }
-
   var _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -90,6 +89,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
             onPressed: () {
               loading = true;
               setState(() {});
+              for (int i = 0; i < coursesToEnroll.length; i++) {
+                print(coursesToEnroll[i]);
+                dataContainer.schedule
+                    .enrollCourseFromIndex(coursesToEnroll[i], true);
+              }
               dataContainer.schedule.storeEnrolledCourses();
               loading = false;
               Navigator.pop(context);
@@ -131,10 +135,10 @@ class _AddCoursePageState extends State<AddCoursePage> {
                         // height: ScreenSize.size.height,
                         child: ListView.builder(
                           itemBuilder: (context, index) {
-                            String courseName = dataContainer.schedule
-                                .allCourses[courseIndices[index]].name;
-                            String courseCode = dataContainer.schedule
-                                .allCourses[courseIndices[index]].code;
+                            String courseName = dataContainer
+                                .schedule.allCourses[courseIndices[index]].name;
+                            String courseCode = dataContainer
+                                .schedule.allCourses[courseIndices[index]].code;
                             bool enrolled = dataContainer.schedule
                                 .allCourses[courseIndices[index]].enrolled;
                             return Card(
@@ -143,21 +147,20 @@ class _AddCoursePageState extends State<AddCoursePage> {
                                     : theme.cardBgColor,
                                 child: InkWell(
                                   onTap: () {
-                                    dataContainer
-                                            .schedule
-                                            .allCourses[courseIndices[index]]
-                                            .enrolled =
-                                        !dataContainer
-                                            .schedule
-                                            .allCourses[courseIndices[index]]
-                                            .enrolled;
-
-                                    dataContainer.schedule
-                                        .enrollCourseFromIndex(
-                                            courseIndices[index], dataContainer
+                                    bool enrollment = !dataContainer
                                         .schedule
                                         .allCourses[courseIndices[index]]
-                                        .enrolled);
+                                        .enrolled;
+                                    dataContainer
+                                        .schedule
+                                        .allCourses[courseIndices[index]]
+                                        .enrolled = enrollment;
+                                    if (enrollment == true) {
+                                      coursesToEnroll.add(courseIndices[index]);
+                                    } else {
+                                      coursesToEnroll
+                                          .remove(courseIndices[index]);
+                                    }
                                     setState(() {});
                                   },
                                   child: Padding(

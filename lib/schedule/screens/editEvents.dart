@@ -128,32 +128,32 @@ Widget editCourseSchedule(Function setState) {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              // width: ScreenSize.size.width * 0.5,
-                              child: Text(
+                        Container(
+                          width: ScreenSize.size.width * 0.5,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
                                 course.name,
                                 style: TextStyle(
                                     color: theme.textHeadingColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            Text(
-                              "${course.code.substring(0, 2)}${course.code.substring(2)} | ${weekDay[course.startTime.weekday].substring(0, 3)} | $startTime - $endTime",
-                              style: TextStyle(
-                                color: theme.textSubheadingColor,
+                              Text(
+                                "${course.code.substring(0, 2)}${course.code.substring(2)} | ${weekDay[course.startTime.weekday].substring(0, 3)} | $startTime - $endTime",
+                                style: TextStyle(
+                                  color: theme.textSubheadingColor,
+                                ),
                               ),
-                            ),
-                            Text(
-                              course.getCourseType(),
-                              style: TextStyle(
-                                color: theme.textSubheadingColor,
+                              Text(
+                                course.getCourseType(),
+                                style: TextStyle(
+                                  color: theme.textSubheadingColor,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         Row(
                           children: [
