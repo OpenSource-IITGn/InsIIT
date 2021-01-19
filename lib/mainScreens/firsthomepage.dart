@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/messMenu/classes/base.dart';
+import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/schedule/classes/scheduleModel.dart';
@@ -239,10 +240,10 @@ class _MainHomePageState extends State<MainHomePage>
                             ? Container()
                             : Column(
                                 mainAxisSize: MainAxisSize.min,
-                                children: dataContainer.schedule.twoEvents
-                                    .map<Widget>((event) =>
-                                        event.buildEventCard(context))
-                                    .toList(),
+                                children: List<Widget>.from(dataContainer
+                                    .schedule.twoEvents
+                                    .map((dynamic event) =>
+                                        event.buildEventCard(context))),
                               ),
                       ],
                     ),
