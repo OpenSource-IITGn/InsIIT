@@ -28,6 +28,14 @@ class Event {
   //   index = index % Colors.primaries.length;
   //   color = Colors.primaries[index].withOpacity(alpha);
   // }
+  pickDate(context) async {
+    TimeOfDay time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: startTime.hour, minute: startTime.minute));
+    if (time != null) {
+      return time;
+    }
+  }
 
   Widget buildEventCard(BuildContext context, {Function callBack}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);

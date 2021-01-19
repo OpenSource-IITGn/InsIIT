@@ -54,35 +54,35 @@ class _MainHomePageState extends State<MainHomePage>
         }
         dataContainer.schedule.buildData();
         return new SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 60),
-                AnimatedContainer(
-                  decoration: new BoxDecoration(
-                      color: Color(0xFFEE4400),
-                      borderRadius:
-                          new BorderRadius.all(const Radius.circular(10.0))),
-                  height: (connected) ? 0 : 24,
-                  width: 100,
-                  duration: Duration(milliseconds: 1000),
-                  curve: Curves.linear,
-                  child: Center(
-                    child: Text(
-                      "Offline",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(height: 60),
+              AnimatedContainer(
+                decoration: new BoxDecoration(
+                    color: Color(0xFFEE4400),
+                    borderRadius:
+                        new BorderRadius.all(const Radius.circular(10.0))),
+                height: (connected) ? 0 : 24,
+                width: 100,
+                duration: Duration(milliseconds: 1000),
+                curve: Curves.linear,
+                child: Center(
+                  child: Text(
+                    "Offline",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
-                (connected)
-                    ? Container()
-                    : SizedBox(
-                        height: 10,
-                      ),
-                Row(
+              ),
+              (connected)
+                  ? Container()
+                  : SizedBox(
+                      height: 10,
+                    ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 0),
+                child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       (dataContainer.auth.user == null)
@@ -126,131 +126,136 @@ class _MainHomePageState extends State<MainHomePage>
                                     color: theme.textSubheadingColor)),
                           ]),
                     ]),
-                SizedBox(height: 10),
-                Text(
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 0),
+                child: Text(
                   qod ?? '',
                   style: TextStyle(
                       fontSize: 12.0,
                       fontStyle: FontStyle.italic,
                       color: theme.textSubheadingColor),
                 ),
-                Text(
-                  qodAuthor ?? '',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontStyle: FontStyle.italic,
-                      color: theme.textSubheadingColor),
-                ),
-                SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    return Navigator.pushNamed(context, '/messmenu');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+              ),
+              Text(
+                qodAuthor ?? '',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    fontSize: 12.0,
+                    fontStyle: FontStyle.italic,
+                    color: theme.textSubheadingColor),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(32.0, 16, 16, 0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Hungry?",
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: theme.textHeadingColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  "Here's what's for ${(dataContainer.mess.foodCards == null || dataContainer.mess.foodCards.length != 7) ? 'food' : dataContainer.mess.foodItems['meal'].toLowerCase()}",
-                                  style: TextStyle(
-                                      color: theme.textSubheadingColor),
-                                ),
-                              ],
-                            ),
-                            Icon(Icons.arrow_forward, color: theme.iconColor),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
-                (dataContainer.mess.foodCards == null ||
-                        dataContainer.mess.foodCards.length != 7)
-                    ? Container()
-                    : MessMenuBaseDrawer(widget.reload),
-                GestureDetector(
-                  onTap: () {
-                    return Navigator.pushNamed(context, '/schedule');
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Wondering what's next?",
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: theme.textHeadingColor),
-                                ),
-                                Text(
-                                  (dataContainer.schedule.twoEvents == null ||
-                                          dataContainer
-                                                  .schedule.twoEvents.length ==
-                                              0)
-                                      ? "Enjoy your free time!"
-                                      : "Here's your schedule",
-                                  style: TextStyle(
-                                      color: theme.textSubheadingColor),
-                                ),
-                              ],
-                            ),
-                            Icon(Icons.arrow_forward,
-                                color:
-                                    (dataContainer.schedule.twoEvents == null ||
-                                            dataContainer.schedule.twoEvents
-                                                    .length ==
-                                                0)
-                                        ? theme.iconColor.withAlpha(150)
-                                        : theme.iconColor),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        // RaisedButton(
-                        //     child: Text("RELOAD"),
-                        //     onPressed: () {
-                        //       dataContainer.schedule.getAllCourses();
-                        //     }),
-                        (dataContainer.schedule.twoEvents == null ||
-                                dataContainer.schedule.twoEvents.length == 0)
-                            ? Container()
-                            : Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: List<Widget>.from(dataContainer
-                                    .schedule.twoEvents
-                                    .map((dynamic event) =>
-                                        event.buildEventCard(context))),
+                            Text(
+                              "Hungry?",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: theme.textHeadingColor,
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
+                            Text(
+                              "Here's what's for ${(dataContainer.mess.foodCards == null || dataContainer.mess.foodCards.length != 7) ? 'food' : dataContainer.mess.foodItems['meal'].toLowerCase()}",
+                              style:
+                                  TextStyle(color: theme.textSubheadingColor),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon:
+                              Icon(Icons.arrow_forward, color: theme.iconColor),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/messmenu');
+                          },
+                        ),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 10),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              (dataContainer.mess.foodCards == null ||
+                      dataContainer.mess.foodCards.length != 7)
+                  ? Container()
+                  : MessMenuBaseDrawer(widget.reload),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(32.0, 16, 16, 0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Wondering what's next?",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.textHeadingColor),
+                            ),
+                            Text(
+                              (dataContainer.schedule.twoEvents == null ||
+                                      dataContainer.schedule.twoEvents.length ==
+                                          0)
+                                  ? "Enjoy your free time!"
+                                  : "Here's your schedule",
+                              style:
+                                  TextStyle(color: theme.textSubheadingColor),
+                            ),
+                          ],
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_forward,
+                              color: (dataContainer.schedule.twoEvents ==
+                                          null ||
+                                      dataContainer.schedule.twoEvents.length ==
+                                          0)
+                                  ? theme.iconColor.withAlpha(150)
+                                  : theme.iconColor),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/schedule')
+                                .then((value) => setState(() {}));
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    // RaisedButton(
+                    //     child: Text("RELOAD"),
+                    //     onPressed: () {
+                    //       dataContainer.schedule.getAllCourses();
+                    //     }),
+                  ],
+                ),
+              ),
+              (dataContainer.schedule.twoEvents == null ||
+                      dataContainer.schedule.twoEvents.length == 0)
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.fromLTRB(32.0, 0, 32, 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List<Widget>.from(dataContainer
+                            .schedule.twoEvents
+                            .map((dynamic event) =>
+                                event.buildEventCard(context))),
+                      ),
+                    ),
+            ],
           ),
         );
       },

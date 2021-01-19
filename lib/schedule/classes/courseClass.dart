@@ -247,25 +247,6 @@ class Course extends Event {
     );
   }
 
-  _pickDate(start, context) async {
-    if (start) {
-      TimeOfDay time = await showTimePicker(
-          context: context,
-          initialTime:
-              TimeOfDay(hour: startTime.hour, minute: startTime.minute));
-      if (time != null)
-        startTime = DateTime(startTime.year, startTime.month, startTime.day,
-            time.hour, time.minute);
-    } else {
-      TimeOfDay time = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay(hour: endTime.hour, minute: endTime.minute));
-      if (time != null)
-        endTime = DateTime(
-            endTime.year, endTime.month, endTime.day, time.hour, time.minute);
-    }
-  }
-
   @override
   Widget buildEventDetails(BuildContext context, {Function callback}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
@@ -291,8 +272,11 @@ class Course extends Event {
                 Text("Start         : ${formatDate(startTime, [HH, ':', nn])}"),
             trailing: Icon(Icons.edit),
             onTap: () {
-              _pickDate(true, context);
-              callback();
+              pickDate(context).then((TimeOfDay time) {
+                startTime = DateTime(startTime.year, startTime.month,
+                    startTime.day, time.hour, time.minute);
+                callback();
+              });
             },
           ),
           ListTile(
@@ -300,8 +284,11 @@ class Course extends Event {
                 Text("End           : ${formatDate(endTime, [HH, ':', nn])} "),
             trailing: Icon(Icons.edit),
             onTap: () {
-              _pickDate(false, context);
-              callback();
+              pickDate(context).then((time) {
+                endTime = DateTime(endTime.year, endTime.month, endTime.day,
+                    time.hour, time.minute);
+                callback();
+              });
             },
           ),
           ListTile(
@@ -362,13 +349,13 @@ class Course extends Event {
             ),
           ),
 
-          (prerequisite == '-')
-              ? Container()
-              : Text('Pre-requisite: $prerequisite',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: theme.textHeadingColor)),
+          // (prerequisite == '-')
+          //     ? Container()
+          //     : Text('Pre-requisite: $prerequisite',
+          //         style: TextStyle(
+          //             fontWeight: FontWeight.bold,
+          //             fontSize: 16,
+          //             color: theme.textHeadingColor)),
           // ExpansionTile(
           //   key: GlobalKey(),
           //   title: Text('View Attendance'),

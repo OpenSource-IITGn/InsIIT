@@ -329,7 +329,8 @@ Widget editExamSchedule(Function setState) {
               Exam course = dataContainer.schedule.allExams[index][0];
               String startTime = formatDate(course.startTime, [HH, ':', nn]);
               String endTime = formatDate(course.endTime, [HH, ':', nn]);
-              String date = formatDate(course.startTime, [d, '/', m]);
+              String date =
+                  formatDate(course.startTime, [d, ' / ', m, ' (', D, ')']);
               return Card(
                   color: course.color,
                   child: Padding(

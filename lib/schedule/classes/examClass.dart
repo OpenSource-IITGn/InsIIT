@@ -160,26 +160,72 @@ class Exam extends Event {
   Widget buildEventDetails(BuildContext context, {Function callback}) {
     String startTimeString = formatDate(startTime, [HH, ':', nn]);
     String endTimeString = formatDate(endTime, [HH, ':', nn]);
-    String date = formatDate(startTime, [DD, '-', MM]);
+    String dateString =
+        formatDate(startTime, [DD, ' (', d, ' / ', m, ' / ', yy, ')']);
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("[$code] $name",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: theme.textHeadingColor)),
-          // Text(,
-          //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-          Text('Exam',
-              style: TextStyle(
-                  fontStyle: FontStyle.italic, color: theme.textHeadingColor)),
-          SizedBox(
-            height: 10,
+          ListTile(
+            title: Text(
+                "${code.substring(0, 2)} ${code.substring(2)} | ${name}",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: theme.textHeadingColor)),
           ),
-          (link != null || link.length != 0)
+          ListTile(
+              title: Text('Exam',
+                  style: TextStyle(
+                    color: theme.textHeadingColor,
+                    fontWeight: FontWeight.bold,
+                  ))),
+          ListTile(
+              trailing: Icon(Icons.edit),
+              onTap: () async {
+                await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2015, 8),
+                        lastDate: DateTime(2101))
+                    .then((time) {
+                  if (time != null) {
+                    startTime = DateTime(time.year, time.month, time.day,
+                        startTime.hour, startTime.minute);
+                    endTime = DateTime(time.year, time.month, time.day,
+                        endTime.hour, endTime.minute);
+                    callback();
+                  }
+                });
+              },
+              title: Text('Date         : ${dateString}',
+                  style: TextStyle(
+                    color: theme.textHeadingColor,
+                  ))),
+          ListTile(
+            title: Text("Start         : ${startTimeString}"),
+            trailing: Icon(Icons.edit),
+            onTap: () {
+              pickDate(context).then((TimeOfDay time) {
+                startTime = DateTime(startTime.year, startTime.month,
+                    startTime.day, time.hour, time.minute);
+                callback();
+              });
+            },
+          ),
+          ListTile(
+            title: Text("End           : ${endTimeString} "),
+            trailing: Icon(Icons.edit),
+            onTap: () {
+              pickDate(context).then((time) {
+                endTime = DateTime(endTime.year, endTime.month, endTime.day,
+                    time.hour, time.minute);
+                callback();
+              });
+            },
+          ),
+          (link != null && link.length != 0)
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -200,44 +246,6 @@ class Exam extends Event {
                   }).toList(),
                 )
               : Container(),
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'Classroom: ',
-                ),
-                TextSpan(
-                  text: location,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: theme.textHeadingColor),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          RichText(
-            text: TextSpan(
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'Between ',
-                ),
-                TextSpan(
-                  text: startTimeString,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: ' and ',
-                ),
-                TextSpan(
-                  text: endTimeString,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
