@@ -55,7 +55,7 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
               child: Image.asset(
                 'assets/images/plate.png',
-                scale: 6,
+                scale: 2,
               ),
             ),
           ),
