@@ -68,7 +68,8 @@ class Exam extends Event {
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    Text(startTimeString),
+                    Text(startTimeString,
+                        style: TextStyle(color: theme.textHeadingColor)),
                     SizedBox(
                       height: 8,
                     ),
@@ -78,7 +79,8 @@ class Exam extends Event {
                     SizedBox(
                       height: 8,
                     ),
-                    Text(endTimeString),
+                    Text(endTimeString,
+                        style: TextStyle(color: theme.textHeadingColor)),
                   ]),
                   verticalDivider(),
                   // descriptionWidget(),
@@ -182,7 +184,7 @@ class Exam extends Event {
                     fontWeight: FontWeight.bold,
                   ))),
           ListTile(
-              trailing: Icon(Icons.edit),
+              trailing: Icon(Icons.edit, color: theme.iconColor),
               onTap: () async {
                 await showDatePicker(
                         context: context,
@@ -204,8 +206,11 @@ class Exam extends Event {
                     color: theme.textHeadingColor,
                   ))),
           ListTile(
-            title: Text("Start         : ${startTimeString}"),
-            trailing: Icon(Icons.edit),
+            title: Text("Start         : ${startTimeString}",
+                style: TextStyle(
+                  color: theme.textHeadingColor,
+                )),
+            trailing: Icon(Icons.edit, color: theme.iconColor),
             onTap: () {
               pickDate(context).then((TimeOfDay time) {
                 startTime = DateTime(startTime.year, startTime.month,
@@ -215,8 +220,11 @@ class Exam extends Event {
             },
           ),
           ListTile(
-            title: Text("End           : ${endTimeString} "),
-            trailing: Icon(Icons.edit),
+            title: Text("End           : ${endTimeString} ",
+                style: TextStyle(
+                  color: theme.textHeadingColor,
+                )),
+            trailing: Icon(Icons.edit, color: theme.iconColor),
             onTap: () {
               pickDate(context).then((time) {
                 endTime = DateTime(endTime.year, endTime.month, endTime.day,

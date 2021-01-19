@@ -55,6 +55,9 @@ class _EditEventState extends State<EditEvent>
         ),
         bottom: TabBar(
           controller: controller,
+          unselectedLabelColor: theme.textHeadingColor.withOpacity(0.3),
+          indicatorColor: theme.indicatorColor,
+          labelColor: theme.textHeadingColor,
           tabs: [
             Tab(
                 child: Text("Courses",
@@ -158,7 +161,7 @@ Widget editCourseSchedule(Function setState) {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.edit),
+                              icon: Icon(Icons.edit, color: theme.iconColor),
                               onPressed: () {
                                 course.navigateToDetail(context).then((val) {
                                   dataContainer.schedule.storeAllData();
@@ -167,7 +170,7 @@ Widget editCourseSchedule(Function setState) {
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: Icon(Icons.delete, color: theme.iconColor),
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -267,7 +270,7 @@ Widget editEventSchedule(Function setState) {
                           ],
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: Icon(Icons.delete, color: theme.iconColor),
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -332,7 +335,7 @@ Widget editExamSchedule(Function setState) {
               String date =
                   formatDate(course.startTime, [d, ' / ', m, ' (', D, ')']);
               return Card(
-                  color: course.color,
+                  color: theme.cardBgColor,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
@@ -366,7 +369,7 @@ Widget editExamSchedule(Function setState) {
                           ],
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: Icon(Icons.delete, color: theme.iconColor),
                           onPressed: () {
                             showDialog(
                               context: context,

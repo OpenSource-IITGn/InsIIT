@@ -109,9 +109,11 @@ class _AddCoursePageState extends State<AddCoursePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextField(
+                        style: TextStyle(color: theme.textHeadingColor),
                         controller: _controller,
                         decoration: InputDecoration(
                             icon: Icon(Icons.search, color: theme.iconColor),
+                            // fillColor: theme.iconColor,
                             suffixIcon: IconButton(
                               onPressed: () {
                                 query = '';

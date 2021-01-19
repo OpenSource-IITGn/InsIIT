@@ -268,8 +268,9 @@ class Course extends Event {
               title: Text('Slot type  : ${getCourseType()}',
                   style: TextStyle(color: theme.textHeadingColor))),
           ListTile(
-            title:
-                Text("Start         : ${formatDate(startTime, [HH, ':', nn])}"),
+            title: Text(
+                "Start         : ${formatDate(startTime, [HH, ':', nn])}",
+                style: TextStyle(color: theme.textHeadingColor)),
             trailing: Icon(Icons.edit),
             onTap: () {
               pickDate(context).then((TimeOfDay time) {
@@ -280,8 +281,9 @@ class Course extends Event {
             },
           ),
           ListTile(
-            title:
-                Text("End           : ${formatDate(endTime, [HH, ':', nn])} "),
+            title: Text(
+                "End           : ${formatDate(endTime, [HH, ':', nn])} ",
+                style: TextStyle(color: theme.textHeadingColor)),
             trailing: Icon(Icons.edit),
             onTap: () {
               pickDate(context).then((time) {
