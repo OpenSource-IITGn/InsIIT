@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:instiapp/feed/screens/feedPage.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/mainScreens/firsthomepage.dart';
 import 'package:instiapp/mainScreens/loading.dart';
+import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/themeing/notifier.dart';
-
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/mainScreens/miscPage.dart';
-import 'package:instiapp/data/dataContainer.dart';
 
 class HomePage extends StatefulWidget {
   HomePage(this.notifyParent);

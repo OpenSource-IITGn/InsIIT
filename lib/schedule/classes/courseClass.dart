@@ -249,8 +249,6 @@ class Course extends Event {
 
   @override
   Widget buildEventDetails(BuildContext context, {Function callback}) {
-    String startTimeString = formatDate(startTime, [HH, ':', nn]);
-    String endTimeString = formatDate(endTime, [HH, ':', nn]);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(

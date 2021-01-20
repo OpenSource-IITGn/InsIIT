@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/classes/hashtagModel.dart';
-import 'package:instiapp/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
 class FeedContainer {

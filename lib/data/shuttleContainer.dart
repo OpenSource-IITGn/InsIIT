@@ -1,6 +1,5 @@
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/shuttle/classes/buses.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
 
 class ShuttleContainer {
   List<Buses> buses;

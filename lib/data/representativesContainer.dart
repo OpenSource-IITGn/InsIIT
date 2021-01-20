@@ -1,6 +1,5 @@
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/representativePage/classes/representatives.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
 import 'dart:convert';
 
 class RepresentativesContainer {

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/utilities/constants.dart';
 
 class Email extends StatefulWidget {
   @override

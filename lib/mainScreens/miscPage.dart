@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:instiapp/utilities/constants.dart';
 
 class MiscPage extends StatelessWidget {
   @override

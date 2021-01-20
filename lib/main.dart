@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:instiapp/data/dataContainer.dart';
@@ -16,7 +14,6 @@ import 'package:instiapp/schedule/screens/addCourse.dart';
 
 import 'package:instiapp/schedule/screens/editEvents.dart';
 import 'package:instiapp/schedule/screens/eventDetail.dart';
-//import 'package:instiapp/schedule/screens/exportIcsFile.dart';
 import 'package:instiapp/schedule/screens/schedulePage.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/mainScreens/signIn.dart';

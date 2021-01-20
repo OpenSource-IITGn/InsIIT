@@ -1,21 +1,16 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:color_convert/color_convert.dart';
 import 'package:hive/hive.dart';
 import 'package:instiapp/schedule/classes/courseClass.dart';
 import 'package:instiapp/schedule/classes/eventClass.dart';
 import 'package:instiapp/schedule/classes/examClass.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
-import 'package:instiapp/utilities/globalFunctions.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart';
 import 'package:connectivity/connectivity.dart';
 import 'dart:developer';
-
-import 'package:path_provider/path_provider.dart';
 
 class ScheduleContainer {
   Box scheduleCache;

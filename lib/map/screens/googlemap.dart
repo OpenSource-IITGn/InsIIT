@@ -1,17 +1,15 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:instiapp/data/dataContainer.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:location/location.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/foundation.dart';
-import 'package:instiapp/utilities/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:instiapp/data/dataContainer.dart';
+import 'package:location/location.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapInfoWindow {
   String imagePath;

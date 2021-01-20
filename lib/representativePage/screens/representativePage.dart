@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/representativePage/classes/representatives.dart';
 import 'package:instiapp/themeing/notifier.dart';
-import 'package:instiapp/utilities/constants.dart';
 
 class RepresentativePage extends StatefulWidget {
   @override

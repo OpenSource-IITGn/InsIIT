@@ -1,4 +1,3 @@
-import 'package:hive/hive.dart';
 import 'package:instiapp/data/feedContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
@@ -7,9 +6,7 @@ import 'package:instiapp/data/shuttleContainer.dart';
 import 'package:instiapp/data/representativesContainer.dart';
 import 'package:instiapp/data/quickLinksContainer.dart';
 import 'package:instiapp/data/authContainer.dart';
-import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/googleSheets.dart';
-import 'package:path_provider/path_provider.dart';
 
 var dataContainer;
 

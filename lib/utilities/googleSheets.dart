@@ -1,12 +1,9 @@
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:csv/csv.dart';
 import 'package:googleapis/sheets/v4.dart';
-import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:googleapis/sheets/v4.dart' as sheets;
+import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:instiapp/credentials/credentials.dart'; // this has the credentials
 
 class GSheet {
@@ -16,7 +13,7 @@ class GSheet {
 
   String spreadSheetID;
   Box cache;
-  bool refreshNeeded = null;
+  bool refreshNeeded;
   GSheet(
     String id,
   ) {

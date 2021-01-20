@@ -6,25 +6,20 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:instiapp/themeing/notifier.dart';
-import 'package:instiapp/utilities/columnBuilder.dart';
 import 'package:instiapp/utilities/constants.dart';
-
-// class DevModel {
-//   String name;
-//   String description;
-//   String email;
-//   DevModel({this.name, this.description, this.email});
-// }
 
 class DevModel {
   String login;
   String name;
+  // ignore: non_constant_identifier_names
+  // ignore: non_constant_identifier_names
   String avatar_url;
   String profile;
   List<String> contributions;
   DevModel({
     this.login,
     this.name,
+    // ignore: non_constant_identifier_names
     this.avatar_url,
     this.profile,
     this.contributions,

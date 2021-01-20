@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instiapp/schedule/classes/courseClass.dart';
-import 'package:instiapp/schedule/classes/scheduleModel.dart';
-import 'package:instiapp/themeing/notifier.dart';
-import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key key}) : super(key: key);

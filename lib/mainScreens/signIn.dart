@@ -1,14 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/themeing/notifier.dart';
-import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/globalClasses/user.dart' as userModel;
 import 'package:instiapp/utilities/measureSize.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:instiapp/data/dataContainer.dart';
-import 'dart:developer';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key}) : super(key: key);

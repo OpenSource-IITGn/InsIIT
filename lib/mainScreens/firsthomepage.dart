@@ -3,15 +3,10 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
-import 'package:instiapp/data/scheduleContainer.dart';
-import 'package:instiapp/messMenu/classes/base.dart';
-import 'package:instiapp/schedule/classes/eventClass.dart';
-import 'package:instiapp/themeing/notifier.dart';
-import 'package:instiapp/utilities/constants.dart';
-import 'package:instiapp/schedule/classes/scheduleModel.dart';
-import 'package:instiapp/utilities/globalFunctions.dart';
-import 'package:instiapp/data/dataContainer.dart';
 import 'package:http/http.dart' as http;
+import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/messMenu/classes/base.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 class MainHomePage extends StatefulWidget {
   var reload;
