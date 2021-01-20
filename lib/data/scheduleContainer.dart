@@ -140,8 +140,7 @@ class ScheduleContainer {
       getAllEnrolledCourses();
       data.forEach((row) {
         var exam = Exam.fromSheetRow(row);
-        if (exam.startTime.difference(DateTime.now()).inDays.abs() < 7 ||
-            true) {
+        if (exam.startTime.difference(DateTime.now()).inDays.abs() < 7) {
           print(allEnrolledSlots.length);
           for (int i = 0; i < allEnrolledSlots.length; i++) {
             Course course = allEnrolledSlots[i][0];
