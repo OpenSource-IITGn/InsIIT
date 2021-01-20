@@ -269,7 +269,7 @@ class Course extends Event {
             title: Text(
                 "Start         : ${formatDate(startTime, [HH, ':', nn])}",
                 style: TextStyle(color: theme.textHeadingColor)),
-            trailing: Icon(Icons.edit),
+            trailing: Icon(Icons.edit, color: theme.iconColor),
             onTap: () {
               pickDate(context, startTime).then((time) {
                 if (time != null) {
@@ -284,7 +284,7 @@ class Course extends Event {
             title: Text(
                 "End           : ${formatDate(endTime, [HH, ':', nn])} ",
                 style: TextStyle(color: theme.textHeadingColor)),
-            trailing: Icon(Icons.edit),
+            trailing: Icon(Icons.edit, color: theme.iconColor),
             onTap: () {
               pickDate(context, endTime).then((time) {
                 if (time != null) {
