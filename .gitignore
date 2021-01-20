@@ -40,3 +40,4 @@ google_key.json
 
 KEYSNDSTUFF/*
 
+lib/credentials/credentials.dart
