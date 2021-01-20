@@ -211,10 +211,12 @@ class Exam extends Event {
                 )),
             trailing: Icon(Icons.edit, color: theme.iconColor),
             onTap: () {
-              pickDate(context).then((TimeOfDay time) {
-                startTime = DateTime(startTime.year, startTime.month,
-                    startTime.day, time.hour, time.minute);
-                callback();
+              pickDate(context, startTime).then((time) {
+                if (time != null) {
+                  startTime = DateTime(startTime.year, startTime.month,
+                      startTime.day, time.hour, time.minute);
+                  callback();
+                }
               });
             },
           ),
@@ -225,10 +227,12 @@ class Exam extends Event {
                 )),
             trailing: Icon(Icons.edit, color: theme.iconColor),
             onTap: () {
-              pickDate(context).then((time) {
-                endTime = DateTime(endTime.year, endTime.month, endTime.day,
-                    time.hour, time.minute);
-                callback();
+              pickDate(context, endTime).then((time) {
+                if (time != null) {
+                  endTime = DateTime(endTime.year, endTime.month, endTime.day,
+                      time.hour, time.minute);
+                  callback();
+                }
               });
             },
           ),

@@ -26,12 +26,14 @@ class Event {
   //   index = index % Colors.primaries.length;
   //   color = Colors.primaries[index].withOpacity(alpha);
   // }
-  pickDate(context) async {
+  pickDate(context, initialTime) async {
     TimeOfDay time = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay(hour: startTime.hour, minute: startTime.minute));
+        initialTime: TimeOfDay(hour: initialTime.hour, minute: initialTime.minute));
     if (time != null) {
       return time;
+    } else {
+      return null;
     }
   }
 
