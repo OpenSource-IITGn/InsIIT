@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/developers/screens/developers.dart';
+import 'package:instiapp/notifications/pushNotifications.dart';
 import 'package:instiapp/quickLinks/screens/email.dart';
 
 import 'package:instiapp/mainScreens/homePage.dart';

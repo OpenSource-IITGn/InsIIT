@@ -4,6 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/notifications/pushNotifications.dart';
 import 'dart:developer';
 
 import 'package:instiapp/themeing/notifier.dart';
@@ -43,6 +44,8 @@ class AuthContainer {
         FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       }
     });
+    PushNotificationsManager pushNotifs = PushNotificationsManager();
+    pushNotifs.init();
     return authorized;
   }
 
