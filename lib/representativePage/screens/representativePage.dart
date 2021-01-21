@@ -16,6 +16,7 @@ class _RepresentativePageState extends State<RepresentativePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: theme.appBarColor,

@@ -72,7 +72,9 @@ class _EditEventState extends State<EditEvent>
       ),
       body: (loading)
           ? Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                backgroundColor: theme.iconColor,
+              ),
             )
           : TabBarView(controller: controller, children: [
               editCourseSchedule(() {

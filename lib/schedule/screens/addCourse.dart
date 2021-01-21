@@ -101,7 +101,10 @@ class _AddCoursePageState extends State<AddCoursePage> {
             child: Icon(Icons.add, color: Colors.white),
           ),
           body: (loading == true)
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: theme.iconColor,
+                ))
               : Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(

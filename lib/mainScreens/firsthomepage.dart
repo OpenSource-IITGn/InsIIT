@@ -94,7 +94,9 @@ class _MainHomePageState extends State<MainHomePage>
                                 fit: BoxFit.cover,
                                 width: 90.0,
                                 placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
+                                    CircularProgressIndicator(
+                                  backgroundColor: theme.iconColor,
+                                ),
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
                                 height: 90.0,

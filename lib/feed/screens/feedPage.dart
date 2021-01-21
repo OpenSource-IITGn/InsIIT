@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:instiapp/feed/classes/postModel.dart';
+import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
@@ -83,7 +84,10 @@ class _FeedPageState extends State<FeedPage>
               },
               child: Icon(Icons.sort_rounded)),
           body: (loading == true)
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: theme.iconColor,
+                ))
               : RefreshIndicator(
                   onRefresh: () {
                     refresh();
@@ -97,7 +101,9 @@ class _FeedPageState extends State<FeedPage>
                             child: Padding(
                           padding:
                               const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            backgroundColor: theme.iconColor,
+                          ),
                         ));
                       }
                       return PostWidget(post: posts[index]);

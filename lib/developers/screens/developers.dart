@@ -116,7 +116,10 @@ class _DevelopersPageState extends State<DevelopersPage> {
                 fontWeight: FontWeight.bold, color: theme.textHeadingColor)),
       ),
       body: (loading == true)
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+              backgroundColor: theme.iconColor,
+            ))
           : Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(

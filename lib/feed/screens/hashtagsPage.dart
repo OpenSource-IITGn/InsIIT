@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/themeing/notifier.dart';
 
 class HashtagPage extends StatefulWidget {
   HashtagPage({Key key}) : super(key: key);
@@ -60,7 +61,10 @@ class _HashtagPageState extends State<HashtagPage> {
           ],
         ),
         body: (loading == true)
-            ? Center(child: CircularProgressIndicator())
+            ? Center(
+                child: CircularProgressIndicator(
+                backgroundColor: theme.iconColor,
+              ))
             : Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListView.builder(

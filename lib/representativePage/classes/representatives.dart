@@ -44,6 +44,7 @@ class Representative {
 
   Widget profileLink(context, contactJson) {
     return Card(
+      color: theme.cardBgColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -61,7 +62,9 @@ class Representative {
                       child: CachedNetworkImage(
                     fit: BoxFit.cover,
                     width: 75.0,
-                    placeholder: (context, url) => CircularProgressIndicator(),
+                    placeholder: (context, url) => CircularProgressIndicator(
+                      backgroundColor: theme.iconColor,
+                    ),
                     height: 75.0,
                     imageUrl: contactJson['image'],
                   )),
@@ -72,11 +75,14 @@ class Representative {
               contactJson['name'],
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                  color: theme.textHeadingColor,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic),
             ),
             Text(
               contactJson['designation'],
               style: TextStyle(
+                color: theme.textSubheadingColor,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -88,7 +94,7 @@ class Representative {
                       ? IconButton(
                           icon: Icon(
                             Icons.phone,
-                            color: Colors.black.withAlpha(120),
+                            color: theme.iconColor,
                           ),
                           onPressed: () {
                             List phones = contactJson['phno'];
@@ -105,6 +111,7 @@ class Representative {
                                               title: Text("$phone"),
                                               trailing: Icon(
                                                 Icons.phone,
+                                                color: theme.iconColor,
                                               ),
                                               onTap: () {
                                                 launch('tel:$phone');
@@ -123,7 +130,7 @@ class Representative {
                       ? IconButton(
                           icon: Icon(
                             Icons.email,
-                            color: Colors.black.withAlpha(120),
+                            color: theme.iconColor,
                           ),
                           onPressed: () {
                             List emails = contactJson['email'];
@@ -177,9 +184,9 @@ class Representative {
                 Text(
                   position,
                   style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: theme.textHeadingColor),
                 ),
                 Text(
                   currentBatch,
@@ -190,11 +197,14 @@ class Representative {
               ],
             ),
             PopupMenuButton<String>(
-              icon: Icon(Icons.filter_list_alt),
+              icon: Icon(Icons.filter_list_alt, color: theme.iconColor),
               itemBuilder: (context) => batch
                   .map((String group) => PopupMenuItem(
                         value: group,
-                        child: Text(group),
+                        child: Text(
+                          group,
+                          style: TextStyle(color: theme.textHeadingColor),
+                        ),
                       ))
                   .toList(),
               onSelected: (value) {
