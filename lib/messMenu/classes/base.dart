@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:instiapp/messMenu/classes/labelDrawer.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/utilities/measureSize.dart';
+import 'package:instiapp/utilities/constants.dart';
 
 class MessMenuBaseDrawer extends StatefulWidget {
   var reload;
@@ -17,9 +18,7 @@ class MessMenuBaseDrawer extends StatefulWidget {
 }
 
 class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
-  Size imageSize = Size(0, 0);
   List sizes = [];
-  List imageSizes = [];
   Timer timer;
   int location = 0;
 
@@ -30,16 +29,16 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
     location = 0;
     for (int i = 0; i < dataContainer.mess.foodItems['list'].length; i++) {
       sizes.add(Size(0, 0));
-      imageSizes.add(Size(0, 0));
     }
   }
 
   Widget buildTray() {
     List<Widget> ret = [];
-    double originalPad = imageSizes[0].width / 2;
+    double originalPad = 10;
     double pad = originalPad;
-    double spacing = 30;
+    double spacing = 0;
 
+    double imageHeight = ScreenSize.size.width * 0.3;
     for (int i = 0; i < dataContainer.mess.foodItems['list'].length; i++) {
       if (dataContainer.mess.foodItems['list'][i].trim() == '-') {
         continue;
@@ -47,15 +46,15 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
       ret.add(
         Positioned(
           left: pad,
-          child: MeasureSize(
-            onChange: (Size size) {
-              imageSize = size;
-            },
+          top: 0,
+          child: Container(
+            color: Colors.black.withAlpha(100),
+            width: imageHeight,
+            height: imageHeight,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
               child: Image.asset(
                 'assets/images/plate.png',
-                scale: 2,
               ),
             ),
           ),
@@ -63,34 +62,31 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
       );
       ret.add(
         Positioned(
-          left: pad + imageSize.width / 2 - imageSizes[i].width / 2,
-          top: imageSize.height / 2 - imageSizes[i].height / 2,
-          child: MeasureSize(
-            onChange: (Size size) {
-              imageSizes[i] = size;
-              setState(() {});
-            },
-            child: (dataContainer.mess.foodIllustration[
-                        dataContainer.mess.foodItems['list'][i]] !=
-                    null)
-                ? CachedNetworkImage(
+          left: pad + imageHeight / 8,
+          top: imageHeight / 8,
+          child: (dataContainer.mess.foodIllustration[
+                      dataContainer.mess.foodItems['list'][i]] !=
+                  null)
+              ? Container(
+                  width: imageHeight * 3 / 4,
+                  height: imageHeight * 3 / 4,
+                  child: CachedNetworkImage(
                     imageUrl: dataContainer.mess.foodIllustration[
                         dataContainer.mess.foodItems['list'][i]],
                     placeholder: (context, url) {
                       return Image.asset('assets/images/taco.png', scale: 20);
                     },
                     // scale: 20,
-                  )
-                : Image.asset('assets/images/taco.png', scale: 20),
-          ),
+                  ),
+                )
+              : Image.asset('assets/images/taco.png', scale: 20),
         ),
       );
 
-      if (imageSize.width < sizes[i].width) {
-        pad +=
-            imageSize.width + (sizes[i].width - imageSize.width) / 3 + spacing;
+      if (imageHeight < sizes[i].width) {
+        pad += imageHeight + spacing;
       } else {
-        pad += imageSize.width + spacing;
+        pad += imageHeight + spacing;
       }
     }
     pad = originalPad;
@@ -100,26 +96,25 @@ class _MessMenuBaseDrawerState extends State<MessMenuBaseDrawer> {
       }
       ret.add(
         Positioned(
-          left: pad + imageSize.width / 2 - sizes[i].width / 2,
+          left: pad + imageHeight / 2 - sizes[i].width / 2,
           top: 0,
           child: label(dataContainer.mess.foodItems['list'][i], (size) {
             sizes[i] = size;
           }),
         ),
       );
-      if (imageSize.width < sizes[i].width) {
-        pad +=
-            imageSize.width + (sizes[i].width - imageSize.width) / 3 + spacing;
+      if (imageHeight < sizes[i].width) {
+        pad += imageHeight + (sizes[i].width - imageHeight) / 3 + spacing;
       } else {
-        pad += imageSize.width + spacing;
+        pad += imageHeight + spacing;
       }
     }
     return SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
-            width: (imageSize.width + 50) *
+            width: (imageHeight + 50) *
                 dataContainer.mess.foodItems['list'].length,
-            height: imageSize.height,
+            height: imageHeight,
             child: Stack(children: ret)),
         scrollDirection: Axis.horizontal);
   }

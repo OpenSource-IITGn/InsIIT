@@ -5,8 +5,10 @@ import 'dart:convert';
 class ImportantContactsContainer {
   List<ContactCard> contactCards;
 
-  getData() async {
-    dataContainer.sheet.getData('Contacts!A:E').listen((cache) {
+  getData({forceRefresh: false}) async {
+    dataContainer.sheet
+        .getData('Contacts!A:E', forceRefresh: forceRefresh)
+        .listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);

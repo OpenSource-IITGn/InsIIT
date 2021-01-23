@@ -29,11 +29,11 @@ class DataContainer {
     await sheet.initializeCache();
   }
 
-  getOtherData() {
-    schedule.getData();
-    contacts.getData();
-    shuttle.getData();
-    representatives.getData();
-    quickLinks.getData();
+  getOtherData({forceRefresh: false}) {
+    schedule.getData(forceRefresh: forceRefresh);
+    contacts.getData(forceRefresh: forceRefresh);
+    shuttle.getData(forceRefresh: forceRefresh);
+    representatives.getData(forceRefresh: forceRefresh);
+    quickLinks.getData(forceRefresh: forceRefresh);
   }
 }

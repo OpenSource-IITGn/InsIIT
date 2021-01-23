@@ -24,18 +24,20 @@ class MessContainer {
     6: 'Sunday'
   };
 
-  void getData() async {
-    loadMessData();
+  void getData({forceRefresh: false}) async {
+    loadMessData(forceRefresh: forceRefresh);
     loadFoodVotesData();
-    loadFoodIllustrationData();
+    loadFoodIllustrationData(forceRefresh: forceRefresh);
   }
 
   Future<void> initializeCache() async {
     messCache = await Hive.openBox('mess');
   }
 
-  void loadMessData() async {
-    dataContainer.sheet.getData('MessMenu!A:G').listen((cache) {
+  void loadMessData({forceRefresh: false}) async {
+    dataContainer.sheet
+        .getData('MessMenu!A:G', forceRefresh: forceRefresh)
+        .listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);
@@ -89,9 +91,11 @@ class MessContainer {
     }
   }
 
-  void loadFoodIllustrationData() async {
+  void loadFoodIllustrationData({forceRefresh: false}) async {
     foodIllustration = {};
-    dataContainer.sheet.getData('FoodItems!A:B').listen((data) {
+    dataContainer.sheet
+        .getData('FoodItems!A:B', forceRefresh: forceRefresh)
+        .listen((data) {
       if (data.length != 0) {
         data.removeAt(0);
         for (var lst in data) {

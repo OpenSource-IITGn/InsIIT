@@ -4,8 +4,10 @@ import 'package:instiapp/shuttle/classes/buses.dart';
 class ShuttleContainer {
   List<Buses> buses;
 
-  getData() async {
-    dataContainer.sheet.getData('BusRoutes!A:H').listen((cache) {
+  getData({forceRefresh: false}) async {
+    dataContainer.sheet
+        .getData('BusRoutes!A:H', forceRefresh: forceRefresh)
+        .listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);

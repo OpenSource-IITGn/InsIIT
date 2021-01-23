@@ -42,8 +42,8 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  void reloadData() {
-    dataContainer.mess.getData().then((s) {
+  void reloadData({forceRefresh = false}) {
+    dataContainer.mess.getData(forceRefresh: forceRefresh).then((s) {
       mainPageLoading = false;
       setState(() {});
     });
@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
             icon: Icon(Icons.refresh, color: Colors.grey.withAlpha(100)),
             onPressed: () {
-              reloadData();
+              reloadData(forceRefresh: true);
               dataContainer.schedule.buildData();
             },
           ),

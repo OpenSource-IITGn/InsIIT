@@ -54,11 +54,10 @@ class ScheduleContainer {
     scheduleCache = await Hive.openBox('schedule');
   }
 
-  void getData() {
-    getSlots();
-    getEnrolledCourses();
+  void getData({forceRefresh: false}) {
+    getSlots(forceRefresh: forceRefresh);
 
-    getAllCourses(); // load all courses from sheets
+    getAllCourses(forceRefresh: forceRefresh); // load all courses from sheets
     getExams();
     reloadEvents(); // load events from calendar api
     // load exams from sheets
@@ -158,8 +157,10 @@ class ScheduleContainer {
 
   //------------------------------------COURSES--------------------------------------------//
 
-  void getSlots() {
-    dataContainer.sheet.getData('slots!A:F').listen((cache) {
+  void getSlots({forceRefresh: true}) {
+    dataContainer.sheet
+        .getData('slots!A:F', forceRefresh: forceRefresh)
+        .listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);
