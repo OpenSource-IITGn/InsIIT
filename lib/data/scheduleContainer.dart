@@ -60,7 +60,7 @@ class ScheduleContainer {
 
   void getData({forceRefresh: false}) {
     getSlots(forceRefresh: forceRefresh);
-
+    getEnrolledCourses();
     getAllCourses(forceRefresh: forceRefresh); // load all courses from sheets
     getExams();
     reloadEvents(); // load events from calendar api
