@@ -1,11 +1,17 @@
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/quickLinks/screens/email.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
 
 class QuickLinksContainer {
   List<Data> emails;
 
+  GSheet sheet = GSheet('1N4dgezGKBNR1Nh1EkjiKpaKs5YboR2rxjGx_I9yxwt4');
+  Future<void> initializeCache() async {
+    await sheet.initializeCache();
+  }
+
   void getData({forceRefresh = false}) async {
-    dataContainer.sheet
+   sheet
         .getData('QuickLinks!A:C', forceRefresh: forceRefresh)
         .listen((cache) {
       var data = [];

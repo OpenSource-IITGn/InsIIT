@@ -12,8 +12,11 @@ import 'package:http/http.dart';
 import 'package:connectivity/connectivity.dart';
 import 'dart:developer';
 
+import 'package:instiapp/utilities/googleSheets.dart';
+
 class ScheduleContainer {
   Box scheduleCache;
+  GSheet sheet = GSheet('1FUavJaP28N57tf8JMAxP-mHBxL8TD6F2oLMekRBS908');
 
   List<Course> allCourses = [];
   List allCoursesRows = [];
@@ -52,6 +55,7 @@ class ScheduleContainer {
   }
   Future initializeCache() async {
     scheduleCache = await Hive.openBox('schedule');
+    await sheet.initializeCache();
   }
 
   void getData({forceRefresh: false}) {
@@ -131,9 +135,7 @@ class ScheduleContainer {
   }
 
   void getExams({forceRefresh = false}) {
-    dataContainer.sheet
-        .getData('exams!A:D', forceRefresh: forceRefresh)
-        .listen((data) {
+    sheet.getData('exams!A:D', forceRefresh: forceRefresh).listen((data) {
       for (int i = 1; i < 8; i++) {
         exams[i] = [];
       }
@@ -160,9 +162,7 @@ class ScheduleContainer {
   //------------------------------------COURSES--------------------------------------------//
 
   void getSlots({forceRefresh: false}) {
-    dataContainer.sheet
-        .getData('slots!A:F', forceRefresh: forceRefresh)
-        .listen((cache) {
+    sheet.getData('slots!A:F', forceRefresh: forceRefresh).listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);
@@ -276,7 +276,7 @@ class ScheduleContainer {
   }
 
   Future getAllCourses({forceRefresh = false}) async {
-    await dataContainer.sheet
+    await sheet
         .getData('timetable!A:Q', forceRefresh: forceRefresh)
         .listen((data) {
       allCourses = [];

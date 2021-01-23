@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:hive/hive.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/messMenu/classes/weekdaycard.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
 
 class MessContainer {
   List<List<ItemModel>> messItems;
@@ -11,6 +12,8 @@ class MessContainer {
   Map<String, String> foodIllustration;
   List<List<dynamic>> foodVotes;
   Map foodItems;
+
+  GSheet sheet = GSheet('1shyZ4dzs1Txug1E2dsnH15lO5DF7g9oh5Rkuatxa3TY');
 
   Box messCache;
 
@@ -32,12 +35,11 @@ class MessContainer {
 
   Future<void> initializeCache() async {
     messCache = await Hive.openBox('mess');
+    await sheet.initializeCache();
   }
 
   void loadMessData({forceRefresh: false}) async {
-    dataContainer.sheet
-        .getData('MessMenu!A:G', forceRefresh: forceRefresh)
-        .listen((cache) {
+    sheet.getData('MessMenu!A:G', forceRefresh: forceRefresh).listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);
@@ -93,9 +95,7 @@ class MessContainer {
 
   void loadFoodIllustrationData({forceRefresh: false}) async {
     foodIllustration = {};
-    dataContainer.sheet
-        .getData('FoodItems!A:B', forceRefresh: forceRefresh)
-        .listen((data) {
+    sheet.getData('FoodItems!A:B', forceRefresh: forceRefresh).listen((data) {
       if (data.length != 0) {
         data.removeAt(0);
         for (var lst in data) {

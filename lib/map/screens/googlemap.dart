@@ -234,7 +234,7 @@ class _MapPageState extends State<MapPage>
   }
 
   _markerSet() async {
-    dataContainer.sheet.getData('map!A:J').listen((data) {
+    dataContainer.map.sheet.getData('map!A:J').listen((data) {
       var mapData = data;
       mapInfoWindowList = [];
       locationList = [];

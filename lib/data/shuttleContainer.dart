@@ -1,13 +1,17 @@
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/shuttle/classes/buses.dart';
+import 'package:instiapp/utilities/googleSheets.dart';
 
 class ShuttleContainer {
   List<Buses> buses;
 
+  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
+  Future<void> initializeCache() async {
+    await sheet.initializeCache();
+  }
+
   getData({forceRefresh: false}) async {
-    dataContainer.sheet
-        .getData('BusRoutes!A:H', forceRefresh: forceRefresh)
-        .listen((cache) {
+    sheet.getData('BusRoutes!A:H', forceRefresh: forceRefresh).listen((cache) {
       var data = [];
       for (int i = 0; i < cache.length; i++) {
         data.add(cache[i]);

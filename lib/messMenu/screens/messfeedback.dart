@@ -67,10 +67,10 @@ class _MessFeedBackState extends State<MessFeedBack> {
                     ),
                     color: theme.buttonColor,
                     onPressed: () {
-                      dataContainer.sheet.writeData([
+                      dataContainer.mess.sheet.writeData([
                         [
                           DateTime.now().toString(),
-                          dataContainer.auth.user.name,
+                          dataContainer.auth.user.displayName,
                           dataContainer.auth.user.email,
                           review
                         ]

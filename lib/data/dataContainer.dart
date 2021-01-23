@@ -1,4 +1,5 @@
 import 'package:instiapp/data/feedContainer.dart';
+import 'package:instiapp/data/mapContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
 import 'package:instiapp/data/importantContactsContainer.dart';
@@ -12,7 +13,7 @@ var dataContainer;
 
 class DataContainer {
   String baseUrl = "serene-reaches-30469.herokuapp.com";
-  GSheet sheet = GSheet('1dEsbM4uTo7VeOZyJE-8AmSWJv_XyHjNSVsKpl1GBaz8');
+
   FeedContainer feed = FeedContainer();
   MessContainer mess = MessContainer();
 
@@ -22,11 +23,16 @@ class DataContainer {
   RepresentativesContainer representatives = RepresentativesContainer();
   QuickLinksContainer quickLinks = QuickLinksContainer();
   AuthContainer auth = AuthContainer();
+  MapContainer map = MapContainer();
 
   Future<void> initializeCaches() async {
     await schedule.initializeCache();
     await mess.initializeCache();
-    await sheet.initializeCache();
+    await contacts.initializeCache();
+    await shuttle.initializeCache();
+    await representatives.initializeCache();
+    await quickLinks.initializeCache();
+    await map.initializeCache();
   }
 
   getOtherData({forceRefresh: false}) {

@@ -92,7 +92,7 @@ class _MessMenuState extends State<MessMenu> {
                                 dataContainer.mess.foodVotes.add([food, '-1']);
                                 temp = '-1';
                               }
-                              dataContainer.sheet.writeData([
+                              dataContainer.mess.sheet.writeData([
                                 [
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,
@@ -133,7 +133,7 @@ class _MessMenuState extends State<MessMenu> {
                                 dataContainer.mess.foodVotes.add([food, '1']);
                                 temp = '1';
                               }
-                              dataContainer.sheet.writeData([
+                              dataContainer.mess.sheet.writeData([
                                 [
                                   DateTime.now().toString(),
                                   DateTime.now().weekday,

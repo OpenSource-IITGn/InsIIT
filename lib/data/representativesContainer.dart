@@ -2,11 +2,18 @@ import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/representativePage/classes/representatives.dart';
 import 'dart:convert';
 
+import 'package:instiapp/utilities/googleSheets.dart';
+
 class RepresentativesContainer {
   List<Representative> representatives;
 
+  GSheet sheet = GSheet('1N5RLByi6APeTRrdYqzUnF14lZNDcl4rXSK407yFstj4');
+  Future<void> initializeCache() async {
+    await sheet.initializeCache();
+  }
+
   getData({forceRefresh = false}) async {
-    dataContainer.sheet
+    sheet
         .getData('Representatives!A:C', forceRefresh: forceRefresh)
         .listen((cache) {
       var data = [];
