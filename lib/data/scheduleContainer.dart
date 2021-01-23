@@ -130,8 +130,10 @@ class ScheduleContainer {
     });
   }
 
-  void getExams() {
-    dataContainer.sheet.getData('exams!A:D').listen((data) {
+  void getExams({forceRefresh = false}) {
+    dataContainer.sheet
+        .getData('exams!A:D', forceRefresh: forceRefresh)
+        .listen((data) {
       for (int i = 1; i < 8; i++) {
         exams[i] = [];
       }
@@ -157,7 +159,7 @@ class ScheduleContainer {
 
   //------------------------------------COURSES--------------------------------------------//
 
-  void getSlots({forceRefresh: true}) {
+  void getSlots({forceRefresh: false}) {
     dataContainer.sheet
         .getData('slots!A:F', forceRefresh: forceRefresh)
         .listen((cache) {

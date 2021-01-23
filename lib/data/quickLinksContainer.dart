@@ -4,7 +4,7 @@ import 'package:instiapp/quickLinks/screens/email.dart';
 class QuickLinksContainer {
   List<Data> emails;
 
-  void getData({forceRefresh: false}) async {
+  void getData({forceRefresh = false}) async {
     dataContainer.sheet
         .getData('QuickLinks!A:C', forceRefresh: forceRefresh)
         .listen((cache) {

@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage>
       mainPageLoading = false;
       setState(() {});
     });
-    dataContainer.getOtherData();
+    dataContainer.getOtherData(forceRefresh: forceRefresh);
   }
 
   PageController _pageController;

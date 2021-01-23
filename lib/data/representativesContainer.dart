@@ -5,7 +5,7 @@ import 'dart:convert';
 class RepresentativesContainer {
   List<Representative> representatives;
 
-  getData({forceRefresh: false}) async {
+  getData({forceRefresh = false}) async {
     dataContainer.sheet
         .getData('Representatives!A:C', forceRefresh: forceRefresh)
         .listen((cache) {
