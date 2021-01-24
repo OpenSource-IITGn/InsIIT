@@ -8,19 +8,50 @@ You've stumbled across the official FOSS repository of IITGn's Institute App! Th
 ## Motivation
 Kicked off via HackRush 2019, this project was brought to life with a vision to create a one-stop-serves-all platform for all members of the community. The project incorporates several aspects of the campus, and deeply integrates into services that we use daily. Our vision is to see this project becoming a one-of-a-kind open source project that allows students to up-skill themselves while contributing to something that everyone on campus uses!
 
+
+This project is the successor to GNius - the first students mobile app for android.
 ## Screenshots
-- TODO
+![](readmeImages/darkMode.jpeg)
+![](readmeImages/mess.jpeg)
+![](readmeImages/map.jpeg)
+![](readmeImages/schedule.jpeg)
+![](readmeImages/contacts.jpeg)
 
 ## Tech/framework used
 - Frontend - Flutter
-- Backend - Node.js + MongoDb, Google Sheets, FireBase
+- Backend - Node.js (Deployed on IITGN Servers) + MongoDb (Atlas), Google Sheets, FireBase
 
 ## Features
-- TODO
+### Stable Release
+- Mess Menu
+  - View daily Menu
+  - Send instant feedback on items (Upvote/Downvote), or a more detailed review.
+- Daily schedule 
+  - Courses are automatically updated depending on the semester with unenroll/enroll option
+  - Exams are automatically added during midsem/endsem
+  - Calendar events will be shown as well.
+- Bus
+  - Set reminders for bus you want to catch
+  - View Bus routes
+
+### Beta Release
+- News feed of announcements/events
+
+
+### Alpha Release (In-progress/todo - Contributions welcome!)
+- Integration of room booking system 
+  - Tinkerers Lab
+    - Automatic allotment of 3D printers/laser cutters
+  - Academic Block booking
+
+- Integration of Bus service with live GPS info of buses (project under IBP, IR&P council)
+- Integration with Events API of IITGn
+- Integration with Stumble
+
 
 ## API's
-A large part of this project runs off the Google Sheet API due to its ease of being modified without any technical knowledge whatsoever. This will change as and when a proper server has been hosted later.
-You can view the backend API hosted on heroku here: 
+A large part of this project runs off the Google Sheet API due to its ease of being modified without any technical knowledge whatsoever, along with full securty. 
+
 
 ## Team InsIIT
 We would love to have you onboard! Do submit a pull request if you would like to contribute to a feature.
@@ -47,5 +78,5 @@ We would love to have you onboard! Do submit a pull request if you would like to
 
 ## Mentions
 
-We would like to thank Shreyas Singh (Class of '20), Shantanu Jana (Class of '21), Jainam Shah (Class of '21), Animesh Rastogi (Class of '20), and Rohit Patil (Class of '21) for their valuable help in securing the required logistics for the project.
+We would like to thank  Shantanu Jana (Class of '21), Jainam Shah (Class of '21), Shreyas Singh (Class of '20), Animesh Rastogi (Class of '20), and Rohit Patil (Class of '21) for their valuable help in securing the required logistics for the project.
 

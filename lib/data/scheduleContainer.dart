@@ -276,9 +276,7 @@ class ScheduleContainer {
   }
 
   Future getAllCourses({forceRefresh = false}) async {
-    await sheet
-        .getData('timetable!A:Q', forceRefresh: forceRefresh)
-        .listen((data) {
+    sheet.getData('timetable!A:Q', forceRefresh: forceRefresh).listen((data) {
       allCourses = [];
       allCoursesRows = [];
       data.removeAt(0);
