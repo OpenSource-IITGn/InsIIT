@@ -16,6 +16,7 @@ This project is the successor to GNius - the first students mobile app for andro
 ![](readmeImages/map.jpeg)
 ![](readmeImages/schedule.jpeg)
 ![](readmeImages/contacts.jpeg)
+![](readmeImages/covid_faqpage.jpg)
 
 ## Tech/framework used
 - Frontend - Flutter
