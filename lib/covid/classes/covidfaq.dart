@@ -34,7 +34,7 @@ class CovidFAQ {
           children: answers
           .map((ans) {
             return Text(
-              ans,
+              "• " + ans,
               style: TextStyle(
                   color: theme.textHeadingColor),
             );
