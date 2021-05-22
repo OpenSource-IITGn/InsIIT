@@ -1,3 +1,4 @@
+import 'package:instiapp/data/covidContainer.dart';
 import 'package:instiapp/data/feedContainer.dart';
 import 'package:instiapp/data/mapContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
@@ -24,6 +25,7 @@ class DataContainer {
   QuickLinksContainer quickLinks = QuickLinksContainer();
   AuthContainer auth = AuthContainer();
   MapContainer map = MapContainer();
+  CovidContainer covid = CovidContainer();
 
   Future<void> initializeCaches() async {
     await schedule.initializeCache();
@@ -33,6 +35,7 @@ class DataContainer {
     await representatives.initializeCache();
     await quickLinks.initializeCache();
     await map.initializeCache();
+    await covid.initializeCache();
   }
 
   getOtherData({forceRefresh: false}) {
@@ -41,5 +44,6 @@ class DataContainer {
     shuttle.getData(forceRefresh: forceRefresh);
     representatives.getData(forceRefresh: forceRefresh);
     quickLinks.getData(forceRefresh: forceRefresh);
+    covid.getData(forceRefresh: forceRefresh);
   }
 }
