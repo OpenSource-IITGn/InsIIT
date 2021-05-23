@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:instiapp/covid/screens/chatpage.dart';
 import 'package:instiapp/covid/screens/covidPage.dart';
-import 'package:instiapp/covid/screens/faqpage.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/developers/screens/developers.dart';
@@ -65,8 +63,6 @@ class MyApp extends StatelessWidget {
         //'/exportIcsFile': (context) => ExportIcsFile(),
         '/representativePage': (context) => RepresentativePage(),
         '/covidPage': (context) => CovidPage(),
-        '/faqPage': (context) => FAQPage(),
-        '/chatPage': (context) => ChatPage(),
       },
       title: 'Instiapp',
       theme: ThemeData(fontFamily: 'OpenSans', accentColor: Colors.black),

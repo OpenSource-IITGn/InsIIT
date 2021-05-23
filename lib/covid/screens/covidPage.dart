@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
+import 'package:instiapp/covid/classes/covidfaq.dart';
 import 'package:instiapp/themeing/notifier.dart';
 
 class CovidPage extends StatefulWidget {
@@ -11,17 +12,46 @@ class CovidPage extends StatefulWidget {
 class _CovidPageState extends State<CovidPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: theme.backgroundColor,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: theme.floatingColor,
-        child: Icon(
-          Icons.assignment_late,
-          color: theme.backgroundColor
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 3,
+      child: Scaffold(
+        backgroundColor: theme.backgroundColor,
+        appBar: AppBar(
+          backgroundColor: theme.appBarColor,
+          elevation: 0,
+          bottom: PreferredSize(
+            child: TabBar(
+              unselectedLabelColor: theme.textHeadingColor.withOpacity(0.3),
+              indicatorColor: theme.indicatorColor,
+              labelColor: theme.textHeadingColor,
+              // unselectedLabelStyle:
+              //     TextStyle(color: Colors.black.withOpacity(0.3)),
+              tabs: <Widget>[
+                Tab(text: 'Updates'),
+                Tab(text: 'FAQs'),
+                Tab(text: 'Self Assessment')
+              ],
+            ),
+            preferredSize: Size.fromHeight(1.0),
+          ),
         ),
-        onPressed: () {
-          return Navigator.pushNamed(context, "/faqPage");
-        },
+        body: TabBarView(
+          children: [
+            Container(), //TODO: Covid Updates Tab
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                child: Column(
+                  children: dataContainer.covid.faqs
+                      .map<Widget>((CovidFAQ faq) => faq.faqCard(context))
+                      .toList(),
+                ),
+              ),
+            ),
+            Container(), //TODO: Self Assessment Tab
+          ],
+        ),
       ),
     );
   }
