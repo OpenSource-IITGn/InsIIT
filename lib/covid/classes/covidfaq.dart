@@ -22,13 +22,17 @@ class CovidFAQ {
       children: [
         (heading == "-")
         ? Container()
-        : Text(
-          heading,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              color: theme.textHeadingColor),
+        : Center(
+          child: Text(
+            heading,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: theme.textHeadingColor),
+          ),
         ),
+        SizedBox(height: 4,),
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: answers
