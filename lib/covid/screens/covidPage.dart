@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/covid/classes/covidfaq.dart';
+import 'package:instiapp/covid/classes/covidupdate.dart';
 import 'package:instiapp/themeing/notifier.dart';
 
 class CovidPage extends StatefulWidget {
@@ -38,7 +39,12 @@ class _CovidPageState extends State<CovidPage> {
         ),
         body: TabBarView(
           children: [
-            Container(), //TODO: Covid Updates Tab
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                child: dataContainer.covid.updates.updateCard(context),
+              ),
+            ),
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
