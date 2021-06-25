@@ -15,7 +15,7 @@ class _CovidPageState extends State<CovidPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 3,
+      length: 2, //TODO: Add Self Assessment Tab
       child: Scaffold(
         backgroundColor: theme.backgroundColor,
         appBar: AppBar(
@@ -31,7 +31,7 @@ class _CovidPageState extends State<CovidPage> {
               tabs: <Widget>[
                 Tab(text: 'Updates'),
                 Tab(text: 'FAQs'),
-                Tab(text: 'Self Assessment')
+//                Tab(text: 'Self Assessment') //TODO: Add Self Assessment Tab
               ],
             ),
             preferredSize: Size.fromHeight(1.0),
@@ -55,7 +55,7 @@ class _CovidPageState extends State<CovidPage> {
                 ),
               ),
             ),
-            Container(), //TODO: Self Assessment Tab
+//            Container(), //TODO: Add Self Assessment Tab
           ],
         ),
       ),
