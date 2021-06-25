@@ -6,6 +6,7 @@ import 'package:instiapp/mainScreens/loading.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/map/screens/googlemap.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
+import 'package:instiapp/covid/screens/covidPage.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/bottomNavBar.dart';
 import 'package:instiapp/utilities/constants.dart';
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage>
     // "News",
     "Buses",
     "Campus Map",
+    "Covid Details",
     "Misc"
   ];
 
@@ -112,6 +114,19 @@ class _HomePageState extends State<HomePage>
             textAlign: TextAlign.center,
             title: Text(
               'Map',
+              style: TextStyle(color: theme.textSubheadingColor),
+            ),
+            activeColor: theme.bottomNavyBarIndicatorColor,
+            inactiveColor: Colors.grey,
+          ),
+          BottomNavyBarItem(
+            icon: Icon(
+              Icons.announcement,
+              color: theme.textSubheadingColor,
+            ),
+            textAlign: TextAlign.center,
+            title: Text(
+              'Covid',
               style: TextStyle(color: theme.textSubheadingColor),
             ),
             activeColor: theme.bottomNavyBarIndicatorColor,
@@ -190,6 +205,7 @@ class _HomePageState extends State<HomePage>
           // FeedPage(),
           Shuttle(),
           MapPage(),
+          CovidPage(),
           MiscPage(),
         ],
       ),
