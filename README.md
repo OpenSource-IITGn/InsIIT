@@ -5,6 +5,8 @@
 
 You've stumbled across the official FOSS repository of IITGn's Institute App! This project is in its infant stages, and all contributions in any form are welcome :)
 
+This is the official discord server for insIIT Developers Community: [insIIT Developers Community](https://discord.gg/cVeY6GwMV7)
+
 ## Motivation
 Kicked off via HackRush 2019, this project was brought to life with a vision to create a one-stop-serves-all platform for all members of the community. The project incorporates several aspects of the campus, and deeply integrates into services that we use daily. Our vision is to see this project becoming a one-of-a-kind open source project that allows students to up-skill themselves while contributing to something that everyone on campus uses!
 
