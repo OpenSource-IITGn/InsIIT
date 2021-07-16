@@ -49,7 +49,7 @@ This project is the successor to GNius - the first students mobile app for andro
 - Integration with Stumble
 
 
-## API's
+## APIs
 A large part of this project runs off the Google Sheet API due to its ease of being modified without any technical knowledge whatsoever, along with full securty. 
 
 
