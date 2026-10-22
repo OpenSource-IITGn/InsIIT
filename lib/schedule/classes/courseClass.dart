@@ -5,6 +5,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 
 import 'package:instiapp/data/scheduleContainer.dart';
+import 'package:instiapp/notifications/classReminder.dart';
 import 'package:instiapp/themeing/notifier.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -240,10 +241,39 @@ class Course extends Event {
                           color: Colors.green,
                         )
                       : Container(),
+                  _reminderButton(context),
                 ],
               )),
         ),
       ),
+    );
+  }
+
+  /// Bell button on the class card that sets a local reminder for the next
+  /// occurrence of this class.
+  Widget _reminderButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.notifications_none, color: theme.iconColor),
+      tooltip: 'Remind me before this class',
+      onPressed: () async {
+        final int minutes = ClassReminder.defaultMinutesBefore;
+        final DateTime when = ClassReminder.nextOccurrence(this)
+            .subtract(Duration(minutes: minutes));
+        final bool scheduled = await ClassReminder.schedule(
+          this,
+          body: '$code $name starts in $minutes minutes.',
+        );
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text(scheduled ? 'Reminder set' : 'Could not set reminder'),
+            content: Text(scheduled
+                ? 'You will be reminded at '
+                    '${formatDate(when, [HH, ':', nn])} before $code $name.'
+                : 'This class is starting too soon to set a reminder.'),
+          ),
+        );
+      },
     );
   }
 
