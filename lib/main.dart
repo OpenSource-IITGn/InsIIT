@@ -4,6 +4,7 @@ import 'package:instiapp/covid/screens/covidPage.dart';
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/feed/screens/hashtagsPage.dart';
 import 'package:instiapp/developers/screens/developers.dart';
+import 'package:instiapp/faculty/screens/facultyDirectory.dart';
 import 'package:instiapp/notifications/pushNotifications.dart';
 import 'package:instiapp/quickLinks/screens/email.dart';
 
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/onboarding': (context) => OnboardingPage(),
         '/importantcontacts': (context) => ImportantContacts(),
+        '/faculty': (context) => FacultyDirectoryPage(),
         '/shuttle': (context) => Shuttle(),
         '/Quicklinks': (context) => Email(),
         '/messmenu': (context) => MessMenu(),

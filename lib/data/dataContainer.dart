@@ -3,6 +3,7 @@ import 'package:instiapp/data/feedContainer.dart';
 import 'package:instiapp/data/mapContainer.dart';
 import 'package:instiapp/data/messContainer.dart';
 import 'package:instiapp/data/scheduleContainer.dart';
+import 'package:instiapp/data/facultyContainer.dart';
 import 'package:instiapp/data/importantContactsContainer.dart';
 import 'package:instiapp/data/shuttleContainer.dart';
 import 'package:instiapp/data/representativesContainer.dart';
@@ -20,6 +21,7 @@ class DataContainer {
 
   ScheduleContainer schedule = ScheduleContainer();
   ImportantContactsContainer contacts = ImportantContactsContainer();
+  FacultyContainer faculty = FacultyContainer();
   ShuttleContainer shuttle = ShuttleContainer();
   RepresentativesContainer representatives = RepresentativesContainer();
   QuickLinksContainer quickLinks = QuickLinksContainer();
@@ -31,6 +33,7 @@ class DataContainer {
     await schedule.initializeCache();
     await mess.initializeCache();
     await contacts.initializeCache();
+    await faculty.initializeCache();
     await shuttle.initializeCache();
     await representatives.initializeCache();
     await quickLinks.initializeCache();
@@ -41,6 +44,7 @@ class DataContainer {
   getOtherData({forceRefresh: false}) {
     schedule.getData(forceRefresh: forceRefresh);
     contacts.getData(forceRefresh: forceRefresh);
+    faculty.getData(forceRefresh: forceRefresh);
     shuttle.getData(forceRefresh: forceRefresh);
     representatives.getData(forceRefresh: forceRefresh);
     quickLinks.getData(forceRefresh: forceRefresh);
