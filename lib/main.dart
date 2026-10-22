@@ -21,6 +21,7 @@ import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/mainScreens/signIn.dart';
 import 'package:instiapp/mainScreens/onboarding.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
+import 'package:instiapp/mainScreens/reportBug.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/representativePage/screens/representativePage.dart';
 import 'package:path_provider/path_provider.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         //'/exportIcsFile': (context) => ExportIcsFile(),
         '/representativePage': (context) => RepresentativePage(),
         '/covidPage': (context) => CovidPage(),
+        '/reportBug': (context) => ReportBugPage(),
       },
       title: 'Instiapp',
       theme: ThemeData(fontFamily: 'OpenSans', accentColor: Colors.black),

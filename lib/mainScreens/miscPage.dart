@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:instiapp/themeing/notifier.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MiscPage extends StatelessWidget {
   @override
@@ -149,15 +148,8 @@ class MiscPage extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: FlatButton(
-                      onPressed: () async {
-                        var url = "https://forms.gle/hHQgPFnkM6qT5kAj7";
-
-                        if (await canLaunch(url)) {
-                          await launch(url, forceSafariVC: false);
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/reportBug'),
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),
                           side: BorderSide(
