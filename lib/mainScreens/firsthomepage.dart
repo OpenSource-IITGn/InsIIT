@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:instiapp/data/dataContainer.dart';
 import 'package:instiapp/messMenu/classes/base.dart';
 import 'package:instiapp/themeing/notifier.dart';
+import 'package:instiapp/utilities/quotes.dart';
 
 class MainHomePage extends StatefulWidget {
   var reload;
@@ -27,13 +29,36 @@ class _MainHomePageState extends State<MainHomePage>
   @override
   void initState() {
     super.initState();
-    http.get('https://quotes.rest/qod').then((response) {
-      if (response.statusCode == 200) {
-        var temp = jsonDecode(response.body)['contents']['quotes'][0];
-        qod = '\"' + temp['quote'] + '\"';
-        qodAuthor = '- ' + temp['author'];
-        setState(() {});
+    _loadQuoteOfTheDay();
+  }
+
+  /// Shows a bundled quote immediately, then tries to replace it with the live
+  /// quote of the day. If the request fails, times out, or returns an
+  /// unexpected shape, the fallback stays — so the card is never blank.
+  void _loadQuoteOfTheDay() {
+    final Map<String, String> local = Quotes.fallback();
+    qod = '\"' + local['quote'] + '\"';
+    qodAuthor = '- ' + local['author'];
+
+    http
+        .get('https://quotes.rest/qod')
+        .timeout(Duration(seconds: 5))
+        .then((response) {
+      if (response.statusCode != 200) return;
+      try {
+        final dynamic temp = jsonDecode(response.body)['contents']['quotes'][0];
+        final String quote = temp['quote'];
+        if (quote != null && quote.trim().isNotEmpty) {
+          setState(() {
+            qod = '\"' + quote + '\"';
+            qodAuthor = '- ' + (temp['author'] ?? 'Unknown');
+          });
+        }
+      } catch (_) {
+        // Malformed response — keep the fallback quote.
       }
+    }).catchError((_) {
+      // Offline, timed out, or the service is down — keep the fallback quote.
     });
   }
 
