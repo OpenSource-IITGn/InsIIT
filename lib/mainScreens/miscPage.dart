@@ -77,6 +77,30 @@ class MiscPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.6,
                     child: FlatButton(
                       onPressed: () =>
+                          Navigator.pushNamed(context, '/biodata'),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(40.0),
+                          side: BorderSide(
+                            color: theme.flatButtonOutlineColor,
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          child: Text(
+                            "My Details",
+                            style: TextStyle(color: theme.textHeadingColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: FlatButton(
+                      onPressed: () =>
                           Navigator.pushNamed(context, '/Quicklinks'),
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(40.0),

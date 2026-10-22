@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transformer_page_view/transformer_page_view.dart';
+import 'package:instiapp/utilities/biodataStore.dart';
 
 class OnboardingPage extends StatefulWidget {
   @override
@@ -51,13 +52,26 @@ class OnboardingPageState extends State<OnboardingPage> {
   ];
 
   final IndexController controller = IndexController();
+
+  /// When the intro finishes, ask for the student's details once (issue #22)
+  /// if they have not been provided yet; otherwise just close the intro.
+  Future<void> _finishOnboarding() async {
+    final bool empty = await BiodataStore.isEmpty();
+    if (!mounted) return;
+    if (empty) {
+      Navigator.pushReplacementNamed(context, '/biodata');
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     TransformerPageView transformerPageView = TransformerPageView(
         pageSnapping: true,
         onPageChanged: (index) {
           if (this._slideIndex == 4 /*(beta)8*/) {
-            Navigator.pop(context);
+            _finishOnboarding();
           }
           setState(() {
             this._slideIndex = index;

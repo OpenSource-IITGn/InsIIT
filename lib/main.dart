@@ -20,6 +20,7 @@ import 'package:instiapp/schedule/screens/schedulePage.dart';
 import 'package:instiapp/shuttle/screens/shuttle.dart';
 import 'package:instiapp/mainScreens/signIn.dart';
 import 'package:instiapp/mainScreens/onboarding.dart';
+import 'package:instiapp/mainScreens/biodata.dart';
 import 'package:instiapp/mainScreens/miscPage.dart';
 import 'package:instiapp/utilities/constants.dart';
 import 'package:instiapp/representativePage/screens/representativePage.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/menuBarBase': (context) => HomeWrapper(),
         '/hashtags': (context) => HashtagPage(),
         '/misc': (context) => MiscPage(),
+        '/biodata': (context) => BiodataPage(),
         '/developers': (context) => DevelopersPage(),
         '/map': (context) => MapPage(),
         '/schedule': (context) => SchedulePage(),
